@@ -1,0 +1,7 @@
+알라딘 베스트 셀러 10개
+https://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey=ttbinevers1330001&QueryType=Bestseller&MaxResults=10&start=1&SearchTarget=Book&output=js&Version=20131101&Cover=Big
+Year=2022&Month=5&Week=3 -> 원하는 년도 월 일
+
+알라딘 상품 정보
+https://www.aladin.co.kr/ttb/api/ItemLookUp.aspx?ttbkey=ttbinevers1330001&itemIdType=ISBN&ItemId=9788964964859&output=js&Version=20131101&OptResult=ebookList,usedList,reviewList&Cover=Big
+

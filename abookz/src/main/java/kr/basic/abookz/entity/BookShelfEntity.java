@@ -9,20 +9,23 @@ import lombok.Setter;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "MEMO")
+@Table(name = "BOOKSHELF")
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MemoEntity {
+public class BookShelfEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "MEMO_ID", nullable = false)
+  @Column(name = "BOOKSHELF_ID", nullable = false)
   private Long id;
-  private int page;//인용구나 느낀점 페이지
-  private String quotes;//인상깊었던 인용구
-  private String note;//느낀점
-  private LocalDateTime createdDate;//작성날짜
+
+  private LocalDateTime addDate;
+  private LocalDateTime startDate;
+  private LocalDateTime endDate;
+
+  @Enumerated(EnumType.STRING)
+  private TagEntity tag; // READ,WANT_TO_READ,CURRENTLY_READING
 
   @ManyToOne
   @JoinColumn(name = "MEM_ID")

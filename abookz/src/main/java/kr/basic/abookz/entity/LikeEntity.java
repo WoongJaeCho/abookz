@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "LIKE")
+@Table(name = "REVIEW_LIKE")
 @Getter
 @Setter
 @NoArgsConstructor
