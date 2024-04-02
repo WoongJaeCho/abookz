@@ -3,7 +3,6 @@ package kr.basic.abookz.controller;
 import jakarta.servlet.http.HttpSession;
 import kr.basic.abookz.dto.MemberDTO;
 import kr.basic.abookz.service.MemberService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,7 +40,7 @@ public class MemberController {
   public String saveMember(@ModelAttribute MemberDTO memberDTO){
     System.out.println("memberDTO = " + memberDTO);
     memberService.save(memberDTO);
-    return "index";
+    return "test";
   }
 
   // 로그인
