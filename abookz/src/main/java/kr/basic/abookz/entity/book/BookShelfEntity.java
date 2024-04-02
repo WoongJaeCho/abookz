@@ -24,6 +24,8 @@ public class BookShelfEntity {
   private LocalDateTime addDate;
   private LocalDateTime startDate;
   private LocalDateTime endDate;
+  private LocalDateTime targetDate;
+  private int dailyPage;
 
   @Enumerated(EnumType.STRING)
   private TagEnum tag; // READ,WANT_TO_READ,CURRENTLY_READING
