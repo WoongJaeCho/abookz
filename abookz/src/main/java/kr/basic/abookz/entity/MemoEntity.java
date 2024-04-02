@@ -25,10 +25,10 @@ public class MemoEntity {
   private LocalDateTime createdDate;//작성날짜
 
   @ManyToOne
-  @JoinColumn(name = "MEM_ID")
+  @JoinColumn(name = "MEM_ID", referencedColumnName = "MEM_ID")
   private MemberEntity member; // 리뷰 작성 회원
 
   @ManyToOne
-  @JoinColumn(name = "BOOK_ID")
+  @JoinColumn(name = "BOOK_ID", referencedColumnName = "BOOK_ID")
   private BookEntity book;
 }

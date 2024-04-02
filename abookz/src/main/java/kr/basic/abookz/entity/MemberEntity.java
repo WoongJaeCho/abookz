@@ -26,6 +26,7 @@ public class MemberEntity {
   private RoleEntity role;//역할 ADMIN,MANAGER,USER(Default = USER)
   private String profile; //프로필 이미지
   private LocalDateTime regDate;//가입일
+//  private int challenge;//습관형성 챌린지
 //  @OneToMany(mappedBy = "member",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 //  private List<ReviewEntity> reviewList = new ArrayList<>(); //회원이 작성한 리뷰 리스트
 //@OneToMany(mappedBy = "member",fetch = FetchType.LAZY ,cascade = CascadeType.ALL)

@@ -28,10 +28,10 @@ public class ReviewEntity {
   //  @OneToMany(mappedBy = "like",fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
   //  private List<Like> likeList= new ArrayList<>(); 리뷰의 좋아요
   @ManyToOne
-  @JoinColumn(name = "MEM_ID")
+  @JoinColumn(name = "MEM_ID", referencedColumnName = "MEM_ID")
   private MemberEntity member; // 리뷰 작성 회원
 
   @ManyToOne
-  @JoinColumn(name = "BOOK_ID")
+  @JoinColumn(name = "BOOK_ID", referencedColumnName = "BOOK_ID")
   private BookEntity book;
 }
