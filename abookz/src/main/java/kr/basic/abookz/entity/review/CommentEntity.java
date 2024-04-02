@@ -1,14 +1,13 @@
-package kr.basic.abookz.entity;
+package kr.basic.abookz.entity.review;
 
 import jakarta.persistence.*;
+import kr.basic.abookz.entity.member.MemberEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.nio.channels.Pipe;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 
 @Entity
 @Table(name = "COMMENT")
@@ -25,12 +24,12 @@ public class CommentEntity {
   private String comment;//댓글내용
 
   @ManyToOne
-  @JoinColumn(name = "MEM_ID", referencedColumnName = "MEM_ID")
-  private MemberEntity member;//댓글 작성자
+  @JoinColumn(name = "MEM_ID",foreignKey = @ForeignKey(name = "COMMENT_IBFK_1"))
+  private MemberEntity member; // 리뷰 작성 회원
 
   @ManyToOne
-  @JoinColumn(name = "REVIEW_ID", referencedColumnName = "REVIEW_ID")
-  private ReviewEntity review;//댓글 작성한 리뷰
+  @JoinColumn(name = "REVIEW_ID",foreignKey = @ForeignKey(name="COMMENT_IBFK_2"))
+  private ReviewEntity review;//좋아요가 있는 게시물
 
   private LocalDateTime createdDate;//댓글 작성 날짜
 

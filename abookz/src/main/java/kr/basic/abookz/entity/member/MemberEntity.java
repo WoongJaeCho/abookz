@@ -1,12 +1,10 @@
-package kr.basic.abookz.entity;
+package kr.basic.abookz.entity.member;
 
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
 @Table(name = "MEMBER")
@@ -23,7 +21,7 @@ public class MemberEntity {
   private String email;//이메일
   private String nickname;//닉네임(댓글,리뷰)
   @Enumerated(EnumType.STRING)
-  private RoleEntity role;//역할 ADMIN,MANAGER,USER(Default = USER)
+  private RoleEnum role;//역할 ADMIN,MANAGER,USER(Default = USER)
   private String profile; //프로필 이미지
   private LocalDateTime regDate;//가입일
 //  private int challenge;//습관형성 챌린지

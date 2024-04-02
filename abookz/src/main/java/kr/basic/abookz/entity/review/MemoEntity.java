@@ -1,6 +1,8 @@
-package kr.basic.abookz.entity;
+package kr.basic.abookz.entity.review;
 
 import jakarta.persistence.*;
+import kr.basic.abookz.entity.member.MemberEntity;
+import kr.basic.abookz.entity.book.BookEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -25,10 +27,10 @@ public class MemoEntity {
   private LocalDateTime createdDate;//작성날짜
 
   @ManyToOne
-  @JoinColumn(name = "MEM_ID", referencedColumnName = "MEM_ID")
+  @JoinColumn(name = "MEM_ID",foreignKey = @ForeignKey(name = "MEMO_IBFK_1"))
   private MemberEntity member; // 리뷰 작성 회원
 
   @ManyToOne
-  @JoinColumn(name = "BOOK_ID", referencedColumnName = "BOOK_ID")
+  @JoinColumn(name = "BOOK_ID",foreignKey = @ForeignKey(name = "MEMO_IBFK_2"))
   private BookEntity book;
 }
