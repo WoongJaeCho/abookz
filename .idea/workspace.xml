@@ -54,14 +54,18 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JavaScript File" />
         <option value="Class" />
         <option value="HTML File" />
+        <option value="JavaScript File" />
+        <option value="CSS File" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectColorInfo"><![CDATA[{
   "associatedIndex": 4
@@ -122,7 +126,7 @@
       <method v="2" />
     </configuration>
     <configuration name="AbookzApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="abookz.abookz.main~1" />
+      <module name="abookz.abookz.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="kr.basic.abookz.AbookzApplication" />
       <extension name="coverage">
         <pattern>
@@ -156,7 +160,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1711934348896</updated>
-      <workItem from="1711934349947" duration="52300000" />
+      <workItem from="1711934349947" duration="53740000" />
     </task>
     <servers />
   </component>
@@ -170,6 +174,11 @@
           <properties class="java.lang.IllegalArgumentException" package="java.lang" />
           <option name="timeStamp" value="2" />
         </breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/abookz/src/main/java/kr/basic/abookz/service/AladinService.java</url>
+          <line>158</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
   </component>
