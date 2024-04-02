@@ -6,27 +6,27 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.awt.print.Book;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "REVIEW")
+@Table(name = "BOOKSHELF")
 @Getter
 @Setter
-@AllArgsConstructor
 @NoArgsConstructor
-public class ReviewEntity {
+@AllArgsConstructor
+public class BookShelfEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "REVIEW_ID", nullable = false)
-  private Long id;//pk
+  @Column(name = "BOOKSHELF_ID", nullable = false)
+  private Long id;
 
-  private String content;//내용
-  private int grade;//평점(1,2,3,4,5) 별표시
-  private LocalDateTime createdDate;//작성날짜
-  private Boolean isSpoilerActive;//스포일러 방지기능
-  //  @OneToMany(mappedBy = "like",fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
-  //  private List<Like> likeList= new ArrayList<>(); 리뷰의 좋아요
+  private LocalDateTime addDate;
+  private LocalDateTime startDate;
+  private LocalDateTime endDate;
+
+  @Enumerated(EnumType.STRING)
+  private TagEntity tag; // READ,WANT_TO_READ,CURRENTLY_READING
+
   @ManyToOne
   @JoinColumn(name = "MEM_ID", referencedColumnName = "MEM_ID")
   private MemberEntity member; // 리뷰 작성 회원

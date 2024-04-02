@@ -25,11 +25,11 @@ public class CommentEntity {
   private String comment;//댓글내용
 
   @ManyToOne
-  @JoinColumn(name = "MEM_ID")
+  @JoinColumn(name = "MEM_ID", referencedColumnName = "MEM_ID")
   private MemberEntity member;//댓글 작성자
 
   @ManyToOne
-  @JoinColumn(name = "REVIEW_ID")
+  @JoinColumn(name = "REVIEW_ID", referencedColumnName = "REVIEW_ID")
   private ReviewEntity review;//댓글 작성한 리뷰
 
   private LocalDateTime createdDate;//댓글 작성 날짜

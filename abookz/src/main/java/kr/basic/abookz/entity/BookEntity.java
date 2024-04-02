@@ -25,6 +25,7 @@ public class BookEntity {
   private String author;//저자
   private String publisher;//출판사
   private LocalDate pubDate;//출판일
+  private Long ISBN;//isbn 10자리
   private Long ISBN13;//isbn 13자리
   @Enumerated(EnumType.STRING)
   private CategoryEntity categoryName;//카테고리
@@ -32,6 +33,4 @@ public class BookEntity {
   private String description;//요약
   private int itemPage;//상품쪽수
   private String link;//알라딘 상품 정보 페이지
-
-
 }
