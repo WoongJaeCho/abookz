@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="0f6414da-cd93-47c6-a17d-0913655d748f" name="변경" comment="">
+      <change afterPath="$PROJECT_DIR$/.idea/abookz.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jpa-buddy.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules/abookz.abookz.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules/abookz.abookz.main~1.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/modules/abookz.abookz.test~1.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/0/0/00c20db006fb8938f0baf647e8b0d3cce2cacb39" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/0/5/050ad4ab914bb14921484f1c6304985c4e4c4eb2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/5/2/52f0d66e69bfedc92324287f8026b03a9c0081e3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/7/3/730428da74103d9ccae301b1af6c3dc55c195a3e" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/8/a/8a61ac40511f6aaf38c862d4bdd243392a702306" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/b/d/bd91226f4f2914bf2dfb991de5306174cc5a5a78" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/c/f/cfd5acc0c90d8516c7210b729647badb0715f99a" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/e/5/e589be33b58310198f1e457b5c96669109e667b4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/f/b/fb6f66c5edd93a9f28bc6cda314116e86238d99b" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/0/0/00c20db006fb8938f0baf647e8b0d3cce2cacb39" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/0/5/050ad4ab914bb14921484f1c6304985c4e4c4eb2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/5/2/52f0d66e69bfedc92324287f8026b03a9c0081e3" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/7/3/730428da74103d9ccae301b1af6c3dc55c195a3e" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/8/a/8a61ac40511f6aaf38c862d4bdd243392a702306" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/b/d/bd91226f4f2914bf2dfb991de5306174cc5a5a78" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/c/f/cfd5acc0c90d8516c7210b729647badb0715f99a" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/e/5/e589be33b58310198f1e457b5c96669109e667b4" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/f/b/fb6f66c5edd93a9f28bc6cda314116e86238d99b" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/abookz/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/abookz/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/abookz/src/main/java/kr/basic/abookz/AbookzApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/abookz/src/main/java/kr/basic/abookz/AbookzApplication.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/abookz/src/main/java/kr/basic/abookz/controller/HomeController.java" beforeDir="false" afterPath="$PROJECT_DIR$/abookz/src/main/java/kr/basic/abookz/controller/HomeController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/abookz/src/main/java/kr/basic/abookz/controller/MemberController.java" beforeDir="false" afterPath="$PROJECT_DIR$/abookz/src/main/java/kr/basic/abookz/controller/MemberController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/abookz/src/main/java/kr/basic/abookz/dto/MemberDTO.java" beforeDir="false" afterPath="$PROJECT_DIR$/abookz/src/main/java/kr/basic/abookz/dto/MemberDTO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/abookz/src/main/java/kr/basic/abookz/entity/MemberEntity.java" beforeDir="false" afterPath="$PROJECT_DIR$/abookz/src/main/java/kr/basic/abookz/entity/MemberEntity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/abookz/src/main/java/kr/basic/abookz/repository/MemberRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/abookz/src/main/java/kr/basic/abookz/repository/MemberRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/abookz/src/main/java/kr/basic/abookz/service/MemberService.java" beforeDir="false" afterPath="$PROJECT_DIR$/abookz/src/main/java/kr/basic/abookz/service/MemberService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/abookz/src/main/resources/application.yml" beforeDir="false" afterPath="$PROJECT_DIR$/abookz/src/main/resources/application.yml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/abookz/src/main/resources/templates/index.html" beforeDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ExternalProjectsData">
+    <projectState path="$PROJECT_DIR$/abookz">
+      <ProjectState />
+    </projectState>
+  </component>
+  <component name="ExternalProjectsManager">
+    <system id="GRADLE">
+      <state>
+        <projects_view>
+          <tree_state>
+            <expand />
+            <select />
+          </tree_state>
+        </projects_view>
+      </state>
+    </system>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+        <option value="HTML File" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitToolBoxStore">
+    <option name="projectConfigVersion" value="5" />
+    <option name="recentBranches">
+      <RecentBranches>
+        <option name="branchesForRepo">
+          <list>
+            <RecentBranchesForRepo>
+              <option name="branches">
+                <list>
+                  <RecentBranch>
+                    <option name="branchName" value="dev_YMS" />
+                    <option name="lastUsedInstant" value="1711936520" />
+                  </RecentBranch>
+                  <RecentBranch>
+                    <option name="branchName" value="main" />
+                    <option name="lastUsedInstant" value="1711936519" />
+                  </RecentBranch>
+                </list>
+              </option>
+              <option name="repositoryRootUrl" value="file://$PROJECT_DIR$" />
+            </RecentBranchesForRepo>
+          </list>
+        </option>
+      </RecentBranches>
+    </option>
+  </component>
+  <component name="JpbToolWindowState">
+    <option name="isToolWindowVisible" value="false" />
+  </component>
+  <component name="MarkdownSettingsMigration">
+    <option name="stateVersion" value="1" />
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 4
+}</component>
+  <component name="ProjectId" id="2eTjQ1oj9QHcDgdzl9U49lYBr02" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "DefaultHtmlFileTemplate": "HTML File",
+    "Gradle.abookz 빌드.executor": "Run",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "Spring Boot.AbookzApplication.executor": "Run",
+    "git-widget-placeholder": "dev__YMS",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/abookz",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "라이브러리",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.2",
+    "settings.editor.selected.configurable": "reference.settingsdialog.IDE.editor.colors.색 구성표 글꼴",
+    "vue.rearranger.settings.migration": "true"
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\abookz\abookz\src\main\resources\templates\member" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="AbookzApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
+      <module name="abookz.abookz.main~1" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="kr.basic.abookz.AbookzApplication" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="jdk-17.0.10-corretto-17.0.10-4caba194b151-5cd809f4" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="애플리케이션 수준" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="디폴트 작업">
+      <changelist id="0f6414da-cd93-47c6-a17d-0913655d748f" name="변경" comment="" />
+      <created>1711935441750</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1711935441750</updated>
+      <workItem from="1711935443752" duration="14758000" />
+      <workItem from="1712019828324" duration="24288000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="XSLT-Support.FileAssociations.UIState">
+    <expand />
+    <select />
+  </component>
+</project>

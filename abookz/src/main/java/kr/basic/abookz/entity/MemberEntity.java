@@ -1,6 +1,7 @@
 package kr.basic.abookz.entity;
 
 import jakarta.persistence.*;
+import kr.basic.abookz.dto.MemberDTO;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -12,7 +13,6 @@ import java.util.List;
 @Table(name = "MEMBER")
 @Getter
 @Setter
-
 public class MemberEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -31,4 +31,26 @@ public class MemberEntity {
 //  private List<ReviewEntity> reviewList = new ArrayList<>(); //회원이 작성한 리뷰 리스트
 //@OneToMany(mappedBy = "member",fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
 //  private List<MemoEntity> memoList = new ArrayList<>(); //회원이 작성한 메모 리스트
+
+  public static MemberEntity toMemberEntity(MemberDTO memberDTO){
+    MemberEntity memberEntity = new MemberEntity();
+    memberEntity.setLoginId(memberDTO.getLoginId());
+    memberEntity.setPassword(memberDTO.getPassword());
+    memberEntity.setEmail(memberDTO.getEmail());
+    memberEntity.setNickname(memberDTO.getNickname());
+    memberEntity.setRole(RoleEntity.Role_User);
+    memberEntity.setProfile(memberDTO.getProfile());
+    memberEntity.setRegDate(memberDTO.getRegDate());
+    return memberEntity;
+  }
+
+  public static MemberEntity toupdateMemberEntity(MemberDTO memberDTO){
+    MemberEntity memberEntity = new MemberEntity();
+    memberEntity.setId(memberDTO.getId());
+    memberEntity.setLoginId(memberDTO.getLoginId());
+    memberEntity.setPassword(memberDTO.getPassword());
+    memberEntity.setEmail(memberDTO.getEmail());
+    memberEntity.setNickname(memberDTO.getNickname());
+    return memberEntity;
+  }
 }

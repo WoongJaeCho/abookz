@@ -1,0 +1,14 @@
+
+“	java:S117"QRename this local variable to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ÖŠË·8ô“üÇé1J$98c56528-34b6-41ea-b3c2-40a24b2b3612
+›	java:S115"ZRename this constant name to match the regular expression '^[A-Z][A-Z0-9]*(_[A-Z0-9]+)*$'.(Ë‡÷O8ş“üÇé1J$4fd7ef93-f50b-4f37-9bff-d821bbdb6cb6
+d
+java:S1170"!Make this final field static too.(ï¥Î8ş“üÇé1J$565ee55f-7b9a-4a99-ad49-fbe27e6af53b
+„
+java:S1854"<Remove this useless assignment to local variable "response".(ç¼ê¬ÿÿÿÿÿ8‚”üÇé1J$ccdbf0dd-4713-4ac8-b2f8-ef7c962d6497
+u
+java:S1481"-Remove this unused "response" local variable.(ç¼ê¬ÿÿÿÿÿ8ƒ”üÇé1J$e141a2d5-dc7f-4e41-936f-ef92722dbe02
+l	java:S106"+Replace this use of System.out by a logger.(’Òs8„”üÇé1J$ea72cbee-c120-430f-bc0f-1e7fdb6a68b3
+s
+java:S1128"+Remove this unused import 'java.util.List'.(Õë±Äøÿÿÿÿ8„”üÇé1J$004b137e-e568-4a40-8d72-8ff899af369d
+x
+java:S1068"0Remove this unused "objectMapper" private field.(“»‚Šûÿÿÿÿ8…”üÇé1J$18ba56ff-2513-401b-8eae-3ee1ee87524a
