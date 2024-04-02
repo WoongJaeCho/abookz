@@ -1,4 +1,4 @@
-package kr.basic.abookz.entity;
+package kr.basic.abookz.entity.book;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
@@ -7,7 +7,6 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "BOOK")
@@ -28,9 +27,11 @@ public class BookEntity {
   private Long ISBN;//isbn 10자리
   private Long ISBN13;//isbn 13자리
   @Enumerated(EnumType.STRING)
-  private CategoryEntity categoryName;//카테고리
+  private CategoryEnum categoryName;//카테고리
   private String cover;//커버이미지
   private String description;//요약
   private int itemPage;//상품쪽수
   private String link;//알라딘 상품 정보 페이지
+//  private int weight;//무게
+//  private int price;//가격
 }

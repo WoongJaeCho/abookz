@@ -1,4 +1,4 @@
-package kr.basic.abookz.entity;
+package kr.basic.abookz.entity.book;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public enum CategoryEntity {
+public enum CategoryEnum {
   HUMANITIES(1, "인문"),
   SOCIAL_SCIENCE(2, "사회과학"),
   HISTORY_CULTURE(3, "역사/문화"),

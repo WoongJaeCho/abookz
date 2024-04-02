@@ -1,12 +1,13 @@
-package kr.basic.abookz.entity;
+package kr.basic.abookz.entity.review;
 
 import jakarta.persistence.*;
+import kr.basic.abookz.entity.member.MemberEntity;
+import kr.basic.abookz.entity.book.BookEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.awt.print.Book;
 import java.time.LocalDateTime;
 
 @Entity
@@ -28,10 +29,10 @@ public class ReviewEntity {
   //  @OneToMany(mappedBy = "like",fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
   //  private List<Like> likeList= new ArrayList<>(); 리뷰의 좋아요
   @ManyToOne
-  @JoinColumn(name = "MEM_ID", referencedColumnName = "MEM_ID")
+  @JoinColumn(name = "MEM_ID",foreignKey = @ForeignKey(name = "REVIEW_IBFK_1"))
   private MemberEntity member; // 리뷰 작성 회원
 
   @ManyToOne
-  @JoinColumn(name = "BOOK_ID", referencedColumnName = "BOOK_ID")
+  @JoinColumn(name = "BOOK_ID",foreignKey = @ForeignKey(name = "REVIEW_IBFK_2"))
   private BookEntity book;
 }
