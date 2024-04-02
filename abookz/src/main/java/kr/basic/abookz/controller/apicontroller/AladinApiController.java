@@ -1,12 +1,8 @@
 package kr.basic.abookz.controller.apicontroller;
 
-import jakarta.servlet.http.HttpSession;
-
 import kr.basic.abookz.dto.BookDTO;
-import kr.basic.abookz.entity.BookEntity;
 import kr.basic.abookz.service.AladinService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 

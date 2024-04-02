@@ -1,4 +1,4 @@
-package kr.basic.abookz.controller.apicontroller;
+package kr.basic.abookz.controller;
 
 import kr.basic.abookz.dto.BookDTO;
 import kr.basic.abookz.service.AladinService;
