@@ -2,8 +2,7 @@ package kr.basic.abookz.dto;
 
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import kr.basic.abookz.entity.BookEntity;
-import kr.basic.abookz.entity.CategoryEntity;
+import kr.basic.abookz.entity.book.CategoryEnum;
 import lombok.*;
 
 import java.awt.print.Book;
@@ -23,7 +22,7 @@ public class BookDTO {
     private LocalDate pubDate;//출판일
     private String ISBN13;//isbn 13자리
     @Enumerated(EnumType.STRING)
-    private CategoryEntity categoryName;//카테고리
+    private CategoryEnum categoryName;//카테고리
     private String cover;//커버이미지
     private String description;//요약
     private int itemPage;//상품쪽수

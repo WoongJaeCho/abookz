@@ -64,60 +64,41 @@ function searchBooks() {
                     data.forEach(book => {
 
                         var table = document.createElement('table');
-                        var coverRow = document.createElement('tr');
-                        var coverHeader = document.createElement('th');
 
-                        coverHeader.textContent = '';
-                        coverRow.appendChild(coverHeader);
+                        // 이미지 행
+                        var coverRow = document.createElement('tr');
+                        var coverCell = document.createElement('td');
+                        coverCell.setAttribute('rowspan', '5');
+                        coverCell.setAttribute('width', '300');
+                        var coverImage = document.createElement('img');
+                        coverImage.src = book.cover;
+                        coverImage.alt = '책 이미지';
+                        var coverDetail = document.createElement('a');
+                        coverDetail.href = "/content/" + book.isbn13;
+                        coverDetail.appendChild(coverImage);
+                        coverCell.appendChild(coverDetail);
+                        coverRow.appendChild(coverCell);
                         table.appendChild(coverRow);
 
-                        var coverInfoRow = document.createElement('tr');
-                        var coverCell = document.createElement('td');
-                        var coverContent = document.createElement('a');
-                        var coverImage = document.createElement('img');
-                        // console.log("bookIsbn소"+book.ISBN13);/
-                        console.log("bookIsbn1대"+book.isbn13);
-
-                        coverContent.href = "/content/" +book.isbn13;
-                        coverImage.src = book.cover;
-                        coverContent.appendChild(coverImage);
-                        coverCell.appendChild(coverContent);
-                        coverInfoRow.appendChild(coverCell);
-                        table.appendChild(coverInfoRow);
-
+                        // 제목
                         var titleRow = document.createElement('tr');
-
-                        var titleHeader = document.createElement('th');
-                        titleHeader.textContent = '제목';
-                        titleRow.appendChild(titleHeader);
-
                         var titleCell = document.createElement('td');
                         titleCell.textContent = book.title;
                         titleRow.appendChild(titleCell);
-
                         table.appendChild(titleRow);
 
+                        // 작가
                         var authorRow = document.createElement('tr');
-                        var authorHeader = document.createElement('th');
-                        authorHeader.textContent = '작가';
-                        authorRow.appendChild(authorHeader);
-
                         var authorCell = document.createElement('td');
                         authorCell.textContent = book.author;
                         authorRow.appendChild(authorCell);
-
                         table.appendChild(authorRow);
 
-
+                        //출판날짜
                         var pubDateRow = document.createElement('tr');
-                        var pubDateHeader = document.createElement('th');
-                        pubDateHeader.textContent = '출판날짜';
-                        pubDateRow.appendChild(pubDateHeader);
-
                         var pubDateCell = document.createElement('td');
                         pubDateCell.textContent = book.pubDate;
                         pubDateRow.appendChild(pubDateCell);
-
                         table.appendChild(pubDateRow);
 
                         resultsDiv.appendChild(table);

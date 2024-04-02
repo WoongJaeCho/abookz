@@ -3,14 +3,68 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/css/detail.css">
+    <script src="/js/detail.js"></script>
+    <!-- 나중에  detail로 json 댓글 값 받거나 줄 것 -->
 </head>
 <body>
 <div id="container">
  <div id="bookDetail">  <!--첵 패이지 영역 여기 벗어나면 댓글 영역 줄것-->
      <table id="book">
-            <tr th:src="${book.getCover()}">이미지</tr>
+         <tr>
+             <td rowspan="10" id="img" width="300">
+                 <img th:src="${book.cover}" alt="책이미지">
+             </td>
+         </tr>
+         <tr>
+             <td colspan="1">책 제목:</td>
+             <td  colspan="3" th:text="${book.title}">
+                    제목
+             </td>
+         </tr>
+         <tr>
+             <td>책 작가:</td>
+             <td th:text="${book.author}">
+                    작가
+             </td>
+             <td>책 페이지:</td>
+             <td th:text="${book.itemPage}">
+                    책페이지
+             </td>
+         </tr>
+         <tr>
+             <td colspan="1" >출판날짜:</td>
+             <td colspan="1" th:text="${book.pubDate}">
+                    출판날짜
+             </td>
+             <td colspan="1">출판사:</td>
+             <td colspan="1" th:text="${book.publisher}">
+                 출판사
+             </td>
+         </tr>
+         <tr>
+
+             <td colspan="4" th:text="${book.description}">
+                 책의 대한 내용
+             </td>
+         </tr>
+         <tr>
+             <td colspan="4">
+                 <a th:href="${book.link}" target="_blank">알라딘링크</a>
+             </td>
+         </tr>
      </table>
  </div>
 </div>
+<hr class="reviewLine">
+
+<p>
+<!--아래는 아직 미구현-->
+<div class="review">
+<label for="reviewtext"></label><textarea id="reviewtext" name="review" rows="6"></textarea>
+<button type="button" class="btn-register"  onclick="formCheckReply()">댓글등록</button>
+</div>
+
+
 </body>
 </html>

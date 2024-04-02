@@ -1,8 +1,7 @@
 package kr.basic.abookz.service;
 
 import kr.basic.abookz.dto.BookDTO;
-import kr.basic.abookz.entity.BookEntity;
-import kr.basic.abookz.entity.CategoryEntity;
+
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
