@@ -17,5 +17,4 @@ public class AbookzApplication {
         return new RestTemplate();
     }
 
-
 }

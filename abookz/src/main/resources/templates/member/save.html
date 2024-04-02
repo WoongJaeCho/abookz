@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>회원가입</title>
+</head>
+<body>
+  <div id="header">
+    <div id="title">
+      <h2>회원가입</h2>
+    </div>
+  </div>
+  <div id="saveform">
+  <form action="/member/save" method="post">
+    <table border="1">
+      <tr>
+        <td>Id</td>
+        <td><input type="text" name="loginId" id="logId" autofocus required/>
+          <input type="button" value="중복체크" id="checkId" class="btn btn-outline-dark"></td>
+      </tr>
+      <tr>
+        <td>Password</td>
+        <td><input type="password" name="password" id="pw" required></td>
+      </tr>
+      <tr>
+        <td>Email</td>
+        <td><input type="email" name="email" id="email" required></td>
+      </tr>
+      <tr>
+        <td><input type="text" name="nickname" id="nickname" required></td>
+      </tr>
+      <tr>
+        <td colspan="2" id="btns">
+          <input type="button" value="가입" onclick="validcheck(form)">
+          <input type="reset" value="취소">
+        </td>
+      </tr>
+    </table>
+  </form>
+  </div>
+</body>
+</html>

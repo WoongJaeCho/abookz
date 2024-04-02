@@ -1,0 +1,582 @@
+Index: abookz/src/main/java/kr/basic/abookz/AbookzApplication.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package kr.basic.abookz;\r\n\r\nimport org.springframework.boot.SpringApplication;\r\nimport org.springframework.boot.autoconfigure.SpringBootApplication;\r\n\r\n@SpringBootApplication\r\npublic class AbookzApplication {\r\n\r\n    public static void main(String[] args) {\r\n        SpringApplication.run(AbookzApplication.class, args);\r\n    }\r\n\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/abookz/src/main/java/kr/basic/abookz/AbookzApplication.java b/abookz/src/main/java/kr/basic/abookz/AbookzApplication.java
+--- a/abookz/src/main/java/kr/basic/abookz/AbookzApplication.java	(revision 1246dac09cfab8f7078f38e3749f58b6727cb508)
++++ b/abookz/src/main/java/kr/basic/abookz/AbookzApplication.java	(date 1711958251463)
+@@ -2,6 +2,8 @@
+ 
+ import org.springframework.boot.SpringApplication;
+ import org.springframework.boot.autoconfigure.SpringBootApplication;
++import org.springframework.context.annotation.Bean;
++import org.springframework.web.client.RestTemplate;
+ 
+ @SpringBootApplication
+ public class AbookzApplication {
+@@ -10,4 +12,8 @@
+         SpringApplication.run(AbookzApplication.class, args);
+     }
+ 
++    @Bean
++    public RestTemplate restTemplate() {
++        return new RestTemplate();
++    }
+ }
+Index: abookz/build.gradle
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>plugins {\r\n    id 'java'\r\n    id 'org.springframework.boot' version '3.2.4'\r\n    id 'io.spring.dependency-management' version '1.1.4'\r\n}\r\n\r\ngroup = 'kr.basic'\r\nversion = '0.0.1-SNAPSHOT'\r\n\r\njava {\r\n    sourceCompatibility = '17'\r\n}\r\n\r\nconfigurations {\r\n    compileOnly {\r\n        extendsFrom annotationProcessor\r\n    }\r\n}\r\n\r\nrepositories {\r\n    mavenCentral()\r\n}\r\n\r\ndependencies {\r\n    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'\r\n    implementation 'org.springframework.boot:spring-boot-starter-web'\r\n    compileOnly 'org.projectlombok:lombok'\r\n    developmentOnly 'org.springframework.boot:spring-boot-devtools'\r\n    runtimeOnly 'com.mysql:mysql-connector-j'\r\n    annotationProcessor 'org.projectlombok:lombok'\r\n    testImplementation 'org.springframework.boot:spring-boot-starter-test'\r\n\r\n    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'\r\n\r\n    // P6Spy 의존성 추가\r\n    implementation 'p6spy:p6spy:3.9.1'\r\n    implementation 'com.github.gavlyukovskiy:datasource-decorator-spring-boot-autoconfigure:1.9.0'\r\n\r\n}\r\n\r\ntasks.named('test') {\r\n    useJUnitPlatform()\r\n}\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/abookz/build.gradle b/abookz/build.gradle
+--- a/abookz/build.gradle	(revision 1246dac09cfab8f7078f38e3749f58b6727cb508)
++++ b/abookz/build.gradle	(date 1711956451491)
+@@ -29,6 +29,7 @@
+     runtimeOnly 'com.mysql:mysql-connector-j'
+     annotationProcessor 'org.projectlombok:lombok'
+     testImplementation 'org.springframework.boot:spring-boot-starter-test'
++    implementation group: 'org.json', name: 'json', version: '20240303'
+ 
+     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+ 
+Index: abookz/src/main/resources/templates/index.html
+===================================================================
+diff --git a/abookz/src/main/resources/templates/index.html b/abookz/src/main/resources/templates/index.html
+deleted file mode 100644
+--- a/abookz/src/main/resources/templates/index.html	(revision 1246dac09cfab8f7078f38e3749f58b6727cb508)
++++ /dev/null	(revision 1246dac09cfab8f7078f38e3749f58b6727cb508)
+@@ -1,10 +0,0 @@
+-<!DOCTYPE html>
+-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+-<head>
+-    <meta charset="UTF-8">
+-    <title>Title</title>
+-</head>
+-<body>
+-<h1>index 화면입니다.</h1>
+-</body>
+-</html>
+\ No newline at end of file
+Index: .idea/misc.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/misc.xml b/.idea/misc.xml
+new file mode 100644
+--- /dev/null	(date 1711956451475)
++++ b/.idea/misc.xml	(date 1711956451475)
+@@ -0,0 +1,13 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ExternalStorageConfigurationManager" enabled="true" />
++  <component name="FrameworkDetectionExcludesConfiguration">
++    <file type="web" url="file://$PROJECT_DIR$/abookz" />
++  </component>
++  <component name="ProjectRootManager" version="2" languageLevel="JDK_21" project-jdk-name="corretto-17" project-jdk-type="JavaSDK">
++    <output url="file://$PROJECT_DIR$/out" />
++  </component>
++  <component name="ProjectType">
++    <option name="id" value="jpab" />
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/compiler.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/compiler.xml b/.idea/compiler.xml
+new file mode 100644
+--- /dev/null	(date 1711956451460)
++++ b/.idea/compiler.xml	(date 1711956451460)
+@@ -0,0 +1,18 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="CompilerConfiguration">
++    <annotationProcessing>
++      <profile name="Gradle Imported" enabled="true">
++        <outputRelativeToContentRoot value="true" />
++        <processorPath useClasspath="false">
++          <entry name="$USER_HOME$/.gradle/caches/modules-2/files-2.1/org.projectlombok/lombok/1.18.30/f195ee86e6c896ea47a1d39defbe20eb59cd149d/lombok-1.18.30.jar" />
++        </processorPath>
++        <module name="abookz.abookz.main~1" />
++      </profile>
++    </annotationProcessing>
++    <bytecodeTargetLevel>
++      <module name="abookz.abookz.main" target="17" />
++      <module name="abookz.abookz.test" target="17" />
++    </bytecodeTargetLevel>
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/modules.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/modules.xml b/.idea/modules.xml
+new file mode 100644
+--- /dev/null	(date 1711956451476)
++++ b/.idea/modules.xml	(date 1711956451476)
+@@ -0,0 +1,9 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="ProjectModuleManager">
++    <modules>
++      <module fileurl="file://$PROJECT_DIR$/.idea/abookz.iml" filepath="$PROJECT_DIR$/.idea/abookz.iml" />
++      <module fileurl="file://$PROJECT_DIR$/.idea/modules/abookz.abookz.main~1.iml" filepath="$PROJECT_DIR$/.idea/modules/abookz.abookz.main~1.iml" />
++    </modules>
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/jpa-buddy.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/jpa-buddy.xml b/.idea/jpa-buddy.xml
+new file mode 100644
+--- /dev/null	(date 1711956451475)
++++ b/.idea/jpa-buddy.xml	(date 1711956451475)
+@@ -0,0 +1,7 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="JpaBuddyIdeaProjectConfig">
++    <option name="defaultUnitInitialized" value="true" />
++    <option name="renamerInitialized" value="true" />
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/jarRepositories.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/jarRepositories.xml b/.idea/jarRepositories.xml
+new file mode 100644
+--- /dev/null	(date 1711956451460)
++++ b/.idea/jarRepositories.xml	(date 1711956451460)
+@@ -0,0 +1,20 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="RemoteRepositoriesConfiguration">
++    <remote-repository>
++      <option name="id" value="central" />
++      <option name="name" value="Maven Central repository" />
++      <option name="url" value="https://repo1.maven.org/maven2" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="jboss.community" />
++      <option name="name" value="JBoss Community repository" />
++      <option name="url" value="https://repository.jboss.org/nexus/content/repositories/public/" />
++    </remote-repository>
++    <remote-repository>
++      <option name="id" value="MavenRepo" />
++      <option name="name" value="MavenRepo" />
++      <option name="url" value="https://repo.maven.apache.org/maven2/" />
++    </remote-repository>
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/vcs.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/vcs.xml b/.idea/vcs.xml
+new file mode 100644
+--- /dev/null	(date 1711956451490)
++++ b/.idea/vcs.xml	(date 1711956451490)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="VcsDirectoryMappings">
++    <mapping directory="" vcs="Git" />
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/gradle.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/gradle.xml b/.idea/gradle.xml
+new file mode 100644
+--- /dev/null	(date 1712020306902)
++++ b/.idea/gradle.xml	(date 1712020306902)
+@@ -0,0 +1,16 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="GradleMigrationSettings" migrationVersion="1" />
++  <component name="GradleSettings">
++    <option name="linkedExternalProjectsSettings">
++      <GradleProjectSettings>
++        <option name="externalProjectPath" value="$PROJECT_DIR$/abookz" />
++        <option name="modules">
++          <set>
++            <option value="$PROJECT_DIR$/abookz" />
++          </set>
++        </option>
++      </GradleProjectSettings>
++    </option>
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/modules/abookz.abookz.main~1.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/modules/abookz.abookz.main~1.iml b/.idea/modules/abookz.abookz.main~1.iml
+new file mode 100644
+--- /dev/null	(date 1711956451476)
++++ b/.idea/modules/abookz.abookz.main~1.iml	(date 1711956451476)
+@@ -0,0 +1,11 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<module version="4">
++  <component name="AdditionalModuleElements">
++    <content url="file://$MODULE_DIR$/../../abookz/build/generated/sources/annotationProcessor/java/main">
++      <sourceFolder url="file://$MODULE_DIR$/../../abookz/build/generated/sources/annotationProcessor/java/main" isTestSource="false" generated="true" />
++    </content>
++  </component>
++  <component name="SonarLintModuleSettings">
++    <option name="uniqueId" value="19c5c4d8-1bfe-4ac6-9860-86552a27407d" />
++  </component>
++</module>
+\ No newline at end of file
+Index: .idea/modules/abookz.abookz.test~1.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/modules/abookz.abookz.test~1.iml b/.idea/modules/abookz.abookz.test~1.iml
+new file mode 100644
+--- /dev/null	(date 1711956451477)
++++ b/.idea/modules/abookz.abookz.test~1.iml	(date 1711956451477)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<module version="4">
++  <component name="SonarLintModuleSettings">
++    <option name="uniqueId" value="8e05d57d-ce0c-4f76-891f-7d6e3d062f87" />
++  </component>
++</module>
+\ No newline at end of file
+Index: .idea/modules/abookz.abookz.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/modules/abookz.abookz.iml b/.idea/modules/abookz.abookz.iml
+new file mode 100644
+--- /dev/null	(date 1711956451476)
++++ b/.idea/modules/abookz.abookz.iml	(date 1711956451476)
+@@ -0,0 +1,6 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<module version="4">
++  <component name="SonarLintModuleSettings">
++    <option name="uniqueId" value="e476e08a-b18a-4086-a707-de023496526b" />
++  </component>
++</module>
+\ No newline at end of file
+Index: .idea/abookz.iml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/abookz.iml b/.idea/abookz.iml
+new file mode 100644
+--- /dev/null	(date 1711956451459)
++++ b/.idea/abookz.iml	(date 1711956451459)
+@@ -0,0 +1,12 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<module type="JAVA_MODULE" version="4">
++  <component name="NewModuleRootManager" inherit-compiler-output="true">
++    <exclude-output />
++    <content url="file://$MODULE_DIR$" />
++    <orderEntry type="inheritedJdk" />
++    <orderEntry type="sourceFolder" forTests="false" />
++  </component>
++  <component name="SonarLintModuleSettings">
++    <option name="uniqueId" value="4790d897-8782-4626-ba06-3dbcbe3cb31f" />
++  </component>
++</module>
+\ No newline at end of file
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+new file mode 100644
+--- /dev/null	(date 1712020306881)
++++ b/.idea/workspace.xml	(date 1712020306881)
+@@ -0,0 +1,168 @@
++<?xml version="1.0" encoding="UTF-8"?>
++<project version="4">
++  <component name="AutoImportSettings">
++    <option name="autoReloadType" value="SELECTIVE" />
++  </component>
++  <component name="ChangeListManager">
++    <list default="true" id="0f6414da-cd93-47c6-a17d-0913655d748f" name="변경" comment="">
++      <change afterPath="$PROJECT_DIR$/.idea/abookz.iml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/jpa-buddy.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/modules/abookz.abookz.iml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/modules/abookz.abookz.main~1.iml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/modules/abookz.abookz.test~1.iml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/0/0/00c20db006fb8938f0baf647e8b0d3cce2cacb39" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/0/5/050ad4ab914bb14921484f1c6304985c4e4c4eb2" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/5/2/52f0d66e69bfedc92324287f8026b03a9c0081e3" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/7/3/730428da74103d9ccae301b1af6c3dc55c195a3e" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/8/a/8a61ac40511f6aaf38c862d4bdd243392a702306" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/b/d/bd91226f4f2914bf2dfb991de5306174cc5a5a78" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/c/f/cfd5acc0c90d8516c7210b729647badb0715f99a" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/e/5/e589be33b58310198f1e457b5c96669109e667b4" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/f/b/fb6f66c5edd93a9f28bc6cda314116e86238d99b" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/issuestore/index.pb" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/0/0/00c20db006fb8938f0baf647e8b0d3cce2cacb39" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/0/5/050ad4ab914bb14921484f1c6304985c4e4c4eb2" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/5/2/52f0d66e69bfedc92324287f8026b03a9c0081e3" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/7/3/730428da74103d9ccae301b1af6c3dc55c195a3e" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/8/a/8a61ac40511f6aaf38c862d4bdd243392a702306" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/b/d/bd91226f4f2914bf2dfb991de5306174cc5a5a78" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/c/f/cfd5acc0c90d8516c7210b729647badb0715f99a" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/e/5/e589be33b58310198f1e457b5c96669109e667b4" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/f/b/fb6f66c5edd93a9f28bc6cda314116e86238d99b" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/sonarlint/securityhotspotstore/index.pb" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
++      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/abookz/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/abookz/build.gradle" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/abookz/src/main/java/kr/basic/abookz/AbookzApplication.java" beforeDir="false" afterPath="$PROJECT_DIR$/abookz/src/main/java/kr/basic/abookz/AbookzApplication.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/abookz/src/main/resources/templates/index.html" beforeDir="false" />
++    </list>
++    <option name="SHOW_DIALOG" value="false" />
++    <option name="HIGHLIGHT_CONFLICTS" value="true" />
++    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
++    <option name="LAST_RESOLUTION" value="IGNORE" />
++  </component>
++  <component name="ExternalProjectsData">
++    <projectState path="$PROJECT_DIR$/abookz">
++      <ProjectState />
++    </projectState>
++  </component>
++  <component name="ExternalProjectsManager">
++    <system id="GRADLE">
++      <state>
++        <projects_view>
++          <tree_state>
++            <expand />
++            <select />
++          </tree_state>
++        </projects_view>
++      </state>
++    </system>
++  </component>
++  <component name="FileTemplateManagerImpl">
++    <option name="RECENT_TEMPLATES">
++      <list>
++        <option value="Class" />
++      </list>
++    </option>
++  </component>
++  <component name="Git.Settings">
++    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
++  </component>
++  <component name="GitToolBoxStore">
++    <option name="projectConfigVersion" value="5" />
++    <option name="recentBranches">
++      <RecentBranches>
++        <option name="branchesForRepo">
++          <list>
++            <RecentBranchesForRepo>
++              <option name="branches">
++                <list>
++                  <RecentBranch>
++                    <option name="branchName" value="dev_YMS" />
++                    <option name="lastUsedInstant" value="1711936520" />
++                  </RecentBranch>
++                  <RecentBranch>
++                    <option name="branchName" value="main" />
++                    <option name="lastUsedInstant" value="1711936519" />
++                  </RecentBranch>
++                </list>
++              </option>
++              <option name="repositoryRootUrl" value="file://$PROJECT_DIR$" />
++            </RecentBranchesForRepo>
++          </list>
++        </option>
++      </RecentBranches>
++    </option>
++  </component>
++  <component name="ProjectColorInfo">{
++  &quot;associatedIndex&quot;: 4
++}</component>
++  <component name="ProjectId" id="2eTjQ1oj9QHcDgdzl9U49lYBr02" />
++  <component name="ProjectViewState">
++    <option name="hideEmptyMiddlePackages" value="true" />
++    <option name="showLibraryContents" value="true" />
++  </component>
++  <component name="PropertiesComponent">{
++  &quot;keyToString&quot;: {
++    &quot;Gradle.abookz 빌드.executor&quot;: &quot;Run&quot;,
++    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
++    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
++    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
++    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
++    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
++    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
++    &quot;Spring Boot.AbookzApplication.executor&quot;: &quot;Run&quot;,
++    &quot;git-widget-placeholder&quot;: &quot;dev__YMS&quot;,
++    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
++    &quot;last_opened_file_path&quot;: &quot;C:/abookz&quot;,
++    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
++    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
++    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
++    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
++    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
++    &quot;project.structure.last.edited&quot;: &quot;라이브러리&quot;,
++    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
++    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
++    &quot;settings.editor.selected.configurable&quot;: &quot;com.poratu.idea.plugins.tomcat.setting.TomcatServersConfigurable&quot;,
++    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
++  }
++}</component>
++  <component name="RunManager">
++    <configuration name="AbookzApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
++      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UpdateClassesAndResources" />
++      <module name="abookz.abookz.main~1" />
++      <option name="SPRING_BOOT_MAIN_CLASS" value="kr.basic.abookz.AbookzApplication" />
++      <method v="2">
++        <option name="Make" enabled="true" />
++      </method>
++    </configuration>
++  </component>
++  <component name="SharedIndexes">
++    <attachedChunks>
++      <set>
++        <option value="jdk-17.0.10-corretto-17.0.10-4caba194b151-5cd809f4" />
++      </set>
++    </attachedChunks>
++  </component>
++  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="애플리케이션 수준" UseSingleDictionary="true" transferred="true" />
++  <component name="TaskManager">
++    <task active="true" id="Default" summary="디폴트 작업">
++      <changelist id="0f6414da-cd93-47c6-a17d-0913655d748f" name="변경" comment="" />
++      <created>1711935441750</created>
++      <option name="number" value="Default" />
++      <option name="presentableId" value="Default" />
++      <updated>1711935441750</updated>
++      <workItem from="1711935443752" duration="14758000" />
++      <workItem from="1712019828324" duration="479000" />
++    </task>
++    <servers />
++  </component>
++  <component name="TypeScriptGeneratedFilesManager">
++    <option name="version" value="3" />
++  </component>
++</project>
+\ No newline at end of file
+Index: .idea/sonarlint/securityhotspotstore/index.pb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/sonarlint/securityhotspotstore/index.pb b/.idea/sonarlint/securityhotspotstore/index.pb
+new file mode 100644
+--- /dev/null	(date 1712019837260)
++++ b/.idea/sonarlint/securityhotspotstore/index.pb	(date 1712019837260)
+@@ -0,0 +1,23 @@
++
++m
++=abookz/src/main/java/kr/basic/abookz/entity/MemberEntity.java,5\2\52f0d66e69bfedc92324287f8026b03a9c0081e3
++g
++7abookz/src/main/java/kr/basic/abookz/dto/MemberDTO.java,c\f\cfd5acc0c90d8516c7210b729647badb0715f99a
++C
++abookz/build.gradle,b\d\bd91226f4f2914bf2dfb991de5306174cc5a5a78
++u
++Eabookz/src/main/java/kr/basic/abookz/controller/MemberController.java,0\0\00c20db006fb8938f0baf647e8b0d3cce2cacb39
++u
++Eabookz/src/main/java/kr/basic/abookz/repository/MemberRepository.java,0\5\050ad4ab914bb14921484f1c6304985c4e4c4eb2
++o
++?abookz/src/main/java/kr/basic/abookz/service/MemberService.java,e\5\e589be33b58310198f1e457b5c96669109e667b4
++s
++Cabookz/src/main/java/kr/basic/abookz/controller/HomeController.java,7\3\730428da74103d9ccae301b1af6c3dc55c195a3e
++k
++;abookz/src/main/java/kr/basic/abookz/AbookzApplication.java,f\b\fb6f66c5edd93a9f28bc6cda314116e86238d99b
++>
++abookz/gradlew,8\a\8a61ac40511f6aaf38c862d4bdd243392a702306
++p
++@abookz/src/main/java/kr/basic/abookz/service/AladdinService.java,1\4\147a7e956bc4b9f0705ecf1e55d45d03e733870f
++v
++Fabookz/src/main/java/kr/basic/abookz/controller/AladdinController.java,0\8\08b23bc1828e3c5983f35a3aa6a649f41048c949
+\ No newline at end of file
+Index: .idea/sonarlint/issuestore/index.pb
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/sonarlint/issuestore/index.pb b/.idea/sonarlint/issuestore/index.pb
+new file mode 100644
+--- /dev/null	(date 1712019837248)
++++ b/.idea/sonarlint/issuestore/index.pb	(date 1712019837248)
+@@ -0,0 +1,23 @@
++
++m
++=abookz/src/main/java/kr/basic/abookz/entity/MemberEntity.java,5\2\52f0d66e69bfedc92324287f8026b03a9c0081e3
++g
++7abookz/src/main/java/kr/basic/abookz/dto/MemberDTO.java,c\f\cfd5acc0c90d8516c7210b729647badb0715f99a
++C
++abookz/build.gradle,b\d\bd91226f4f2914bf2dfb991de5306174cc5a5a78
++u
++Eabookz/src/main/java/kr/basic/abookz/controller/MemberController.java,0\0\00c20db006fb8938f0baf647e8b0d3cce2cacb39
++u
++Eabookz/src/main/java/kr/basic/abookz/repository/MemberRepository.java,0\5\050ad4ab914bb14921484f1c6304985c4e4c4eb2
++o
++?abookz/src/main/java/kr/basic/abookz/service/MemberService.java,e\5\e589be33b58310198f1e457b5c96669109e667b4
++s
++Cabookz/src/main/java/kr/basic/abookz/controller/HomeController.java,7\3\730428da74103d9ccae301b1af6c3dc55c195a3e
++k
++;abookz/src/main/java/kr/basic/abookz/AbookzApplication.java,f\b\fb6f66c5edd93a9f28bc6cda314116e86238d99b
++>
++abookz/gradlew,8\a\8a61ac40511f6aaf38c862d4bdd243392a702306
++p
++@abookz/src/main/java/kr/basic/abookz/service/AladdinService.java,1\4\147a7e956bc4b9f0705ecf1e55d45d03e733870f
++v
++Fabookz/src/main/java/kr/basic/abookz/controller/AladdinController.java,0\8\08b23bc1828e3c5983f35a3aa6a649f41048c949
+\ No newline at end of file
+diff --git a/.idea/sonarlint/issuestore/7/3/730428da74103d9ccae301b1af6c3dc55c195a3e b/.idea/sonarlint/issuestore/7/3/730428da74103d9ccae301b1af6c3dc55c195a3e
+new file mode 100644
+diff --git a/.idea/sonarlint/issuestore/f/b/fb6f66c5edd93a9f28bc6cda314116e86238d99b b/.idea/sonarlint/issuestore/f/b/fb6f66c5edd93a9f28bc6cda314116e86238d99b
+new file mode 100644
+diff --git a/.idea/sonarlint/securityhotspotstore/b/d/bd91226f4f2914bf2dfb991de5306174cc5a5a78 b/.idea/sonarlint/securityhotspotstore/b/d/bd91226f4f2914bf2dfb991de5306174cc5a5a78
+new file mode 100644
+diff --git a/.idea/sonarlint/issuestore/b/d/bd91226f4f2914bf2dfb991de5306174cc5a5a78 b/.idea/sonarlint/issuestore/b/d/bd91226f4f2914bf2dfb991de5306174cc5a5a78
+new file mode 100644
+diff --git a/.idea/sonarlint/securityhotspotstore/f/b/fb6f66c5edd93a9f28bc6cda314116e86238d99b b/.idea/sonarlint/securityhotspotstore/f/b/fb6f66c5edd93a9f28bc6cda314116e86238d99b
+new file mode 100644
+diff --git a/.idea/sonarlint/securityhotspotstore/e/5/e589be33b58310198f1e457b5c96669109e667b4 b/.idea/sonarlint/securityhotspotstore/e/5/e589be33b58310198f1e457b5c96669109e667b4
+new file mode 100644
+diff --git a/.idea/sonarlint/securityhotspotstore/7/3/730428da74103d9ccae301b1af6c3dc55c195a3e b/.idea/sonarlint/securityhotspotstore/7/3/730428da74103d9ccae301b1af6c3dc55c195a3e
+new file mode 100644
+diff --git a/.idea/sonarlint/securityhotspotstore/0/0/00c20db006fb8938f0baf647e8b0d3cce2cacb39 b/.idea/sonarlint/securityhotspotstore/0/0/00c20db006fb8938f0baf647e8b0d3cce2cacb39
+new file mode 100644
+diff --git a/.idea/sonarlint/securityhotspotstore/0/5/050ad4ab914bb14921484f1c6304985c4e4c4eb2 b/.idea/sonarlint/securityhotspotstore/0/5/050ad4ab914bb14921484f1c6304985c4e4c4eb2
+new file mode 100644
+diff --git a/.idea/sonarlint/issuestore/8/a/8a61ac40511f6aaf38c862d4bdd243392a702306 b/.idea/sonarlint/issuestore/8/a/8a61ac40511f6aaf38c862d4bdd243392a702306
+new file mode 100644
+diff --git a/.idea/sonarlint/securityhotspotstore/8/a/8a61ac40511f6aaf38c862d4bdd243392a702306 b/.idea/sonarlint/securityhotspotstore/8/a/8a61ac40511f6aaf38c862d4bdd243392a702306
+new file mode 100644
+diff --git a/.idea/sonarlint/securityhotspotstore/5/2/52f0d66e69bfedc92324287f8026b03a9c0081e3 b/.idea/sonarlint/securityhotspotstore/5/2/52f0d66e69bfedc92324287f8026b03a9c0081e3
+new file mode 100644
+diff --git a/.idea/sonarlint/securityhotspotstore/c/f/cfd5acc0c90d8516c7210b729647badb0715f99a b/.idea/sonarlint/securityhotspotstore/c/f/cfd5acc0c90d8516c7210b729647badb0715f99a
+new file mode 100644
