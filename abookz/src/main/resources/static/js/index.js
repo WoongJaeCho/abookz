@@ -7,35 +7,38 @@ function searchBooks() {
         alert('2글자 이상 입력하세요.');
         return;
     }
-
+    // 우리사이트에서 DB에 저장된것 sort
     if (!query.trim()) {
-        // 검색어가 비어 있다면 기본 책 정보를 받아오도록 서버에 요청
         fetch('/search')
             .then(response => response.json())
             .then(data => {
                 if (data && data.length > 0) {
                     var table = document.createElement('table');
-
-                    // 테이블 헤더 생성
                     var headerRow = document.createElement('tr');
                     var titleHeader = document.createElement('th');
                     titleHeader.textContent = 'Title';
                     headerRow.appendChild(titleHeader);
-                    var authorHeader = document.createElement('th');
-                    authorHeader.textContent = 'Author';
-                    headerRow.appendChild(authorHeader);
                     table.appendChild(headerRow);
 
-                    // 테이블 데이터 추가
+                    var authorHeaderRow = document.createElement('tr');
+                    var authorHeader = document.createElement('th');
+                    authorHeader.textContent = 'Author';
+                    authorHeaderRow.appendChild(authorHeader);
+                    table.appendChild(authorHeaderRow);
+
                     data.forEach(book => {
-                        var row = document.createElement('tr');
+
+                        var titleRow = document.createElement('tr');
                         var titleCell = document.createElement('td');
                         titleCell.textContent = book.title;
-                        row.appendChild(titleCell);
+                        titleRow.appendChild(titleCell);
+                        table.appendChild(titleRow);
+
+                        var authorRow = document.createElement('tr');
                         var authorCell = document.createElement('td');
                         authorCell.textContent = book.author;
-                        row.appendChild(authorCell);
-                        table.appendChild(row);
+                        authorRow.appendChild(authorCell);
+                        table.appendChild(authorRow);
                     });
 
                     resultsDiv.appendChild(table);
@@ -58,31 +61,68 @@ function searchBooks() {
             .then(response => response.json())
             .then(data => {
                 if (data && data.length > 0) {
-                    var table = document.createElement('table');
-
-                    // 테이블 헤더 생성
-                    var headerRow = document.createElement('tr');
-                    var titleHeader = document.createElement('th');
-                    titleHeader.textContent = 'Title';
-                    headerRow.appendChild(titleHeader);
-                    var authorHeader = document.createElement('th');
-                    authorHeader.textContent = 'Author';
-                    headerRow.appendChild(authorHeader);
-                    table.appendChild(headerRow);
-
-                    // 테이블 데이터 추가
                     data.forEach(book => {
-                        var row = document.createElement('tr');
+
+                        var table = document.createElement('table');
+                        var coverRow = document.createElement('tr');
+                        var coverHeader = document.createElement('th');
+
+                        coverHeader.textContent = '';
+                        coverRow.appendChild(coverHeader);
+                        table.appendChild(coverRow);
+
+                        var coverInfoRow = document.createElement('tr');
+                        var coverCell = document.createElement('td');
+                        var coverContent = document.createElement('a');
+                        var coverImage = document.createElement('img');
+                        // console.log("bookIsbn소"+book.ISBN13);/
+                        console.log("bookIsbn1대"+book.isbn13);
+
+                        coverContent.href = "/content/" +book.isbn13;
+                        coverImage.src = book.cover;
+                        coverContent.appendChild(coverImage);
+                        coverCell.appendChild(coverContent);
+                        coverInfoRow.appendChild(coverCell);
+                        table.appendChild(coverInfoRow);
+
+                        var titleRow = document.createElement('tr');
+
+                        var titleHeader = document.createElement('th');
+                        titleHeader.textContent = '제목';
+                        titleRow.appendChild(titleHeader);
+
                         var titleCell = document.createElement('td');
                         titleCell.textContent = book.title;
-                        row.appendChild(titleCell);
+                        titleRow.appendChild(titleCell);
+
+                        table.appendChild(titleRow);
+
+                        var authorRow = document.createElement('tr');
+                        var authorHeader = document.createElement('th');
+                        authorHeader.textContent = '작가';
+                        authorRow.appendChild(authorHeader);
+
                         var authorCell = document.createElement('td');
                         authorCell.textContent = book.author;
-                        row.appendChild(authorCell);
-                        table.appendChild(row);
+                        authorRow.appendChild(authorCell);
+
+                        table.appendChild(authorRow);
+
+
+                        var pubDateRow = document.createElement('tr');
+                        var pubDateHeader = document.createElement('th');
+                        pubDateHeader.textContent = '출판날짜';
+                        pubDateRow.appendChild(pubDateHeader);
+
+                        var pubDateCell = document.createElement('td');
+                        pubDateCell.textContent = book.pubDate;
+                        pubDateRow.appendChild(pubDateCell);
+
+                        table.appendChild(pubDateRow);
+
+                        resultsDiv.appendChild(table);
                     });
 
-                    resultsDiv.appendChild(table);
                 } else {
                     resultsDiv.textContent = 'No results found';
                 }

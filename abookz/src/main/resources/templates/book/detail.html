@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div id="container">
+ <div id="bookDetail">  <!--첵 패이지 영역 여기 벗어나면 댓글 영역 줄것-->
+     <table id="book">
+            <tr th:src="${book.getCover()}">이미지</tr>
+     </table>
+ </div>
+</div>
+</body>
+</html>

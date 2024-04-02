@@ -2,6 +2,7 @@ package kr.basic.abookz.controller.apicontroller;
 
 import jakarta.servlet.http.HttpSession;
 
+import kr.basic.abookz.dto.BookDTO;
 import kr.basic.abookz.entity.BookEntity;
 import kr.basic.abookz.service.AladinService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,11 +25,12 @@ public class AladinApiController {
 
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
-    public List<BookEntity>  search(@RequestParam("query") String query, Model model, RedirectAttributes redirectAttributes) {
-        List<BookEntity> books = null;
+    public List<BookDTO>  search(@RequestParam("query") String query,  RedirectAttributes redirectAttributes) {
+        List<BookDTO> books = null;
         System.out.println("query" + query);
         try {
             books = aladinService.searchItems(query);
+            System.out.println(books.toString());
             return books;
          } catch (Exception e) {
             // 실제 환경에서는 예외 처리를 보다 세심하게 해야 합니다.
