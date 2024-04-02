@@ -1,7 +1,7 @@
 package kr.basic.abookz.service;
 
 import kr.basic.abookz.dto.MemberDTO;
-import kr.basic.abookz.entity.MemberEntity;
+import kr.basic.abookz.entity.member.MemberEntity;
 import kr.basic.abookz.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

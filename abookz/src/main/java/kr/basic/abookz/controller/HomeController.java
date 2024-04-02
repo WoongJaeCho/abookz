@@ -7,7 +7,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String index() {
-        return "part/header";
+        return "index";
     }
 
 }

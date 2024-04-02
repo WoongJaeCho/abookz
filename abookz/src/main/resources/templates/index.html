@@ -1,22 +1,25 @@
 <!DOCTYPE html>
 
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<head>
+<head th:replace="~{fragments/head :: head}">
     <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" type="text/css" href="/css/index.css">
+    <title>abookz</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
 </head>
 <body>
+<div th:replace="~{fragments/header :: header}" />
+<br>
+<div th:replace="~{fragments/main :: main}" />
 
-<div id="container">
+<div th:replace="~{fragments/footer :: footer}" />
+
+
 <div id="searchResults"></div>
 
-    <input type="text" id="query" placeholder="2글자 이상 입력하세요">
-<button onclick="searchBooks()" >검색</button>
 
-
-<script src="/js/index.js"></script>
-</div>
 </body>
 </html>
+<script defer src="/js/index.js"></script>
+<script defer src="/js/main.js"></script>

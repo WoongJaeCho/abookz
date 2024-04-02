@@ -1,6 +1,6 @@
 package kr.basic.abookz.repository;
 
-import kr.basic.abookz.entity.MemberEntity;
+import kr.basic.abookz.entity.member.MemberEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.util.Optional;

@@ -2,8 +2,8 @@ package kr.basic.abookz.dto;
 
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import kr.basic.abookz.entity.MemberEntity;
-import kr.basic.abookz.entity.RoleEntity;
+import kr.basic.abookz.entity.member.MemberEntity;
+import kr.basic.abookz.entity.member.RoleEnum;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -20,7 +20,7 @@ public class MemberDTO {
   private String email; // 이메일
   private String nickname; // 닉네임
   @Enumerated(EnumType.STRING)
-  private RoleEntity role; // 역할
+  private RoleEnum role; // 역할
   private String profile; // 프로필이미지
   private LocalDateTime regDate; // 가입일
 
