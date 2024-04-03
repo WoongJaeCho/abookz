@@ -44,7 +44,7 @@ public class AladinService {
         BookEntity entity = null;
         String urlOne = UrlGetOneBookItemPage(isbn13);
         String getOneBookPage = restTemplate.getForObject(urlOne, String.class);
-        entity = getOneBookEntity(getOneBookPage);
+        entity = getOneEntity(getOneBookPage);
     return entity;
     }
 
