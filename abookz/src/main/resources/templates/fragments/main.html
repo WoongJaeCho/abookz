@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<main id="main" >
+
+    <article class="slide">
+        <div class="sliderWrap">
+            <div class="slider s1"><a href="#"><img src="/images/slider01.jpg" alt="slider01"></a></div>
+            <div class="slider s2"><a href="#"><img src="/images/slider02.jpg" alt="slider02"></a></div>
+            <div class="slider s3"><a href="#"><img src="/images/slider03.jpg" alt="slider03"></a></div>
+        </div>
+    </article>
+    <section id="content">
+        <div class="notice"></div>
+        <div class="recommend"></div>
+        <div class="memo">
+            <img src="https://image.aladin.co.kr/product/30683/62/cover/8964964853_1.jpg" alt="book_cover" class="memo_cover">
+            <form action="#">
+                <div class="memo_input">
+                    <table>
+                        <tr>
+                            <td>페이지</td>
+                            <td>
+                                <input class="page" type="number" min="1" name="page" />
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>인용문구</td>
+                            <td>
+                                <textarea class="quotes" type="text" name="quotes" ></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>감상평</td>
+                            <td>
+                                <textarea class="note" type="text" name="note" ></textarea>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <button class="memo_submit" type="submit">등록</button>
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </form>
+        </div>
+    </section>
+
+</main>
