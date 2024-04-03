@@ -36,7 +36,7 @@ public class MemberEntity {
     memberEntity.setPassword(memberDTO.getPassword());
     memberEntity.setEmail(memberDTO.getEmail());
     memberEntity.setNickname(memberDTO.getNickname());
-    memberEntity.setRole(RoleEntity.Role_User);
+    memberEntity.setRole(RoleEnum.Role_User);
     memberEntity.setProfile(memberDTO.getProfile());
     memberEntity.setRegDate(memberDTO.getRegDate());
     return memberEntity;

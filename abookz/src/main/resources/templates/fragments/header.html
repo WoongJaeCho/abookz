@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+
+<body th:fragment="header">
+    <header id="header">
+        <h3 class="logo"><a href="/"><img src="/images/logo-h.png" alt="logo"></a></h3>
+        <nav class="nav">
+            <ul>
+                <li><a href="#">My books</a></li>
+                <li><a href="#">찾아보기</a>
+                    <ul>
+                        <li><a href="#">카테고리</a>
+                            <ul>
+                                <li><a href="#"></a></li>
+                            </ul>
+                        </li>
+                        <li><a href="#">베스트셀러</a></li>
+                        <li><a href="#">신간</a></li>
+                    </ul>
+                </li>
+                <li><a href="#">챌린지</a></li>
+            </ul>
+        </nav>
+        <div class="search"><input type="text" id="query" placeholder="제목/저자/검색어를 입력하세요">
+            <button onclick="searchBooks()" >검색</button> </div>
+        <a class="login" href="/member/login"><p>로그인</p></a>
+        <a class="join" href="/member/save"><p>회원가입</p></a>
+    </header>
+    <div id="searchResults"></div>
+</body>
+</html>

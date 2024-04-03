@@ -3,6 +3,7 @@ package kr.basic.abookz.controller;
 import jakarta.servlet.http.HttpSession;
 import kr.basic.abookz.dto.MemberDTO;
 import kr.basic.abookz.service.MemberService;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,31 +23,31 @@ public class MemberController {
   public String findAll(Model model){
     List<MemberDTO> list = memberService.findAll();
     model.addAttribute("memberList", list);
-    return "list";
+    return "member/list";
   }
   @GetMapping("/{id}")
   public String findById(@PathVariable Long id, Model model){
     MemberDTO memberDTO = memberService.findById(id);
     model.addAttribute("member", memberDTO);
-    return "detail";
+    return "member/detail";
   }
 
   // 가입
   @GetMapping("/save")
   public String saveForm(){
-    return "save";
+    return "member/save";
   }
   @PostMapping("/save")
   public String saveMember(@ModelAttribute MemberDTO memberDTO){
     System.out.println("memberDTO = " + memberDTO);
     memberService.save(memberDTO);
-    return "test";
+    return "redirect:/";
   }
 
   // 로그인
   @GetMapping("/login")
   public String loginForm(){
-    return "login";
+    return "member/login";
   }
   @PostMapping("/login")
   public String loginMember(@ModelAttribute MemberDTO memberDTO, HttpSession session){
@@ -58,7 +59,7 @@ public class MemberController {
     }
     else {
       // 로그인 실패시
-      return "login";
+      return "member/login";
     }
   }
 
@@ -68,7 +69,7 @@ public class MemberController {
     String getId = (String)session.getAttribute("loginId");
     MemberDTO memberDTO = memberService.updateForm(getId);
     model.addAttribute("updateMember", memberDTO);
-    return "update";
+    return "member/update";
   }
   @PostMapping("/update")
   public String update(@ModelAttribute MemberDTO memberDTO){

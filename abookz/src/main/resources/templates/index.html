@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/head :: head}">
+    <meta charset="UTF-8">
+    <title>abookz</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}" />
+<br>
+<div th:replace="~{fragments/main :: main}" />
+
+<div th:replace="~{fragments/footer :: footer}" />
+
+
+<div id="searchResults"></div>
+
+
+</body>
+</html>
+<script defer src="/js/index.js"></script>
+<script defer src="/js/main.js"></script>
