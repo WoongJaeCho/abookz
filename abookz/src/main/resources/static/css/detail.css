@@ -1,7 +1,7 @@
 body{
     margin: 0;
 }
-#container{
+#book_container{
     display: flex;
     align-items: center;
     text-align: center;
@@ -21,13 +21,16 @@ body{
     margin: auto; /* 가운데 정렬을 위해 추가 */
 }
 
-    tr{
+.detail_tr{
         border: 1px solid rebeccapurple;
     }
-    td{
+.detail_td{
         border:  1px solid violet;
     }
-td img{
+.detail_tdimg{
+    width: 300px;
+}
+.detail_td img{
     width: 100%;
     height: 100%;
     object-fit: cover;

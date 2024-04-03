@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 
 @Controller
@@ -43,6 +44,12 @@ public class MemberController {
     memberService.save(memberDTO);
     return "redirect:/";
   }
+  @PostMapping("/validId")
+  @ResponseBody
+  public String validId(@RequestParam("id") String id){
+    System.out.println("id = " + id);
+    return memberService.validById(id) ? "valid" : "notValid";
+  }
 
   // 로그인
   @GetMapping("/login")
@@ -50,16 +57,19 @@ public class MemberController {
     return "member/login";
   }
   @PostMapping("/login")
-  public String loginMember(@ModelAttribute MemberDTO memberDTO, HttpSession session){
+  @ResponseBody
+  public String loginMember(@RequestParam("id") String id,@RequestParam("pw") String pw, HttpSession session){
+    MemberDTO memberDTO = MemberDTO.loginMember(id, pw);
     MemberDTO loginResult = memberService.login(memberDTO);
     if(loginResult != null){
       // 로그인 성공시
-      session.setAttribute("loginId", loginResult.getLoginId());
-      return "redirect:/";
+      session.setAttribute("id", loginResult.getId());
+
+      return "confirm";
     }
     else {
       // 로그인 실패시
-      return "member/login";
+      return null;
     }
   }
 
@@ -72,7 +82,7 @@ public class MemberController {
     return "member/update";
   }
   @PostMapping("/update")
-  public String update(@ModelAttribute MemberDTO memberDTO){
+  public String update(@ModelAttribute MemberDTO memberDTO) {
     memberService.update(memberDTO);
     return "redirect:/member/" + memberDTO.getId();
   }
@@ -86,8 +96,9 @@ public class MemberController {
 
   // 로그아웃
   @GetMapping("/logout")
+  @ResponseBody
   public String logout(HttpSession session){
     session.invalidate();
-    return "redirect:/";
+    return "confirm";
   }
 }

@@ -3,8 +3,8 @@ function searchBooks() {
     var resultsDiv = document.getElementById('searchResults');
     resultsDiv.innerHTML = '';
 
-    if (query.trim().length < 2) {
-        alert('2글자 이상 입력하세요.');
+    if (!query.trim()) {
+        alert('검색어를 입력해주세요');
         return;
     }
     // 우리사이트에서 DB에 저장된것 sort

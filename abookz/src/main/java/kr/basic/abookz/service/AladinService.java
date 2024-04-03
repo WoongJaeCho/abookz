@@ -2,6 +2,7 @@ package kr.basic.abookz.service;
 
 import kr.basic.abookz.dto.BookDTO;
 
+import kr.basic.abookz.entity.book.BookEntity;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -38,6 +39,13 @@ public class AladinService {
             String getOneBookPage  =restTemplate.getForObject(urlOne, String.class);  // 페이지쪽수 가져오기
             vo = getOneDetail(getOneBookPage);
         return  vo;
+    }
+    public BookEntity getOneBookEntity(String isbn13) throws Exception{
+        BookEntity entity = null;
+        String urlOne = UrlGetOneBookItemPage(isbn13);
+        String getOneBookPage = restTemplate.getForObject(urlOne, String.class);
+        entity = getOneBookEntity(getOneBookPage);
+    return entity;
     }
 
 
@@ -140,10 +148,11 @@ public class AladinService {
         int itemPage  = subInfoObject.getInt("itemPage");
         String isbn = null;
         String isbn13 = null;
-        if (itemObject.has("isbn")) {
-            isbn = itemObject.getString("isbn");
-        } else if (itemObject.has("isbn13")) {
+        if (itemObject.has("isbn13")) {
             isbn13 = itemObject.getString("isbn13");
+        } else if (itemObject.has("isbn")) {
+    isbn = itemObject.getString("isbn");
+
         }
         BookDTO item = BookDTO.builder().title(title)
                     .author(author)
@@ -160,6 +169,50 @@ public class AladinService {
 
         return item;
         }
+    private BookEntity getOneEntity(String jsonIsbn13){
+        JSONObject jsonObject = new JSONObject(jsonIsbn13);
+        System.out.println("jsonObject = " + jsonObject);
+        JSONArray jsonArray = jsonObject.getJSONArray("item");
+        JSONObject itemObject = jsonArray.getJSONObject(0);
+        JSONObject subInfoObject = itemObject.getJSONObject("subInfo");
+        String title = itemObject.getString("title");
+        String author = itemObject.getString("author");
+        String publisher = itemObject.getString("publisher");
+        String change = itemObject.getString("pubDate");
+        LocalDate pubDate = LocalDate.parse(change, formatter);
+        /*CategoryEntity categoryName= CategoryEntity.fromString(itemObject.getString("categoryName"));*/
+        String cover = itemObject.getString("cover");
+        String description = itemObject.getString("description");
+        //int itemPage = itemObject.getInt("")
+        String link = itemObject.getString("link");
+        int itemPage  = subInfoObject.getInt("itemPage");
+        String isbnString = null;
+        String isbn13String = null;
+        Long isbn = null ;
+        Long isbn13 = null;
+        if (itemObject.has("isbn")) {
+            isbnString = itemObject.getString("isbn");
+            isbn =Long.valueOf(isbnString);
+        } else if (itemObject.has("isbn13")) {
+            isbn13String = itemObject.getString("isbn13");
+            isbn13=Long.valueOf(isbn13String);
+        }
+        BookEntity item = BookEntity.builder().title(title)
+                .author(author)
+                .publisher(publisher)
+                .pubDate(pubDate)
+                .ISBN(isbn)
+                .ISBN13(isbn13)
+                .cover(cover)
+                .description(description)
+                .link(link)
+                .itemPage(itemPage)
+                .build();
+
+
+        return item;
+    }
+
 
 }
 

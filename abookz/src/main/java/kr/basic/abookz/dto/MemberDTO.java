@@ -5,8 +5,10 @@ import jakarta.persistence.Enumerated;
 import kr.basic.abookz.entity.member.MemberEntity;
 import kr.basic.abookz.entity.member.RoleEnum;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.web.multipart.MultipartFile;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 @Setter
@@ -22,24 +24,29 @@ public class MemberDTO {
   @Enumerated(EnumType.STRING)
   private RoleEnum role; // 역할
   private String profile; // 프로필이미지
-  private LocalDateTime regDate; // 가입일
+  @CreationTimestamp
+  private LocalDate regDate; // 가입일
+
+//  private MultipartFile file; // update.html -> Controller 파일 담는 용도
+//  private String storedFileName; // 서버 저장용 파일 이름
+//  private String originalFileName; // 원본 파일 이름(사용자가 지정한 이름)
+//  private int fileAttached; // 파일 첨부 여부(첨부 1, 미첨부 0)
 
   public static MemberDTO loginMemberDTO(MemberEntity memberEntity){
-    MemberDTO memberDTO = new MemberDTO();
-    memberDTO.setLoginId(memberEntity.getLoginId());
-    memberDTO.setPassword(memberEntity.getPassword());
-    return memberDTO;
-  }
-
-  public static MemberDTO updateMemberDTO(MemberEntity memberEntity){
     MemberDTO memberDTO = new MemberDTO();
     memberDTO.setId(memberEntity.getId());
     memberDTO.setLoginId(memberEntity.getLoginId());
     memberDTO.setPassword(memberEntity.getPassword());
-    memberDTO.setEmail(memberEntity.getEmail());
-    memberDTO.setNickname(memberEntity.getNickname());
     return memberDTO;
   }
+
+  public static MemberDTO loginMember(String id, String pw){
+    MemberDTO memberDTO = new MemberDTO();
+    memberDTO.setLoginId(id);
+    memberDTO.setPassword(pw);
+    return memberDTO;
+  }
+
 
   public static MemberDTO AllMemberDTO(MemberEntity memberEntity){
     MemberDTO memberDTO = new MemberDTO();
@@ -53,4 +60,6 @@ public class MemberDTO {
     memberDTO.setRegDate(memberEntity.getRegDate());
     return memberDTO;
   }
+
+
 }

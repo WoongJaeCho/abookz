@@ -2,10 +2,7 @@ package kr.basic.abookz.entity.book;
 
 import jakarta.persistence.*;
 import kr.basic.abookz.entity.member.MemberEntity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -15,6 +12,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class BookShelfEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
