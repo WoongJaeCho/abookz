@@ -27,7 +27,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class SessionController {
     private final HttpSession httpSession;
     private final BookShelfService bookShelfService;
-    private final MemberService memberService;
+//    private final MemberService memberService;
     private final MemberRepository memberRepository;
     private final BookService bookService;
     private  final AladinService aladinService;

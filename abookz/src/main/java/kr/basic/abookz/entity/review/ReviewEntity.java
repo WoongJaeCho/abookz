@@ -23,7 +23,7 @@ public class ReviewEntity {
   private Long id;//pk
 
   private String content;//내용
-  private int grade;//평점(1,2,3,4,5) 별표시
+  private int reviewGrade;//평점(1,2,3,4,5) 별표시
   private LocalDateTime createdDate;//작성날짜
   private Boolean isSpoilerActive;//스포일러 방지기능
   //  @OneToMany(mappedBy = "like",fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
