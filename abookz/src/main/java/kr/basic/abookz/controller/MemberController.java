@@ -75,7 +75,7 @@ public class MemberController {
   // 수정
   @GetMapping("/update")
   public String updateForm(HttpSession session, Model model){
-    String getId = (String)session.getAttribute("loginId");
+    Long getId = (Long)session.getAttribute("id");
     MemberDTO memberDTO = memberService.updateForm(getId);
     model.addAttribute("updateMember", memberDTO);
     return "member/update";

@@ -26,7 +26,10 @@ public class MemberEntity {
   private String profile; //프로필 이미지
   @CreationTimestamp
   private LocalDate regDate;//가입일
+<<<<<<< HEAD
+=======
   // private int fileAttached; // 파일있으면 1, 없으면 0
+>>>>>>> 61ba892300f44b1239d7cc83f434f0e7679d0b73
 //  private int challenge;//습관형성 챌린지
 //  @OneToMany(mappedBy = "member",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 //  private List<ReviewEntity> reviewList = new ArrayList<>(); //회원이 작성한 리뷰 리스트
