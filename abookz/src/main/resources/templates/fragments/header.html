@@ -27,8 +27,10 @@
         </nav>
         <div class="search"><input type="text" id="query" placeholder="제목/저자/검색어를 입력하세요">
             <button onclick="searchBooks()" >검색</button> </div>
-        <a class="login" href="/member/login"><p>로그인</p></a>
-        <a class="join" href="/member/save"><p>회원가입</p></a>
+        <a class="login" th:if="${session.id == null}" href="/member/login"><p>로그인</p></a>
+        <a class="join" th:if="${session.id == null}" href="/member/save"><p>회원가입</p></a>
+        <a class="login" th:if="${session.id != null}" href="javascript:void(0)" onclick="Logout();"><p>로그아웃</p></a>
+        <a class="join" th:if="${session.id != null}" href="/member/update"><p>정보수정</p></a>
     </header>
     <div id="searchResults"></div>
 </body>
