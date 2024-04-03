@@ -11,15 +11,37 @@
   </div>
 </div>
 <div id="updateform">
-  <form action="/member/update" method="post">
+  <form action="/member/update" method="post" enctype="multipart/form-data">
+    <table>
+      <tr>
+        <td>Id</td>
+        <td><input type="text" th:value="${updateMember.loginId}" name="loginId" disabled></td>
+      </tr>
+      <tr>
+        <td>Password</td>
+        <td><input type="password" th:value="${updateMember.password}" name="password"></td>
+      </tr>
+      <tr>
+        <td>Email</td>
+        <td><input type="email" th:value="${updateMember.email}" name="email"></td>
+      </tr>
+      <tr>
+        <td>Nickname</td>
+        <td><input type="text" th:value="${updateMember.nickname}" name="nickname"></td>
+      </tr>
+      <tr>
+        <td>Profile</td>
+        <td><input type="file" name="profile"></td>
+      </tr>
+      <tr>
+        <td colspan="2" id="btns">
+          <input type="submit" value="수정">
+          <input type="reset" value="취소">
+        </td>
+      </tr>
     <input type="hidden" th:value="${updateMember.id}" name="id">
-    Id : <input type="text" th:value="${updateMember.loginId}" name="loginId" disabled> <br>
     <input type="hidden" th:value="${updateMember.loginId}" name="loginId">
-    Password : <input type="password" th:value="${updateMember.password}" name="password"> <br>
-    Email : <input type="email" th:value="${updateMember.email}" name="email"> <br>
-    Nickname : <input type="text" th:value="${updateMember.nickname}" name="nickname"> <br>
-    <input type="submit" value="수정">
-    <input type="reset" value="취소">
+    </table>
   </form>
 </div>
 </body>

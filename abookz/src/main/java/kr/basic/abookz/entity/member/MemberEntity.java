@@ -4,8 +4,9 @@ import jakarta.persistence.*;
 import kr.basic.abookz.dto.MemberDTO;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Entity
 @Table(name = "MEMBER")
@@ -23,7 +24,9 @@ public class MemberEntity {
   @Enumerated(EnumType.STRING)
   private RoleEnum role;//역할 ADMIN,MANAGER,USER(Default = USER)
   private String profile; //프로필 이미지
-  private LocalDateTime regDate;//가입일
+  @CreationTimestamp
+  private LocalDate regDate;//가입일
+  // private int fileAttached; // 파일있으면 1, 없으면 0
 //  private int challenge;//습관형성 챌린지
 //  @OneToMany(mappedBy = "member",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 //  private List<ReviewEntity> reviewList = new ArrayList<>(); //회원이 작성한 리뷰 리스트
@@ -39,6 +42,7 @@ public class MemberEntity {
     memberEntity.setRole(RoleEnum.Role_User);
     memberEntity.setProfile(memberDTO.getProfile());
     memberEntity.setRegDate(memberDTO.getRegDate());
+    //memberEntity.setFileAttached(0); // 파일 없음
     return memberEntity;
   }
 

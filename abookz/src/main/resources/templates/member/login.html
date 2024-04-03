@@ -3,6 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>login</title>
+  <script type="text/javascript" src="/js/Member/MemberLogin.js" defer></script>
 </head>
 <body>
   <div id="header">
@@ -12,11 +13,23 @@
   </div>
   <div id="loginform">
     <form action="/member/login" method="post">
-      Id : <input type="text" name="loginId"> <br>
-      Password : <input type="password" name="password"> <br>
-      <input type="submit" value="로그인">
-      <input type="reset" value="취소">
-    </form>
+      <table border="1">
+        <tr>
+          <td>Id</td>
+          <td><input type="text" name="loginId" id="logId"></td>
+        </tr>
+        <tr>
+          <td>Password</td>
+          <td><input type="password" name="password" id="pw"></td>
+        </tr>
+        <tr>
+          <td colspan="2" id="btns">
+            <input type="button" value="로그인" onclick="checkLogin(form)">
+            <input type="reset" value="취소">
+          </td>
+        </tr>
+        </table>
+      </form>
   </div>
 </body>
 </html>
