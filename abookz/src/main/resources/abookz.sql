@@ -38,10 +38,10 @@ create table if not exists bookshelf
     mem_id       bigint                                             null,
     start_date   datetime(6)                                        null,
     tag          enum ('READ', 'WANT_TO_READ', 'CURRENTLY_READING') null,
-    constraint FKg9fjuh3yp4mdxxp6dga60gorv
-        foreign key (book_id) references book (book_id),
-    constraint FKqbx54c9rstfd0hjiw96dnl702
-        foreign key (mem_id) references member (mem_id)
+    constraint BOOKSHELF_IBFK_1
+        foreign key (mem_id) references member (mem_id),
+    constraint BOOKSHELF_IBFK_2
+        foreign key (book_id) references book (book_id)
 );
 
 create table if not exists memo
@@ -54,10 +54,10 @@ create table if not exists memo
         primary key,
     note         varchar(255) null,
     quotes       varchar(255) null,
-    constraint FK5khqn2sk6xa9wbvcl0ayhlnk6
-        foreign key (book_id) references book (book_id),
-    constraint FKejk89ku44jw6hj42bsyi11qft
-        foreign key (mem_id) references member (mem_id)
+    constraint MEMO_IBFK_1
+        foreign key (mem_id) references member (mem_id),
+    constraint MEMO_IBFK_2
+        foreign key (book_id) references book (book_id)
 );
 
 create table if not exists review
@@ -70,9 +70,9 @@ create table if not exists review
     review_id         bigint auto_increment
         primary key,
     content           varchar(255) null,
-    constraint FK3sxttditmpbkx7f2ynmm2ugp4
+    constraint REVIEW_IBFK_1
         foreign key (mem_id) references member (mem_id),
-    constraint FK70yrt09r4r54tcgkrwbeqenbs
+    constraint REVIEW_IBFK_2
         foreign key (book_id) references book (book_id)
 );
 
@@ -84,9 +84,9 @@ create table if not exists comment
     mem_id       bigint       null,
     review_id    bigint       null,
     comment      varchar(255) null,
-    constraint FKikbl30677l3k4j937v9vqwobj
+    constraint COMMENT_IBFK_1
         foreign key (mem_id) references member (mem_id),
-    constraint FKnf4ni761w29tmtgdxymmgvg8r
+    constraint COMMENT_IBFK_2
         foreign key (review_id) references review (review_id)
 );
 
@@ -96,9 +96,9 @@ create table if not exists review_like
         primary key,
     mem_id    bigint null,
     review_id bigint null,
-    constraint FK68am9vk1s1e8n1v873meqkk0k
-        foreign key (review_id) references review (review_id),
-    constraint FK9rb4u4xeglglq7eft2tyi7wpd
-        foreign key (mem_id) references member (mem_id)
+    constraint LIKE_IBFK_1
+        foreign key (mem_id) references member (mem_id),
+    constraint LIKE_IBFK_2
+        foreign key (review_id) references review (review_id)
 );
 

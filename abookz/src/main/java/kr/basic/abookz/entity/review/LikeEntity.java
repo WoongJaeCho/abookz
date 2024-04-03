@@ -1,6 +1,7 @@
-package kr.basic.abookz.entity;
+package kr.basic.abookz.entity.review;
 
 import jakarta.persistence.*;
+import kr.basic.abookz.entity.member.MemberEntity;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,10 +20,10 @@ public class LikeEntity {
   private Long id;//pk
 
   @ManyToOne
-  @JoinColumn(name = "MEM_ID", referencedColumnName = "MEM_ID")
-  private MemberEntity member;//좋아요 누른 회원
+  @JoinColumn(name = "MEM_ID",foreignKey = @ForeignKey(name = "LIKE_IBFK_1"))
+  private MemberEntity member; // 리뷰 작성 회원
 
   @ManyToOne
-  @JoinColumn(name = "REVIEW_ID", referencedColumnName = "REVIEW_ID")
+  @JoinColumn(name = "REVIEW_ID",foreignKey = @ForeignKey(name="LIKE_IBFK_2"))
   private ReviewEntity review;//좋아요가 있는 게시물
 }

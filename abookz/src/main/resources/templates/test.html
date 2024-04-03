@@ -1,18 +1,22 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Home</title>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/css/index.css">
 </head>
 <body>
-  <a th:href="@{/member/list}">회원목록</a>
-  <div th:if="${session.loginId eq null}">
-    <a th:href="@{/member/save}">회원가입</a>
-    <a th:href="@{/member/login}">로그인</a>
-  </div>
-  <div th:if="${session.loginId ne null}">
-    <a th:href="@{/member/update}">정보수정</a>
-    <a th:href="@{/member/logout}">로그아웃</a>
-  </div>
+
+<div id="container">
+<div id="searchResults"></div>
+
+    <input type="text" id="query" placeholder="2글자 이상 입력하세요">
+<button onclick="searchBooks()" >검색</button>
+
+
+<script src="/js/index.js"></script>
+</div>
 </body>
 </html>
