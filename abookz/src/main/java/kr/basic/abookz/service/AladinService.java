@@ -190,12 +190,12 @@ public class AladinService {
         String isbn13String = null;
         Long isbn = null ;
         Long isbn13 = null;
-        if (itemObject.has("isbn")) {
-            isbnString = itemObject.getString("isbn");
-            isbn =Long.valueOf(isbnString);
-        } else if (itemObject.has("isbn13")) {
+        if (itemObject.has("isbn13")) {
             isbn13String = itemObject.getString("isbn13");
-            isbn13=Long.valueOf(isbn13String);
+            isbn13 =Long.valueOf(isbn13String);
+        } else if (itemObject.has("isbn")) {
+            isbnString = itemObject.getString("isbn");
+            isbn=Long.valueOf(isbn);
         }
         BookEntity item = BookEntity.builder().title(title)
                 .author(author)

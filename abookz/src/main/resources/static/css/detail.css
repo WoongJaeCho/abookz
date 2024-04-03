@@ -53,3 +53,12 @@ body{
 .btn-register{
     float: right;
 }
+.detail_want{
+    text-align: center;
+    align-items: center;
+}
+#btn_want{
+    background-color: cyan;
+    color: white;
+    align-items: center;
+}
