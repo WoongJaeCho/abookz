@@ -1,56 +1,59 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="~{fragments/head :: head}">
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" type="text/css" href="/css/detail.css">
-    <script src="/js/detail.js"></script>
-    <!-- 나중에  detail로 json 댓글 값 받거나 줄 것 -->
+
 </head>
 <body>
-<div id="container">
+<div th:replace="~{fragments/header :: header}" /><br>
+<div id="book_container">
  <div id="bookDetail">  <!--첵 패이지 영역 여기 벗어나면 댓글 영역 줄것-->
      <table id="book">
-         <tr>
-             <td rowspan="10" id="img" width="300">
+         <tr class="detail_tr">
+             <td class="detail_tdimg" rowspan="10">
                  <img class="cover_img" th:src="${book.cover}" alt="책이미지">
              </td>
          </tr>
          <tr>
-             <td colspan="1">책 제목:</td>
-             <td  colspan="3" th:text="${book.title}">
+             <td class="detail_td" colspan="1">책 제목:</td>
+             <td  class="detail_title" colspan="3" th:text="${book.title}">
                     제목
              </td>
          </tr>
          <tr>
-             <td>책 작가:</td>
-             <td th:text="${book.author}">
+             <td  class="detail_td">책 작가:</td>
+             <td  class="book_author" th:text="${book.author}">
                     작가
              </td>
-             <td>책 페이지:</td>
-             <td th:text="${book.itemPage}">
+             <td class="detail_td">책 페이지:</td>
+             <td class="detail_itemPage" th:text="${book.itemPage}">
                     책페이지
              </td>
          </tr>
-         <tr>
-             <td colspan="1" >출판날짜:</td>
-             <td colspan="1" th:text="${book.pubDate}">
+         <tr class="detail_tr">
+             <td  class="detail_td" colspan="1" >출판날짜:</td>
+             <td class="detail_pubDate" colspan="1" th:text="${book.pubDate}">
                     출판날짜
              </td>
-             <td colspan="1">출판사:</td>
-             <td colspan="1" th:text="${book.publisher}">
+             <td class="detail_td" colspan="1">출판사:</td>
+             <td class="detail_publisher" colspan="1" th:text="${book.publisher}">
                  출판사
              </td>
          </tr>
-         <tr>
-
-             <td colspan="4" th:text="${book.description}">
+         <tr class="detail_tr">
+             <td class="detail_want" colspan="4">
+                 <button th:isbn13="${book.ISBN13}" th:onclick="wantToRead(this.getAttribute('isbn13'))">Want To Read</button></td>
+         </tr>
+         <tr class="detail_tr">
+             <td class="detail_description" colspan="4" th:text="${book.description}">
                  책의 대한 내용
              </td>
          </tr>
-         <tr>
-             <td colspan="4">
-                 <a th:href="${book.link}" target="_blank">알라딘링크</a>
+         <tr class="detail_tr">
+             <td class="detail_td" colspan="4">
+                 <a class="detail_link" th:href="${book.link}" target="_blank">알라딘링크</a>
              </td>
          </tr>
      </table>
@@ -65,6 +68,6 @@
 <button type="button" class="btn-register"  onclick="formCheckReply()">댓글등록</button>
 </div>
 
-
+<script src="/js/detail.js"></script>
 </body>
 </html>
