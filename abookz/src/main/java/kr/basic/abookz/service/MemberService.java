@@ -16,6 +16,7 @@ public class MemberService {
   // 생성자 주입
   private final MemberRepository memberRepository;
 
+
   public void save(MemberDTO memberDTO){
     // 1. dto -> entity 변환
     // 2. repository의 save메서드 호출
@@ -78,6 +79,10 @@ public class MemberService {
       return null;
     }
   }
+/*  public MemberEntity findByEntity(Long id){
+    MemberEntity getOne = memberRepository.findByEntity(id);
+    return getOne;
+  }*/
 
 
   public void update(MemberDTO memberDTO) {

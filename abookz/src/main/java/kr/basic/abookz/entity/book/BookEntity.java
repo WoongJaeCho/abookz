@@ -1,10 +1,7 @@
 package kr.basic.abookz.entity.book;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -14,6 +11,7 @@ import java.time.LocalDate;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Builder
 public class BookEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -34,4 +32,5 @@ public class BookEntity {
   private String link;//알라딘 상품 정보 페이지
 //  private int weight;//무게
 //  private int price;//가격
+
 }

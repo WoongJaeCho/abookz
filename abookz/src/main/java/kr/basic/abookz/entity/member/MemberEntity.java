@@ -51,4 +51,5 @@ public class MemberEntity {
     memberEntity.setNickname(memberDTO.getNickname());
     return memberEntity;
   }
+
 }

@@ -54,7 +54,10 @@ public class MemberController {
     MemberDTO loginResult = memberService.login(memberDTO);
     if(loginResult != null){
       // 로그인 성공시
-      session.setAttribute("loginId", loginResult.getLoginId());
+      session.setAttribute("id", loginResult.getId());
+      Long userId = (Long)session.getAttribute("id");
+      System.out.println(userId);
+      session.setMaxInactiveInterval(30 * 60);
       return "redirect:/";
     }
     else {

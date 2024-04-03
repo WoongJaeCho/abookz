@@ -2,6 +2,8 @@ package kr.basic.abookz.controller.apicontroller;
 
 import kr.basic.abookz.dto.BookDTO;
 import kr.basic.abookz.service.AladinService;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -9,15 +11,11 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.List;
 
 @RestController
+@RequiredArgsConstructor
+@Slf4j
 public class AladinApiController {
 
-    private AladinService aladinService;
-
-
-    @Autowired
-    public AladinApiController(AladinService aladinService){
-        this.aladinService = aladinService;
-    }
+    private final AladinService aladinService;
 
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)

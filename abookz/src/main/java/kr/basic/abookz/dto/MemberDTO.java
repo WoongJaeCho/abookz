@@ -26,6 +26,7 @@ public class MemberDTO {
 
   public static MemberDTO loginMemberDTO(MemberEntity memberEntity){
     MemberDTO memberDTO = new MemberDTO();
+    memberDTO.setId(memberEntity.getId());
     memberDTO.setLoginId(memberEntity.getLoginId());
     memberDTO.setPassword(memberEntity.getPassword());
     return memberDTO;
@@ -40,6 +41,7 @@ public class MemberDTO {
     memberDTO.setNickname(memberEntity.getNickname());
     return memberDTO;
   }
+
 
   public static MemberDTO AllMemberDTO(MemberEntity memberEntity){
     MemberDTO memberDTO = new MemberDTO();
