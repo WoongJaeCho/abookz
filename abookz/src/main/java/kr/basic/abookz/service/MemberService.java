@@ -78,13 +78,8 @@ public class MemberService {
   }
 
   // 회원수정
-<<<<<<< HEAD
   public MemberDTO updateForm(Long getId) {
     Optional<MemberEntity> byLoginId = memberRepository.findById(getId);
-=======
-  public MemberDTO updateForm(String getId) {
-    Optional<MemberEntity> byLoginId = memberRepository.findByLoginId(getId);
->>>>>>> 61ba892300f44b1239d7cc83f434f0e7679d0b73
     if(byLoginId.isPresent()){
       return MemberDTO.AllMemberDTO(byLoginId.get());
     }
