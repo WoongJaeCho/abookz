@@ -1,10 +1,38 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="~{fragments/head :: head}">
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/css/myShelf.css">
+
 </head>
 <body>
+<div th:replace="~{fragments/header :: header}" /><br>
+<div id="shelf_container">
+<div id="shelf_left">
 
+</div>
+<div>
+<div id="shelf_center">
+    <table class="shelf_table" th:each="book : ${books}">
+        <tr class="shelf_tr">
+            <td rowspan="5" class="shelf_tdimg">
+                <img class="cover_img" th:src="${book.cover}" alt="책이미지">
+            </td>
+            <td class="shelf_title" th:text="${book.title}">제목</td>
+        </tr>
+        <tr class="shelf_tr">
+        <td class="shelf_author"  th:text="${book.author}">작가</td>
+        </tr>
+        <tr>
+        <td class="shelf_page" th:text="${book.itemPage}">페이지</td>
+        </tr>
+    </table>
+</div>
+<div id="shelf_right">
+
+</div>
+</div>
+</div>
 </body>
 </html>

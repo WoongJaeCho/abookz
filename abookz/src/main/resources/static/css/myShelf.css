@@ -1,0 +1,16 @@
+body{
+margin: 0 auto;
+}
+#shelf_container{
+    display: flex;
+    justify-content: space-between;
+}
+#shelf_left{
+    flex: 2;
+}
+#shelf_center{
+    flex: 6;
+}
+#shelf_right{
+    flex: 2;
+}

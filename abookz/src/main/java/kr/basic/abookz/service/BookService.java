@@ -2,7 +2,9 @@ package kr.basic.abookz.service;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
+import kr.basic.abookz.dto.BookDTO;
 import kr.basic.abookz.entity.book.BookEntity;
+import kr.basic.abookz.entity.member.MemberEntity;
 import kr.basic.abookz.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -32,6 +34,10 @@ public class BookService {
             System.out.println("해당 조건을 만족하는 책이 이미 존재합니다.");
         }
     }
+    public List<BookEntity> findAllById(Long id){
+        return bookrepository.findAllById(id);
+    }
+
 }
 
 

@@ -3,6 +3,7 @@ package kr.basic.abookz.entity.book;
 import jakarta.persistence.*;
 import kr.basic.abookz.entity.member.MemberEntity;
 import lombok.*;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -19,6 +20,7 @@ public class BookShelfEntity {
   @Column(name = "BOOKSHELF_ID", nullable = false)
   private Long id;//pk
 
+  @CreationTimestamp
   private LocalDateTime addDate;//등록날짜
   private LocalDateTime startDate;//읽기시작한날짜
   private LocalDateTime endDate;//다읽은날짜

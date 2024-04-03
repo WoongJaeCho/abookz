@@ -49,8 +49,8 @@ public class SessionController {
             BookShelfEntity bookShelfEntity = BookShelfEntity
                     .builder()
                     .member(member)
-                    .book(bookEntity).
-                    build();
+                    .book(bookEntity)
+                                    .build();
             bookShelfService.save(bookShelfEntity);
             String data = bookEntity.getTitle() + " 책이 정상적으로 내 서재에 등록되었습니다.";
 
