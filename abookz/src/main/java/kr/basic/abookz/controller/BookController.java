@@ -15,6 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
@@ -58,5 +59,20 @@ BookController {
         model.addAttribute("shelf", shelf);
         model.addAttribute("books",books);
         return "book/myShelf";
+    }
+    @GetMapping("/category/{category}")
+    public String choiceCategory(@PathVariable ("category")String category,Model model) throws Exception {
+        List<BookDTO>  getCategoryList = aladinService.choiceGetCategoryList(category);
+        model.addAttribute("books", getCategoryList);
+        System.out.println("getCategoryList = " + getCategoryList);
+        return "book/category";
+    }
+    /* 베스트 셀러나 신간 리스트 가져오기*/
+    @GetMapping("/bestSeller/{type}")
+    public String choiceQueryType(@PathVariable ("type")String type,Model model) throws Exception {
+           List<BookDTO> queryTypeList = aladinService.getQueryTypeList(type);
+        model.addAttribute("books",queryTypeList);
+        System.out.println("getQueryTypeList = " + queryTypeList);
+        return "book/queryType";
     }
 }
