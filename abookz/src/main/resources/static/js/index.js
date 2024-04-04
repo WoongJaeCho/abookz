@@ -2,13 +2,13 @@ function searchBooks() {
     var query = document.getElementById('query').value;
     var resultsDiv = document.getElementById('searchResults');
     resultsDiv.innerHTML = '';
-
     if (!query.trim()) {
         alert('검색어를 입력해주세요');
         return;
     }
     // 우리사이트에서 DB에 저장된것 sort
     if (!query.trim()) {
+
         fetch('/search')
             .then(response => response.json())
             .then(data => {
@@ -56,8 +56,9 @@ function searchBooks() {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify({ query: query })
+            body: JSON.stringify({query: query})
         })
+
             .then(response => response.json())
             .then(data => {
                 if (data && data.length > 0) {
@@ -102,8 +103,9 @@ function searchBooks() {
                         table.appendChild(pubDateRow);
 
                         resultsDiv.appendChild(table);
-                    });
 
+                    });
+                    document.getElementById('book_container').style.display = 'none';
                 } else {
                     resultsDiv.textContent = 'No results found';
                 }

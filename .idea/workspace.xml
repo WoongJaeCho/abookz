@@ -86,7 +86,7 @@
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.AbookzApplication.executor": "Run",
+    "Spring Boot.AbookzApplication.executor": "Debug",
     "git-widget-placeholder": "origin/dev-LJY",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/ecpliseworkspace/JYproject/abookz",
@@ -182,15 +182,5 @@
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <breakpoint enabled="true" type="java-exception">
-          <properties class="java.lang.IllegalArgumentException" package="java.lang" />
-          <option name="timeStamp" value="2" />
-        </breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
   </component>
 </project>
