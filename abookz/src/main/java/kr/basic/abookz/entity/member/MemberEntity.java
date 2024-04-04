@@ -26,7 +26,7 @@ public class MemberEntity {
   private String profile; //프로필 이미지
   @CreationTimestamp
   private LocalDate regDate;//가입일
-  // private int fileAttached; // 파일있으면 1, 없으면 0
+
 //  private int challenge;//습관형성 챌린지
 //  @OneToMany(mappedBy = "member",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 //  private List<ReviewEntity> reviewList = new ArrayList<>(); //회원이 작성한 리뷰 리스트
@@ -40,9 +40,7 @@ public class MemberEntity {
     memberEntity.setEmail(memberDTO.getEmail());
     memberEntity.setNickname(memberDTO.getNickname());
     memberEntity.setRole(RoleEnum.Role_User);
-    memberEntity.setProfile(memberDTO.getProfile());
     memberEntity.setRegDate(memberDTO.getRegDate());
-    //memberEntity.setFileAttached(0); // 파일 없음
     return memberEntity;
   }
 
@@ -53,6 +51,7 @@ public class MemberEntity {
     memberEntity.setPassword(memberDTO.getPassword());
     memberEntity.setEmail(memberDTO.getEmail());
     memberEntity.setNickname(memberDTO.getNickname());
+    memberEntity.setProfile(memberDTO.getProfile());
     return memberEntity;
   }
 
