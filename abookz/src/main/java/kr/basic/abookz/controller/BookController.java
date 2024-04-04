@@ -29,6 +29,10 @@ public class BookController {
     private final BookShelfService shelfService;
     private  final BookService bookService;
 
+    @GetMapping("/search")
+    public String getSearh(){
+        return"/index";
+    }
 
     @GetMapping("/content/{isbn13}")
     public String getOneDetail(@PathVariable ("isbn13")String isbn13, Model model) throws Exception {
