@@ -69,7 +69,7 @@ public class MemberController {
     }
     else {
       // 로그인 실패시
-      return null;
+      return "null";
     }
   }
 
