@@ -29,8 +29,7 @@ public class MemberService {
     memberRepository.save(memberEntity);
   }
   public boolean validById(String id) {
-    Optional<MemberEntity> byId = memberRepository.findByLoginId(id);
-    return byId.isEmpty();
+    return memberRepository.existsByLoginId(id);
   }
 
   // 로그인

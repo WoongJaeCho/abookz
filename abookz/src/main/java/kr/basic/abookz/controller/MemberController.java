@@ -48,7 +48,7 @@ public class MemberController {
   @ResponseBody
   public String validId(@RequestParam("id") String id){
     System.out.println("id = " + id);
-    return memberService.validById(id) ? "valid" : "notValid";
+    return memberService.validById(id) ? "notValid" : "Valid";
   }
 
   // 로그인
@@ -69,7 +69,7 @@ public class MemberController {
     }
     else {
       // 로그인 실패시
-      return null;
+      return "null";
     }
   }
 
