@@ -3,24 +3,14 @@ package kr.basic.abookz.controller;
 import jakarta.servlet.http.HttpSession;
 import kr.basic.abookz.dto.MemberDTO;
 import kr.basic.abookz.service.MemberService;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
 
 @Controller
 @RequestMapping("/member")
