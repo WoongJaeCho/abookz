@@ -18,8 +18,7 @@
        })
        .catch(error => {
            console.error('There was a problem with the fetch operation:', error);
-           response.json().then(errorMessage => {
-              alert("이미 등록 되어있습니다");
-           });
+           alert("이미 등록 되어있습니다");
+
        });
  }

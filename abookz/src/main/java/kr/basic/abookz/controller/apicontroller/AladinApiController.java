@@ -24,12 +24,10 @@ public class AladinApiController {
         System.out.println("query" + query);
         try {
             books = aladinService.searchItems(query);
-            System.out.println(books.toString());
             return books;
          } catch (Exception e) {
             // 실제 환경에서는 예외 처리를 보다 세심하게 해야 합니다.
             e.printStackTrace();
-            redirectAttributes.addFlashAttribute("error", "검색결과가 존재하지 않습니다");
             return books;
         }
     }
