@@ -25,7 +25,7 @@ public class AladinApiController {
         try {
             books = aladinService.searchItems(query);
             return books;
-         } catch (Exception e) {
+          } catch (Exception e) {
             // 실제 환경에서는 예외 처리를 보다 세심하게 해야 합니다.
             e.printStackTrace();
             return books;

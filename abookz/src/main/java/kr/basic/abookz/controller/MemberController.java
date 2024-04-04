@@ -5,12 +5,22 @@ import kr.basic.abookz.dto.MemberDTO;
 import kr.basic.abookz.service.MemberService;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
 
 @Controller
 @RequestMapping("/member")
@@ -48,7 +58,7 @@ public class MemberController {
   @ResponseBody
   public String validId(@RequestParam("id") String id){
     System.out.println("id = " + id);
-    return memberService.validById(id) ? "valid" : "notValid";
+    return memberService.validById(id) ? "notValid" : "Valid";
   }
 
   // 로그인
@@ -69,21 +79,25 @@ public class MemberController {
     }
     else {
       // 로그인 실패시
-      return null;
+      return "null";
     }
   }
 
   // 수정
   @GetMapping("/update")
   public String updateForm(HttpSession session, Model model){
-    String getId = (String)session.getAttribute("loginId");
+    Long getId = (Long)session.getAttribute("id");
     MemberDTO memberDTO = memberService.updateForm(getId);
     model.addAttribute("updateMember", memberDTO);
     return "member/update";
   }
   @PostMapping("/update")
-  public String update(@ModelAttribute MemberDTO memberDTO) {
-    memberService.update(memberDTO);
+  public String update(@ModelAttribute MemberDTO memberDTO, @RequestParam("file") MultipartFile file) {
+    try{
+      memberService.update(memberDTO, file);
+    }catch (Exception e) {
+      e.printStackTrace();
+    }
     return "redirect:/member/" + memberDTO.getId();
   }
 
@@ -101,4 +115,5 @@ public class MemberController {
     session.invalidate();
     return "confirm";
   }
+
 }

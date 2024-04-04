@@ -23,7 +23,8 @@ import java.util.stream.Collectors;
 @Controller
 @Slf4j
 @RequiredArgsConstructor
-public class BookController {
+public class
+BookController {
 
     private final AladinService aladinService;
     private final BookShelfService shelfService;
