@@ -19,16 +19,16 @@ body {
 #query{
     margin-top: 20px;
 }
-table{
+#query table{
     margin: 10px auto;
     border: 1px solid black;
     width: 500px;
     height: 200px;
 }
-tr{
+#query tr{
     border:  1px solid red;
 }
-td{
+#query td{
     border:  1px solid pink;
 }
 cover_img{

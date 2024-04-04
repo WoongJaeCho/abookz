@@ -49,14 +49,51 @@ li{
 .nav > ul > li > a:hover{
     background-color: rgb(19, 168, 226);
 }
+.nav > ul > li > ul {
+    width: 100%;
+    position: absolute;
+    display: none;
+    background-color: #fff;
+}
+
+.nav > ul > li > ul {
+    display: block;
+    height: 0;
+    overflow: hidden;
+    transition: all 600ms;
+}
 .nav > ul > li > ul > li {
     position: relative;
-}
-.nav > ul > li > ul {
-    position: absolute;
+
 }
 .nav > ul > li > ul > li > a {
+    width: 34.5%;
     display: block;
+    padding: 15px 10px;
+    box-sizing: border-box;
+    position: relative;
+    /* background-color: skyblue; */
+    top: 10px;
+    z-index: 1;
+}
+.nav > ul > li > ul > li > a:hover{
+    background-color: rgb(19, 168, 226);
+}
+.nav > ul > li > ul > li > ul {
+    position: absolute;
+    display: block;
+    right: -10px;
+    top: 10px;
+    width: 230px;
+    flex-wrap: wrap;
+    background-color: skyblue;
+    z-index: 2;
+}
+.nav > ul > li > ul > li > ul  td {
+    padding: 10px 20px;
+}
+.nav > ul > li > ul > li > ul  td > a:hover {
+    text-decoration: underline;
 }
 .search{
     width: 30%;
@@ -102,8 +139,56 @@ li{
     left: 0;
     padding: 10px 20px;
 }
-.join p:hover, .login p:hover{
+p:hover{
     background-color: rgb(19, 168, 226);
+}
+
+@media only screen and (max-width: 768px) {
+    #header {
+        flex-direction: column;
+        width: 100%;
+        height: auto;
+    }
+    .nav {
+        order: 2;
+    }
+    .search {
+        order: 1;
+    }
+    .login {
+        order: 3;
+    }
+    .join {
+        order: 4;
+    }
+    .logo, .nav, .search, .login, .join {
+        width: 100%;
+        margin: auto 0;
+        text-align: center;
+    }
+    .nav > ul {
+        flex-direction: row;
+        align-items: center;
+    }
+    .nav > ul > li > ul {
+        display: none; /* 서브 메뉴는 기본적으로 숨기고 필요시 JavaScript로 토글 */
+    }
+    .search input {
+        width: 50%;
+        height: 30px;
+        margin: 0 auto;
+
+    }
+    .login p, .join p {
+        width: 70px;
+        position: static; /* 절대 위치 제거 */
+        margin: 10px auto; /* 중앙 정렬 */
+    }
+
+    .search button{
+        position: absolute;
+        right: 0;
+    }
 }
 
 

@@ -1,3 +1,17 @@
+// header
+let nav = document.querySelectorAll(".nav > ul > li");
+
+nav.forEach(navItem=>{
+    navItem.addEventListener("mouseover",function(){
+        this.querySelector('.submenu').style.height = "350px";
+    })
+    navItem.addEventListener("mouseout",function(){
+        this.querySelector('.submenu').style.height = "0px";
+    })
+})
+
+// main
+// slide
 let currentIndex = 0;
 let sliderWrap = document.querySelector('.sliderWrap');
 let slider = document.querySelectorAll('.slider');
