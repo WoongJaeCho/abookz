@@ -31,10 +31,11 @@
         <td>Nickname</td>
         <td><input type="text" th:value="${updateMember.nickname}" name="nickname"></td>
       </tr>
-<!--      <tr>-->
-<!--        <td>Profile</td>-->
-<!--        <td><input type="file" name="profile"></td>-->
-<!--      </tr>-->
+      <tr>
+        <td>Profile</td>
+        <td><input type="file" name="file"></td>
+        <td><input type="hidden" th:value="${updateMember.profile}" name="profile"></td>
+      </tr>
       <tr>
         <td colspan="2" id="btns">
           <input type="submit" value="수정">

@@ -40,9 +40,7 @@ public class MemberEntity {
     memberEntity.setEmail(memberDTO.getEmail());
     memberEntity.setNickname(memberDTO.getNickname());
     memberEntity.setRole(RoleEnum.Role_User);
-    memberEntity.setProfile(memberDTO.getProfile());
     memberEntity.setRegDate(memberDTO.getRegDate());
-    //memberEntity.setFileAttached(0); // 파일 없음
     return memberEntity;
   }
 
@@ -53,6 +51,7 @@ public class MemberEntity {
     memberEntity.setPassword(memberDTO.getPassword());
     memberEntity.setEmail(memberDTO.getEmail());
     memberEntity.setNickname(memberDTO.getNickname());
+    memberEntity.setProfile(memberDTO.getProfile());
     return memberEntity;
   }
 

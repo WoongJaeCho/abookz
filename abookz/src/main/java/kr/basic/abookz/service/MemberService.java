@@ -4,13 +4,18 @@ import kr.basic.abookz.dto.MemberDTO;
 import kr.basic.abookz.entity.member.MemberEntity;
 import kr.basic.abookz.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.File;
-import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Service
@@ -18,6 +23,9 @@ import java.util.Optional;
 public class MemberService {
   // 생성자 주입
   private final MemberRepository memberRepository;
+
+  @Value("${upload.path}")
+  private String uploadPath;
 
   // 회원가입
   public void save(MemberDTO memberDTO){
@@ -79,35 +87,34 @@ public class MemberService {
 
   // 회원수정
   public MemberDTO updateForm(Long getId) {
-    Optional<MemberEntity> byLoginId = memberRepository.findById(getId);
-    if(byLoginId.isPresent()){
-      return MemberDTO.AllMemberDTO(byLoginId.get());
+    Optional<MemberEntity> byId = memberRepository.findById(getId);
+    if(byId.isPresent()){
+      return MemberDTO.AllMemberDTO(byId.get());
     }
     else {
       return null;
     }
   }
-  public void update(MemberDTO memberDTO) {
+  public void update(MemberDTO memberDTO, MultipartFile file) {
+    try{
+      if(file != null && !file.isEmpty()){
+        String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+        memberDTO.setProfile(fileName);
+
+        Path upload = Paths.get(uploadPath);
+        if(!Files.exists(upload)){
+          Files.createDirectories(upload);
+        }
+        Path filePath = upload.resolve(fileName);
+        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+      }
+      else {
+        memberDTO.setProfile(memberDTO.getProfile());
+      }
+    }catch (Exception e){
+      e.printStackTrace();
+    }
     memberRepository.save(MemberEntity.toupdateMemberEntity(memberDTO));
-    // 파일 첨부 여부에 따라 로직 분리
-//    if(memberDTO.getFile().isEmpty()){
-//      // 첨부 파일 없음
-//    }
-//    else{
-//      // 첨부 파일 있음
-//      // 1. DTO에 담긴 파일을 꺼냄
-//      // 2. 파일의 이름 가져옴
-//      // 3. 서버 저장용 이름을 만듬
-//      // 4. 저장 경로 설정
-//      // 5. 해당 경로에 파일 저장
-//      // 6. member에 해당 데이터 save 처리
-//      // 7. fileentity 데이터 save 처리(보류)
-//      MultipartFile profile = memberDTO.getFile(); // 1.
-//      String originalFilename = profile.getOriginalFilename(); // 2.
-//      String storedFileName = System.currentTimeMillis() + "_" + originalFilename; // 3.
-//      String savePath = "C:/abookz/abookz/src/main/resources/static/images/" + storedFileName;
-//      profile.transferTo(new File(savePath)); // 5.
-//    }
   }
 
   // 회원삭제
