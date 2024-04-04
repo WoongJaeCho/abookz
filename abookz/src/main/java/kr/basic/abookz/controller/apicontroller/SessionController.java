@@ -30,7 +30,7 @@ public class SessionController {
 //    private final MemberService memberService;
     private final MemberRepository memberRepository;
     private final BookService bookService;
-    private  final AladinService aladinService;
+    private final AladinService aladinService;
 
     @RequestMapping(value = "/want",method = RequestMethod.POST)
     public String wantToRead(@RequestParam("book") String book ,RedirectAttributes redirectAttributes) throws Exception {

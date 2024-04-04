@@ -8,6 +8,8 @@
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}" /><br>
+<div id="searchResults"></div>
+
 <div id="book_container">
      <div id="bookDetail">  <!--첵 패이지 영역 여기 벗어나면 댓글 영역 줄것-->
      <table id="book">
@@ -58,16 +60,16 @@
          </tr>
      </table>
  </div>
+    <p>
+    <hr class="reviewLine">    <!--아래는 아직 미구현-->
+    <div class="review">
+        <label for="reviewtext"></label><textarea id="reviewtext" name="review" rows="6"></textarea>
+        <button type="button" class="btn-register"  onclick="formCheckReply()">댓글등록</button>
+    </div>
 </div>
-<hr class="reviewLine">
 
-<p>
-<!--아래는 아직 미구현-->
-<div class="review">
-<label for="reviewtext"></label><textarea id="reviewtext" name="review" rows="6"></textarea>
-<button type="button" class="btn-register"  onclick="formCheckReply()">댓글등록</button>
-</div>
 
 <script src="/js/detail.js"></script>
 </body>
 </html>
+<script defer src="/js/index.js"></script   >
