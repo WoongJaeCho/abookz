@@ -18,6 +18,7 @@ spring:
     username: root
     password: 1234
 
+
   servlet:
     multipart:
       max-file-size: 10MB
@@ -32,8 +33,8 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     database: mysql
     hibernate:
-      ddl-auto: update
-#      ddl-auto: create
+#      ddl-auto: update
+      ddl-auto: create
       #show_sql: true
       #format_sql: true
       use_sql_comments: true
@@ -44,15 +45,3 @@ spring:
       hibernate:
         jdbc:
           time_zone: Asia/Seoul
-
-  mail:
-    host: smtp.gmail.com
-    port: 587
-    username: ghrt8426@gmail.com
-    password: bezx btfc hohb rjda
-    properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
