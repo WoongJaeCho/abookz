@@ -239,19 +239,86 @@ main{
     height: 100%;
     background-color: #aaa;
     display: flex;
+    position: relative;
 }
 #content .memo .memo_cover{
-    margin: auto 10px;
-    width: 150px;
-    height: 200px;
+    width: 40%;
+    margin: auto 20px;
+    /*width: 150px;*/
+    height: 210px;
 }
-#content .memo .memo_input{
-    margin-top: 20px;
+#content .memo .memo_text{
+    width: 60%;
 }
-#content .memo .memo_input .page {}
-#content .memo .memo_input .quotes {}
-#content .memo .memo_input .note {}
-#content .memo .memo_input .memo_submit {}
+#content .memo .memo_title {
+    margin-top: 15px;
+    height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#content .memo .memo_day{
+    margin-top: 10px;
+    height: 50px;
+    text-align: center;
+}
+#content .memo .read_bar{
+    display: flex;
+    justify-content: start;
+    align-items: center;
+}
+#content .memo .read_bar .bar{
+    border: 1px solid black;
+    border-radius: 10px;
+    width: 100%;
+    height: 10px;
+    margin-right: 5px;
+}
+#content .memo .memo_page{
+    display: flex;
+    justify-content: space-between;
+}
+#content .memo .memo_btn{
+    position: absolute;
+    background-color: skyblue;
+    padding: 10px 20px;
+    border-radius: 20px;
+    bottom: 20px;
+    right: 70px;
+}
+
+#content .memo .memo_btn:hover{
+    background-color: rgb(54, 184, 235);
+}
+.arrow {
+    width: 20px;
+    height: 20px;
+    border-style: solid;
+    border-width: 2px 2px 0 0;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    transition: all 100ms;
+    cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능하도록 함 */
+}
+
+.memo_text .left {
+    left: 10px;
+    transform: translateY(-50%) rotate(-135deg);
+}
+
+.memo_text .right {
+    right: 10px;
+    transform: translateY(-50%) rotate(45deg);
+}
+
+.memo_text .left:hover {
+    transform: translateY(-50%) rotate(-135deg) scale(1.2);
+}
+
+.memo_text .right:hover {
+    transform: translateY(-50%) rotate(45deg) scale(1.2);
+}
 
 
 /* @@@@ footer @@@@ */

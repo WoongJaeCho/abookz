@@ -1,6 +1,7 @@
 package kr.basic.abookz.service;
 
 import kr.basic.abookz.entity.book.BookShelfEntity;
+import kr.basic.abookz.entity.book.TagEnum;
 import kr.basic.abookz.repository.BookShelfRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -19,8 +20,10 @@ public class BookShelfService {
         return bookShelfRepository.save(bookShelfEntity);
     }
     public List<BookShelfEntity> findAllByMemberId(Long memId){
-
-       
             return bookShelfRepository.findAllByMemberId(memId);
+    }
+
+    public List<BookShelfEntity> findAllByMemberIdAndTag(Long memId, TagEnum tagEnum){
+        return bookShelfRepository.findAllByMemberIdAndTag(memId, tagEnum);
     }
 }

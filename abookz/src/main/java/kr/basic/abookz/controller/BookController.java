@@ -47,8 +47,8 @@ BookController {
     @GetMapping("/myshelf")
     public String getMyShelf(HttpSession session, RedirectAttributes redirectAttributes,Model model){
         if(session.getAttribute("id")== null){
-            redirectAttributes.addFlashAttribute("fail","로그인부터 해주세요");
-            return "redirect:/";
+            redirectAttributes.addFlashAttribute("fail","로그인이후 가능합니다");
+            return "redirect:/member/login";
         }
         Long memId = (Long)session.getAttribute("id");
        List<BookShelfEntity> shelf =shelfService.findAllByMemberId(memId);
