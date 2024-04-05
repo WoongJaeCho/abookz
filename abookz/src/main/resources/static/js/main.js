@@ -34,3 +34,13 @@ setInterval(() => {
         }, 700)
     }
 }, 3000)
+
+document.querySelector('.memo').addEventListener('click', function(event) {
+    if (event.target.classList.contains('arrow')) {
+        if (event.target.classList.contains('left')) {
+            alert('왼쪽 화살표를 클릭했습니다!');
+        } else if (event.target.classList.contains('right')) {
+            alert('오른쪽 화살표를 클릭했습니다!');
+        }
+    }
+});
