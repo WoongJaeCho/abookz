@@ -1,16 +1,17 @@
 // header
 let nav = document.querySelectorAll(".nav > ul > li");
 
-nav.forEach((navItem,index)=>{
-    if(index != 0){
-        navItem.addEventListener("mouseover",function(){
-            this.querySelector('.submenu').style.height = "330px";
-        })
-        navItem.addEventListener("mouseout",function(){
+
+nav.forEach((navItem, index) => {
+    if (index !== 0) { // 첫 번째 요소를 제외
+        navItem.addEventListener("mouseover", function () {
+            this.querySelector('.submenu').style.height = "350px";
+        });
+        navItem.addEventListener("mouseout", function () {
             this.querySelector('.submenu').style.height = "0px";
-        })
+        });
     }
-})
+});
 
 // main
 // slide
@@ -20,16 +21,16 @@ let slider = document.querySelectorAll('.slider');
 let sliderClone = sliderWrap.firstElementChild.cloneNode(true);
 sliderWrap.append(sliderClone);
 
-setInterval(()=>{
+setInterval(() => {
     currentIndex++;
-    sliderWrap.style.marginLeft = - currentIndex * 100 + "%";
+    sliderWrap.style.marginLeft = -currentIndex * 100 + "%";
     sliderWrap.style.transition = "all 600ms";
 
-    if(currentIndex == slider.length){
-        setTimeout(()=>{
+    if (currentIndex == slider.length) {
+        setTimeout(() => {
             sliderWrap.style.marginLeft = "0";
             sliderWrap.style.transition = "0s";
             currentIndex = 0;
-        },700)
+        }, 700)
     }
-},3000)
+}, 3000)

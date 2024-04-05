@@ -1,6 +1,7 @@
 package kr.basic.abookz.entity.review;
 
 import jakarta.persistence.*;
+import kr.basic.abookz.entity.book.BookShelfEntity;
 import kr.basic.abookz.entity.member.MemberEntity;
 import kr.basic.abookz.entity.book.BookEntity;
 import lombok.AllArgsConstructor;
@@ -25,12 +26,7 @@ public class MemoEntity {
   private String quotes;//인상깊었던 인용구
   private String note;//느낀점
   private LocalDateTime createdDate;//작성날짜
-
-  @ManyToOne
-  @JoinColumn(name = "MEM_ID",foreignKey = @ForeignKey(name = "MEMO_IBFK_1"))
-  private MemberEntity member; // 리뷰 작성 회원
-
-  @ManyToOne
-  @JoinColumn(name = "BOOK_ID",foreignKey = @ForeignKey(name = "MEMO_IBFK_2"))
-  private BookEntity book;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "BOOKSHELF_ID",foreignKey = @ForeignKey(name = "MEMO_IBFK_1"))
+  private BookShelfEntity book;
 }

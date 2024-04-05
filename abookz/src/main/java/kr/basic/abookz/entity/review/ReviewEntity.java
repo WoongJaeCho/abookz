@@ -28,11 +28,11 @@ public class ReviewEntity {
   private Boolean isSpoilerActive;//스포일러 방지기능
   //  @OneToMany(mappedBy = "like",fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
   //  private List<Like> likeList= new ArrayList<>(); 리뷰의 좋아요
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "MEM_ID",foreignKey = @ForeignKey(name = "REVIEW_IBFK_1"))
   private MemberEntity member; // 리뷰 작성 회원
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "BOOK_ID",foreignKey = @ForeignKey(name = "REVIEW_IBFK_2"))
   private BookEntity book;
 }

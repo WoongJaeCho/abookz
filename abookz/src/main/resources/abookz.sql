@@ -101,4 +101,3 @@ create table if not exists review_like
     constraint LIKE_IBFK_2
         foreign key (review_id) references review (review_id)
 );
-
