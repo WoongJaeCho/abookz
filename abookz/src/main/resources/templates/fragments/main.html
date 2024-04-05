@@ -16,6 +16,9 @@
         <div class="memo" th:if="${session.id == null}">
             <p>바로가기</p>
         </div>
+        <div class="memo" th:if="${session.id != null and ( books == null or shelves == null )}">
+            <p>바로가기</p>
+        </div>
         <div class="memo" th:if="${session.id != null and books != null and shelves != null}" th:with="book=${books[0]}, shelf=${shelves[0]}" >
             <img th:src="${book.cover}" alt="book_cover" class="memo_cover">
             <div class="memo_text">

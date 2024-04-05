@@ -22,6 +22,7 @@ public class HomeController {
     private final BookService bookService;
     @GetMapping("/")
     public String index(Model model, HttpSession session) {
+
         if(session.getAttribute("id") != null) {
             Long memId = (Long) session.getAttribute("id");
             List<BookShelfEntity> shelves = bookShelfService.findAllByMemberIdAndTag(memId, CURRENTLY_READING);
@@ -31,8 +32,11 @@ public class HomeController {
                     .toList();
             System.out.println("books = " + books);
 
-            model.addAttribute("books", books);
-            model.addAttribute("shelves", shelves);
+            if( shelves.size() != 0 || books.size() != 0 ) {
+                model.addAttribute("books", books);
+                model.addAttribute("shelves", shelves);
+            }
+
         }
 
         return "index";
