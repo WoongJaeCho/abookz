@@ -34,4 +34,7 @@ public class BookEntity {
   private int sizeDepth;//책두께
   private int price;//가격
 
+  public BookEntity(String title) {
+    this.title = title;
+  }
 }

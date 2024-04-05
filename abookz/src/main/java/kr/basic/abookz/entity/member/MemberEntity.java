@@ -2,7 +2,9 @@ package kr.basic.abookz.entity.member;
 
 import jakarta.persistence.*;
 import kr.basic.abookz.dto.MemberDTO;
+import lombok.AccessLevel;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 
@@ -12,6 +14,7 @@ import java.time.LocalDate;
 @Table(name = "MEMBER")
 @Getter
 @Setter
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class MemberEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,7 +30,11 @@ public class MemberEntity {
   @CreationTimestamp
   private LocalDate regDate;//가입일
 
-//  private int challenge;//습관형성 챌린지
+  public MemberEntity(String loginId) {
+    this.loginId = loginId;
+  }
+
+  //  private int challenge;//습관형성 챌린지
 //  @OneToMany(mappedBy = "member, cascade = CascadeType.ALL)
 //  private List<ReviewEntity> reviewList = new ArrayList<>(); //회원이 작성한 리뷰 리스트
 //@OneToMany(mappedBy = "member" ,cascade = CascadeType.ALL)
