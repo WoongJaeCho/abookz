@@ -28,5 +28,5 @@ public class MemoEntity {
   private LocalDateTime createdDate;//작성날짜
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "BOOKSHELF_ID",foreignKey = @ForeignKey(name = "MEMO_IBFK_1"))
-  private BookShelfEntity book;
+  private BookShelfEntity bookShelf;
 }

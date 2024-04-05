@@ -4,8 +4,10 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import kr.basic.abookz.dto.BookDTO;
 import kr.basic.abookz.entity.book.BookEntity;
+import kr.basic.abookz.entity.book.TagEnum;
 import kr.basic.abookz.entity.member.MemberEntity;
 import kr.basic.abookz.repository.BookRepository;
+import kr.basic.abookz.repository.BookShelfRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.jpa.repository.Query;
@@ -37,6 +39,7 @@ public class BookService {
     public List<BookEntity> findAllById(Long id){
         return bookrepository.findAllById(id);
     }
+
 
 }
 
