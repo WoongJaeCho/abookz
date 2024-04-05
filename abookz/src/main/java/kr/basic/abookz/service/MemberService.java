@@ -1,10 +1,13 @@
 package kr.basic.abookz.service;
 
+import kr.basic.abookz.dto.MailDTO;
 import kr.basic.abookz.dto.MemberDTO;
 import kr.basic.abookz.entity.member.MemberEntity;
 import kr.basic.abookz.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -23,10 +26,20 @@ import java.util.Optional;
 public class MemberService {
   // 생성자 주입
   private final MemberRepository memberRepository;
+  private final JavaMailSender javaMailSender;
 
 
-  @Value("${upload.path}")
+  @Value("${upload.path}" + "profile/")
   private String uploadPath;
+
+//  public void sendSimpleMessage(MailDTO mailDTO){
+//    SimpleMailMessage message = new SimpleMailMessage();
+//    message.setFrom("ghrt8426@gmail.com");
+//    message.setTo(mailDTO.getAddress());
+//    message.setSubject(mailDTO.getTitle());
+//    message.setText(mailDTO.getContent());
+//    javaMailSender.send(message);
+//  }
 
 
   // 회원가입
@@ -123,5 +136,17 @@ public class MemberService {
   // 회원삭제
   public void deleteById(Long id) {
     memberRepository.deleteById(id);
+  }
+
+  // 아이디 찾기
+  public String findByEmail(MemberDTO memberDTO) {
+    Optional<MemberEntity> byEmail = memberRepository.findByEmail(memberDTO.getEmail());
+    if(byEmail.isPresent()){
+      MemberEntity memberEntity = byEmail.get();
+      return MemberDTO.findloginIdMember(memberEntity);
+    }
+    else {
+      return null;
+    }
   }
 }

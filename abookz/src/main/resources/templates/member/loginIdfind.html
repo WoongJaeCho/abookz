@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Idfinder</title>
+</head>
+<body>
+<div id="header">
+  <div id="title">
+    <h2>아이디 찾기</h2>
+  </div>
+  <div>
+    <div id="loginIdifnd">
+      <form action="/member/loginIdfind" method="post">
+        <table>
+          <tr>
+            <td><p>가입 시 입력했던 이메일을 입력해주세요</p></td>
+            <td><input type="email" name="email" id="email"></td>
+          </tr>
+          <tr>
+            <td colspan="2" id="btns">
+              <input type="submit" value="아이디찾기">
+              <input type="reset" value="취소">
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>
