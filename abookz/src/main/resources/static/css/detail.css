@@ -1,10 +1,11 @@
 body{
     margin: 0 auto;
-}
-#book_container{
     display: flex;
     align-items: center;
     text-align: center;
+}
+#book_container{
+
 }
 #bookDetail{
     width: 100%;
@@ -14,22 +15,16 @@ body{
     text-align: center;
 }
 #book {
-    border: 1px solid black;
+
     width: 800px;
     height: 500px;
     margin: auto; /* 가운데 정렬을 위해 추가 */
 }
 
-.detail_tr{
-        border: 1px solid rebeccapurple;
-    }
-.detail_td{
-        border:  1px solid violet;
-    }
 .detail_tdimg{
     width: 300px;
 }
-.detail_td > img{
+.detail_tdimg img{
     width: 100%;
     height: 100%;
     object-fit: cover;

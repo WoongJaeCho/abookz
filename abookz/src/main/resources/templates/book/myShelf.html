@@ -6,29 +6,45 @@
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}" /><br>
+
+
 <div id="shelf_container">
 <div id="shelf_left">
+<hr class="shelfLeft_hr">
 </div>
-<div>
 <div id="shelf_center">
-    <table class="shelf_table" th:each="book : ${books}">
+    <hr class="myShelf_hr">
+    <br>
+
+    <table class="shelf_table">
+        <thead>
         <tr class="shelf_tr">
-            <td rowspan="5" class="shelf_tdimg">
-                <img class="cover_img" th:src="${book.cover}" alt="책이미지">
-            </td>
-            <td class="shelf_title" th:text="${book.title}">제목</td>
-        </tr>
-        <tr class="shelf_tr">
-        <td class="shelf_author"  th:text="${book.author}">작가</td>
-        </tr>
-        <tr>
+            <th class="shelf_th" ># </th>
+            <th class="shelf_th">이미지</th>
+            <th class="shelf_th">제목</th>
+            <th class="shelf_th">작가</th>
+            <th class="shelf_th">페이지</th>
+            <th class="shelf_th">서재</th>
+            <th class="shelf_th">시작날짜</th>
+            <th class="shelf_th">추가날짜</th>
+            </tr>
+        </thead>
+        <tbody>
+        <tr class="myShelf_tr" th:each="book : ${books}">
+            <td class="shelf_th" th:text="${bookStat.count}">1</td>
+            <td class="shelf_tdimg">
+                <img class="cover_img" th:src="${book.cover}" alt="책이미지"></td>
+ <td class="shelf_title" th:text="${#strings.contains(book.title, '(') ? #strings.substringBefore(book.title, '(') : #strings.contains(book.title, '-') ? #strings.substringBefore(book.title, '-') : book.title}">제목</td>
+        <td class="shelf_author"   th:text="${#strings.substringBefore(book.author, '(')}">작가</td>
         <td class="shelf_page" th:text="${book.itemPage}">페이지</td>
+            <td class="shelf_myShelf" th:text="${shelf[bookStat.index].tag == null ? 'to-read' : shelf[bookStat.index].tag}"></td>
+            <td class="shelf_myShelf" th:text="${shelf[bookStat.index].startDate == null ? '미정' : shelf[bookStat.index].startDate}"></td>
+            <td class="shelf_myShelf" th:text="${shelf[bookStat.index].addDate}"></td>
         </tr>
+        </tbody>
     </table>
 </div>
 <div id="shelf_right">
-
-</div>
 </div>
 </div>
 <div id="searchResults"></div>

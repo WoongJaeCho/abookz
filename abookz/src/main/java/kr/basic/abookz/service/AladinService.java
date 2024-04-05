@@ -98,13 +98,10 @@ public class AladinService {
             /*CategoryEntity categoryName= CategoryEntity.fromString(itemObject.getString("categoryName"));*/
             String cover = itemObject.getString("cover");
             String description = itemObject.getString("description");
-
             //int itemPage = itemObject.getInt("")
             String link = itemObject.getString("link");
-
             if(itemObject.getString("isbn13") == null) {
                 String isbn = itemObject.getString("isbn");
-
                 BookDTO bookDTO = BookDTO.builder()
                         .title(title)
                         .author(author)

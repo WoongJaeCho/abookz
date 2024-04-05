@@ -2,6 +2,7 @@ body{
 margin: 0 auto;
 }
 #shelf_container{
+    width: 100%;
     display: flex;
     justify-content: space-between;
 }
@@ -9,8 +10,31 @@ margin: 0 auto;
     flex: 2;
 }
 #shelf_center{
+    margin-left: 20px;
     flex: 6;
 }
 #shelf_right{
     flex: 2;
 }
+.myShelf_hr hr{
+    border: 1px;
+    width: 80%;
+}
+.shelfLeft_hr{
+    border:  1px solid grey;
+    width: 1px;
+    height: 100%;
+    float: right;
+}
+.myShelf_tr td{
+    padding-bottom: 20px;
+}
+.shelf_th, .shelf_tdimg, .shelf_title, .shelf_author, .shelf_page {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+.shelf_tdimg img{
+    width: 30px;
+    height: 30px;
+}
+

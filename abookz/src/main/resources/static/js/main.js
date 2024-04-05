@@ -1,3 +1,4 @@
+
 // header
 let nav = document.querySelectorAll(".nav > ul > li");
 
@@ -31,3 +32,5 @@ setInterval(()=>{
         },700)
     }
 },3000)
+
+

@@ -40,4 +40,10 @@ public class BookShelfEntity {
   @ManyToOne
   @JoinColumn(name = "BOOK_ID",foreignKey = @ForeignKey(name = "BOOKSHELF_IBFK_2"))
   private BookEntity book;
+
+  @PrePersist
+  public void prePersist() {
+    this.addDate = LocalDateTime.now().withSecond(0).withNano(0);
+  }
+
 }
