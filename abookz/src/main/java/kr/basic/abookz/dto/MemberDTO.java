@@ -24,7 +24,6 @@ public class MemberDTO {
   @Enumerated(EnumType.STRING)
   private RoleEnum role; // 역할
   private String profile; // 프로필이미지
-  @CreationTimestamp
   private LocalDate regDate; // 가입일
 
 
@@ -41,6 +40,12 @@ public class MemberDTO {
     memberDTO.setLoginId(id);
     memberDTO.setPassword(pw);
     return memberDTO;
+  }
+
+  public static String findloginIdMember(MemberEntity memberEntity){
+    MemberDTO memberDTO = new MemberDTO();
+    memberDTO.setLoginId(memberEntity.getLoginId());
+    return memberDTO.getLoginId();
   }
 
   public static MemberDTO AllMemberDTO(MemberEntity memberEntity){

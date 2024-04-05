@@ -5,6 +5,9 @@ import kr.basic.abookz.dto.MemberDTO;
 import kr.basic.abookz.service.MemberService;
 import lombok.RequiredArgsConstructor;
 
+
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +21,10 @@ import java.util.List;
 public class MemberController {
   // 생성자 주입
   private final MemberService memberService;
+//  private final JavaMailSender javaMailSender;
+
+//  @Value("${mail.username}")
+//  private String from;
 
   // 조회
   @GetMapping("/list")
@@ -105,5 +112,28 @@ public class MemberController {
     session.invalidate();
     return "confirm";
   }
+
+  // 아이디 찾기
+  @GetMapping("/loginIdfind")
+  public String IdfindForm(){
+    return "member/loginIdfind";
+  }
+  @PostMapping("/loginIdfind")
+  public String Idfind(@ModelAttribute MemberDTO memberDTO, Model model){
+    String findloginID = memberService.findByEmail(memberDTO);
+    if(findloginID != null){
+      model.addAttribute("logId", findloginID);
+      return "member/loginIdfindresult";
+    }
+    else {
+      return "member/login";
+    }
+  }
+
+  @GetMapping("/loginPwfind")
+  public String PwfindForm(){
+    return "member/loginPwfinder";
+  }
+
 
 }

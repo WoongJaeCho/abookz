@@ -18,7 +18,6 @@ spring:
     username: root
     password: 1234
 
-
   servlet:
     multipart:
       max-file-size: 10MB
@@ -45,3 +44,15 @@ spring:
       hibernate:
         jdbc:
           time_zone: Asia/Seoul
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ghrt8426@gmail.com
+    password: bezx btfc hohb rjda
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
