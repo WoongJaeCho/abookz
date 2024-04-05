@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Pwfinder</title>
+</head>
+<body>
+<div id="header">
+  <div id="title">
+    <h2>비밀번호 찾기</h2>
+  </div>
+  <div>
+    <div id="loginIdifnd">
+      <form action="/member/loginPWfind" method="post">
+        <table>
+          <tr>
+            <td><p>아이디를 입력해주세요</p></td>
+            <td><input type="text" name="loginId" id="loginId"></td>
+          </tr>
+          <tr>
+            <td><p>이메일을 입력해주세요</p></td>
+            <td><input type="email" name="email" id="email"></td>
+          </tr>
+          <tr>
+            <td colspan="2" id="btns">
+              <input type="submit" value="비밀번호찾기">
+              <input type="reset" value="취소">
+            </td>
+          </tr>
+        </table>
+      </form>
+    </div>
+  </div>
+</div>
+</body>
+</html>
