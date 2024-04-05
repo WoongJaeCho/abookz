@@ -1,13 +1,15 @@
 // header
 let nav = document.querySelectorAll(".nav > ul > li");
 
-nav.forEach(navItem=>{
-    navItem.addEventListener("mouseover",function(){
-        this.querySelector('.submenu').style.height = "350px";
-    })
-    navItem.addEventListener("mouseout",function(){
-        this.querySelector('.submenu').style.height = "0px";
-    })
+nav.forEach((navItem,index)=>{
+    if(index != 0){
+        navItem.addEventListener("mouseover",function(){
+            this.querySelector('.submenu').style.height = "330px";
+        })
+        navItem.addEventListener("mouseout",function(){
+            this.querySelector('.submenu').style.height = "0px";
+        })
+    }
 })
 
 // main
