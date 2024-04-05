@@ -28,9 +28,9 @@ public class MemberEntity {
   private LocalDate regDate;//가입일
 
 //  private int challenge;//습관형성 챌린지
-//  @OneToMany(mappedBy = "member",fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+//  @OneToMany(mappedBy = "member, cascade = CascadeType.ALL)
 //  private List<ReviewEntity> reviewList = new ArrayList<>(); //회원이 작성한 리뷰 리스트
-//@OneToMany(mappedBy = "member",fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
+//@OneToMany(mappedBy = "member" ,cascade = CascadeType.ALL)
 //  private List<MemoEntity> memoList = new ArrayList<>(); //회원이 작성한 메모 리스트
 
   public static MemberEntity toMemberEntity(MemberDTO memberDTO){
@@ -39,7 +39,7 @@ public class MemberEntity {
     memberEntity.setPassword(memberDTO.getPassword());
     memberEntity.setEmail(memberDTO.getEmail());
     memberEntity.setNickname(memberDTO.getNickname());
-    memberEntity.setRole(RoleEnum.Role_User);
+    memberEntity.setRole(RoleEnum.ROLE_USER);
     memberEntity.setRegDate(memberDTO.getRegDate());
     return memberEntity;
   }

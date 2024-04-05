@@ -33,11 +33,11 @@ public class BookShelfEntity {
   @Enumerated(EnumType.STRING)
   private TagEnum tag; // READ,WANT_TO_READ,CURRENTLY_READING
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "MEM_ID",foreignKey = @ForeignKey(name = "BOOKSHELF_IBFK_1"))
   private MemberEntity member; // 리뷰 작성 회원
 
-  @ManyToOne
+  @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "BOOK_ID",foreignKey = @ForeignKey(name = "BOOKSHELF_IBFK_2"))
   private BookEntity book;
 }
