@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import static kr.basic.abookz.entity.book.TagEnum.CURRENTLY_READING;
@@ -31,8 +32,11 @@ public class HomeController {
                     .flatMap(book -> bookService.findAllById(book.getId()).stream())
                     .toList();
             System.out.println("books = " + books);
-
+            LocalDate currentDate = LocalDate.now();
+            System.out.println(currentDate);
+            System.out.println(shelves.get(0).getStartDate());
             if( shelves.size() != 0 || books.size() != 0 ) {
+                model.addAttribute("currentDate", currentDate);
                 model.addAttribute("books", books);
                 model.addAttribute("shelves", shelves);
             }
