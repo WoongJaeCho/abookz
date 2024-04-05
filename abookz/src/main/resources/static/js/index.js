@@ -13,35 +13,59 @@ function searchBooks() {
             .then(response => response.json())
             .then(data => {
                 if (data && data.length > 0) {
+
                     var table = document.createElement('table');
-                    var headerRow = document.createElement('tr');
-                    var titleHeader = document.createElement('th');
-                    titleHeader.textContent = 'Title';
-                    headerRow.appendChild(titleHeader);
-                    table.appendChild(headerRow);
+                    table.className = 'query_table';
+                    // 이미지 행
+                    var coverRow = document.createElement('tr');
+                    coverRow.className = 'query_tr';
+                    var coverCell = document.createElement('td');
+                    coverCell.className = 'query_td';
+                    coverCell.setAttribute('rowspan', '5');
+                    coverCell.setAttribute('width', '300');
+                    var coverImage = document.createElement('img');
+                    coverImage.src = book.cover;
+                    coverImage.className="cover_img"
+                    coverImage.alt = '책 이미지';
+                    var coverDetail = document.createElement('a');
+                    coverDetail.href = "/content/" + book.isbn13;
+                    coverDetail.appendChild(coverImage);
+                    coverCell.appendChild(coverDetail);
+                    coverRow.appendChild(coverCell);
+                    table.appendChild(coverRow);
 
-                    var authorHeaderRow = document.createElement('tr');
-                    var authorHeader = document.createElement('th');
-                    authorHeader.textContent = 'Author';
-                    authorHeaderRow.appendChild(authorHeader);
-                    table.appendChild(authorHeaderRow);
+                    // 제목
+                    var titleRow = document.createElement('tr');
+                    var titleCell = document.createElement('td');
+                    titleCell.textContent = book.title;
+                    titleRow.appendChild(titleCell);
+                    table.appendChild(titleRow);
 
-                    data.forEach(book => {
+                    // 작가
+                    var authorRow = document.createElement('tr');
+                    authorRow.className="query_tr";
+                    var authorCell = document.createElement('td');
+                    authorCell.className="query_td";
+                    authorCell.textContent = book.author;
+                    authorRow.appendChild(authorCell);
+                    table.appendChild(authorRow);
 
-                        var titleRow = document.createElement('tr');
-                        var titleCell = document.createElement('td');
-                        titleCell.textContent = book.title;
-                        titleRow.appendChild(titleCell);
-                        table.appendChild(titleRow);
-
-                        var authorRow = document.createElement('tr');
-                        var authorCell = document.createElement('td');
-                        authorCell.textContent = book.author;
-                        authorRow.appendChild(authorCell);
-                        table.appendChild(authorRow);
-                    });
+                    //출판날짜
+                    var pubDateRow = document.createElement('tr');
+                    pubDateRow.className="query_tr";
+                    var pubDateCell = document.createElement('td');
+                    pubDateCell.className="query_td";
+                    pubDateCell.textContent = book.pubDate;
+                    pubDateRow.appendChild(pubDateCell);
+                    table.appendChild(pubDateRow);
 
                     resultsDiv.appendChild(table);
+                    //화면이 모드 로드된 후에 기능이 실행된다 DOMContentLoaded
+                    document.addEventListener('DOMContentLoaded', function() {
+                        if(document.getElementById('book_container')) {
+                            document.getElementById('book_container').style.display = 'none';
+                       }
+                        });
                 } else {
                     resultsDiv.textContent = 'No books found';
                 }
@@ -65,16 +89,17 @@ function searchBooks() {
                     data.forEach(book => {
 
                         var table = document.createElement('table');
-                        table.className = 'query';
+                        table.className = 'query_table';
                         // 이미지 행
                         var coverRow = document.createElement('tr');
-                        coverRow.className = 'query';
+                        coverRow.className = 'query_tr';
                         var coverCell = document.createElement('td');
-                        coverCell.className = 'query';
+                        coverCell.className = 'query_td';
                         coverCell.setAttribute('rowspan', '5');
                         coverCell.setAttribute('width', '300');
                         var coverImage = document.createElement('img');
                         coverImage.src = book.cover;
+                        coverImage.className="cover_img"
                         coverImage.alt = '책 이미지';
                         var coverDetail = document.createElement('a');
                         coverDetail.href = "/content/" + book.isbn13;
@@ -92,18 +117,18 @@ function searchBooks() {
 
                         // 작가
                         var authorRow = document.createElement('tr');
-                        authorRow.className="query";
+                        authorRow.className="query_tr";
                         var authorCell = document.createElement('td');
-                        authorCell.className="query";
+                        authorCell.className="query_td";
                         authorCell.textContent = book.author;
                         authorRow.appendChild(authorCell);
                         table.appendChild(authorRow);
 
                         //출판날짜
                         var pubDateRow = document.createElement('tr');
-                        pubDateRow.className="query";
+                        pubDateRow.className="query_tr";
                         var pubDateCell = document.createElement('td');
-                        pubDateCell.className="query";
+                        pubDateCell.className="query_td";
                         pubDateCell.textContent = book.pubDate;
                         pubDateRow.appendChild(pubDateCell);
                         table.appendChild(pubDateRow);
@@ -111,7 +136,15 @@ function searchBooks() {
                         resultsDiv.appendChild(table);
 
                     });
-                    document.getElementById('book_container').style.display = 'none';
+                    //화면이 모드 로드된 후에 기능이 실행된다 DOMContentLoaded
+                    document.addEventListener('DOMContentLoaded', function() {
+                    if(document.getElementById('book_container')){
+                        document.getElementById('book_container').style.display = 'none';
+                    }
+                    if(document.getElementById('shelf_container')){
+                        document.getElementById('shelf_container').style.display = 'none';
+                    }
+                    });
                 } else {
                     resultsDiv.textContent = 'No results found';
                 }
