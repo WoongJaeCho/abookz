@@ -5,6 +5,7 @@ import kr.basic.abookz.entity.member.MemberEntity;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Entity
@@ -29,6 +30,11 @@ public class BookShelfEntity {
   private int currentPage; //현재읽은페이지
   private int bookShelfGrade;//평점(1,2,3,4,5) 별표시
 
+  public BookShelfEntity( MemberEntity member, BookEntity book,TagEnum tag) {
+    this.member = member;
+    this.book = book;
+    this.tag = tag;
+  }
 
   @Enumerated(EnumType.STRING)
   private TagEnum tag; // READ,WANT_TO_READ,CURRENTLY_READING
@@ -40,4 +46,5 @@ public class BookShelfEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "BOOK_ID",foreignKey = @ForeignKey(name = "BOOKSHELF_IBFK_2"))
   private BookEntity book;
+
 }
