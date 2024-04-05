@@ -40,6 +40,20 @@ public class AladinService {
             vo = getOneDetail(getOneBookPage);
         return  vo;
     }
+    public List<BookDTO> choiceGetCategoryList(String category) throws Exception{
+        List<BookDTO>  vo = null;
+        String url = getUrlCategoryList(category);
+        String choice = restTemplate.getForObject(url,String.class);
+                vo=parseItemsFromJson(choice);
+        return vo;
+    }
+    public List<BookDTO> getQueryTypeList(String type) throws  Exception{
+        List<BookDTO> vo = null;
+        String url = getUrlQueryTypeList(type);
+        String query = restTemplate.getForObject(url,String.class);
+        vo=parseItemsFromJson(query);
+        return vo;
+    }
     public BookEntity getOneBookEntity(String isbn13) throws Exception{
         BookEntity entity = null;
         String urlOne = UrlGetOneBookItemPage(isbn13);
@@ -52,24 +66,23 @@ public class AladinService {
     /*상품 검색 조회*/
     private String getUrl(String searchWord) throws Exception {
         return  "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey="+ TTB_KEY +"&Query="+ searchWord
-                +"&QueryType=Title&Cover=big&MaxResults=10&start=1&SearchTarget=Book&output=js&Version=20131101";
+                +"&QueryType=Title&Cover=big&MaxResults=100&start=1&SearchTarget=Book&output=js&Version=20131101";
 
     }
-    //상품 조회 1개 가져왓을떄 2개 쓴다
-/*    private String UrlGetOneBook(String isbn13) throws Exception {
-        System.out.println("기본체크"+isbn13);
-        return  "http://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey="+ TTB_KEY +"&ItemIdType="+ isbn13
-                +"&Cover=big&MaxResults=1&start=1&SearchTarget=Book&output=js&Version=20131101";
 
-    }*/
-    //상품 조회 1개 가져왓을떄 2개 쓴다
     private String UrlGetOneBookItemPage(String isbn13) throws  Exception{
         return  "http://www.aladin.co.kr/ttb/api/ItemLookup.aspx?ttbkey="+ TTB_KEY +"&ItemIdType=ISBN&ItemId="+ isbn13
-                +"&Cover=big&MaxResults=10&start=1&SearchTarget=Book&output=js&Version=20131101";
-
-
+                +"&Cover=big&MaxResults=100&start=1&SearchTarget=Book&output=js&Version=20131101";
 
     }
+    private String getUrlCategoryList(String category) throws  Exception{
+        return  "http://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey="+ TTB_KEY+"&QueryType=BestSeller" +"&CategoryId=" +category
+                +"&Cover=big&MaxResults=100&start=1&SearchTarget=Book&output=js&Version=20131101";
+    }
+    private String getUrlQueryTypeList(String type) throws  Exception{
+        return "http://www.aladin.co.kr/ttb/api/ItemList.aspx?ttbkey="+ TTB_KEY+"&QueryType="+type
+                +"&Cover=big&MaxResults=100&start=1&SearchTarget=Book&output=js&Version=20131101";
+    };
 
     private List<BookDTO> parseItemsFromJson(String jsonString) {
         List<BookDTO> items = new ArrayList<>();
@@ -211,6 +224,8 @@ public class AladinService {
 
         return item;
     }
+
+
 
 
 }

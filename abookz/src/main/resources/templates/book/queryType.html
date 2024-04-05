@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <head th:replace="~{fragments/head :: head}">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}" /><br>
+<div id="shelf_container">
+    <div id="shelf_left">
+    </div>
+    <div>
+        <div id="shelf_center">
+            <table class="shelf_table" th:each="book : ${books}">
+                <tr class="shelf_tr">
+                    <a th:href="@{'/content/' + ${book.ISBN13}}">
+                    <td rowspan="5" class="shelf_tdimg">
+                        <img class="cover_img" th:src="${book.cover}" alt="책이미지">
+                    </a>
+                    </td>
+                    <td class="shelf_title" th:text="${book.title}">제목</td>
+                </tr>
+                <tr class="shelf_tr">
+                    <td class="shelf_author"  th:text="${book.author}">작가</td>
+                </tr>
+                <tr>
+                    <td class="shelf_page" th:text="${book.pubDate}">페이지</td>
+                </tr>
+            </table>
+        </div>
+        <div id="shelf_right">
+
+        </div>
+    </div>
+</div>
+<div id="searchResults"></div>
+<script defer src="/js/index.js"></script>
+</body>
+</html>

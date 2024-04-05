@@ -65,10 +65,12 @@ function searchBooks() {
                     data.forEach(book => {
 
                         var table = document.createElement('table');
-
+                        table.className = 'query';
                         // 이미지 행
                         var coverRow = document.createElement('tr');
+                        coverRow.className = 'query';
                         var coverCell = document.createElement('td');
+                        coverCell.className = 'query';
                         coverCell.setAttribute('rowspan', '5');
                         coverCell.setAttribute('width', '300');
                         var coverImage = document.createElement('img');
@@ -90,14 +92,18 @@ function searchBooks() {
 
                         // 작가
                         var authorRow = document.createElement('tr');
+                        authorRow.className="query";
                         var authorCell = document.createElement('td');
+                        authorCell.className="query";
                         authorCell.textContent = book.author;
                         authorRow.appendChild(authorCell);
                         table.appendChild(authorRow);
 
                         //출판날짜
                         var pubDateRow = document.createElement('tr');
+                        pubDateRow.className="query";
                         var pubDateCell = document.createElement('td');
+                        pubDateCell.className="query";
                         pubDateCell.textContent = book.pubDate;
                         pubDateRow.appendChild(pubDateCell);
                         table.appendChild(pubDateRow);

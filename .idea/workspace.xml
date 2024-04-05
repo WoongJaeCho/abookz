@@ -57,8 +57,8 @@
         <option value="JavaScript File" />
         <option value="Class" />
         <option value="Interface" />
-        <option value="HTML File" />
         <option value="CSS File" />
+        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -86,10 +86,10 @@
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.AbookzApplication.executor": "Debug",
+    "Spring Boot.AbookzApplication.executor": "Run",
     "git-widget-placeholder": "origin/dev-LJY",
     "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/ecpliseworkspace/JYproject/abookz",
+    "last_opened_file_path": "C:/ecpliseworkspace/JYproject/abookz/abookz/src/main/resources/templates/book",
     "list.type.of.created.stylesheet": "CSS",
     "node.js.detected.package.eslint": "true",
     "node.js.detected.package.tslint": "true",
@@ -100,6 +100,9 @@
   }
 }]]></component>
   <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="C:\ecpliseworkspace\JYproject\abookz\abookz\src\main\resources\templates\book" />
+    </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\ecpliseworkspace\JYproject\abookz\abookz\src\main\resources\static" />
       <recent name="C:\ecpliseworkspace\JYproject\abookz\abookz\src\main\resources\js" />

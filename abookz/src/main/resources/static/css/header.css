@@ -224,11 +224,15 @@ main{
     width: 33.33%;
     height: 100%;
     background-color: #ccc;
+    font-size: 1.5em;
+    padding: 10px;
 }
 #content .recommend{
     width: 33.33%;
     height: 100%;
     background-color: #bbb;
+    font-size: 1.5em;
+    padding: 10px;
 }
 #content .memo {
     width: 33.33%;
@@ -260,16 +264,35 @@ main{
 #footer .footer1 {
     width: 80%;
     height: 100%;
+    background-color: #bcd;
 }
 #footer .footer1 .footer1-1 {
     width: 100%;
     height: 50%;
-    background-color: #abc;
+    text-align: center;
+    padding-bottom: 10px;
 }
 #footer .footer1 .footer1-2 {
     width: 100%;
     height: 50%;
-    background-color: #bcd;
+    text-align: center;
+    padding-top: 10px;
+}
+#footer .footer1 .footer1-1 ul {
+    padding-top: 24px;
+}
+#footer .footer1 .footer1-1 li {
+    display: inline-block;
+    border-right: 1px solid #333;
+}
+#footer .footer1 .footer1-1 li:last-child {
+    border: 0;
+}
+#footer .footer1 .footer1-1 li a {
+    padding: 10px;
+}
+#footer .footer1 .footer1-1 li a:hover {
+    text-decoration: underline;
 }
 #footer .snsIcon {
     width: 20%;
