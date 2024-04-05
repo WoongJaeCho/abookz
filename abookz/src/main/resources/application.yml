@@ -16,7 +16,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/abookzDB?serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: root
-    password: 1120rorn
+    password: 1234
 
 
   servlet:
@@ -33,8 +33,8 @@ spring:
     database-platform: org.hibernate.dialect.MySQL8Dialect
     database: mysql
     hibernate:
-#      ddl-auto: update
-      ddl-auto: create
+      ddl-auto: update
+#      ddl-auto: create
       #show_sql: true
       #format_sql: true
       use_sql_comments: true
