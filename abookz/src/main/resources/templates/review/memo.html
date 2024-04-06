@@ -1,63 +1,40 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
-<head>
-    <meta charset="UTF-8">
-    <title>memo</title>
-    <style>
-        .memo{
-            display: flex;
-            width: 500px;
-        }
-        .cover_img{
-            width: 50%;
 
-        }
-        .text_memo{
-            width: 50%;
-            display: flex;
-            flex-direction: column;
-        }
-        .text_memo div {
-            display: flex;
-            margin-bottom: 10px;
-        }
-        .text_memo div p {
-            width: 30%;
-        }
-        .text_memo div input {
-            width: 70%;
-        }
-    </style>
-</head>
-<body>
-<h1> memo </h1>
-<div >
-    <form class="memo" action="#">
-    <div class="cover_img">
-<!--        <img th:src="${book.cover}" alt="책 이미지">-->
-        <img src="https://image.aladin.co.kr/product/30683/62/cover/8964964853_1.jpg" alt="책 이미지">
-        <input type="hidden" th:name="${book.ISBM13}" th:value="${book.ISBM13}"/>
-    </div>
-    <div class="text_memo">
-        <div>
-            <p> 페이지 </p>
-            <input type="number" class="page" id="page" name="page" min="1" placeholder="페이지를 입력하세요."/> <br>
+<body th:fragment="memo">
+<div id="memo">
+    <span class="close-modal">×</span>
+    <h2> 메모 남기기 </h2>
+    <form class="memo" action="/memo" method="post">
+        <div class="cover_img" th:if="${books != null or shelves != null}" th:with="book=${books[0]}, shelf=${shelves[0]}">
+             <img th:src="${book.cover}" alt="책 이미지">
+<!--            <img src="https://image.aladin.co.kr/product/30683/62/cover/8964964853_1.jpg" alt="책 이미지">-->
+            <input type="hidden" th:name="bookShelf" th:value="${shelf.id}"/>
         </div>
-        <div>
-            <p> 인용문구 </p>
-            <textarea id="quotes" name="quotes" placeholder="인상 깊은 문구를 입력하세요."></textarea> <br>
+        <div class="text_memo">
+            <div>
+                <p> 페이지 </p>
+                <input type="number" class="page" id="page" name="page" min="1" placeholder="페이지를 입력하세요."/> <br>
+            </div>
+            <div>
+                <p> 작성 시간 </p>
+                <input type="datetime-local" class="memoDateTime" name="createdDate" />
+            </div>
+            <div>
+                <p> 인용문구 </p>
+                <textarea id="quotes" name="quotes" placeholder="인상 깊은 문구를 입력하세요."></textarea> <br>
+            </div>
+            <div>
+                <p> 나의 생각 </p>
+                <textarea id="note" name="note" placeholder="본인의 생각이나 느낀점을 적어보세요."></textarea> <br>
+            </div>
         </div>
-        <div>
-            <p> 나의 생각 </p>
-            <textarea id="note" name="note" placeholder="본인의 생각이나 느낀점을 적어보세요."></textarea> <br>
+        <div class="btns">
+            <button type="submit"> 작성 </button>
+            <button type="reset"> 취소 </button>
         </div>
-    </div>
     </form>
-</div>
-<div class="btns">
-    <button type="submit"> 작성 </button>
-    <button type="reset"> 취소 </button>
 </div>
 
 </body>
-</html>
+
