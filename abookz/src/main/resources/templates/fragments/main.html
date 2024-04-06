@@ -14,10 +14,12 @@
         <div class="notice"> 공지사항 </div>
         <div class="recommend"> 에이북즈 도서 추천 </div>
         <div class="memo" th:if="${session.id == null}">
-            <p>바로가기</p>
+            <img src="/images/memo_card.png" alt="메모카드">
+            <p class="memo_card"> 로그인 하기 </p>
         </div>
         <div class="memo" th:if="${session.id != null and ( books == null or shelves == null )}">
-            <p>바로가기</p>
+            <img src="/images/memo_card.png" alt="메모카드">
+            <p class="memo_card"> 나의 서재 </p>
         </div>
         <div class="memo" th:if="${session.id != null and books != null and shelves != null}" th:with="book=${books[0]}, shelf=${shelves[0]}" >
             <img th:src="${book.cover}" alt="book_cover" class="memo_cover">

@@ -1,11 +1,15 @@
 package kr.basic.abookz.controller;
 
+import kr.basic.abookz.dto.MemoDTO;
 import kr.basic.abookz.service.BookShelfService;
+import kr.basic.abookz.service.MemoService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 @Controller
@@ -15,8 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 public class MemoController {
 
     private final BookShelfService bookShelfService;
-    @GetMapping("/{id}")
-    public String memo(@PathVariable("/{id}") Long id){
-        return null;
+    private final MemoService memoService;
+    @PostMapping
+    public String memo(MemoDTO memoDTO){
+        System.out.println("memoDTO = " + memoDTO);
+        memoService.save(memoDTO);
+        return "redirect:/";
     }
 }
