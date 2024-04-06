@@ -5,8 +5,6 @@ import kr.basic.abookz.entity.member.MemberEntity;
 import kr.basic.abookz.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
@@ -25,7 +23,6 @@ import java.util.Optional;
 public class MemberService {
   // 생성자 주입
   private final MemberRepository memberRepository;
-  private final JavaMailSender javaMailSender;
 
 
   @Value("${upload.path}" + "profile/")

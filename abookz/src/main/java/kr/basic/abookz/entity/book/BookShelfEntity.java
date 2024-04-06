@@ -23,13 +23,19 @@ public class BookShelfEntity {
 
   @CreationTimestamp
   private LocalDateTime addDate;//등록날짜
-  private LocalDate startDate;//읽기시작한날짜
-  private LocalDate endDate;//다읽은날짜
-  private LocalDate targetDate;//목표날짜
-  private int dailyPage;//하루목표 페이지
-  private int currentPage; //현재읽은페이지
-  private int bookShelfGrade;//평점(1,2,3,4,5) 별표시
 
+
+  private LocalDateTime startDate;//읽기시작한날짜
+
+  private LocalDateTime endDate;//다읽은날짜
+
+  private LocalDateTime targetDate;//목표날짜
+
+  private int dailyPage;//하루목표 페이지
+
+  private int currentPage; //현재읽은페이지
+
+  private int bookShelfGrade;//평점(1,2,3,4,5) 별표시
 
   @Enumerated(EnumType.STRING)
   private TagEnum tag; // READ,WANT_TO_READ,CURRENTLY_READING
