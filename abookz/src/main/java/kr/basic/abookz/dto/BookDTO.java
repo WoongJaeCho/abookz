@@ -37,13 +37,13 @@ public class BookDTO {
                 ", author='" + author + '\'' +
                 ", publisher='" + publisher + '\'' +
                 ", pubDate=" + pubDate +
-                ", ISBN13=" + ISBN13 +
+                ", ISBN13='" + ISBN13 + '\'' +
                 ", categoryName=" + categoryName +
                 ", cover='" + cover + '\'' +
                 ", description='" + description + '\'' +
                 ", itemPage=" + itemPage +
                 ", link='" + link + '\'' +
-                ", ISBN=" + ISBN +
+                ", ISBN='" + ISBN + '\'' +
                 '}';
     }
 }
