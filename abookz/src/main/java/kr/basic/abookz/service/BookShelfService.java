@@ -44,4 +44,11 @@ public class BookShelfService {
         return shelfDTO;
     }
 
+    public List<BookShelfDTO> findAllByMemberIdAndTag(Long memberId, TagEnum tagEnum){
+        List<BookShelfEntity> entities = bookShelfRepository.findAllByMemberIdAndTag(memberId, tagEnum);
+
+        return entities.stream()
+                .map(this::mapEntityToDTO)
+                .collect(Collectors.toList());
+    }
 }

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1> 슬라이드 카드 설정 </h1>
+
+    <table border="1">
+        <tr>
+            <th></th>
+            <th>슬라이드 순서</th>
+            <th>도서 제목</th>
+            <th>도서 ISBN13</th>
+            <th>등록일자</th>
+            <th>슬라이드 파일</th>
+        </tr>
+        <tr th:each="card, index : ${slideCard}">
+            <td th:text="${index.index + 1}">1</td>
+            <td>
+                <select>
+                    <option th:each="orderOption : ${#numbers.sequence(1, slideCard.size())}"
+                            th:value="${orderOption}"
+                            th:text="${orderOption == 0 ? '비활성' : orderOption}"
+                            th:selected="${orderOption == card.idx}">
+                        order
+                    </option>
+                </select>
+            </td>
+            <td th:text="${card.title}">데일 카네기 인간관계론</td>
+            <td th:text="${card.ISBN13}">9791187142560</td>
+            <td th:text="${card.addDate}">2024-04-07</td>
+            <td th:text="${card.slideFileName}">
+                <input type="file" value="slider01.png">
+            </td>
+        </tr>
+
+</body>
+</html>
