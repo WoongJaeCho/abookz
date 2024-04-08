@@ -43,23 +43,6 @@ public class BookController {
             System.out.println("book = " + book);
         return  "/book/detail";
     }
-    //   내 서재로 가기
-    @GetMapping("/myshelf")
-    public String getMyShelf(HttpSession session, RedirectAttributes redirectAttributes,Model model){
-        if(session.getAttribute("id")== null){
-            redirectAttributes.addFlashAttribute("fail","로그인이후 가능합니다");
-            return "redirect:/member/login";
-        }
-        Long memId = (Long)session.getAttribute("id");
-       List<BookShelfDTO> shelf =shelfService.findAllDTOByMemberId(memId);
-        List<BookDTO> books = shelf.stream()
-                .map(BookShelfDTO::getBookDTO)
-                .flatMap(book -> bookService.findAllByDTOId(book.getId()).stream())
-                .toList();
-        model.addAttribute("shelf", shelf);
-        model.addAttribute("books",books);
-        return "book/myShelf";
-    }
     @GetMapping("/category/{category}")
     public String choiceCategory(@PathVariable ("category")String category,Model model) throws Exception {
         List<BookDTO>  getCategoryList = aladinService.choiceGetCategoryList(category);

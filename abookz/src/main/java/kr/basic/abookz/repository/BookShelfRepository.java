@@ -17,7 +17,7 @@ public interface BookShelfRepository extends JpaRepository<BookShelfEntity,Long>
 
 
     List<BookShelfEntity> findAllByMemberId(Long memberId);
-
+    BookShelfEntity findByMemberIdAndBookId(Long memberId,Long book);
     List<BookShelfEntity> findAllByMemberIdAndTag(Long memberId, TagEnum tagEnum);
 
 

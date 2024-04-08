@@ -5,12 +5,17 @@ margin: 0 auto;
     width: 100%;
     display: flex;
     justify-content: space-between;
+
 }
 #shelf_left{
     flex: 2;
+    text-align: center;
+    align-items: center;
 }
 #shelf_center{
     margin-left: 20px;
+    text-align: center;
+    align-items: center;
     flex: 6;
 }
 #shelf_right{
@@ -37,4 +42,20 @@ margin: 0 auto;
     width: 30px;
     height: 30px;
 }
+.bookShelves{
+    font-size: 20px;
+    font-weight: bold;
+        color: grey;
+}
+.shelf_myShelf_read {
+    text-decoration: underline;
+}
 
+    .popup {
+        background-color: #fff;
+        border: 1px solid #ccc;
+        padding: 20px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        z-index: 9999;
+        display: none; /* 초기에는 보이지 않도록 설정 */
+    }

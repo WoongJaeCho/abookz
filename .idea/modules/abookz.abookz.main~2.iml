@@ -24,7 +24,7 @@
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-web:3.2.4" level="project" />
     <orderEntry type="library" name="Gradle: org.json:json:20240303" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-data-jpa:3.2.4" level="project" />
-    <orderEntry type="library" name="Gradle: org.modelmapper:modelmapper:2.3.8" level="project" />
+    <orderEntry type="library" name="Gradle: org.modelmapper:modelmapper:2.4.0" level="project" />
     <orderEntry type="library" name="Gradle: p6spy:p6spy:3.9.1" level="project" />
     <orderEntry type="library" name="Gradle: com.github.gavlyukovskiy:datasource-decorator-spring-boot-autoconfigure:1.9.0" level="project" />
     <orderEntry type="library" name="Gradle: org.springframework.boot:spring-boot-starter-mail:3.2.4" level="project" />
