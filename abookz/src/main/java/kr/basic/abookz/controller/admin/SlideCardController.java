@@ -9,20 +9,22 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
 @Controller
 @Slf4j
 @RequiredArgsConstructor
+@RequestMapping("/slide")
 public class SlideCardController {
 
     private final SlideCardService slideCardService;
     private final BookService bookService;
 
     private final AladinService aladinService;
-    @GetMapping("/slide")
+    @GetMapping
     public String Slide(Model model) throws Exception {
         List<SlideCardDTO> slideCardDTOs = slideCardService.findAll();
 
@@ -30,14 +32,30 @@ public class SlideCardController {
             //List<BookDTO> byDTOISBN13 = bookService.findByDTOISBN13(slideCardDTO.getISBN13());
             String isbn13 = slideCardDTO.getISBN13()+"";
             BookDTO book = aladinService.searchGetOneItem(isbn13);
-            slideCardDTO.setBook(book);
+            System.out.println("book = " + book);
+            if(book.getTitle() != null){
+                slideCardDTO.setBook(book);
+            }
+            System.out.println("@@@@@@@@@@@@@ = " + slideCardDTO);
         }
-        for (SlideCardDTO slideCardDTO : slideCardDTOs){
-            System.out.println("slideCardDTO = " + slideCardDTO);
-        }
-        
         model.addAttribute("slideCard", slideCardDTOs);
         return "admin/slideCard";
     }
 
+    @PostMapping
+    public String uploadSlide(@ModelAttribute SlideCardDTO slideCardDTO, @RequestParam("file") MultipartFile file){
+        try {
+            slideCardService.upload(slideCardDTO, file);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return "redirect:/slide";
+    }
+
+    @GetMapping("/{id}")
+    public String deleteCard(@PathVariable("id")Long id){
+        slideCardService.deletebyId(id);
+        return "redirect:/slide";
+    }
 }

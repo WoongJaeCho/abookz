@@ -27,6 +27,8 @@ public class BookShelfDTO {
     private MemberDTO memberDTO;
     private Duration duration = Duration.between( startDate, LocalDateTime.now());
 
+    private Long days;
+
     @Override
     public String toString() {
         return "BookShelfDTO{" +
