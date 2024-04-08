@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>save</title>
+</head>
+<body>
+<div id="header">
+  <div id="boardTitle">
+    <h2>게시글 작성</h2>
+  </div>
+</div>
+<div id="saveForm">
+  <form action="/board/save" method="post">
+    <table border="1">
+      <tr>
+        <td>제목</td>
+        <td><input type="text" name="title" id="title" autofocus required/>
+      </tr>
+      <tr>
+        <td>작성자</td>
+        <td><input type="text" name="writer" id="writer" required></td>
+      </tr>
+      <tr>
+        <td>내용</td>
+        <td><textarea rows="10" cols="20" name="contents"></textarea></td>
+      </tr>
+      <tr>
+        <td colspan="2" id="btns">
+          <input type="submit" value="작성">
+          <input type="reset" value="취소">
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>
+</body>
+</html>
