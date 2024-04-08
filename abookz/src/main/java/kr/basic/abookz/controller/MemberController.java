@@ -55,8 +55,7 @@ public class MemberController {
   @ResponseBody
   public String validId(@RequestParam("id") String id){
     System.out.println("id = " + id);
-    System.out.println(memberService.validById(id) ? "notValid" : "Valid");
-    return memberService.validById(id) ? "notValid" : "valid";
+    return memberService.validById(id) ? "notValid" : "Valid";
   }
 
   // 로그인
