@@ -9,17 +9,19 @@
             <div class="slider s2"><a href="/content/9791187444725"><img src="/images/slider02.png" alt="slider02"></a></div>
             <div class="slider s3"><a href="/content/9791192300818"><img src="/images/slider03.png" alt="slider03"></a></div>
         </div>
-        <div class="sliderWrap" th:unless="${slideCard == null}" th:each="card : ${slideCard}">
-            <div class="slider s1">
+        <div class="sliderWrap" th:unless="${slideCard == null}">
+            <div class="slider s1" th:each="card : ${slideCard}">
                 <a th:href="@{/content/{ISBN}(ISBN=${card.ISBN13})}">
-                    <img src="@{/images/{fileName}(fileName=${card.slideFileName})}" alt="slider01">
+                    <img th:src="@{/images/{fileName}(fileName=${card.slideFileName})}" th:alt="${card.slideFileName}">
                 </a>
             </div>
         </div>
     </article>
     <section id="content">
         <div class="notice"> 공지사항 </div>
-        <div class="recommend"> 에이북즈 도서 추천 </div>
+        <div class="recommend"> 에이북즈 도서 추천
+            <a href="/slide">admin</a>
+        </div>
         <div class="memo" th:if="${session.id == null}">
             <img src="/images/memo_card.png" alt="메모카드">
             <a href="/member/login" class="memo_card"> 로그인 하기 </a>
