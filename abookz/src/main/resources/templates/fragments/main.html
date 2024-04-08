@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <main id="main" >
 
@@ -23,15 +23,15 @@
         <div class="recommend"> 에이북즈 도서 추천
             <a href="/slide">admin</a>
         </div>
-        <div class="memo" th:if="${session.id == null}">
+        <div class="memo" sec:authorize="!isAuthenticated()">
             <img src="/images/memo_card.png" alt="메모카드">
             <a href="/member/login" class="memo_card"> 로그인 하기 </a>
         </div>
-        <div class="memo" th:if="${session.id != null and ( books == null or shelves == null )}">
+        <div class="memo" sec:authorize="isAuthenticated()" th:if="${books == null or shelves == null }">
             <img src="/images/memo_card.png" alt="메모카드">
             <a href="/myshelf" class="memo_card">나의 서재</a>
         </div>
-        <div class="memo" th:if="${session.id != null and books != null and shelves != null}" th:with="book=${books[0]}, shelf=${shelves[0]}" >
+        <div class="memo" sec:authorize="isAuthenticated()" th:if="${books != null and shelves != null}" th:with="book=${books[0]}, shelf=${shelves[0]}" >
             <img th:src="${book.cover}" alt="book_cover" class="memo_cover">
             <div class="memo_text">
                 <div class="memo_title" th:text="${book.title}"></div>
@@ -53,7 +53,7 @@
 </main>
 <script>
     var startDate = new Date([[${shelf.startDate}]]);
-    var currnetDate = new Date();
+    var currentDate = new Date();
 
     var timeDiff = currentDate - startDate;
 

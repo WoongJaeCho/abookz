@@ -34,7 +34,6 @@ public class HomeController {
             model.addAttribute("slideCard", slideCard);
         }
 
-        if(session.getAttribute("id") != null) {
             Long memId = (Long) session.getAttribute("id");
             List<BookShelfDTO> shelves = bookShelfService.findAllByMemberIdAndTag(memId, CURRENTLY_READING);
             List<BookDTO> books = shelves.stream()
@@ -48,7 +47,6 @@ public class HomeController {
                 model.addAttribute("books", books);
                 model.addAttribute("shelves", shelves);
             }
-        }
 
         return "index";
     }

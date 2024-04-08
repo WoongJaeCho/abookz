@@ -15,6 +15,9 @@ import kr.basic.abookz.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,8 +36,9 @@ public class SessionController {
     private final AladinService aladinService;
 
     @RequestMapping(value = "/want",method = RequestMethod.POST)
-    public String wantToRead(@RequestParam("book") String book ,RedirectAttributes redirectAttributes) throws Exception {
-        Long check = (Long)httpSession.getAttribute("id");
+    public String wantToRead(@RequestParam("book") String book , Authentication authentication,
+                             @AuthenticationPrincipal OAuth2User oauth) throws Exception {
+        Long check = (Long)oauth.getAttribute("id");
         System.out.println(check);
 
         if(httpSession.getAttribute("id") == null){
