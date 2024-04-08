@@ -2,6 +2,7 @@ package kr.basic.abookz.controller;
 
 import jakarta.servlet.http.HttpSession;
 import kr.basic.abookz.dto.BookDTO;
+import kr.basic.abookz.dto.BookShelfDTO;
 import kr.basic.abookz.entity.book.BookEntity;
 import kr.basic.abookz.entity.book.BookShelfEntity;
 import kr.basic.abookz.entity.member.MemberEntity;
@@ -24,8 +25,7 @@ import java.util.stream.Collectors;
 @Controller
 @Slf4j
 @RequiredArgsConstructor
-public class
-BookController {
+public class BookController {
 
     private final AladinService aladinService;
     private final BookShelfService shelfService;
@@ -51,10 +51,10 @@ BookController {
             return "redirect:/member/login";
         }
         Long memId = (Long)session.getAttribute("id");
-       List<BookShelfEntity> shelf =shelfService.findAllByMemberId(memId);
-        List<BookEntity> books = shelf.stream()
-                .map(BookShelfEntity::getBook)
-                .flatMap(book -> bookService.findAllById(book.getId()).stream())
+       List<BookShelfDTO> shelf =shelfService.findAllDTOByMemberId(memId);
+        List<BookDTO> books = shelf.stream()
+                .map(BookShelfDTO::getBookDTO)
+                .flatMap(book -> bookService.findAllByDTOId(book.getId()).stream())
                 .toList();
         model.addAttribute("shelf", shelf);
         model.addAttribute("books",books);
