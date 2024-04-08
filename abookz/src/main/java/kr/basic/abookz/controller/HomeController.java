@@ -12,7 +12,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.time.Duration;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 import static kr.basic.abookz.entity.book.TagEnum.CURRENTLY_READING;
@@ -29,7 +31,7 @@ public class HomeController {
 
         List<SlideCardDTO> slideCard = adminService.findTop3();
         System.out.println("slideCard = " + slideCard);
-        if( slideCard.size() == 0) {
+        if( slideCard.size() != 0) {
             model.addAttribute("slideCard", slideCard);
         }
 
@@ -41,6 +43,11 @@ public class HomeController {
                     .flatMap(book -> bookService.findAllByDTOId(book.getId()).stream())
                     .toList();
             LocalDate currentDate = LocalDate.now();
+
+            for(BookShelfDTO shelf : shelves){
+                Duration duration = Duration.between(shelf.getStartDate(), LocalDateTime.now());
+                shelf.setDays(duration.toDays());
+            }
 
             if( shelves.size() != 0 || books.size() != 0 ) {
                 model.addAttribute("currentDate", currentDate);

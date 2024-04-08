@@ -4,6 +4,7 @@ import kr.basic.abookz.entity.book.TagEnum;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.Duration;
 import java.time.LocalDateTime;
 
 @Getter
@@ -24,6 +25,8 @@ public class BookShelfDTO {
     private TagEnum tag; // READ,WANT_TO_READ,CURRENTLY_READING
     private BookDTO bookDTO;
     private MemberDTO memberDTO;
+
+    private Long days;
 
     @Override
     public String toString() {

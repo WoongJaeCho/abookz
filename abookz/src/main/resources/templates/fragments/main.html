@@ -5,14 +5,14 @@
 
     <article class="slide">
         <div class="sliderWrap" th:if="${slideCard == null}">
-            <div class="slider s1"><a href="/content/9791187142560"><img src="/images/slider01.png" alt="slider01"></a></div>
-            <div class="slider s2"><a href="/content/9791187444725"><img src="/images/slider02.png" alt="slider02"></a></div>
-            <div class="slider s3"><a href="/content/9791192300818"><img src="/images/slider03.png" alt="slider03"></a></div>
+            <div class="slider s1"><a href="/content/9791187142560"><img src="/images/slides/slider01.png" alt="slider01"></a></div>
+            <div class="slider s2"><a href="/content/9791187444725"><img src="/images/slides/slider02.png" alt="slider02"></a></div>
+            <div class="slider s3"><a href="/content/9791192300818"><img src="/images/slides/slider03.png" alt="slider03"></a></div>
         </div>
         <div class="sliderWrap" th:unless="${slideCard == null}">
             <div class="slider s1" th:each="card : ${slideCard}">
                 <a th:href="@{/content/{ISBN}(ISBN=${card.ISBN13})}">
-                    <img th:src="@{/images/{fileName}(fileName=${card.slideFileName})}" th:alt="${card.slideFileName}">
+                    <img th:src="@{/images/slides/{fileName}(fileName=${card.slideFileName})}" th:alt="${card.slideFileName}">
                 </a>
             </div>
         </div>
@@ -35,7 +35,7 @@
             <img th:src="${book.cover}" alt="book_cover" class="memo_cover">
             <div class="memo_text">
                 <div class="memo_title" th:text="${book.title}"></div>
-                <div class="memo_day" th:text="${shelf.startDate}"> 5일째 읽는 중 </div>
+                <div class="memo_day" th:text="|${shelf.days+1}일째 읽는중|"> 5일째 읽는 중 </div>
                 <div class="read_bar">
                     <progress class="progress w-56" th:value="${(shelf.currentPage * 100) / book.itemPage}" max="100"></progress>
                 </div>
@@ -51,11 +51,3 @@
     </section>
 
 </main>
-<script>
-    var startDate = new Date([[${shelf.startDate}]]);
-    var currnetDate = new Date();
-
-    var timeDiff = currentDate - startDate;
-
-    console.log(timeDiff);
-</script>
