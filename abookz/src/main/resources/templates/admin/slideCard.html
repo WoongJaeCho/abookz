@@ -44,17 +44,13 @@
                 </td>
                 <td th:if="${card.book == null}"> ISBN13 값이 잘못 되었습니다. 삭제 후 재생성 바람. </td>
                 <td th:unless="${card.book == null}" th:text="${card.book.getTitle()}">데일 카네기 인간관계론</td>
-                <td>
-                    <input type="text"  th:value="${card.ISBN13}" readonly/>
-                </td>
+                <td th:text="${card.ISBN13}"> 9791187142560 </td>
                 <td th:text="${card.addDate}">2024-04-07</td>
                 <td th:text="${card.slideFileName}">
                     <input type="file" th:value="${card.slideFileName}" readonly>
                 </td>
                 <td>
-                    <input type="button" value="수정" onclick="toggleEdit(this.parentNode.parentNode)" />
-                    <input type="submit" value="제출" style="display: none;" />
-                    <input type="button" value="삭제" th:onclick="|location.href='@{/slide(id=${card.id})}'|" />
+                    <input type="button" value="삭제" th:onclick="|location.href='/slide/'+ @{${card.id}} |"/>
 
                 </td>
             </tr>
@@ -64,28 +60,14 @@
         <p> ISBN13 입력 : </p>
         <input type="number" name="ISBN13" />
         <p> 슬라이드 파일 : </p>
-        <input type="file" name="file" />
+        <input type="file" name="file" id="file"/>
+        <input type="hidden" name="idx" th:value="${slideCard.size()+1}">
         <input type="submit">
     </form>
 
 </div>
 </body>
 </html>
-
-<script>
-    function toggleEdit(row) {
-        var inputs = row.querySelectorAll('input[type="text"]');
-        var button = row.querySelector('input[type="button"]');
-        var submitButton = row.querySelector('input[type="submit"]');
-
-        for (var i = 0; i < inputs.length; i++) {
-            inputs[i].readOnly = !inputs[i].readOnly;
-        }
-
-        button.style.display = 'none';
-        submitButton.style.display = 'inline-block';
-    }
-</script>
 
 <script>
     function updateOptionValue(selectElement) {

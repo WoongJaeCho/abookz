@@ -31,7 +31,7 @@ public class SlideCardService {
     private final SlideCardRepository cardRepository;
     private final ModelMapper mapper;
 
-    @Value("${upload.path}" + "profile/")
+    @Value("${upload.path}" + "slides/")
     private String uploadPath;
 
     @PersistenceContext
@@ -57,8 +57,6 @@ public class SlideCardService {
     }
 
     public void upload(SlideCardDTO slideCardDTO, MultipartFile file){
-        SlideCardEntity entity = mapDTOToEntity(slideCardDTO);
-        entity.setAddDate(LocalDate.now());
         try {
             if(file != null && !file.isEmpty()){
                 String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
@@ -74,6 +72,8 @@ public class SlideCardService {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+        SlideCardEntity entity = mapDTOToEntity(slideCardDTO);
+        entity.setAddDate(LocalDate.now());
         cardRepository.save(entity);
     }
     private SlideCardDTO mapEntityToDTO(SlideCardEntity slideCardEntity){

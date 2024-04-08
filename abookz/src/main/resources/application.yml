@@ -17,6 +17,7 @@ logging:
 
 upload:
   path: "C:/abookz/abookz/src/main/resources/static/images/"
+  #path: "C:/eclipseWorkspace/abookz/abookz/src/main/resources/static/images/"
 
 spring:
   config:
