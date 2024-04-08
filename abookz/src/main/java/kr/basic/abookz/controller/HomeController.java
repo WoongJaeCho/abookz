@@ -29,10 +29,10 @@ public class HomeController {
 
         List<SlideCardDTO> slideCard = adminService.findTop3();
         System.out.println("slideCard = " + slideCard);
+
         if (slideCard.size()!=0) {
             model.addAttribute("slideCard", slideCard);
         }
-
 
         if(session.getAttribute("id") != null) {
             Long memId = (Long) session.getAttribute("id");
