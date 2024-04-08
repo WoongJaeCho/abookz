@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
+    <head th:replace="~{fragments/head :: head}">
+        <meta charset="UTF-8">
+        <title>Title</title>
+    </head>
 <body>
+<div th:replace="~{fragments/header :: header}" /><br>
     <h1> 슬라이드 카드 설정 </h1>
-
+<form action="#">
     <table border="1">
         <tr>
             <th></th>
@@ -19,15 +21,15 @@
         <tr th:each="card, index : ${slideCard}">
             <td th:text="${index.index + 1}">1</td>
             <td>
-<!--                <select>-->
-<!--                    <option th:each="orderOption : ${#numbers.sequence(1, slideCard.size())}"-->
-<!--                            th:id="'orderSelect_' + ${index.index}"-->
-<!--                            th:value="${card.idx}"-->
-<!--                            th:onclick="'updateIndexes(' + ${index.index} + ')'"-->
-<!--                            onchange="updateIndexes(${index.index})">-->
-<!--                        order-->
-<!--                    </option>-->
-<!--                </select>-->
+                <!--                <select>-->
+                <!--                    <option th:each="orderOption : ${#numbers.sequence(1, slideCard.size())}"-->
+                <!--                            th:id="'orderSelect_' + ${index.index}"-->
+                <!--                            th:value="${card.idx}"-->
+                <!--                            th:onclick="'updateIndexes(' + ${index.index} + ')'"-->
+                <!--                            onchange="updateIndexes(${index.index})">-->
+                <!--                        order-->
+                <!--                    </option>-->
+                <!--                </select>-->
                 <select onchange="updateIndexes(this)">
                     <option th:each="orderOption : ${#numbers.sequence(1, slideCard.size())}"
                             th:value="${orderOption}"
@@ -41,10 +43,14 @@
             <td th:text="${card.ISBN13}">9791187142560</td>
             <td th:text="${card.addDate}">2024-04-07</td>
             <td >
-<!--                <input type="file" th:value="${card.slideFileName}">-->
+                <input type="file" th:value="${card.slideFileName}">
             </td>
         </tr>
+        <tr>
+            <input type="submit" />
+        </tr>
     </table>
+</form>
 </body>
 </html>
 
