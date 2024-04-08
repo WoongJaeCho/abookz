@@ -1,5 +1,6 @@
 package kr.basic.abookz.dto.admin;
 
+import kr.basic.abookz.dto.BookDTO;
 import lombok.*;
 
 import java.time.LocalDate;
@@ -17,6 +18,8 @@ public class SlideCardDTO {
     private LocalDate addDate; // 파일 등록 날짜
     private int idx; // 슬라이드 순서, 0: 비활성화
 
+    private BookDTO book; // 도서 제목
+
     @Override
     public String toString() {
         return "SlideCardDTO{" +
@@ -24,6 +27,7 @@ public class SlideCardDTO {
                 ", ISBN13=" + ISBN13 +
                 ", addDate=" + addDate +
                 ", idx=" + idx +
+                ", book=" + book +
                 '}';
     }
 }

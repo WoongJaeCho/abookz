@@ -27,7 +27,7 @@ public class HomeController {
     @GetMapping("/")
     public String index(Model model, HttpSession session) {
 
-        List<SlideCardDTO> slideCard = adminService.findAll();
+        List<SlideCardDTO> slideCard = adminService.findTop3();
         System.out.println("slideCard = " + slideCard);
         model.addAttribute("slideCard", slideCard);
 

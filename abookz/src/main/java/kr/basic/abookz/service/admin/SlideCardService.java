@@ -24,9 +24,16 @@ public class SlideCardService {
     @PersistenceContext
     private EntityManager em;
 
-    public List<SlideCardDTO> findAll(){
+    public List<SlideCardDTO> findTop3(){
         List<SlideCardEntity> cardEntities = adminRepository.findTop3ByOrderByIdx();
         System.out.println("cardEntities = " + cardEntities);
+        return cardEntities.stream()
+                .map(this::mapEntityToDTO)
+                .collect(Collectors.toList());
+    }
+
+    public List<SlideCardDTO> findAll(){
+        List<SlideCardEntity> cardEntities = adminRepository.findAll();
         return cardEntities.stream()
                 .map(this::mapEntityToDTO)
                 .collect(Collectors.toList());

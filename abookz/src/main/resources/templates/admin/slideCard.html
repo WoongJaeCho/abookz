@@ -19,22 +19,55 @@
         <tr th:each="card, index : ${slideCard}">
             <td th:text="${index.index + 1}">1</td>
             <td>
-                <select>
+<!--                <select>-->
+<!--                    <option th:each="orderOption : ${#numbers.sequence(1, slideCard.size())}"-->
+<!--                            th:id="'orderSelect_' + ${index.index}"-->
+<!--                            th:value="${card.idx}"-->
+<!--                            th:onclick="'updateIndexes(' + ${index.index} + ')'"-->
+<!--                            onchange="updateIndexes(${index.index})">-->
+<!--                        order-->
+<!--                    </option>-->
+<!--                </select>-->
+                <select onchange="updateIndexes(this)">
                     <option th:each="orderOption : ${#numbers.sequence(1, slideCard.size())}"
                             th:value="${orderOption}"
-                            th:text="${orderOption == 0 ? '비활성' : orderOption}"
+                            th:text="${orderOption}"
                             th:selected="${orderOption == card.idx}">
                         order
                     </option>
                 </select>
             </td>
-            <td th:text="${card.title}">데일 카네기 인간관계론</td>
+            <td th:text="${card.book.getTitle()}">데일 카네기 인간관계론</td>
             <td th:text="${card.ISBN13}">9791187142560</td>
             <td th:text="${card.addDate}">2024-04-07</td>
-            <td th:text="${card.slideFileName}">
-                <input type="file" value="slider01.png">
+            <td >
+<!--                <input type="file" th:value="${card.slideFileName}">-->
             </td>
         </tr>
-
+    </table>
 </body>
 </html>
+
+<script>
+    function updateOptionValue(selectElement) {
+        // 선택된 옵션의 값 가져오기
+        var selectedValue = parseInt(selectElement.value);
+
+        // 선택된 옵션의 인덱스 가져오기
+        var selectedIndex = parseInt(selectElement.id.split("_")[1]);
+
+        // 다른 select 요소에서 중복된 값 검사
+        var selects = document.querySelectorAll('select');
+        selects.forEach(function(select) {
+            if (select !== selectElement) {
+                var otherValue = parseInt(select.value);
+                if (otherValue === selectedValue) {
+                    // 중복된 경우 기존 값 증가
+                    select.value = otherValue + 1;
+                    select.innerText = otherValue + 1;
+                }
+            }
+        });
+    }
+</script>
+
