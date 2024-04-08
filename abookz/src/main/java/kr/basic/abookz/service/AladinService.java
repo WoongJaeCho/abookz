@@ -214,7 +214,6 @@ public class AladinService {
                 .author(author)
                 .publisher(publisher)
                 .pubDate(pubDate)
-                .ISBN(isbn)
                 .ISBN13(isbn13)
                 .cover(cover)
                 .description(description)
