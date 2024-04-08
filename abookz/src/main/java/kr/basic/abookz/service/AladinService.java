@@ -55,11 +55,11 @@ public class AladinService {
         vo=parseItemsFromJson(query);
         return vo;
     }
-    public BookDTO getOneBookEntity(String isbn13) throws Exception{
+    public BookDTO getOneBookDTO(String isbn13) throws Exception{
         BookDTO entity = null;
         String urlOne = UrlGetOneBookItemPage(isbn13);
         String getOneBookPage = restTemplate.getForObject(urlOne, String.class);
-        entity = getOneEntity(getOneBookPage);
+        entity = getOneDTO(getOneBookPage);
     return entity;
     }
 
@@ -204,7 +204,7 @@ public class AladinService {
 
         return item;
         }
-    private BookDTO getOneEntity(String jsonIsbn13){
+    private BookDTO getOneDTO(String jsonIsbn13){
         JSONObject jsonObject = new JSONObject(jsonIsbn13);
         JSONArray jsonArray = jsonObject.getJSONArray("item");
         JSONObject itemObject = jsonArray.getJSONObject(0);

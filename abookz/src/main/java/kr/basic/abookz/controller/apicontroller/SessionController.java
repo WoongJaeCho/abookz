@@ -31,31 +31,27 @@ public class SessionController {
 
     @RequestMapping(value = "/want",method = RequestMethod.POST)
     public String wantToRead(@RequestParam("book") String book ,RedirectAttributes redirectAttributes) throws Exception {
-        Long check = (Long)httpSession.getAttribute("id");
-        System.out.println(check);
+        Long id = (Long)httpSession.getAttribute("id");
+        String data = null;
 
         if(httpSession.getAttribute("id") == null){
-            String data="로그인부터해주세요";
+             data="로그인부터해주세요";
             return data;
         }
-
-            MemberDTO member = memberService.findById(check);
-            BookDTO bookEntity = aladinService.getOneBookEntity(book);
-            BookDTO  insertBook =bookService.insertBook(bookEntity);
-            BookShelfDTO bookShelfEntity = BookShelfDTO
-                    .builder()
-                    .memberDTO(member)
-                    .bookDTO(insertBook)
-                    .build();
-          String checkMyShelf =  bookShelfService.save(bookShelfEntity);
-        String data = null;
-            if(checkMyShelf==null) {
-            data = bookEntity.getTitle() + " 책이 정상적으로 내 서재에 등록되었습니다.";
-            return data;
+            MemberDTO memberDTO = memberService.findById(id);
+            BookDTO aladinGetBook = aladinService.getOneBookDTO(book);
+            BookDTO checkBook = bookService.insertBook(aladinGetBook);
+            BookShelfDTO bookShelfDTO = BookShelfDTO.builder()
+                    .memberDTO(memberDTO)
+                    .bookDTO(checkBook).build();
+            String getValue = bookShelfService.insertBookShelfCheck(bookShelfDTO);
+        System.out.println(getValue);
+            if(getValue.equals("저장")){
+                data= aladinGetBook.getTitle() +"내 서재에 등록이 완료되었습니다";
+                return data;
             }
-            data = "이미 내 서재에 등록되어 있습니다";
-            return data;
-
+            data="이미 등록되어있습니다";
+        return  data;
     }
     @RequestMapping("/readingUpdate")
     public String readingUpdate(@RequestBody BookShelfDTO jsonData){

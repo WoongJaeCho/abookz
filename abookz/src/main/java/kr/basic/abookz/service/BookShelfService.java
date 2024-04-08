@@ -25,21 +25,6 @@ public class BookShelfService {
     private final BookShelfRepository bookShelfRepository;
     private final ModelMapper mapper;
 
-    @Transactional
-    public String save(BookShelfDTO bookShelfDTO){
-        BookShelfEntity bookShelfEntity =  mapDTOToEntity(bookShelfDTO);
-        BookShelfEntity checkBook= bookShelfRepository.findByMemberIdAndBookId(bookShelfEntity
-                .getMember().getId(),bookShelfEntity.getBook().getId());
-        BookShelfDTO   dtoCheck = null;
-        if(checkBook == null) {
-            dtoCheck =mapEntityToDTO(bookShelfEntity);
-            bookShelfRepository.save(bookShelfEntity);
-            return "";
-        }
-            System.out.println("해당 조건을 만족하는 책이 이미 존재합니다.");
-        dtoCheck =mapEntityToDTO(bookShelfEntity);
-             return "책값존재";
-    }
 
      public List<BookShelfDTO> findAllDTOByMemberId(Long memberId) {
         List<BookShelfEntity> entities = bookShelfRepository.findAllByMemberId(memberId);
@@ -47,6 +32,17 @@ public class BookShelfService {
         return entities.stream()
                 .map(this::mapEntityToDTO)
                 .collect(Collectors.toList());
+    }
+    @Transactional
+     public String insertBookShelfCheck(BookShelfDTO bookShelfDTO){
+       BookShelfEntity bookShelfEntity = mapDTOToEntity(bookShelfDTO);
+   BookShelfEntity checkBookShelf =    bookShelfRepository.findByMemberIdAndBookId(
+           bookShelfEntity.getMember().getId(),bookShelfEntity.getBook().getId());
+           if(checkBookShelf == null){
+               bookShelfRepository.save(bookShelfEntity);
+               return "저장";
+    }
+            return  "실패";
     }
     public List<BookShelfDTO> findAllByMemberIdAndTag(Long memId,TagEnum tagEnum){
         List<BookShelfEntity> entities = bookShelfRepository.findAllByMemberIdAndTag(memId,tagEnum);

@@ -1,6 +1,7 @@
 package kr.basic.abookz.service;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.PersistenceContext;
 import kr.basic.abookz.dto.BookDTO;
 import kr.basic.abookz.entity.book.BookEntity;
@@ -21,23 +22,23 @@ public class BookService {
 
     private final BookRepository bookrepository;
     private final ModelMapper mapper;
-    @PersistenceContext
-    private EntityManager em;
-
-
+/*    @PersistenceContext
+    private EntityManagerFactory entityManagerFactory;*/
     @Transactional
-    public BookDTO insertBook(BookDTO bookDTO) {
-        BookEntity existingBook = bookrepository.findByISBN13(Long.valueOf(bookDTO.getISBN13()));
-        BookDTO bookDTOChange = bookDTO;
-        if (existingBook==null) {
-            BookEntity book=mapDTOToEntity(bookDTO);
-            bookrepository.save(book);
-            return bookDTOChange;
-        } else {
-            System.out.println("해당 조건을 만족하는 책이 이미 존재합니다.");
-            return bookDTOChange;
-        }
+    public BookDTO insertBook(BookDTO bookDTO){
+
+            BookEntity  saveBook=mapDTOToEntity(bookDTO);
+           BookEntity bookEntity =bookrepository.findByISBN13(saveBook.getISBN13());
+           if(bookEntity== null){
+               /* EntityManager entityManager=entityManagerFactory.createEntityManager();
+                entityManager.getTransaction().begin();*/
+                BookEntity insert = bookrepository.save(saveBook);
+               return bookDTO;
+           }
+        System.out.println("중복 ISBN값 존재");
+           return bookDTO;
     }
+
     public List<BookDTO> findAllByDTOId(Long id){
         List<BookEntity> entities =bookrepository.findAllById(id);
         return entities.stream()
