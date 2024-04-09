@@ -25,7 +25,6 @@ public class BookShelfDTO {
     private TagEnum tag; // READ,WANT_TO_READ,CURRENTLY_READING
     private BookDTO bookDTO;
     private MemberDTO memberDTO;
-    private Duration duration = Duration.between( startDate, LocalDateTime.now());
 
     private Long days;
 

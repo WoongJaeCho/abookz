@@ -23,4 +23,13 @@
     border: 1px solid black;
     background-color: #EEE;
 }
-
+#slideCard table td img{
+    width: 100%;
+}
+#slideCard #slideForm{
+    margin-top: 20px;
+    /*display: flex;*/
+}
+#slideCard #slideForm #ISBN13{
+    margin-bottom: 10px;
+}
