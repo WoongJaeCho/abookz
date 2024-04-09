@@ -1,5 +1,6 @@
 package kr.basic.abookz.service;
 
+import jakarta.persistence.EntityNotFoundException;
 import kr.basic.abookz.dto.BookDTO;
 import kr.basic.abookz.dto.BookShelfDTO;
 import kr.basic.abookz.dto.MemberDTO;
@@ -48,6 +49,17 @@ public class BookShelfService {
         List<BookShelfEntity> entities = bookShelfRepository.findAllByMemberIdAndTag(memId,tagEnum);
         return entities.stream().map(this::mapEntityToDTO).collect(Collectors.toList());
     }
+    public String bookShelfUpdate(BookShelfDTO bookShelfDTO){
+        BookShelfEntity bookShelf = bookShelfRepository.findById(bookShelfDTO.getId())
+                .orElseThrow(() -> new EntityNotFoundException("BookShelf not found with id " + bookShelfDTO.getId()));
+        BookShelfEntity bookShelfSave = mapDTOToEntity(bookShelfDTO);
+        System.out.println("bookShelfSave = " + bookShelfSave);
+        bookShelf.setTag(bookShelfSave.getTag());
+        bookShelf.setStartDate(bookShelfSave.getStartDate());
+
+        bookShelfRepository.save(bookShelf);
+        return "성공";
+    }
 
 
 
@@ -61,10 +73,14 @@ public class BookShelfService {
     }
     BookShelfEntity mapDTOToEntity(BookShelfDTO shelfDTO) {
         BookShelfEntity shelfEntity = mapper.map(shelfDTO, BookShelfEntity.class);
-        BookEntity bookEntity = mapper.map(shelfDTO.getBookDTO(), BookEntity.class);
-        MemberEntity memberEntity= mapper.map(shelfDTO.getMemberDTO(), MemberEntity.class);
-        shelfEntity.setBook(bookEntity);
-        shelfEntity.setMember(memberEntity);
+        if(shelfDTO.getBookDTO()!= null){
+            BookEntity bookEntity = mapper.map(shelfDTO.getBookDTO(), BookEntity.class);
+            shelfEntity.setBook(bookEntity);
+        }
+        if(shelfDTO.getMemberDTO()!= null) {
+            MemberEntity memberEntity = mapper.map(shelfDTO.getMemberDTO(), MemberEntity.class);
+            shelfEntity.setMember(memberEntity);
+        }
         return shelfEntity;
     }
 

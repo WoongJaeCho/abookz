@@ -29,7 +29,9 @@ public class HomeController {
     @GetMapping("/")
     public String index(Model model, HttpSession session) {
 
+
         List<SlideCardDTO> slideCard = adminService.findAllOrderByIdx();
+
 
         if( slideCard.size() != 0) {
             model.addAttribute("slideCard", slideCard);
@@ -51,6 +53,7 @@ public class HomeController {
             model.addAttribute("books", books);
             model.addAttribute("shelves", shelves);
         }
+
 
         return "index";
     }

@@ -8,6 +8,8 @@ import kr.basic.abookz.service.BookService;
 import kr.basic.abookz.service.BookShelfService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
 
 @Slf4j
@@ -26,8 +29,10 @@ public class BookShelfController {
     private final BookService bookService;
     //   내 서재로 가기
     @GetMapping("/myshelf")
-    public String getMyShelf(HttpSession session, RedirectAttributes redirectAttributes, Model model){
-        if(session.getAttribute("id")== null){
+    public String getMyShelf(HttpSession session, RedirectAttributes redirectAttributes, Model model
+            , @AuthenticationPrincipal OAuth2User oauth){
+        Long id =(Long)oauth.getAttribute("id");
+        if(oauth.getAttribute("id")== null){
             redirectAttributes.addFlashAttribute("fail","로그인이후 가능합니다");
             return "redirect:/member/login";
         }

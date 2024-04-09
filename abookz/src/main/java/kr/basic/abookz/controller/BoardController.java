@@ -21,7 +21,8 @@ public class BoardController {
 
   // 글쓰기(작성)
   @GetMapping("/save")
-  public String saveForm(){
+  public String saveForm()
+  {
     return "board/save";
   }
   @PostMapping("/save")
