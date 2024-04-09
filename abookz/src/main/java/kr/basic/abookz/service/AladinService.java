@@ -3,6 +3,7 @@ package kr.basic.abookz.service;
 import kr.basic.abookz.dto.BookDTO;
 
 import kr.basic.abookz.entity.book.BookEntity;
+import kr.basic.abookz.entity.book.CategoryEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -54,11 +55,11 @@ public class AladinService {
         vo=parseItemsFromJson(query);
         return vo;
     }
-    public BookEntity getOneBookEntity(String isbn13) throws Exception{
-        BookEntity entity = null;
+    public BookDTO getOneBookDTO(String isbn13) throws Exception{
+        BookDTO entity = null;
         String urlOne = UrlGetOneBookItemPage(isbn13);
         String getOneBookPage = restTemplate.getForObject(urlOne, String.class);
-        entity = getOneEntity(getOneBookPage);
+        entity = getOneDTO(getOneBookPage);
     return entity;
     }
 
@@ -88,6 +89,7 @@ public class AladinService {
         List<BookDTO> items = new ArrayList<>();
         JSONObject jsonObject = new JSONObject(jsonString);
         JSONArray jsonArray = jsonObject.getJSONArray("item");
+
         for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject itemObject = jsonArray.getJSONObject(i);
             String title = itemObject.getString("title");
@@ -95,9 +97,31 @@ public class AladinService {
             String publisher = itemObject.getString("publisher");
             String change = itemObject.getString("pubDate");
             LocalDate pubDate = LocalDate.parse(change, formatter);
-            /*CategoryEntity categoryName= CategoryEntity.fromString(itemObject.getString("categoryName"));*/
+           String categoryName = itemObject.getString("categoryName");
+            int index = categoryName.indexOf(">");
+            String[] categories = categoryName.split(">");
+            CategoryEnum cate = null;
+            String selectedCategory ="";
+            if(categories.length==0 || categories.length == 1 ) {
+                for(CategoryEnum category : CategoryEnum.values()){
+                    if(category.getCategoryName().equals(selectedCategory)){
+                    cate=category;
+                        }
+                }
+
+            }else {
+                 selectedCategory = categories[1].trim().toLowerCase();
+                System.out.println("selectedCategory = " + selectedCategory);
+                for (CategoryEnum category : CategoryEnum.values()) {
+                    if (category.getCategoryName().equals(selectedCategory)) {
+                        cate = category;
+
+                    }
+                }
+            }
             String cover = itemObject.getString("cover");
             String description = itemObject.getString("description");
+//           ""
             //int itemPage = itemObject.getInt("")
             String link = itemObject.getString("link");
             if(itemObject.getString("isbn13") == null) {
@@ -105,11 +129,10 @@ public class AladinService {
                 BookDTO bookDTO = BookDTO.builder()
                         .title(title)
                         .author(author)
+                    /*    .categoryName(cate)*/
                         .publisher(publisher)
                         .pubDate(pubDate)
                         .ISBN(isbn) // ISBN이 null일 수 있으므로 빌더에서 처리해야 합니다.
-                        /*.ISBN13(ISBN13)
-                        .categoryName(categoryName) // 문자열로 카테고리 이름을 처리합니다.*/
                         .cover(cover)
                         .description(description)
                         .link(link)
@@ -125,11 +148,11 @@ public class AladinService {
                         .pubDate(pubDate)
                         /*.ISBN(ISBN) // ISBN이 null일 수 있으므로 빌더에서 처리해야 합니다.*/
                         .ISBN13(isbn13)
-                        /*.categoryName(categoryName) // 문자열로 카테고리 이름을 처리합니다.*/
+                        /*.categoryName(categoryName)*/
                         .cover(cover)
                         .description(description)
                         .link(link)
-                        // .itemPage(itemPage) // 페이지 수를 처리하는 로직을 추가해야 한다면 이 부분을 활성화합니다.
+                        // .itemPage(itemPage)
                         .build();
                 items.add(bookDTO);
             }
@@ -145,6 +168,8 @@ public class AladinService {
         JSONArray jsonArray = jsonObject.getJSONArray("item");
         JSONObject itemObject = jsonArray.getJSONObject(0);
         JSONObject subInfoObject = itemObject.getJSONObject("subInfo");
+/*        JSONObject ratingInfo = subInfoObject.getJSONObject("ratingInfo");
+        JSONObject packingInfo = subInfoObject.getJSONObject("packing");*/
         String title = itemObject.getString("title");
         String author = itemObject.getString("author");
         String publisher = itemObject.getString("publisher");
@@ -179,12 +204,14 @@ public class AladinService {
 
         return item;
         }
-    private BookEntity getOneEntity(String jsonIsbn13){
+    private BookDTO getOneDTO(String jsonIsbn13){
         JSONObject jsonObject = new JSONObject(jsonIsbn13);
-        System.out.println("jsonObject = " + jsonObject);
         JSONArray jsonArray = jsonObject.getJSONArray("item");
         JSONObject itemObject = jsonArray.getJSONObject(0);
         JSONObject subInfoObject = itemObject.getJSONObject("subInfo");
+//        JSONObject ratingInfo = itemObject.getJSONObject("ratingInfo");
+//        JSONObject packingInfo = itemObject.getJSONObject("packing");
+
         String title = itemObject.getString("title");
         String author = itemObject.getString("author");
         String publisher = itemObject.getString("publisher");
@@ -198,16 +225,9 @@ public class AladinService {
         int itemPage  = subInfoObject.getInt("itemPage");
         String isbnString = null;
         String isbn13String = null;
-        Long isbn = null ;
-        Long isbn13 = null;
-        if (itemObject.has("isbn13")) {
-            isbn13String = itemObject.getString("isbn13");
-            isbn13 =Long.valueOf(isbn13String);
-        } else if (itemObject.has("isbn")) {
-            isbnString = itemObject.getString("isbn");
-            isbn=Long.valueOf(isbn);
-        }
-        BookEntity item = BookEntity.builder().title(title)
+        String isbn13 = itemObject.getString("isbn13");
+
+        BookDTO item = BookDTO.builder().title(title)
                 .author(author)
                 .publisher(publisher)
                 .pubDate(pubDate)
@@ -217,7 +237,7 @@ public class AladinService {
                 .link(link)
                 .itemPage(itemPage)
                 .build();
-
+        System.out.println("item = " + item);
 
         return item;
     }

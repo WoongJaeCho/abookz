@@ -2,6 +2,7 @@ package kr.basic.abookz.controller.apicontroller;
 
 import jakarta.servlet.http.HttpSession;
 import kr.basic.abookz.dto.BookDTO;
+import kr.basic.abookz.dto.BookShelfDTO;
 import kr.basic.abookz.dto.MemberDTO;
 import kr.basic.abookz.entity.book.BookEntity;
 import kr.basic.abookz.entity.book.BookShelfEntity;
@@ -15,6 +16,7 @@ import kr.basic.abookz.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -22,6 +24,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import org.springframework.web.bind.annotation.*;
+
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RestController
@@ -30,36 +35,40 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 public class SessionController {
     private final HttpSession httpSession;
     private final BookShelfService bookShelfService;
-//    private final MemberService memberService;
-    private final MemberRepository memberRepository;
+    private final MemberService memberService;
     private final BookService bookService;
     private final AladinService aladinService;
 
     @RequestMapping(value = "/want",method = RequestMethod.POST)
-    public String wantToRead(@RequestParam("book") String book , Authentication authentication,
-                             @AuthenticationPrincipal OAuth2User oauth) throws Exception {
-        Long check = (Long)oauth.getAttribute("id");
-        System.out.println(check);
+
+    public String wantToRead(@RequestParam("book") String book ,RedirectAttributes redirectAttributes) throws Exception {
+        Long id = (Long)httpSession.getAttribute("id");
+        String data = null;
+
 
         if(httpSession.getAttribute("id") == null){
-            String data="로그인부터해주세요";
+             data="로그인부터해주세요";
             return data;
         }
-
-            MemberEntity member = memberRepository.findById(check).get();
-        System.out.println();
-            BookEntity bookEntity = aladinService.getOneBookEntity(book);
-            bookService.insertBook(bookEntity);
-            BookShelfEntity bookShelfEntity = BookShelfEntity
-                    .builder()
-                    .member(member)
-                    .book(bookEntity)
-                                    .build();
-            bookShelfService.save(bookShelfEntity);
-            String data = bookEntity.getTitle() + " 책이 정상적으로 내 서재에 등록되었습니다.";
-
-            return data;
-
+            MemberDTO memberDTO = memberService.findById(id);
+            BookDTO aladinGetBook = aladinService.getOneBookDTO(book);
+            BookDTO checkBook = bookService.insertBook(aladinGetBook);
+            BookShelfDTO bookShelfDTO = BookShelfDTO.builder()
+                    .memberDTO(memberDTO)
+                    .bookDTO(checkBook).build();
+            String getValue = bookShelfService.insertBookShelfCheck(bookShelfDTO);
+        System.out.println(getValue);
+            if(getValue.equals("저장")){
+                data= aladinGetBook.getTitle() +"내 서재에 등록이 완료되었습니다";
+                return data;
+            }
+            data="이미 등록되어있습니다";
+        return  data;
+    }
+    @RequestMapping("/readingUpdate")
+    public String readingUpdate(@RequestBody BookShelfDTO jsonData){
+        System.out.println("jsonData = " + jsonData);
+        return "check";
     }
 
 

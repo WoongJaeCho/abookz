@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="Gradle: p6spy:p6spy:3.9.1" type="java-imported" external-system-id="GRADLE">
+    <properties groupId="p6spy" artifactId="p6spy" version="3.9.1" />
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/p6spy/p6spy/3.9.1/a393fe91de298097b0242a9f380267e2bb1e1003/p6spy-3.9.1.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>
