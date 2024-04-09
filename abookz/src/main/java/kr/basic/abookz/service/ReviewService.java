@@ -13,9 +13,4 @@ public class ReviewService {
 
     private final ReviewRepository reviewRepository;
 
-    public void save(MemoDTO memoDTO) {
-        MemoEntity memoEntity = MemoEntity.toMemoEntity(memoDTO);
-        System.out.println("memoEntity = " + memoEntity);
-        memoRepository.save(memoEntity);
-    }
 }
