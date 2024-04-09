@@ -29,31 +29,28 @@ public class HomeController {
     @GetMapping("/")
     public String index(Model model, HttpSession session) {
 
-        List<SlideCardDTO> slideCard = adminService.findTop3();
-        System.out.println("slideCard = " + slideCard);
+        List<SlideCardDTO> slideCard = adminService.findAllOrderByIdx();
 
         if( slideCard.size() != 0) {
             model.addAttribute("slideCard", slideCard);
         }
 
-            Long memId = (Long) session.getAttribute("id");
-            List<BookShelfDTO> shelves = bookShelfService.findAllByMemberIdAndTag(memId, CURRENTLY_READING);
-            List<BookDTO> books = shelves.stream()
-                    .map(BookShelfDTO::getBookDTO)
-                    .flatMap(book -> bookService.findAllByDTOId(book.getId()).stream())
-                    .toList();
-            LocalDate currentDate = LocalDate.now();
+        Long memId = (Long) session.getAttribute("id");
+        List<BookShelfDTO> shelves = bookShelfService.findAllByMemberIdAndTag(memId, CURRENTLY_READING);
+        List<BookDTO> books = shelves.stream()
+                .map(BookShelfDTO::getBookDTO)
+                .flatMap(book -> bookService.findAllByDTOId(book.getId()).stream())
+                .toList();
 
-            for(BookShelfDTO shelf : shelves){
-                Duration duration = Duration.between(shelf.getStartDate(), LocalDateTime.now());
-                shelf.setDays(duration.toDays());
-            }
+        for(BookShelfDTO shelf : shelves){
+            Duration duration = Duration.between(shelf.getStartDate(), LocalDateTime.now());
+            shelf.setDays(duration.toDays());
+        }
 
-            if( shelves.size() != 0 || books.size() != 0 ) {
-                model.addAttribute("currentDate", currentDate);
-                model.addAttribute("books", books);
-                model.addAttribute("shelves", shelves);
-            }
+        if( shelves.size() != 0 && books.size() != 0 ) {
+            model.addAttribute("books", books);
+            model.addAttribute("shelves", shelves);
+        }
 
         return "index";
     }

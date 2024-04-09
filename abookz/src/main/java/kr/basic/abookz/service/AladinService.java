@@ -165,13 +165,25 @@ public class AladinService {
 
         JSONObject jsonObject = new JSONObject(jsonIsbn13);
         System.out.println("jsonObject = " + jsonObject);
+        if(jsonObject.length() < 3){
+            System.out.println("jsonObject.length() = " + jsonObject.length());
+            return null;
+        }
         JSONArray jsonArray = jsonObject.getJSONArray("item");
+        System.out.println("jsonArray = " + jsonArray);
         JSONObject itemObject = jsonArray.getJSONObject(0);
+        System.out.println("itemObject.length() = " + itemObject.length());
+        if(itemObject.length()<=20){
+            return null;
+        }
         JSONObject subInfoObject = itemObject.getJSONObject("subInfo");
-/*        JSONObject ratingInfo = subInfoObject.getJSONObject("ratingInfo");
+/*      JSONObject ratingInfo = subInfoObject.getJSONObject("ratingInfo");
         JSONObject packingInfo = subInfoObject.getJSONObject("packing");*/
         String title = itemObject.getString("title");
         String author = itemObject.getString("author");
+        if(author.equals("")){
+            return null;
+        }
         String publisher = itemObject.getString("publisher");
         String change = itemObject.getString("pubDate");
         LocalDate pubDate = LocalDate.parse(change, formatter);

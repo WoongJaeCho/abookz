@@ -37,8 +37,8 @@ public class SlideCardService {
     @PersistenceContext
     private EntityManager em;
 
-    public List<SlideCardDTO> findTop3(){
-        List<SlideCardEntity> cardEntities = cardRepository.findTop3ByOrderByIdx();
+    public List<SlideCardDTO> findAllOrderByIdx(){
+        List<SlideCardEntity> cardEntities = cardRepository.findAllByOrderByIdx();
         System.out.println("cardEntities = " + cardEntities);
         return cardEntities.stream()
                 .map(this::mapEntityToDTO)
