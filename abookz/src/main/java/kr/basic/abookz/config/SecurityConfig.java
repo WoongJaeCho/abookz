@@ -50,11 +50,13 @@ public class SecurityConfig {
                     .successForwardUrl("/");
             }
         ).oauth2Login(
+
             oauth2 -> oauth2
                 .loginPage("/member/loginForm")
                 .successHandler(customSuccessHandler)
                 .failureHandler(customAuthFailureHandler())
                 .permitAll()
+
 
         );
 

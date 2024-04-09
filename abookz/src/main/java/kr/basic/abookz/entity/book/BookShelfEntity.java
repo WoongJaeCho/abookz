@@ -28,11 +28,11 @@ public class BookShelfEntity {
   private LocalDateTime startDate;//읽기시작한날짜
 
   private LocalDateTime endDate;//다읽은날짜
-
+//
   private LocalDateTime targetDate;//목표날짜
 
   private int dailyPage;//하루목표 페이지
-
+  //50page
   private int currentPage; //현재읽은페이지
 
   private int bookShelfGrade;//평점(1,2,3,4,5) 별표시

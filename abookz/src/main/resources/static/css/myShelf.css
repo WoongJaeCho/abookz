@@ -1,14 +1,21 @@
 body{
 margin: 0 auto;
 }
-#shelf_container{
+#shelf_container {
     width: 100%;
     display: flex;
     justify-content: space-between;
+}
+.shelf_myShelf_start{
+    width: 100px;
+
+}
+.shelf_myShelf_add{
+    width: 100px;
 
 }
 #shelf_left{
-    flex: 2;
+    flex: 1;
     text-align: center;
     align-items: center;
 }
@@ -16,10 +23,7 @@ margin: 0 auto;
     margin-left: 20px;
     text-align: center;
     align-items: center;
-    flex: 6;
-}
-#shelf_right{
-    flex: 2;
+    flex: 9;
 }
 .myShelf_hr hr{
     border: 1px;
@@ -37,6 +41,9 @@ margin: 0 auto;
 .shelf_th, .shelf_tdimg, .shelf_title, .shelf_author, .shelf_page {
     padding-left: 10px;
     padding-right: 10px;
+}
+.shelf_myShelf_endDate{
+    width: 110px;
 }
 .shelf_tdimg img{
     width: 30px;

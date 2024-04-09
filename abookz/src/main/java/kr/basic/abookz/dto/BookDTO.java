@@ -30,21 +30,5 @@ public class BookDTO {
     private String link;//알라딘 상품 정보 페이지
     private String ISBN;
 
-    @Override
-    public String toString() {
-        return "BookDTO{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", author='" + author + '\'' +
-                ", publisher='" + publisher + '\'' +
-                ", pubDate=" + pubDate +
-                ", ISBN13='" + ISBN13 + '\'' +
-                ", categoryName=" + categoryName +
-                ", cover='" + cover + '\'' +
-                ", description='" + description + '\'' +
-                ", itemPage=" + itemPage +
-                ", link='" + link + '\'' +
-                ", ISBN='" + ISBN + '\'' +
-                '}';
-    }
+
 }

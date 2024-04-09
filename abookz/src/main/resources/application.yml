@@ -18,7 +18,6 @@ upload:
   path: "src/main/resources/static/images/"
 
 spring:
-
   config:
     activate:
       on-profile: common

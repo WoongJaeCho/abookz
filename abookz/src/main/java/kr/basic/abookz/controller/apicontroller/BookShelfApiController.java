@@ -1,25 +1,22 @@
 package kr.basic.abookz.controller.apicontroller;
 
 import jakarta.servlet.http.HttpSession;
+import kr.basic.abookz.config.auth.PrincipalDetails;
 import kr.basic.abookz.dto.BookDTO;
 import kr.basic.abookz.dto.BookShelfDTO;
 import kr.basic.abookz.dto.MemberDTO;
-import kr.basic.abookz.entity.book.BookEntity;
-import kr.basic.abookz.entity.book.BookShelfEntity;
-import kr.basic.abookz.entity.member.MemberEntity;
-import kr.basic.abookz.repository.BookShelfRepository;
-import kr.basic.abookz.repository.MemberRepository;
 import kr.basic.abookz.service.AladinService;
 import kr.basic.abookz.service.BookService;
 import kr.basic.abookz.service.BookShelfService;
 import kr.basic.abookz.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.core.user.OAuth2User;
 
 
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,16 +26,13 @@ import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.web.bind.annotation.*;
 
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-
-import java.time.LocalDate;
+import java.net.URI;
 import java.time.LocalDateTime;
-import java.util.Arrays;
 
 @RestController
 @Slf4j
 @RequiredArgsConstructor
-public class SessionController {
+public class BookShelfApiController {
     private final HttpSession httpSession;
     private final BookShelfService bookShelfService;
     private final MemberService memberService;
@@ -46,12 +40,11 @@ public class SessionController {
     private final AladinService aladinService;
 
     @RequestMapping(value = "/want",method = RequestMethod.POST)
-
     public String wantToRead(@RequestParam("book") String book, Authentication authentication,
-            @AuthenticationPrincipal OAuth2User oauth) throws Exception {
-        Long id = (Long) oauth.getAttribute("id");;
+                             @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
+        Long id = principalDetails.getMember().getId();
         String data = null;
-        if (oauth.getAttribute("id") == null) {
+        if (id == null) {
             data = "로그인부터해주세요";
             return data;
         }
@@ -70,12 +63,8 @@ public class SessionController {
         data = "이미 등록되어있습니다";
         return data;
     }
-
-    @RequestMapping("/readingUpdate")
-    public String readingUpdate(@RequestBody BookShelfDTO jsonData) {
-        System.out.println("jsonData = " + jsonData.getBookDTO());
-        System.out.println("jsonData = " + jsonData.getTag());
-        System.out.println("jsonData = " + jsonData);
+    @PostMapping("/readingUpdate")
+    public ResponseEntity<Object> readingUpdate(@RequestBody BookShelfDTO jsonData) {
         LocalDateTime now = LocalDateTime.now();
         System.out.println(now);
         BookShelfDTO bookShelfDTO =
@@ -84,7 +73,10 @@ public class SessionController {
                         .tag(jsonData.getTag())
                         .startDate(now).build();
         bookShelfService.bookShelfUpdate(bookShelfDTO);
-        return "check";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create("/myshelf"));
+        return new ResponseEntity<>(headers, HttpStatus.FOUND);
     }
+
 
 }
