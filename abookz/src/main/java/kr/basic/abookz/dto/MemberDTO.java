@@ -20,7 +20,7 @@ public class MemberDTO {
   private String loginId; // 아이디
   private String password; // 비번
   private String email; // 이메일
-  private String nickname; // 닉네임
+  private String name; // 닉네임
   @Enumerated(EnumType.STRING)
   private RoleEnum role; // 역할
   private String profile; // 프로필이미지
@@ -54,7 +54,7 @@ public class MemberDTO {
     memberDTO.setLoginId(memberEntity.getLoginId());
     memberDTO.setPassword(memberEntity.getPassword());
     memberDTO.setEmail(memberEntity.getEmail());
-    memberDTO.setNickname(memberEntity.getName());
+    memberDTO.setName(memberEntity.getName());
     memberDTO.setRole(memberEntity.getRole());
     memberDTO.setProfile(memberEntity.getProfile());
     memberDTO.setRegDate(memberEntity.getRegDate());

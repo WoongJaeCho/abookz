@@ -27,6 +27,7 @@ public class BoardController {
   }
   @PostMapping("/save")
   public String save(@ModelAttribute BoardDTO boardDTO){
+    System.out.println("boarddto = " + boardDTO);
     boardService.save(boardDTO);
     return "redirect:/board/paging";
   }
