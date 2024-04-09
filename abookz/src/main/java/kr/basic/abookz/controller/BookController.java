@@ -1,6 +1,8 @@
 package kr.basic.abookz.controller;
 
 import jakarta.servlet.http.HttpSession;
+import kr.basic.abookz.config.auth.PrincipalDetails;
+import kr.basic.abookz.config.auth.PrincipalDetailsService;
 import kr.basic.abookz.dto.BookDTO;
 import kr.basic.abookz.dto.BookShelfDTO;
 import kr.basic.abookz.entity.book.BookEntity;
@@ -12,6 +14,9 @@ import kr.basic.abookz.service.BookShelfService;
 import kr.basic.abookz.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -30,6 +35,7 @@ public class BookController {
     private final AladinService aladinService;
     private final BookShelfService shelfService;
     private  final BookService bookService;
+  private final PrincipalDetailsService principalDetailsService;
 
     @GetMapping("/search")
     public String getSearh(){

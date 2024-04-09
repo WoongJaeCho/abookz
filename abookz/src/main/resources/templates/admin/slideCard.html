@@ -1,40 +1,111 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/css/admin.css">
 </head>
 <body>
+<!--<div th:replace="~{fragments/header :: header}" /><br>-->
+<div id="slideCard">
     <h1> 슬라이드 카드 설정 </h1>
 
-    <table border="1">
-        <tr>
-            <th></th>
-            <th>슬라이드 순서</th>
-            <th>도서 제목</th>
-            <th>도서 ISBN13</th>
-            <th>등록일자</th>
-            <th>슬라이드 파일</th>
-        </tr>
-        <tr th:each="card, index : ${slideCard}">
-            <td th:text="${index.index + 1}">1</td>
-            <td>
-                <select>
-                    <option th:each="orderOption : ${#numbers.sequence(1, slideCard.size())}"
-                            th:value="${orderOption}"
-                            th:text="${orderOption == 0 ? '비활성' : orderOption}"
-                            th:selected="${orderOption == card.idx}">
-                        order
-                    </option>
-                </select>
-            </td>
-            <td th:text="${card.title}">데일 카네기 인간관계론</td>
-            <td th:text="${card.ISBN13}">9791187142560</td>
-            <td th:text="${card.addDate}">2024-04-07</td>
-            <td th:text="${card.slideFileName}">
-                <input type="file" value="slider01.png">
-            </td>
-        </tr>
+        <table border="1">
+            <tr>
+                <th th:width="50"> # </th>
+                <th th:width="80">슬라이드 순서</th>
+                <th th:width="300">도서 제목</th>
+                <th th:width="150">도서 ISBN13</th>
+                <th th:width="100">등록일자</th>
+                <th th:width="150">슬라이드 파일</th>
+                <th>업로드</th>
+            </tr>
+            <tr th:each="card, index : ${slideCard}">
+                <td th:text="${index.index + 1}">1</td>
+                <td>
+                    <!--                <select>-->
+                    <!--                    <option th:each="orderOption : ${#numbers.sequence(1, slideCard.size())}"-->
+                    <!--                            th:id="'orderSelect_' + ${index.index}"-->
+                    <!--                            th:value="${card.idx}"-->
+                    <!--                            th:onclick="'updateIndexes(' + ${index.index} + ')'"-->
+                    <!--                            onchange="updateIndexes(${index.index})">-->
+                    <!--                        order-->
+                    <!--                    </option>-->
+                    <!--                </select>-->
+                    <select onchange="updateIndexes(this)">
+                        <option th:each="orderOption : ${#numbers.sequence(1, slideCard.size())}"
+                                th:value="${orderOption}"
+                                th:text="${orderOption}"
+                                th:selected="${orderOption == card.idx}">
+                            order
+                        </option>
+                    </select>
+                </td>
+                <td th:if="${card.book == null}"> ISBN13 값이 잘못 되었습니다. 삭제 후 재생성 바람. </td>
+                <td th:unless="${card.book == null}" th:text="${card.book.getTitle()}">데일 카네기 인간관계론</td>
+                <td>
+                    <input type="text"  th:value="${card.ISBN13}" readonly/>
+                </td>
+                <td th:text="${card.addDate}">2024-04-07</td>
+                <td th:text="${card.slideFileName}">
+                    <input type="file" th:value="${card.slideFileName}" readonly>
+                </td>
+                <td>
+                    <input type="button" value="수정" onclick="toggleEdit(this.parentNode.parentNode)" />
+                    <input type="submit" value="제출" style="display: none;" />
+                    <input type="button" value="삭제" th:onclick="|location.href='@{/slide(id=${card.id})}'|" />
 
+                </td>
+            </tr>
+        </table>
+
+    <form action="/slide" method="post" enctype="multipart/form-data">
+        <p> ISBN13 입력 : </p>
+        <input type="number" name="ISBN13" />
+        <p> 슬라이드 파일 : </p>
+        <input type="file" name="file" />
+        <input type="submit">
+    </form>
+
+</div>
 </body>
 </html>
+
+<script>
+    function toggleEdit(row) {
+        var inputs = row.querySelectorAll('input[type="text"]');
+        var button = row.querySelector('input[type="button"]');
+        var submitButton = row.querySelector('input[type="submit"]');
+
+        for (var i = 0; i < inputs.length; i++) {
+            inputs[i].readOnly = !inputs[i].readOnly;
+        }
+
+        button.style.display = 'none';
+        submitButton.style.display = 'inline-block';
+    }
+</script>
+
+<script>
+    function updateOptionValue(selectElement) {
+        // 선택된 옵션의 값 가져오기
+        var selectedValue = parseInt(selectElement.value);
+
+        // 선택된 옵션의 인덱스 가져오기
+        var selectedIndex = parseInt(selectElement.id.split("_")[1]);
+
+        // 다른 select 요소에서 중복된 값 검사
+        var selects = document.querySelectorAll('select');
+        selects.forEach(function(select) {
+            if (select !== selectElement) {
+                var otherValue = parseInt(select.value);
+                if (otherValue === selectedValue) {
+                    // 중복된 경우 기존 값 증가
+                    select.value = otherValue + 1;
+                    select.innerText = otherValue + 1;
+                }
+            }
+        });
+    }
+</script>

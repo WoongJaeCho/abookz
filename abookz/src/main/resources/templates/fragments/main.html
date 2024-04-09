@@ -1,40 +1,43 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
 
 <main id="main" >
 
     <article class="slide">
         <div class="sliderWrap" th:if="${slideCard == null}">
-            <div class="slider s1"><a href="/content/9791187142560"><img src="/images/slider01.png" alt="slider01"></a></div>
-            <div class="slider s2"><a href="/content/9791187444725"><img src="/images/slider02.png" alt="slider02"></a></div>
-            <div class="slider s3"><a href="/content/9791192300818"><img src="/images/slider03.png" alt="slider03"></a></div>
+            <div class="slider s1"><a href="/content/9791187142560"><img src="/images/slides/slider01.png" alt="slider01"></a></div>
+            <div class="slider s2"><a href="/content/9791187444725"><img src="/images/slides/slider02.png" alt="slider02"></a></div>
+            <div class="slider s3"><a href="/content/9791192300818"><img src="/images/slides/slider03.png" alt="slider03"></a></div>
         </div>
-        <div class="sliderWrap" th:unless="${slideCard == null}" th:each="card : ${slideCard}">
-            <div class="slider s1">
+        <div class="sliderWrap" th:unless="${slideCard == null}">
+            <div class="slider s1" th:each="card : ${slideCard}">
                 <a th:href="@{/content/{ISBN}(ISBN=${card.ISBN13})}">
-                    <img src="@{/images/{fileName}(fileName=${card.slideFileName})}" alt="slider01">
+                    <img th:src="@{/images/slides/{fileName}(fileName=${card.slideFileName})}" th:alt="${card.slideFileName}">
                 </a>
             </div>
         </div>
     </article>
+
     <section id="content">
         <div class="notice"> 공지사항 </div>
-        <div class="recommend"> 에이북즈 도서 추천 </div>
-        <div class="memo" th:if="${session.id == null}">
+        <div class="recommend"> 에이북즈 도서 추천
+            <a href="/slide">admin</a>
+        </div>
+        <div class="memo" sec:authorize="!isAuthenticated()">
             <img src="/images/memo_card.png" alt="메모카드">
             <a href="/member/login" class="memo_card"> 로그인 하기 </a>
         </div>
-        <div class="memo" th:if="${session.id != null and ( books == null or shelves == null )}">
+        <div class="memo" sec:authorize="isAuthenticated()" th:if="${books == null or shelves == null }">
             <img src="/images/memo_card.png" alt="메모카드">
             <a href="/myshelf" class="memo_card">나의 서재</a>
         </div>
-        <div class="memo" th:if="${session.id != null and books != null and shelves != null}" th:with="book=${books[0]}, shelf=${shelves[0]}" >
+        <div class="memo" sec:authorize="isAuthenticated()" th:if="${books != null and shelves != null}" th:with="book=${books[0]}, shelf=${shelves[0]}" >
             <img th:src="${book.cover}" alt="book_cover" class="memo_cover">
             <div class="memo_text">
                 <div class="memo_title" th:text="${book.title}"></div>
-                <div class="memo_day" > 5일째 읽는 중 </div>
+                <div class="memo_day" th:text="|${shelf.days+1}일째 읽는중|"> 5일째 읽는 중 </div>
                 <div class="read_bar">
-                    <div class="bar"></div>
+                    <progress class="progress w-56" th:value="${(shelf.currentPage * 100) / book.itemPage}" max="100"></progress>
                 </div>
                 <div class="memo_page">
                     <div class="per" th:text="${(shelf.currentPage * 100) / book.itemPage + '%'}"> 10% </div>
@@ -48,3 +51,4 @@
     </section>
 
 </main>
+

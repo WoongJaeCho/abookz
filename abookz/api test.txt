@@ -5,3 +5,6 @@ Year=2022&Month=5&Week=3 -> 원하는 년도 월 일
 알라딘 상품 정보
 https://www.aladin.co.kr/ttb/api/ItemLookUp.aspx?ttbkey=ttbinevers1330001&itemIdType=ISBN&ItemId=9788964964859&output=js&Version=20131101&OptResult=ratinginfo,packing&Cover=Big
 
+알라딘 상품 검색(난장이)
+https://www.aladin.co.kr/ttb/api/ItemSearch.aspx?ttbkey=ttbinevers1330001&Query=%EB%82%9C%EC%9E%A5%EC%9D%B4&QueryType=Title&MaxResults=30&start=2&SearchTarget=Book&output=js&Version=20131101&Cover=Big
+

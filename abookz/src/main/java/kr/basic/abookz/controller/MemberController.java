@@ -1,6 +1,7 @@
 package kr.basic.abookz.controller;
 
 import jakarta.servlet.http.HttpSession;
+import kr.basic.abookz.config.auth.PrincipalDetails;
 import kr.basic.abookz.dto.MemberDTO;
 import kr.basic.abookz.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -8,6 +9,8 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -21,6 +24,7 @@ import java.util.List;
 public class MemberController {
   // 생성자 주입
   private final MemberService memberService;
+  private final BCryptPasswordEncoder bCryptPasswordEncoder;
 //  private final JavaMailSender javaMailSender;
 
 //  @Value("${mail.username}")
@@ -48,6 +52,9 @@ public class MemberController {
   @PostMapping("/save")
   public String saveMember(@ModelAttribute MemberDTO memberDTO){
     System.out.println("memberDTO = " + memberDTO);
+    String initPassword =  memberDTO.getPassword();
+    String enPassword = bCryptPasswordEncoder.encode(initPassword);
+    memberDTO.setPassword(enPassword);
     memberService.save(memberDTO);
     return "redirect:/";
   }
@@ -55,7 +62,7 @@ public class MemberController {
   @ResponseBody
   public String validId(@RequestParam("id") String id){
     System.out.println("id = " + id);
-    return memberService.validById(id) ? "notValid" : "Valid";
+    return memberService.validById(id) ? "notValid" : "valid";
   }
 
   // 로그인
@@ -82,8 +89,12 @@ public class MemberController {
 
   // 수정
   @GetMapping("/update")
-  public String updateForm(HttpSession session, Model model){
-    Long getId = (Long)session.getAttribute("id");
+  public String updateForm(HttpSession session, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails){
+    if(principalDetails == null){
+      return "redirect:/member/login";
+    }
+
+    Long getId =principalDetails.getMember().getId();
     MemberDTO memberDTO = memberService.updateForm(getId);
     model.addAttribute("updateMember", memberDTO);
     return "member/update";
@@ -135,5 +146,12 @@ public class MemberController {
     return "member/loginPwfinder";
   }
 
-
+  @GetMapping("/test")
+  @ResponseBody
+  public PrincipalDetails test(@AuthenticationPrincipal PrincipalDetails principalDetails){
+    if(principalDetails == null){
+      return null;
+    }
+    return principalDetails;
+  }
 }

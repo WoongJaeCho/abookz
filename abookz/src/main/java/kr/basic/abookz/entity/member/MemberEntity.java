@@ -2,13 +2,12 @@ package kr.basic.abookz.entity.member;
 
 import jakarta.persistence.*;
 import kr.basic.abookz.dto.MemberDTO;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDate;
+
+import static kr.basic.abookz.entity.member.RoleEnum.ROLE_USER;
 
 @Entity
 @Table(name = "MEMBER")
@@ -20,10 +19,10 @@ public class MemberEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "MEM_ID", nullable = false)
   private Long id;//pk
-  private String loginId;//로그인시 필요한 아이디
+  private String loginId;//로그인시 필요한 아이디(이메일)
   private String password;//비밀번호
   private String email;//이메일
-  private String nickname;//닉네임(댓글,리뷰)
+  private String name;//닉네임(댓글,리뷰)
   @Enumerated(EnumType.STRING)
   private RoleEnum role;//역할 ADMIN,MANAGER,USER(Default = USER)
   private String profile; //프로필 이미지
@@ -33,6 +32,10 @@ public class MemberEntity {
   public MemberEntity(String loginId) {
     this.loginId = loginId;
   }
+
+  //OAuth 를 위해 추가하는 필드
+  private String provider;
+  private String providerId;
 
   //  private int challenge;//습관형성 챌린지
 //  @OneToMany(mappedBy = "member, cascade = CascadeType.ALL)
@@ -45,8 +48,8 @@ public class MemberEntity {
     memberEntity.setLoginId(memberDTO.getLoginId());
     memberEntity.setPassword(memberDTO.getPassword());
     memberEntity.setEmail(memberDTO.getEmail());
-    memberEntity.setNickname(memberDTO.getNickname());
-    memberEntity.setRole(RoleEnum.ROLE_USER);
+    memberEntity.setName(memberDTO.getNickname());
+    memberEntity.setRole(ROLE_USER);
     memberEntity.setRegDate(memberDTO.getRegDate());
     return memberEntity;
   }
@@ -57,11 +60,22 @@ public class MemberEntity {
     memberEntity.setLoginId(memberDTO.getLoginId());
     memberEntity.setPassword(memberDTO.getPassword());
     memberEntity.setEmail(memberDTO.getEmail());
-    memberEntity.setNickname(memberDTO.getNickname());
+    memberEntity.setName(memberDTO.getNickname());
     memberEntity.setProfile(memberDTO.getProfile());
     memberEntity.setRole(memberDTO.getRole());
     memberEntity.setRegDate(memberDTO.getRegDate());
     return memberEntity;
+  }
+
+  @Builder
+  public MemberEntity(String loginId, String password, String email, String provider, String providerId,String name) {
+    this.loginId = loginId;
+    this.password = password;
+    this.email = email;
+    this.provider = provider;
+    this.providerId = providerId;
+    this.role= ROLE_USER;
+    this.name =name;
   }
 
 }
