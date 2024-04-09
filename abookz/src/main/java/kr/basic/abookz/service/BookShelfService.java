@@ -55,10 +55,14 @@ public class BookShelfService {
         BookShelfEntity bookShelfSave = mapDTOToEntity(bookShelfDTO);
         System.out.println("bookShelfSave = " + bookShelfSave);
         bookShelf.setTag(bookShelfSave.getTag());
-        bookShelf.setStartDate(bookShelfSave.getStartDate());
 
-        bookShelfRepository.save(bookShelf);
-        return "성공";
+        if(bookShelf.getStartDate() == null) {
+            bookShelf.setStartDate(bookShelfSave.getStartDate());
+            bookShelfRepository.save(bookShelf);
+            return "성공";
+        }
+            bookShelfRepository.save(bookShelf);
+        return"성공";
     }
 
 
