@@ -4,9 +4,14 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
-@AllArgsConstructor
+//@AllArgsConstructor
 public enum Category {
-  Free("자유"),
-  Question("질문");
-  private final String cate;
+  FREE("자유"),
+  QUESTION("질문");
+
+  private final String korean;
+
+  Category(String korean){
+    this.korean = korean;
+  }
 }

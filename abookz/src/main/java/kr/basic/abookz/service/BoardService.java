@@ -2,6 +2,7 @@ package kr.basic.abookz.service;
 
 import kr.basic.abookz.dto.BoardDTO;
 import kr.basic.abookz.entity.board.BoardEntity;
+import kr.basic.abookz.entity.board.Category;
 import kr.basic.abookz.repository.BoardRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -24,6 +25,7 @@ public class BoardService {
   // 작성
   public void save(BoardDTO boardDTO) {
     BoardEntity boardEntity = BoardEntity.toSaveEntity(boardDTO);
+    System.out.println("boardEntity = " + boardEntity);
     boardRepository.save(boardEntity);
   }
 
@@ -79,5 +81,14 @@ public class BoardService {
 
     // 목록 : id, writer, title, hits, creatDate
     return boardEntities.map(board -> new BoardDTO(board.getId(), board.getTitle(), board.getWriter(), board.getHits(), board.getCreateDate(), board.getCategory()));
+  }
+
+  public List<BoardDTO> findAllByCategory(Category category) {
+    List<BoardEntity> boardEntity = boardRepository.findByCategory(category);
+    List<BoardDTO> boardDTO = new ArrayList<>();
+    for(BoardEntity e : boardEntity){
+      boardDTO.add(BoardDTO.toBoardDTO(e));
+    }
+    return boardDTO;
   }
 }

@@ -18,6 +18,7 @@
       <th>writer</th>
       <th>hits</th>
       <th>date</th>
+      <th>category</th>
     </tr>
     <tr th:each="board: ${boardList}">
       <td th:text="${board.id}"></td>
@@ -25,11 +26,14 @@
       <td th:text="${board.writer}"></td>
       <td th:text="${board.hits}"></td>
       <td th:text="${board.createDate}"></td>
+      <td th:text="${board.category}"></td>
     </tr>
   </table>
 </div>
 <div id="footer">
   <a th:href="@{/}">메인</a>
+  <a th:href="@{|/board/list/${board.category.FREE}|}" th:each="board : ${boardList}">자유</a>
+  <a th:href="@{|/board/list/${board.category.QUESTION}|}" th:each="board : ${boardList}">질문</a>
 </div>
 </body>
 </html>

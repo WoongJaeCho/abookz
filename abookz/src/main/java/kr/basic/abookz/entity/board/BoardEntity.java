@@ -2,8 +2,7 @@ package kr.basic.abookz.entity.board;
 
 import jakarta.persistence.*;
 import kr.basic.abookz.dto.BoardDTO;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -13,7 +12,10 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "BOARD")
+@ToString
 public class BoardEntity extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -37,7 +39,7 @@ public class BoardEntity extends BaseEntity {
     boardEntity.setWriter(boardDTO.getWriter());
     boardEntity.setContents(boardDTO.getContents());
     boardEntity.setHits(0);
-    boardEntity.setCategory(Category.valueOf(boardDTO.getCategory().toString()));
+    boardEntity.setCategory(boardDTO.getCategory());
     return boardEntity;
   }
 
