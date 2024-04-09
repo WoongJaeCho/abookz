@@ -129,7 +129,8 @@ public class MemberService {
       e.printStackTrace();
     }
 
-    memberRepository.save(MemberEntity.toupdateMemberEntity(memberDTO));
+    MemberEntity.toupdateMemberEntity(memberDTO);
+//    memberRepository.save(MemberEntity.toupdateMemberEntity(memberDTO));
   }
 
   // 회원삭제
