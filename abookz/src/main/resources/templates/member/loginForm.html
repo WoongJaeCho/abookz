@@ -12,19 +12,19 @@
     </div>
   </div>
   <div id="loginform">
-    <form action="/member/login" method="post">
+    <form action="/login" method="post">
       <table border="1">
         <tr>
           <td>Id</td>
-          <td><input type="text" name="loginId" id="logId"></td>
+          <td><input type="text" name="username" id="logId"/></td>
         </tr>
         <tr>
           <td>Password</td>
-          <td><input type="password" name="password" id="pw"></td>
+          <td><input type="password" name="password" id="pw"/></td>
         </tr>
         <tr>
           <td colspan="2" id="btns">
-            <input type="button" value="로그인" onclick="checkLogin(form)">
+            <button>로그인</button>
             <input type="reset" value="취소">
           </td>
         </tr>
@@ -35,8 +35,10 @@
           </td>
         </tr>
       </table>
-      </form>
+<!--      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
+    </form>
   </div>
+
   <button onclick='location.href="/oauth2/authorization/google"'> 구글 로그인 하기 </button>
   <button onclick='location.href="/oauth2/authorization/naver"'> 네이버 로그인 하기 </button>
   <button onclick='location.href="/oauth2/authorization/kakao"'> 카카오 로그인 하기 </button>

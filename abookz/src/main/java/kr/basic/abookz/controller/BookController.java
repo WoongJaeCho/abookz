@@ -50,23 +50,6 @@ public class BookController {
         return  "/book/detail";
     }
 
-    //   내 서재로 가기
-    @GetMapping("/myshelf")
-    public String getMyShelf(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails){
-      if(principalDetails == null){
-        return "redirect:/member/login";
-      }
-
-        Long memId =principalDetails.getMember().getId();
-       List<BookShelfDTO> shelf =shelfService.findAllDTOByMemberId(memId);
-        List<BookDTO> books = shelf.stream()
-                .map(BookShelfDTO::getBookDTO)
-                .flatMap(book -> bookService.findAllByDTOId(book.getId()).stream())
-                .toList();
-        model.addAttribute("shelf", shelf);
-        model.addAttribute("books",books);
-        return "book/myShelf";
-    }
 
     @GetMapping("/category/{category}")
     public String choiceCategory(@PathVariable ("category")String category,Model model) throws Exception {

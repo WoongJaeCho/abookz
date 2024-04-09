@@ -34,24 +34,27 @@ public class SecurityConfig {
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception{
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(
-                authz -> authz
-                        .requestMatchers("/user/**").authenticated() // 인증이 되면 누구나 들어올수있음
-                        .requestMatchers("/manager/**").hasAnyRole("MANAGER","ADMIN") // role이 메니저나 어드민만 들어올수있음
-                        .requestMatchers("/admin/**").hasAnyRole("ADMIN")
-                        .anyRequest().permitAll()
+            authz -> authz
+                .requestMatchers("/member/save").permitAll()
+                .requestMatchers("/member/validId").permitAll()
+                .requestMatchers("/member/**").authenticated()
+                .requestMatchers("/manager/**").hasAnyRole("MANAGER","ADMIN")
+                .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+                .anyRequest().permitAll()
         ).formLogin(
-                form->{
-                    form.loginPage("/loginForm")   // 우리가 만든 로그인페이지로 자동 인터셉트됨
-                        .loginProcessingUrl("/login")
-                            .failureHandler(customAuthFailureHandler())
-                            .successForwardUrl("/test");
-                }
+            form->{
+                form.loginPage("/member/loginForm")
+                    .loginProcessingUrl("/login")
+                    .failureHandler(customAuthFailureHandler())
+                    .permitAll()
+                    .successForwardUrl("/");
+            }
         ).oauth2Login(
-                oauth2 -> oauth2
-                        .loginPage("/loginForm")
-                        .successHandler(customSuccessHandler)
-                        .failureHandler(customAuthFailureHandler())
-                        .permitAll()
+            oauth2 -> oauth2
+                .loginPage("/member/loginForm")
+                .successHandler(customSuccessHandler)
+                .failureHandler(customAuthFailureHandler())
+                .permitAll()
 
         );
 

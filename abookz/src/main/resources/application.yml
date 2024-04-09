@@ -22,7 +22,13 @@ spring:
   config:
     activate:
       on-profile: common
-
+  mvc:
+    view:
+      prefix: templates/
+      suffix: .html
+    hiddenmethod:
+      filter:
+        enabled: true
   servlet:
     multipart:
       max-file-size: 10MB

@@ -21,8 +21,9 @@ public class PrincipalDetailsService implements UserDetailsService {
     //session(내부 Authenticaiton (내부 UserDetails ))
 
     @Override
-    public UserDetails loadUserByUsername(String id) throws UsernameNotFoundException {
-        Optional<MemberEntity> member = memberRepository.findByLoginId(id);
+    public UserDetails loadUserByUsername(String loginId) throws UsernameNotFoundException {
+        Optional<MemberEntity> member = memberRepository.findByLoginId(loginId);
+        System.out.println("member = " + member);
         if(member.isPresent()){
             System.out.println(" 유저 디테일 객체 생성 !!! " + member.get());
             return new PrincipalDetails(member.get()); // 이 함수가 종료가 될때 @Authentication 객체가 만들어진다

@@ -6,7 +6,6 @@ import kr.basic.abookz.dto.BookShelfDTO;
 import kr.basic.abookz.entity.book.TagEnum;
 import kr.basic.abookz.service.BookService;
 import kr.basic.abookz.service.BookShelfService;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -60,7 +59,7 @@ public class BookShelfController {
     @GetMapping("/myshelf/tag/{tag}")
     public String myShelfTag(@PathVariable ("tag")String  tag, Model model, HttpSession session){
         if(session.getAttribute("id") == null){
-            return "member/login";
+            return "loginForm";
         }
        Long memId= (Long)session.getAttribute("id");
         TagEnum tagValue =null;
