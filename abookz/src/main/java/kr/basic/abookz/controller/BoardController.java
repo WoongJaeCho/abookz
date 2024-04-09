@@ -1,6 +1,7 @@
 package kr.basic.abookz.controller;
 
 import kr.basic.abookz.dto.BoardDTO;
+import kr.basic.abookz.entity.board.Category;
 import kr.basic.abookz.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -21,7 +23,8 @@ public class BoardController {
 
   // 글쓰기(작성)
   @GetMapping("/save")
-  public String saveForm(){
+  public String saveForm(Model model){
+
     return "board/save";
   }
   @PostMapping("/save")
@@ -36,6 +39,7 @@ public class BoardController {
   public String findAll(Model model){
     // DB에서 전체 게시글 데이터를 가져와서 list.html에 보여줌
     List<BoardDTO> List = boardService.findAll();
+    System.out.println("List =" + List);
     model.addAttribute("boardList", List);
     return "board/list";
   }
@@ -47,6 +51,14 @@ public class BoardController {
     model.addAttribute("board", boardDTO);
     model.addAttribute("page", pageable.getPageNumber());
     return "board/detail";
+  }
+
+  @GetMapping("/list/{category}")
+  public String categoryList(@PathVariable Category category, Model model){
+    List<BoardDTO> boardList = boardService.findAllByCategory(category);
+    System.out.println("boardList = " + boardList);
+    model.addAttribute("boardList", boardList);
+    return "board/list";
   }
 
   // 수정
