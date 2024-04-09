@@ -11,5 +11,5 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequiredArgsConstructor
 @RequestMapping("/review")
 public class ReviewController {
-  private final R
+//  private final R
 }
