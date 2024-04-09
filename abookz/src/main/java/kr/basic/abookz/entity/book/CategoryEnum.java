@@ -4,7 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+
 @Getter
+
 @NoArgsConstructor
 @AllArgsConstructor
 public enum CategoryEnum {
@@ -19,10 +21,26 @@ public enum CategoryEnum {
   COMPUTER(9, "컴퓨터"),
   CERTIFICATION(10, "자격증"),
   NOVEL(11, "소설"),
-  MANAGEMENT_ECONOMY(12, "경영/경제"),
+  MANAGEMENT_ECONOMY(12, "경제경영"),
   SELF_IMPROVEMENT(13, "자기계발"),
-  LITERATURE(14, "종교");
+  LITERATURE(14, "종교"),
+  UNDEFINED(15, "");
+
 
   private int code;
   private String categoryName;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

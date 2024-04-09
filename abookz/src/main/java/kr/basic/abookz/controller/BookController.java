@@ -49,6 +49,7 @@ public class BookController {
             System.out.println("book = " + book);
         return  "/book/detail";
     }
+
     //   내 서재로 가기
     @GetMapping("/myshelf")
     public String getMyShelf(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails){
@@ -66,6 +67,7 @@ public class BookController {
         model.addAttribute("books",books);
         return "book/myShelf";
     }
+
     @GetMapping("/category/{category}")
     public String choiceCategory(@PathVariable ("category")String category,Model model) throws Exception {
         List<BookDTO>  getCategoryList = aladinService.choiceGetCategoryList(category);

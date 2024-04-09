@@ -43,9 +43,8 @@ public class BookShelfEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "MEM_ID",foreignKey = @ForeignKey(name = "BOOKSHELF_IBFK_1"))
   private MemberEntity member; // 리뷰 작성 회원
-
-  @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "BOOK_ID",foreignKey = @ForeignKey(name = "BOOKSHELF_IBFK_2"))
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+  @JoinColumn(name = "BOOK_ID", foreignKey = @ForeignKey(name = "BOOKSHELF_IBFK_2"))
   private BookEntity book;
 
   @PrePersist

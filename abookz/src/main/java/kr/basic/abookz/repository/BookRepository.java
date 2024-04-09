@@ -13,8 +13,8 @@ import java.util.stream.Collectors;
 
 
 public interface BookRepository extends JpaRepository<BookEntity, Long> {
-
-       List<BookEntity> findByISBN13(Long ISBN13);
+       List<BookEntity> findAllByISBN13(Long ISBN13);
+       BookEntity findByISBN13(Long ISBN13);
        List<BookEntity> findAllById(Long id);
 
 

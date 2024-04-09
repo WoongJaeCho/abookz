@@ -32,11 +32,9 @@ public class SlideCardController {
             //List<BookDTO> byDTOISBN13 = bookService.findByDTOISBN13(slideCardDTO.getISBN13());
             String isbn13 = slideCardDTO.getISBN13()+"";
             BookDTO book = aladinService.searchGetOneItem(isbn13);
-            System.out.println("book = " + book);
             if(book.getTitle() != null){
                 slideCardDTO.setBook(book);
             }
-            System.out.println("@@@@@@@@@@@@@ = " + slideCardDTO);
         }
         model.addAttribute("slideCard", slideCardDTOs);
         return "admin/slideCard";
@@ -44,6 +42,7 @@ public class SlideCardController {
 
     @PostMapping
     public String uploadSlide(@ModelAttribute SlideCardDTO slideCardDTO, @RequestParam("file") MultipartFile file){
+        System.out.println("slideCardDTO = " + slideCardDTO + ", file = " + file);
         try {
             slideCardService.upload(slideCardDTO, file);
         } catch (Exception e) {
