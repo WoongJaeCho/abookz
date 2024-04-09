@@ -31,6 +31,10 @@ import org.springframework.web.bind.annotation.*;
 
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Arrays;
+
 @RestController
 @Slf4j
 @RequiredArgsConstructor
@@ -47,7 +51,7 @@ public class SessionController {
             @AuthenticationPrincipal OAuth2User oauth) throws Exception {
         Long id = (Long) oauth.getAttribute("id");;
         String data = null;
-        if (httpSession.getAttribute("id") == null) {
+        if (oauth.getAttribute("id") == null) {
             data = "로그인부터해주세요";
             return data;
         }
@@ -68,8 +72,18 @@ public class SessionController {
     }
 
     @RequestMapping("/readingUpdate")
-    public String readingUpdate(@RequestBody  BookShelfDTO jsonData) {
+    public String readingUpdate(@RequestBody BookShelfDTO jsonData) {
+        System.out.println("jsonData = " + jsonData.getBookDTO());
+        System.out.println("jsonData = " + jsonData.getTag());
         System.out.println("jsonData = " + jsonData);
+        LocalDateTime now = LocalDateTime.now();
+        System.out.println(now);
+        BookShelfDTO bookShelfDTO =
+                BookShelfDTO.builder()
+                        .id(jsonData.getId())
+                        .tag(jsonData.getTag())
+                        .startDate(now).build();
+        bookShelfService.bookShelfUpdate(bookShelfDTO);
         return "check";
     }
 
