@@ -52,6 +52,11 @@ public class SlideCardService {
                 .collect(Collectors.toList());
     }
 
+    public void update(SlideCardDTO slideCardDTO){
+        SlideCardEntity entity = mapDTOToEntity(slideCardDTO);
+        cardRepository.save(entity);
+    }
+
     public void deletebyId(Long id){
         cardRepository.deleteById(id);
     }

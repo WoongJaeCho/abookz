@@ -13,7 +13,6 @@
 
         <table>
             <thead>
-                <th th:width="50"> # </th>
                 <th th:width="80">슬라이드 순서</th>
                 <th th:width="300">도서 제목</th>
                 <th th:width="150">도서 ISBN13</th>
@@ -22,18 +21,8 @@
                 <th> 삭제 </th>
             </thead>
             <tbody id="slideTable">
-            <tr th:each="card, index : ${slideCard}" draggable="true" id="slide">
+            <tr th:each="card, index : ${slideCard}" th:data-id="${card.id}" draggable="true" id="slide">
                 <td th:text="${index.index + 1}">1</td>
-                <td>
-                    <select>
-                        <option th:each="orderOption : ${#numbers.sequence(1, slideCard.size())}"
-                                th:value="${orderOption}"
-                                th:text="${orderOption}"
-                                th:selected="${orderOption == card.idx}">
-                            order
-                        </option>
-                    </select>
-                </td>
                 <td th:if="${card.book == null}" > ISBN13 값이 잘못 되었습니다.<br>삭제 후 재생성 바람. </td>
                 <td th:unless="${card.book == null}" th:text="${card.book.getTitle()}">데일 카네기 인간관계론</td>
                 <td th:text="${card.ISBN13}"> 9791187142560 </td>
@@ -67,18 +56,41 @@
     let slideTable = document.querySelector('#slideTable');
     let slides = [...document.querySelectorAll('#slide')];
 
+
     slides.forEach(slide =>{
         slide.addEventListener("dragstart", ()=>{
             slide.classList.add('drag');
         })
         slide.addEventListener("dragend", ()=>{
             slide.classList.remove('drag');
+            slide.classList.remove('dropTarget');
         })
     })
 
     slideTable.addEventListener("dragover", e=>{
         e.preventDefault();
+        // 드롭될 위치에 테두리 스타일 추가
+        const targetSlide = e.target.closest('tr');
+        if (targetSlide) {
+            targetSlide.classList.add('dropTarget');
+        }
     })
+
+    slideTable.addEventListener("dragleave", e => {
+        // 드롭될 위치에서 떠나면 테두리 스타일 제거
+        const targetSlide = e.target.closest('tr');
+        if (targetSlide) {
+            targetSlide.classList.remove('dropTarget');
+        }
+    });
+
+    slideTable.addEventListener("dragend", e => {
+        // 드롭될 위치에서 떠나면 테두리 스타일 제거
+        const targetSlide = e.target.closest('tr');
+        if (targetSlide) {
+            targetSlide.classList.remove('dropTarget');
+        }
+    });
 
     slideTable.addEventListener("drop", e => {
         e.preventDefault();
@@ -94,7 +106,30 @@
                 slideParent.insertBefore(draggedSlide, targetSlide);
             }
         }
+        // 변경된 순서를 서버로 전송
+        const slideIds = Array.from(document.querySelectorAll('#slideTable tr')).map(tr => tr.dataset.id);
+        console.log(slideIds);
+        saveSlideOrder(slideIds);
+
     });
+    function saveSlideOrder(slideIds){
+        fetch('/slide/order', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ slideIds: slideIds })
+        })
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('Failed to save slide order');
+                }
+                console.log('Slide order saved successfully');
+            })
+            .catch(error => {
+                console.error('Error saving slide order:', error);
+            });
+    }
 
     function fileUpload(form) {
         let isbnInput = document.getElementById('ISBN13');
