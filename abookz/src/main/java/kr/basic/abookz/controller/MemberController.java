@@ -7,8 +7,6 @@ import kr.basic.abookz.service.MemberService;
 import lombok.RequiredArgsConstructor;
 
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -72,13 +70,12 @@ public class MemberController {
   }
   @PostMapping("/login")
   @ResponseBody
-  public String loginMember(@RequestParam("id") String id,@RequestParam("pw") String pw, HttpSession session){
+  public String loginMember(@RequestParam("id") String id, @RequestParam("pw") String pw, HttpSession session){
     MemberDTO memberDTO = MemberDTO.loginMember(id, pw);
     MemberDTO loginResult = memberService.login(memberDTO);
     if(loginResult != null){
       // 로그인 성공시
       session.setAttribute("id", loginResult.getId());
-
       return "confirm";
     }
     else {
