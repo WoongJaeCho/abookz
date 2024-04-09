@@ -32,9 +32,9 @@ public class SlideCardController {
             //List<BookDTO> byDTOISBN13 = bookService.findByDTOISBN13(slideCardDTO.getISBN13());
             String isbn13 = slideCardDTO.getISBN13()+"";
             BookDTO book = aladinService.searchGetOneItem(isbn13);
-            if(book.getTitle() != null){
                 slideCardDTO.setBook(book);
-            }
+//            if(book.getTitle() != null){
+//            }
         }
         model.addAttribute("slideCard", slideCardDTOs);
         return "admin/slideCard";

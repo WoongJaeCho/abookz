@@ -11,8 +11,8 @@
 <div id="slideCard">
     <h1> 슬라이드 카드 설정 </h1>
 
-        <table id="slideTable">
-            <tr>
+        <table>
+            <thead>
                 <th th:width="50"> # </th>
                 <th th:width="80">슬라이드 순서</th>
                 <th th:width="300">도서 제목</th>
@@ -20,20 +20,12 @@
                 <th th:width="100">등록일자</th>
                 <th th:width="200">슬라이드 파일</th>
                 <th> 삭제 </th>
-            </tr>
+            </thead>
+            <tbody id="slideTable">
             <tr th:each="card, index : ${slideCard}" draggable="true" id="slide">
                 <td th:text="${index.index + 1}">1</td>
                 <td>
-                    <!--                <select>-->
-                    <!--                    <option th:each="orderOption : ${#numbers.sequence(1, slideCard.size())}"-->
-                    <!--                            th:id="'orderSelect_' + ${index.index}"-->
-                    <!--                            th:value="${card.idx}"-->
-                    <!--                            th:onclick="'updateIndexes(' + ${index.index} + ')'"-->
-                    <!--                            onchange="updateIndexes(${index.index})">-->
-                    <!--                        order-->
-                    <!--                    </option>-->
-                    <!--                </select>-->
-                    <select onchange="updateIndexes(this)">
+                    <select>
                         <option th:each="orderOption : ${#numbers.sequence(1, slideCard.size())}"
                                 th:value="${orderOption}"
                                 th:text="${orderOption}"
@@ -42,19 +34,20 @@
                         </option>
                     </select>
                 </td>
-                <td th:if="${card.book == null}"> ISBN13 값이 잘못 되었습니다. 삭제 후 재생성 바람. </td>
+                <td th:if="${card.book == null}" > ISBN13 값이 잘못 되었습니다.<br>삭제 후 재생성 바람. </td>
                 <td th:unless="${card.book == null}" th:text="${card.book.getTitle()}">데일 카네기 인간관계론</td>
                 <td th:text="${card.ISBN13}"> 9791187142560 </td>
                 <td th:text="${card.addDate}">2024-04-07</td>
                 <td>
-                    <img th:src="@{/images/slides/{fileName}(fileName=${card.slideFileName})}" th:alt="${card.slideFileName}">
-<!--                    <input type="file" th:value="${card.slideFileName}" readonly>-->
+                    <div th:if="${card.book == null}"> ISBN13 값 오류 </div>
+                    <img th:unless="${card.book == null}" th:src="@{/images/slides/{fileName}(fileName=${card.slideFileName})}" th:alt="${card.slideFileName}">
                 </td>
                 <td>
                     <input type="button" value="삭제" th:onclick="|location.href='/slide/'+ @{${card.id}} |"/>
 
                 </td>
             </tr>
+            </tbody>
         </table>
 
     <form id="slideForm" action="/slide" method="post" enctype="multipart/form-data">
@@ -72,7 +65,7 @@
 
 <script>
     let slideTable = document.querySelector('#slideTable');
-    let slides = document.querySelectorAll('#slide');
+    let slides = [...document.querySelectorAll('#slide')];
 
     slides.forEach(slide =>{
         slide.addEventListener("dragstart", ()=>{
@@ -81,6 +74,10 @@
         slide.addEventListener("dragend", ()=>{
             slide.classList.remove('drag');
         })
+    })
+
+    slideTable.addEventListener("dragover", e=>{
+        e.preventDefault();
     })
 
     slideTable.addEventListener("drop", e => {
@@ -110,6 +107,13 @@
             check = false;
         }
 
+        // ISBN13 값이 978 또는 979로 시작하는지 확인
+        let isbnPrefix = isbnInput.value.substring(0, 3);
+        if (isbnPrefix !== '978' && isbnPrefix !== '979') {
+            alert('ISBN13 값은 978 또는 979로 시작해야 합니다.');
+            check = false;
+        }
+
         // 파일이 JPG 또는 PNG인지 확인
         let allowedExtensions = /(\.jpg|\.jpeg|\.png)$/i;
         if (!allowedExtensions.exec(fileInput.value)) {
@@ -120,17 +124,23 @@
 
         // 파일 크기가 1280x400 픽셀인지 확인
         let img = new Image();
-        img.src = URL.createObjectURL(fileInput.files[0]);
-        if (img.width !== 1280 || img.height !== 400) {
-            check = false;
-            console.log(check);
-            alert('파일의 크기는 1280x400 픽셀이어야 합니다.');
-        }
+        img.onload = function() {
 
-        if(check) {
-            console.log(check);
-            form.submit();
+            if (img.width !== 1280 || img.height !== 400) {
+                console.log(img.width);
+                console.log(img.height);
+                check = false;
+                console.log(check);
+                alert('파일의 크기는 1280x400 픽셀이어야 합니다.');
+            } else {
+                if(check) {
+                    console.log(check);
+                    form.submit();
+                }
+            }
         }
+        img.src = URL.createObjectURL(fileInput.files[0]);
+
         return false;
     }
 
