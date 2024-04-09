@@ -20,7 +20,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
+
+
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
 import org.springframework.web.bind.annotation.*;
+
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RestController
@@ -33,7 +41,7 @@ public class SessionController {
     private final BookService bookService;
     private final AladinService aladinService;
 
-    @RequestMapping(value = "/want", method = RequestMethod.POST)
+    @RequestMapping(value = "/want",method = RequestMethod.POST)
 
     public String wantToRead(@RequestParam("book") String book, Authentication authentication,
             @AuthenticationPrincipal OAuth2User oauth) throws Exception {
