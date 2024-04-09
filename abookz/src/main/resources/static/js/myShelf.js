@@ -11,7 +11,6 @@ for (var i = 0; i < readChange.length; i++) {
     element.addEventListener("click", function (event) {
         var x = event.clientX; // 클릭한 위치의 x 좌표
         var y = event.clientY; // 클릭한 위치의 y 좌표
-        // 클릭된 요소의 부모 요소나 조상 요소에 readChange 클래스가 있는지 확인
         if (popup.style.display === 'none') {
             popup.style.position = 'fixed';
             popup.style.top = y + 'px';

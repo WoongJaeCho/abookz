@@ -20,10 +20,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 @RestController
@@ -40,9 +37,8 @@ public class SessionController {
 
     public String wantToRead(@RequestParam("book") String book, Authentication authentication,
             @AuthenticationPrincipal OAuth2User oauth) throws Exception {
-        Long check = (Long) oauth.getAttribute("id");
-        System.out.println(check);
-
+        Long id = (Long) oauth.getAttribute("id");;
+        String data = null;
         if (httpSession.getAttribute("id") == null) {
             data = "로그인부터해주세요";
             return data;
@@ -64,7 +60,7 @@ public class SessionController {
     }
 
     @RequestMapping("/readingUpdate")
-    public String readingUpdate(@RequestBody BookShelfDTO jsonData) {
+    public String readingUpdate(@RequestBody  BookShelfDTO jsonData) {
         System.out.println("jsonData = " + jsonData);
         return "check";
     }
