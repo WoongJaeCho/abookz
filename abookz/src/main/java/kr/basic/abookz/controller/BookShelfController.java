@@ -1,6 +1,7 @@
 package kr.basic.abookz.controller;
 
 import jakarta.servlet.http.HttpSession;
+import kr.basic.abookz.config.auth.PrincipalDetails;
 import kr.basic.abookz.dto.BookDTO;
 import kr.basic.abookz.dto.BookShelfDTO;
 import kr.basic.abookz.entity.book.TagEnum;
@@ -30,13 +31,11 @@ public class BookShelfController {
     //   내 서재로 가기
     @GetMapping("/myshelf")
     public String getMyShelf(HttpSession session, RedirectAttributes redirectAttributes, Model model
-            , @AuthenticationPrincipal OAuth2User oauth){
-        Long id =(Long)oauth.getAttribute("id");
-        if(oauth.getAttribute("id")== null){
-            redirectAttributes.addFlashAttribute("fail","로그인이후 가능합니다");
-            return "redirect:/member/login";
-        }
-        Long memId = (Long)session.getAttribute("id");
+            , @AuthenticationPrincipal PrincipalDetails principalDetails){
+      if (principalDetails == null) {
+        return "/member/loginForm";
+      }
+      Long memId =  principalDetails.getMember().getId();
         List<BookShelfDTO> shelf =shelfService.findAllDTOByMemberId(memId);
        //밑에는 각 사이즈 가져오기 내서재들 옆 숫자표시 몇권있는지
         int read = (int) shelf.stream()
@@ -62,11 +61,11 @@ public class BookShelfController {
         return "book/myShelf";
     }
     @GetMapping("/myshelf/tag/{tag}")
-    public String myShelfTag(@PathVariable ("tag")String  tag, Model model, HttpSession session){
-        if(session.getAttribute("id") == null){
-            return "loginForm";
-        }
-       Long memId= (Long)session.getAttribute("id");
+    public String myShelfTag(@PathVariable ("tag")String  tag, Model model,@AuthenticationPrincipal PrincipalDetails principalDetails){
+      if (principalDetails == null) {
+        return "/member/loginForm";
+      }
+      Long memId =  principalDetails.getMember().getId();
         TagEnum tagValue =null;
         for(TagEnum tagEnum : TagEnum.values()){
                 if(tagEnum.getKorean().equals(tag)){
