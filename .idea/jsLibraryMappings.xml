@@ -1,7 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<project version="4">
-  <component name="JavaScriptLibraryMappings">
-    <file url="file://$PROJECT_DIR$/abookz/build/generated/sources/annotationProcessor/java/main" libraries="{flatpickr}" />
-    <file url="file://$PROJECT_DIR$/abookz/src/main" libraries="{flatpickr}" />
-  </component>
-</project>
