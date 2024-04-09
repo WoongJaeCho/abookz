@@ -1,19 +1,24 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+
+<head th:replace="~{fragments/head :: head}">
   <meta charset="UTF-8">
-  <title>Review</title>
+  <title>abookz</title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
 </head>
 <body>
-<div class="wrap">
-  <div class="book_summary_view">
+<div th:replace="~{fragments/header :: header}" /><br>
 
-  </div>
-  <div class="write_review">
-    <form action="#">
-      <div class="rating"></div>
-    </form>
-  </div>
-</div>
+
+
+<div th:replace="~{fragments/footer :: footer}" />
+
+<div id="searchResults"></div>
+
 </body>
 </html>
+<script defer src="/js/index.js"></script>
+<script defer src="/js/main.js"></script>
+<script defer src="/js/memo.js"></script>

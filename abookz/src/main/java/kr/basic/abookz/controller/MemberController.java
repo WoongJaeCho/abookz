@@ -7,6 +7,7 @@ import kr.basic.abookz.service.MemberService;
 import lombok.RequiredArgsConstructor;
 
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/member")
 @RequiredArgsConstructor
+@Slf4j
 public class MemberController {
   // 생성자 주입
   private final MemberService memberService;
@@ -142,8 +144,10 @@ public class MemberController {
     return principalDetails;
   }
 
-//  @PostMapping("/login")
-//  public String login(@ModelAttribute MemberDTO memberDTO, Model model) {
-//    return "redirect:/";
-//  }
+  @GetMapping("/auth/login")
+  public @ResponseBody String login(String error, String exception){
+    log.error("error ={} , excepiton={}", error, exception);
+    return exception.toString();
+  }
+
 }
