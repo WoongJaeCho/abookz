@@ -50,7 +50,6 @@ public class BookController {
         return  "/book/detail";
     }
 
-
     @GetMapping("/category/{category}")
     public String choiceCategory(@PathVariable ("category")String category,Model model) throws Exception {
         List<BookDTO>  getCategoryList = aladinService.choiceGetCategoryList(category);

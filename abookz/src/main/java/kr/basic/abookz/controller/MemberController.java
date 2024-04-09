@@ -74,6 +74,23 @@ public class MemberController {
     return "member/loginForm";
   }
 
+  // 시큐리티 사용으로 인해 주석 처리
+  // @PostMapping("/login")
+  // @ResponseBody
+  // public String loginMember(@RequestParam("id") String id, @RequestParam("pw") String pw, HttpSession session){
+  //   MemberDTO memberDTO = MemberDTO.loginMember(id, pw);
+  //   MemberDTO loginResult = memberService.login(memberDTO);
+  //   if(loginResult != null){
+  //     // 로그인 성공시
+  //     session.setAttribute("id", loginResult.getId());
+  //     return "confirm";
+  //   }
+  //   else {
+  //     // 로그인 실패시
+  //     return "null";
+  //   }
+  // }
+
 
   // 수정
   @GetMapping("/update")

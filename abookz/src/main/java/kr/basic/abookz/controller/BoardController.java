@@ -21,11 +21,13 @@ public class BoardController {
 
   // 글쓰기(작성)
   @GetMapping("/save")
-  public String saveForm(){
+  public String saveForm()
+  {
     return "board/save";
   }
   @PostMapping("/save")
   public String save(@ModelAttribute BoardDTO boardDTO){
+    System.out.println("boarddto = " + boardDTO);
     boardService.save(boardDTO);
     return "redirect:/board/paging";
   }

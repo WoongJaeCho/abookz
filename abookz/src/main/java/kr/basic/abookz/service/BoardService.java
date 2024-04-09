@@ -78,6 +78,6 @@ public class BoardService {
     System.out.println("boardEntities.isLast() = " + boardEntities.isLast()); // 마지막 페이지 여부
 
     // 목록 : id, writer, title, hits, creatDate
-    return boardEntities.map(board -> new BoardDTO(board.getId(), board.getTitle(), board.getWriter(), board.getHits(), board.getCreateDate()));
+    return boardEntities.map(board -> new BoardDTO(board.getId(), board.getTitle(), board.getWriter(), board.getHits(), board.getCreateDate(), board.getCategory()));
   }
 }

@@ -48,7 +48,7 @@ public class MemberEntity {
     memberEntity.setLoginId(memberDTO.getLoginId());
     memberEntity.setPassword(memberDTO.getPassword());
     memberEntity.setEmail(memberDTO.getEmail());
-    memberEntity.setName(memberDTO.getNickname());
+    memberEntity.setName(memberDTO.getName());
     memberEntity.setRole(ROLE_USER);
     memberEntity.setRegDate(memberDTO.getRegDate());
     return memberEntity;
@@ -60,7 +60,7 @@ public class MemberEntity {
     memberEntity.setLoginId(memberDTO.getLoginId());
     memberEntity.setPassword(memberDTO.getPassword());
     memberEntity.setEmail(memberDTO.getEmail());
-    memberEntity.setName(memberDTO.getNickname());
+    memberEntity.setName(memberDTO.getName());
     memberEntity.setProfile(memberDTO.getProfile());
     memberEntity.setRole(memberDTO.getRole());
     memberEntity.setRegDate(memberDTO.getRegDate());
@@ -75,7 +75,7 @@ public class MemberEntity {
     this.provider = provider;
     this.providerId = providerId;
     this.role= ROLE_USER;
-    this.name =name;
+    this.name = name;
   }
 
 }

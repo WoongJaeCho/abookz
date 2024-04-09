@@ -32,6 +32,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         System.out.println("user request clientRegistration : " + userRequest.getClientRegistration());
         System.out.println("user reuset getAccessToken :" + userRequest.getAccessToken().getTokenValue());
         OAuth2User oAuth2User = super.loadUser(userRequest); // google 회원 프로필 조회
+        System.out.println("oAuth2User = " + oAuth2User);
         System.out.println("get Attribute : " + oAuth2User.getAttributes());
          // loadUser --> Authentication 객체 안에 들어간다
         return processOAuthUser(userRequest , oAuth2User);

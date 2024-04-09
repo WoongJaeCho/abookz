@@ -9,7 +9,7 @@
             <div class="slider s2"><a href="/content/9791187444725"><img src="/images/slides/slider02.png" alt="slider02"></a></div>
             <div class="slider s3"><a href="/content/9791192300818"><img src="/images/slides/slider03.png" alt="slider03"></a></div>
         </div>
-        <div class="sliderWrap" th:unless="${slideCard == null}">
+        <div class="sliderWrap" th:unless="${slideCard == null}" th:style="'width: ' + (${slideCard.size()+1} * 100) + '%'">
             <div class="slider s1" th:each="card : ${slideCard}">
                 <a th:href="@{/content/{ISBN}(ISBN=${card.ISBN13})}">
                     <img th:src="@{/images/slides/{fileName}(fileName=${card.slideFileName})}" th:alt="${card.slideFileName}">

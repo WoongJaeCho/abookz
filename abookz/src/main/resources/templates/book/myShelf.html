@@ -55,14 +55,14 @@
         <td class="shelf_page" th:text="${book.itemPage}">페이지</td>
             <td class="shelf_myShelf_read" th:text="${shelf[bookStat.index].tag == null ? '읽고싶은 책' : shelf[bookStat.index].tag.getKorean()}"></td>
             <div class="popup" th:attr="data-value=${shelf[bookStat.index].getId()}">
-                <input type="radio" id="value1" name="stats" value="value1">
+                <input type="radio" id="value1" name="stats" value="READ">
                 <label for="value1">읽은 책</label><br>
-                <input type="radio" id="value2" name="stats" value="value2">
+                <input type="radio" id="value2" name="stats" value="WANT_TO_READ">
                 <label for="value2">읽고 싶은 책</label><br>
-                <input type="radio" id="value3" name="stats" value="value3">
+                <input type="radio" id="value3" name="stats" value="CURRENTLY_READING">
                 <label for="value3">읽고 있는 책</label>
             </div>
-            <td class="shelf_myShelf" th:text="${shelf[bookStat.index].startDate == null ? '미정' : shelf[bookStat.index].startDate}"></td>
+            <td class="shelf_myShelf" th:text="${shelf[bookStat.index].startDate == null ? '미정' : #temporals.format(shelf[bookStat.index].startDate,('yyyy-MM-dd'))}"></td>
             <td class="shelf_myShelf"  th:text="${#temporals.format(shelf[bookStat.index].addDate,('yyyy-MM-dd'))}"></td>
         </tr>
         </tbody>
