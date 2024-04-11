@@ -9,11 +9,14 @@
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
 <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script src="https://getbootstrap.com/docs/3.4/javascript/#modals"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
 <div id="shelf_container">
 <div id="shelf_left">
 <hr class="shelfLeft_hr">
     <p class="bookShelves">내 서재들</p>
-    <a href="/myshelf/tag/ALL" class="myShelf_" th:text="'전체(' + ${books.size()} + ')'">1</a>
+    <a href="/myshelf/tag/ALL" class="myShelf_" th:text="'전체(' + ${all.size()} + ')'">1</a>
     <br>
     <a href="/myshelf/tag/READ" class="myShelf_" th:text="'읽은 책(' + ${read} + ')'">1</a>
     <br>
@@ -42,13 +45,11 @@
             <th class="shelf_th">작가</th>
             <th class="shelf_th">페이지수</th>
             <th class="shelf_th">진행량</th>
-            <th class="shelf_th">목표량</th>
             <th class="shelf_th">서재</th>
-            <th class="shelf_th">추가일</th>
             <th class="shelf_th">시작일</th>
-            <th class="shelf_th">목표일</th>
             <th class="shelf_th">완독일</th>
-
+            <th class="shelf_th">상세보기</th>
+            <th class="shelf_th">삭제</th>
             </tr>
         </thead>
         <tbody>
@@ -60,8 +61,7 @@
         <td class="shelf_author"   th:text="${#strings.substringBefore(book.author, '(')}">작가</td>
         <td class="shelf_page" th:text="${book.itemPage}">페이지</td>
             <td class="shelf_myShelf" th:text="${shelf[bookStat.index].currentPage == null ? '0' :shelf[bookStat.index].getCurrentPage()}">읽은페이지</td>
-            <td class="shelf_myShelf" th:text="${shelf[bookStat.index].dailyPage == null ? '0' :shelf[bookStat.index].getDailyPage()}">목표페이지</td>
-            <td class="shelf_myShelf_read" th:text="${shelf[bookStat.index].tag == null ? '읽고싶은 책' : shelf[bookStat.index].tag.getKorean()}"></td>
+            <td class="shelf_myShelf_read" th:text="${shelf[bookStat.index].tag == null ? '읽고싶은 책' : shelf[bookStat.index].tag.getKorean()}">상태</td>
             <div class="popup" th:attr="data-value=${shelf[bookStat.index].getId()}">
                 <input type="radio" id="value1" name="stats" value="READ">
                 <label for="value1">읽은 책</label><br>
@@ -72,11 +72,18 @@
             </div>
             <td class="shelf_myShelf_add"  th:text="${#temporals.format(shelf[bookStat.index].addDate,('yyyy-MM-dd'))}">추가일</td>
             <td class="shelf_myShelf_start" th:text="${shelf[bookStat.index].startDate == null ? '미정' : #temporals.format(shelf[bookStat.index].startDate,('yyyy-MM-dd'))}">시작일</td>
-            <td class="shelf_myShelf_target" th:text="${shelf[bookStat.index].targetDate == null ? '' : #temporals.format(shelf[bookStat.index].targetDate,('yyyy-MM-dd'))}">목표일</td>
-            <td class="shelf_myShelf_endDate" th:text="${shelf[bookStat.index].endDate == null ? '' : #temporals.format(shelf[bookStat.index].endDate,('yyyy-MM-dd'))}">완독일</td>
+           <td class="shelf_myShelf_update"> <button class="btn btn-primary btn-detail"> 상세보기</button></td>
+            <td class="shelf_myShelf_delete" th:attr="data-value=${shelf[bookStat.index].getId()}" > <button class="btn btn-primary btn-jittery">삭제하기
+            </button></td>
         </tr>
         </tbody>
     </table>
+    <!-- 모달 -->
+    <div class="modal" id="myModal">
+        <div id="modal_content">
+        </div>
+    </div>
+
 </div>
     <script  src="/js/myShelf.js"></script>
 </div>
