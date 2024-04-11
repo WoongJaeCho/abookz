@@ -149,4 +149,14 @@ public class MemberService {
       return null;
     }
   }
+
+  public String findByLogIdandEmail(MemberDTO memberDTO) {
+    Optional<MemberEntity> byIdandEmail = memberRepository.findByLoginIdandEmail(memberDTO.getLoginId(), memberDTO.getEmail());
+    if(byIdandEmail.isPresent()){
+      return null;
+    }
+    else {
+      return null;
+    }
+  }
 }

@@ -2,6 +2,9 @@ package kr.basic.abookz.repository;
 
 import kr.basic.abookz.entity.board.BoardEntity;
 import kr.basic.abookz.entity.board.Category;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -19,5 +22,6 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
 
 
   List<BoardEntity> findByCategory(Category category);
+  Page<BoardEntity> findAllByCategory(Pageable pageable, Category category, PageRequest pageRequest);
 
 }

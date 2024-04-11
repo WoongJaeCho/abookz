@@ -1,5 +1,6 @@
 package kr.basic.abookz.controller;
 
+import kr.basic.abookz.config.auth.PrincipalDetails;
 import kr.basic.abookz.dto.BoardDTO;
 import kr.basic.abookz.entity.board.Category;
 import kr.basic.abookz.service.BoardService;
@@ -7,9 +8,11 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.Arrays;
 import java.util.List;
@@ -23,9 +26,13 @@ public class BoardController {
 
   // 글쓰기(작성)
   @GetMapping("/save")
-
-  public String saveForm(Model model){
-
+  public String saveForm(@AuthenticationPrincipal PrincipalDetails principalDetails, RedirectAttributes redirectAttributes, Model model){
+    Long id = principalDetails.getMember().getId();
+    if(principalDetails == null || principalDetails.getMember() == null || id == null){
+      redirectAttributes.addFlashAttribute("fail", "로그인 후 이용해주세요");
+      return "redirect:/member/login";
+    }
+    model.addAttribute("writer", principalDetails.getMember().getLoginId());
     return "board/save";
   }
   @PostMapping("/save")
@@ -35,32 +42,24 @@ public class BoardController {
     return "redirect:/board/paging";
   }
 
-  // 조회
-  @GetMapping("/list")
-  public String findAll(Model model){
-    // DB에서 전체 게시글 데이터를 가져와서 list.html에 보여줌
-    List<BoardDTO> List = boardService.findAll();
-    System.out.println("List =" + List);
-    model.addAttribute("boardList", List);
-    return "board/list";
-  }
-  @GetMapping("/{id}")
-  public String findById(@PathVariable Long id, Model model, @PageableDefault(page = 1) Pageable pageable){
-    // 해당 게시글의 조회수를 하나 올리고 게시글 데이터 가져와서 detail.html에 출력
-    boardService.updateHits(id);
-    BoardDTO boardDTO = boardService.findById(id);
-    model.addAttribute("board", boardDTO);
-    model.addAttribute("page", pageable.getPageNumber());
-    return "board/detail";
-  }
-
-  @GetMapping("/list/{category}")
-  public String categoryList(@PathVariable Category category, Model model){
-    List<BoardDTO> boardList = boardService.findAllByCategory(category);
-    System.out.println("boardList = " + boardList);
-    model.addAttribute("boardList", boardList);
-    return "board/list";
-  }
+  // 조회 (페이징 완료에 따라 쓰이지 않음)
+//  @GetMapping("/list")
+//  public String findAll(Model model){
+//    // DB에서 전체 게시글 데이터를 가져와서 list.html에 보여줌
+//    List<BoardDTO> List = boardService.findAll();
+//    System.out.println("List =" + List);
+//    model.addAttribute("boardList", List);
+//    return "board/list";
+//  }
+//  @GetMapping("/{id}")
+//  public String findById(@PathVariable Long id, Model model, @PageableDefault(page = 1) Pageable pageable){
+//    // 해당 게시글의 조회수를 하나 올리고 게시글 데이터 가져와서 detail.html에 출력
+//    boardService.updateHits(id);
+//    BoardDTO boardDTO = boardService.findById(id);
+//    model.addAttribute("board", boardDTO);
+//    model.addAttribute("page", pageable.getPageNumber());
+//    return "board/detail";
+//  }
 
   // 수정
   @GetMapping("/update/{id}")
@@ -91,6 +90,33 @@ public class BoardController {
     int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 4 7 10 ~~
     int endPage = ((startPage + blockLimit - 1) < boardList.getTotalPages()) ? startPage + blockLimit - 1 : boardList.getTotalPages();
 
+    model.addAttribute("boardList", boardList);
+    model.addAttribute("startPage", startPage);
+    model.addAttribute("endPage", endPage);
+
+    return "board/paging";
+  }
+
+  @GetMapping("/paging/{category}") // 카테고리별 분류
+  public String pagingCategory(@PageableDefault(page = 1) Pageable pageable, @PathVariable String category, Model model){
+    System.out.println("category = " + category);
+
+    Category cate;
+    try{
+      cate = Category.valueOf(category.toUpperCase());
+    }
+    catch (IllegalArgumentException e){
+      System.out.println("오류발생");
+      cate = Category.FREE;
+    }
+
+    System.out.println("cate = " + cate);
+    Page<BoardDTO> boardList = boardService.pagingCategory(pageable, cate);
+    int blockLimit = 5;
+    int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 4 7 10 ~~
+    int endPage = ((startPage + blockLimit - 1) < boardList.getTotalPages()) ? startPage + blockLimit - 1 : boardList.getTotalPages();
+
+    model.addAttribute("category", cate);
     model.addAttribute("boardList", boardList);
     model.addAttribute("startPage", startPage);
     model.addAttribute("endPage", endPage);

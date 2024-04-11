@@ -39,3 +39,15 @@ o
 ?abookz/src/main/java/kr/basic/abookz/entity/CategoryEntity.java,5\f\5fa5c4c5da6dedfe3def94977136f2b1821f6ca5
 j
 :abookz/src/main/java/kr/basic/abookz/entity/TagEntity.java,5\d\5d45d49bf31d1993edee35a180f8ab249b37ed31
+m
+=src/main/java/kr/basic/abookz/controller/BoardController.java,a\d\ad8928ee44d7d6a2973cd511c3634715416f93f6
+n
+>src/main/java/kr/basic/abookz/repository/MemberRepository.java,0\4\04fc922ab8047b889a2a8a30fd0c94d67d7ae33c
+g
+7src/main/java/kr/basic/abookz/service/BoardService.java,c\d\cdc581b8a58b0757104d5f7d97924b166d655799
+m
+=src/main/java/kr/basic/abookz/repository/BoardRepository.java,9\1\9147c94608c674c56a3d82a6e83a4df335a37146
+<
+build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
+_
+/src/main/java/kr/basic/abookz/dto/BoardDTO.java,e\0\e019ad1a4149e90d6c96b2570e8e07b0679e989a
