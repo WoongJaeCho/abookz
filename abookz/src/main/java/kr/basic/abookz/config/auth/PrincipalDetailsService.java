@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
-// /login 자동 UserDetailsService 타입으로 IoC loadUserByUserName();
+// login 자동 UserDetailsService 타입으로 IoC loadUserByUserName();
 @Service
 @RequiredArgsConstructor
 public class PrincipalDetailsService implements UserDetailsService {

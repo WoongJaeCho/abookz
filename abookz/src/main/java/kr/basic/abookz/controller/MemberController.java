@@ -152,10 +152,11 @@ public class MemberController {
     return "member/loginPwfinder";
   }
 
-  @PostMapping("/loginPWfind")
-  public String Pwfind(@ModelAttribute MemberDTO memberDTO){
-    memberService.findByLogIdandEmail();
-  }
+//  @PostMapping("/loginPWfind")
+//  public String Pwfind(@ModelAttribute MemberDTO memberDTO){
+//
+//    memberService.findByLogIdandEmail();
+//  }
 
   @GetMapping("/test")
   @ResponseBody
