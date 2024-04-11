@@ -10,6 +10,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDate;
 
+// 생성시 및 수정할때 필요한 클래스
 @MappedSuperclass
 @EntityListeners(AuditingEntityListener.class)
 @Getter

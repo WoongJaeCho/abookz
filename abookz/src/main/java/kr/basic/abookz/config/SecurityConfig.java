@@ -1,3 +1,4 @@
+
 package kr.basic.abookz.config;
 
 import kr.basic.abookz.config.oauth.PrincipalOauth2UserService;
@@ -43,7 +44,7 @@ public class SecurityConfig {
                 .anyRequest().permitAll()
         ).formLogin(
             form->{
-                form.loginPage("/member/loginForm")
+                form.loginPage("/member/login")
                     .loginProcessingUrl("/login")
                     .failureHandler(customAuthFailureHandler())
                     .permitAll()
@@ -52,7 +53,7 @@ public class SecurityConfig {
         ).oauth2Login(
 
             oauth2 -> oauth2
-                .loginPage("/member/loginForm")
+                .loginPage("/member/login")
                 .successHandler(customSuccessHandler)
                 .failureHandler(customAuthFailureHandler())
                 .permitAll()

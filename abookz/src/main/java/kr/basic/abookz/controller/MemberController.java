@@ -69,7 +69,7 @@ public class MemberController {
   }
 
   // 로그인
-  @GetMapping("/loginForm")
+  @GetMapping("/login")
   public String loginForm() {
     return "member/loginForm";
   }
@@ -150,6 +150,11 @@ public class MemberController {
   @GetMapping("/loginPwfind")
   public String PwfindForm() {
     return "member/loginPwfinder";
+  }
+
+  @PostMapping("/loginPWfind")
+  public String Pwfind(@ModelAttribute MemberDTO memberDTO){
+    memberService.findByLogIdandEmail();
   }
 
   @GetMapping("/test")
