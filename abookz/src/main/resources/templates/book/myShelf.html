@@ -50,6 +50,7 @@
             <th class="shelf_th">완독일</th>
             <th class="shelf_th">상세보기</th>
             <th class="shelf_th">삭제</th>
+            <th class="shelf_th">리뷰작성</th>
             </tr>
         </thead>
         <tbody>
@@ -72,9 +73,11 @@
             </div>
             <td class="shelf_myShelf_add"  th:text="${#temporals.format(shelf[bookStat.index].addDate,('yyyy-MM-dd'))}">추가일</td>
             <td class="shelf_myShelf_start" th:text="${shelf[bookStat.index].startDate == null ? '미정' : #temporals.format(shelf[bookStat.index].startDate,('yyyy-MM-dd'))}">시작일</td>
-           <td class="shelf_myShelf_update"> <button class="btn btn-primary btn-detail"> 상세보기</button></td>
+            <td class="shelf_myShelf_review" ><a th:href="@{/review/{bookShelfId}/{bookId}(bookShelfId=${shelf[bookStat.index].getId()},bookId=${book.getId()})}">리뷰</a></td>
+            <td class="shelf_myShelf_update"> <button class="btn btn-primary btn-detail"> 상세보기</button></td>
             <td class="shelf_myShelf_delete" th:attr="data-value=${shelf[bookStat.index].getId()}" > <button class="btn btn-primary btn-jittery">삭제하기
             </button></td>
+
         </tr>
         </tbody>
     </table>

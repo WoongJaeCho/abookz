@@ -16,11 +16,13 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BookShelfService {
 
     private final BookShelfRepository bookShelfRepository;
@@ -34,7 +36,6 @@ public class BookShelfService {
                 .map(this::mapEntityToDTO)
                 .collect(Collectors.toList());
     }
-    @Transactional
      public String insertBookShelfCheck(BookShelfDTO bookShelfDTO){
        BookShelfEntity bookShelfEntity = mapDTOToEntity(bookShelfDTO);
    BookShelfEntity checkBookShelf =    bookShelfRepository.findByMemberIdAndBookId(
@@ -106,4 +107,25 @@ public class BookShelfService {
         return shelfEntity;
     }
 
+  public BookShelfDTO findByIdAndBookId(Long id,Long bookId){
+      Optional<BookShelfEntity> findBookShelf = bookShelfRepository.findByIdAndBookId(id, bookId);
+      BookShelfEntity bookShelf = findBookShelf.get();
+
+    return mapEntityToDTO(bookShelf);
+    }
+
+  public BookShelfDTO findById(Long bookShelfId) {
+    Optional<BookShelfEntity> findBookShelf = bookShelfRepository.findById(bookShelfId);
+    BookShelfEntity bookShelf = findBookShelf.get();
+
+    return mapEntityToDTO(bookShelf);
+  }
+
+  public void updateGrade(BookShelfDTO shelfDTO) {
+    BookShelfEntity bookShelfEntity = bookShelfRepository.findById(shelfDTO.getId())
+        .orElseThrow(() -> new EntityNotFoundException("BookShelf not found with id " + shelfDTO.getId()));
+
+    bookShelfEntity.setBookShelfGrade(shelfDTO.getBookShelfGrade());
+    bookShelfRepository.save(bookShelfEntity);
+  }
 }

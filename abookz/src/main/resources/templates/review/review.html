@@ -1,65 +1,68 @@
-<!doctype html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport"
-        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Review</title>
-  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.9.0/dist/full.min.css" rel="stylesheet" type="text/css" />
-  <script src="https://cdn.tailwindcss.com"></script>
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}">
+    <meta charset="UTF-8">
+    <title>Title</title>
 </head>
 <body>
-<div class="review-container">
-  <div class="flex flex-col border-4 border-red-300 m-3">
-    <div class="flex justify-center items-center p-2 border-4 border-blue-500">
-      <div class="p-2  border-4 border-yellow-500">
-        <div class="text-xl text-center">개미 2 (Hardcover)</div>
-        <img src="cover.jpg" alt="책 커버" class="h-32 w-32 lg:h-48 lg:w-48 m-auto">
+<input type="hidden" id="shelfGrade" th:value="${shelf.bookShelfGrade}" />
+<div th:replace="~{fragments/header :: header}" /><br>
 
-        <div class="text-center">by Bernard Werber (30p)</div>
-        <div>
-          <div class="rating rating-lg rating-half">
-            <input type="radio" name="rating-10" class="rating-hidden" />
-            <input type="radio" name="rating-10" class="bg-yellow-500 mask mask-star-2 mask-half-1" />
-            <input type="radio" name="rating-10" class="bg-yellow-500 mask mask-star-2 mask-half-2" />
-            <input type="radio" name="rating-10" class="bg-yellow-500 mask mask-star-2 mask-half-1" checked />
-            <input type="radio" name="rating-10" class="bg-yellow-500 mask mask-star-2 mask-half-2" />
-            <input type="radio" name="rating-10" class="bg-yellow-500 mask mask-star-2 mask-half-1" />
-            <input type="radio" name="rating-10" class="bg-yellow-500 mask mask-star-2 mask-half-2" />
-            <input type="radio" name="rating-10" class="bg-yellow-500 mask mask-star-2 mask-half-1" />
-            <input type="radio" name="rating-10" class="bg-yellow-500 mask mask-star-2 mask-half-2" />
-            <input type="radio" name="rating-10" class="bg-yellow-500 mask mask-star-2 mask-half-1" />
-            <input type="radio" name="rating-10" class="bg-yellow-500 mask mask-star-2 mask-half-2" />
-          </div>
+    <div class="review-container p-4">
+        <div class="flex flex-col m-3 shadow-lg">
+
+            <div class="flex justify-center items-center p-2">
+                <div class="p-2">
+                    <div th:text="${book.title}" class="text-xl text-center">개미 2 (Hardcover)</div>
+                    <img th:src="${book.cover}" alt="책 커버" class="h-32 w-32 lg:h-48 lg:w-48 m-auto">
+
+                    <div class="text-center" th:text="|${book.author} (${book.itemPage})p|">by Bernard Werber (30p)</div>
+                    <div class="flex justify-center">
+                        <div class="rating rating-lg rating-half">
+<!--                            <input type="radio" name="rating-10" class="rating-hidden" />-->
+                            <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-1" data-rating="0.5"/>
+                            <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-2" data-rating="1.0"/>
+                            <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-1" data-rating="1.5"/>
+                            <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-2" data-rating="2.0"/>
+                            <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-1" data-rating="2.5"/>
+                            <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-2" data-rating="3.0" />
+                            <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-1" data-rating="3.5" />
+                            <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-2" data-rating="4.0" />
+                            <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-1" data-rating="4.5" />
+                            <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-2" data-rating="5.0" />
+                        </div>
+                    </div>
+
+                    <div class="text-base text-center mt-2" th:text="${shelf.getTag().getKorean()}">읽은 책</div>
+                </div>
+            </div>
+            <div class="flex justify-center p-2">
+                <div class="flex justify-center items-center w-full">
+                    <form th:action="@{/review/{shelfId}/{bookId}(shelfId=${shelf.id}, bookId=${book.id})}" method="post" class="w-full max-w-xl p-4">
+                        <div th:if="${review != null}">
+                            <input type="hidden" name="id" th:value="${review.id}">
+                        </div>
+                        <textarea class="textarea textarea-bordered w-full" th:text="${review?.content}" name="content" rows="4" placeholder="여기에 리뷰를 작성하세요."></textarea>
+
+                        <div class="form-control mt-4">
+                            <label class="cursor-pointer">
+                                <input type="checkbox" name="isSpoilerActive" checked="checked" class="checkbox mr-2" />
+                                <span class="label-text">스포일러 방지를 하시겠습니까?</span>
+                            </label>
+                        </div>
+                        <div class="buttons flex items-center">
+                            <button class="btn btn-outline mr-5" type="submit">저장</button>
+                            <button class="btn btn-square btn-outline">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
-        
-
-        <div class="text-base text-center">읽은 책</div>
-      </div>
     </div>
-    <div class="p-2  border-4 border-blue-500">      
-      <div class="p-2 flex justify-center items-center w-full border-4 border-yellow-500">
-        <form action="">
-          <textarea class="border-4 border-black w-[700px]" name="content" id="" cols="30" rows="10"></textarea>
-
-          <div class="form-control mb-3">
-            <label class="cursor-pointer">
-              <input type="checkbox" checked="checked" class="checkbox mr-2" />
-              <span class="label-text">스포일러 방지를 하시겠습니까?</span> 
-            </label>
-          </div>
-          <div class="buttons flex items-center">
-            <button class="btn btn-outline mr-5">저장</button>
-            <button class="btn btn-square btn-outline">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
-          </button>
-          </div>          
-        </form>
-      </div>
-    </div>
-       
-</div>
-</div>
+<script src="/js/review.js"></script>
 </body>
+
 </html>

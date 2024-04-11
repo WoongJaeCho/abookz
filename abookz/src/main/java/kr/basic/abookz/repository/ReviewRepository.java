@@ -4,6 +4,8 @@ import kr.basic.abookz.entity.review.CommentEntity;
 import kr.basic.abookz.entity.review.ReviewEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface ReviewRepository extends JpaRepository<ReviewEntity,Long> {
+import java.util.Optional;
 
+public interface ReviewRepository extends JpaRepository<ReviewEntity,Long> {
+  Optional<ReviewEntity> findByBookShelfId(Long bookShelfId);
 }

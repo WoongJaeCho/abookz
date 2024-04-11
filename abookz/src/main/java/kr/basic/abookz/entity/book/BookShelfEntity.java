@@ -15,6 +15,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString(exclude = {"member" ,"book"})
 public class BookShelfEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,7 +36,7 @@ public class BookShelfEntity {
   //50page
   private int currentPage; //현재읽은페이지
 
-  private int bookShelfGrade;//평점(1,2,3,4,5) 별표시
+  private Double bookShelfGrade;//평점(1,2,3,4,5) 별표시
 
   @Enumerated(EnumType.STRING)
   private TagEnum tag; // READ,WANT_TO_READ,CURRENTLY_READING
