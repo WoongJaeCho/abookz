@@ -33,7 +33,7 @@ public class MemoDTO {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "BOOKSHELF_ID",foreignKey = @ForeignKey(name = "MEMO_IBFK_1"))
+    @JoinColumn(name = "BOOKSHELF_ID",foreignKey = @ForeignKey(name = "MEMODTO_IBFK_1"))
     private BookShelfEntity bookShelf;
 }
 

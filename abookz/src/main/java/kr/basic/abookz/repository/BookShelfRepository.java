@@ -11,6 +11,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public interface BookShelfRepository extends JpaRepository<BookShelfEntity,Long> {
@@ -21,7 +22,7 @@ public interface BookShelfRepository extends JpaRepository<BookShelfEntity,Long>
     List<BookShelfEntity> findAllByMemberIdAndTag(Long memberId, TagEnum tagEnum);
     BookShelfEntity save(BookShelfEntity bookShelfEntity);
 
-
+    Optional<BookShelfEntity> findByIdAndBookId(Long id, Long bookId);
 
 }
 

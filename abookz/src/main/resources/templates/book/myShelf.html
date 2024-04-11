@@ -48,6 +48,7 @@
             <th class="shelf_th">시작일</th>
             <th class="shelf_th">목표일</th>
             <th class="shelf_th">완독일</th>
+            <th class="shelf_th">리뷰작성</th>
 
             </tr>
         </thead>
@@ -74,6 +75,7 @@
             <td class="shelf_myShelf_start" th:text="${shelf[bookStat.index].startDate == null ? '미정' : #temporals.format(shelf[bookStat.index].startDate,('yyyy-MM-dd'))}">시작일</td>
             <td class="shelf_myShelf_target" th:text="${shelf[bookStat.index].targetDate == null ? '' : #temporals.format(shelf[bookStat.index].targetDate,('yyyy-MM-dd'))}">목표일</td>
             <td class="shelf_myShelf_endDate" th:text="${shelf[bookStat.index].endDate == null ? '' : #temporals.format(shelf[bookStat.index].endDate,('yyyy-MM-dd'))}">완독일</td>
+            <td class="shelf_myShelf_review" ><a th:href="@{/review/{bookShelfId}/{bookId}(bookShelfId=${shelf[bookStat.index].getId()},bookId=${book.getId()})}">리뷰</a></td>
         </tr>
         </tbody>
     </table>
