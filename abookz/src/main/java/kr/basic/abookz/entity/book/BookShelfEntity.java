@@ -52,4 +52,20 @@ public class BookShelfEntity {
     this.addDate = LocalDateTime.now().withSecond(0).withNano(0);
   }
 
+  @Override
+  public String toString() {
+    return "BookShelfEntity{" +
+            "id=" + id +
+            ", addDate=" + addDate +
+            ", startDate=" + startDate +
+            ", endDate=" + endDate +
+            ", targetDate=" + targetDate +
+            ", dailyPage=" + dailyPage +
+            ", currentPage=" + currentPage +
+            ", bookShelfGrade=" + bookShelfGrade +
+            ", tag=" + tag +
+            ", member=" + member +
+            ", book=" + book +
+            '}';
+  }
 }
