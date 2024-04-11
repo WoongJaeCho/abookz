@@ -64,6 +64,23 @@ public class BookShelfService {
             bookShelfRepository.save(bookShelf);
         return"성공";
     }
+    public String deleteBookShelf(Long Id,Long memberId){
+      BookShelfEntity bookShelfEntity = bookShelfRepository.findByMemberIdAndBookId(Id,memberId);
+      if(bookShelfEntity == null){
+          System.out.println("bookShelfEntity = " + bookShelfEntity);
+          return "fail";
+      }
+        System.out.println(" 성공" );
+        bookShelfRepository.delete(bookShelfEntity);
+      return "suc";
+    }
+
+    public BookShelfDTO findByBookShelfId(Long id){
+        BookShelfEntity bookShelf = bookShelfRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("BookShelf not found with id " + id));
+        BookShelfDTO bookShelfDTO = mapEntityToDTO(bookShelf);
+        return  bookShelfDTO;
+    }
 
 
 
@@ -75,6 +92,7 @@ public class BookShelfService {
         shelfDTO.setMemberDTO(memberDTO);
         return shelfDTO;
     }
+
     BookShelfEntity mapDTOToEntity(BookShelfDTO shelfDTO) {
         BookShelfEntity shelfEntity = mapper.map(shelfDTO, BookShelfEntity.class);
         if(shelfDTO.getBookDTO()!= null){

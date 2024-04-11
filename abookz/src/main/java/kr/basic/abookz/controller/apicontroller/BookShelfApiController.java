@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
 import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 
 @RestController
 @Slf4j
@@ -77,6 +79,35 @@ public class BookShelfApiController {
         headers.setLocation(URI.create("/myshelf"));
         return new ResponseEntity<>(headers, HttpStatus.FOUND);
     }
-
-
+//나의 서재 삭제하기
+@PostMapping("/deleteMyShelf")
+    public  ResponseEntity<Object> deleteMyShelf(@RequestBody BookShelfDTO jsonData,@AuthenticationPrincipal PrincipalDetails principalDetails){
+    Long memberId =  principalDetails.getMember().getId();
+    System.out.println("memberId = " + memberId);
+    Long id =jsonData.getId();
+    System.out.println("id = " + id);
+    if(id == null){
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create("/myshelf"));
+        return new ResponseEntity<>(headers, HttpStatus.FOUND);
+    }
+    bookShelfService.deleteBookShelf(id,memberId);
+    HttpHeaders headers = new HttpHeaders();
+    headers.setLocation(URI.create("/myshelf"));
+    return new ResponseEntity<>(headers, HttpStatus.FOUND);
 }
+
+    @RequestMapping(value = "/modal", method = RequestMethod.POST)
+        public Map<String, Object> modalGetBookOneDetail(@RequestParam("id") Long id){
+        Map<String, Object> response = new HashMap<>();
+        BookShelfDTO bookShelfDTO = null;
+                bookShelfDTO=bookShelfService.findByBookShelfId(id);
+        System.out.println("bookShelfDTO = " + bookShelfDTO);
+               BookDTO bookDTO =bookService.findByBookId(bookShelfDTO.getId());
+        response.put("bookShelfDTO", bookShelfDTO);
+        response.put("bookDTO", bookDTO);
+                return  response;
+    }
+}
+
+

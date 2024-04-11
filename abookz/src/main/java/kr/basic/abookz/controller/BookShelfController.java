@@ -63,7 +63,7 @@ public class BookShelfController {
         model.addAttribute("read", read);
         model.addAttribute("want", want);
         model.addAttribute("current",current);
-        
+        model.addAttribute("all", shelf);
         model.addAttribute("shelf", shelf);
         model.addAttribute("books",books);
         return "book/myShelf";
@@ -77,6 +77,8 @@ public class BookShelfController {
             return "member/login";
         }
         List<BookShelfDTO> myShelf;
+        //밑에는 카운터용
+        List<BookShelfDTO> count = shelfService.findAllDTOByMemberId(memId);
         if (tag.equalsIgnoreCase("ALL")) {
             myShelf = shelfService.findAllDTOByMemberId(memId);
         } else {
@@ -90,22 +92,22 @@ public class BookShelfController {
 
         }
 
-        int read = (int) myShelf.stream()
+        int read = (int) count.stream()
                 .map(BookShelfDTO::getTag)
                 .filter(tagEnum -> tagEnum != null && tagEnum.getKorean().equals("읽은책"))
                 .count();
-        int want = (int) myShelf.stream()
+        int want = (int) count.stream()
                 .map(BookShelfDTO::getTag)
                 .filter(tagEnum -> tagEnum == null || tagEnum.getKorean().equals("읽고싶은책"))
                 .count();
-        int current=(int)myShelf.stream().map(BookShelfDTO::getTag)
+        int current=(int)count.stream().map(BookShelfDTO::getTag)
                 .filter(tagEnum -> tagEnum != null && tagEnum.getKorean().equals("읽고있는책")).count();
 
         List<BookDTO> books = myShelf.stream()
                 .map(BookShelfDTO::getBookDTO)
                 .flatMap(book -> bookService.findAllByDTOId(book.getId()).stream())
                 .toList();
-
+        model.addAttribute("all", count);
         model.addAttribute("read", read);
         model.addAttribute("want", want);
         model.addAttribute("current",current);
