@@ -9,9 +9,12 @@ import kr.basic.abookz.repository.ReviewRepository;
 import kr.basic.abookz.dto.ReviewDTO;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -68,6 +71,10 @@ public class ReviewService {
         reviewEntity.setIsSpoilerActive(reviewDTO.getIsSpoilerActive());
 
         return reviewEntity;
+    }
+
+    public Page<ReviewEntity> getReviewsByBookId(Long bookId, Pageable pageable) {
+        return reviewRepository.findByBookShelf_Book_Id(bookId,pageable);
     }
 
 }

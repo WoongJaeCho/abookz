@@ -13,6 +13,9 @@ import kr.basic.abookz.service.MemberService;
 import kr.basic.abookz.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -83,5 +86,10 @@ public class ReviewController {
     return ResponseEntity.ok().body("{\"message\":\"별점이 성공적으로 등록되었습니다.\"}");
   }
 
-
+//  @GetMapping("/reviews")
+//  public Page<ReviewEntity> getReviewsByBookId(@RequestParam Long bookId) {
+//    PageRequest pageRequest = PageRequest.of(0, 3, Sort.by(Sort.Direction.DESC,"name"));
+//    Page<ReviewEntity> reviewsByBookId = reviewService.getReviewsByBookId(bookId, pageRequest);
+//
+//  }
 }

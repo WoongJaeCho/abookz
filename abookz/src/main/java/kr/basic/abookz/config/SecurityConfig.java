@@ -38,22 +38,24 @@ public class SecurityConfig {
             authz -> authz
                 .requestMatchers("/member/save").permitAll()
                 .requestMatchers("/member/validId").permitAll()
+                .requestMatchers("/login").permitAll()
                 .requestMatchers("/member/**").authenticated()
                 .requestMatchers("/manager/**").hasAnyRole("MANAGER","ADMIN")
                 .requestMatchers("/admin/**").hasAnyRole("ADMIN")
                 .anyRequest().permitAll()
         ).formLogin(
             form->{
-                form.loginPage("/member/login")
+                form.loginPage("/member/loginForm")
                     .loginProcessingUrl("/login")
                     .failureHandler(customAuthFailureHandler())
-                    .permitAll()
-                    .successForwardUrl("/");
+                    .defaultSuccessUrl("/")
+                    .permitAll();
+
             }
         ).oauth2Login(
 
             oauth2 -> oauth2
-                .loginPage("/member/login")
+                .loginPage("/member/loginForm")
                 .successHandler(customSuccessHandler)
                 .failureHandler(customAuthFailureHandler())
                 .permitAll()
