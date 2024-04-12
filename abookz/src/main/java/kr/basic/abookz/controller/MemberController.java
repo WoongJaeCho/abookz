@@ -7,8 +7,7 @@ import kr.basic.abookz.service.MemberService;
 import lombok.RequiredArgsConstructor;
 
 
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.javamail.JavaMailSender;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -21,6 +20,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/member")
 @RequiredArgsConstructor
+@Slf4j
 public class MemberController {
   // 생성자 주입
   private final MemberService memberService;
@@ -32,13 +32,14 @@ public class MemberController {
 
   // 조회
   @GetMapping("/list")
-  public String findAll(Model model){
+  public String findAll(Model model) {
     List<MemberDTO> list = memberService.findAll();
     model.addAttribute("memberList", list);
     return "member/list";
   }
+
   @GetMapping("/{id}")
-  public String findById(@PathVariable Long id, Model model){
+  public String findById(@PathVariable Long id, Model model) {
     MemberDTO memberDTO = memberService.findById(id);
     model.addAttribute("member", memberDTO);
     return "member/detail";
@@ -46,64 +47,69 @@ public class MemberController {
 
   // 가입
   @GetMapping("/save")
-  public String saveForm(){
+  public String saveForm() {
     return "member/save";
   }
+
   @PostMapping("/save")
-  public String saveMember(@ModelAttribute MemberDTO memberDTO){
+  public String saveMember(@ModelAttribute MemberDTO memberDTO) {
     System.out.println("memberDTO = " + memberDTO);
-    String initPassword =  memberDTO.getPassword();
+    String initPassword = memberDTO.getPassword();
     String enPassword = bCryptPasswordEncoder.encode(initPassword);
     memberDTO.setPassword(enPassword);
     memberService.save(memberDTO);
     return "redirect:/";
   }
+
   @PostMapping("/validId")
   @ResponseBody
-  public String validId(@RequestParam("id") String id){
+  public String validId(@RequestParam("id") String id) {
     System.out.println("id = " + id);
     return memberService.validById(id) ? "notValid" : "valid";
   }
 
   // 로그인
   @GetMapping("/login")
-  public String loginForm(){
-    return "member/login";
+  public String loginForm() {
+    return "member/loginForm";
   }
-  @PostMapping("/login")
-  @ResponseBody
-  public String loginMember(@RequestParam("id") String id,@RequestParam("pw") String pw, HttpSession session){
-    MemberDTO memberDTO = MemberDTO.loginMember(id, pw);
-    MemberDTO loginResult = memberService.login(memberDTO);
-    if(loginResult != null){
-      // 로그인 성공시
-      session.setAttribute("id", loginResult.getId());
 
-      return "confirm";
-    }
-    else {
-      // 로그인 실패시
-      return "null";
-    }
-  }
+  // 시큐리티 사용으로 인해 주석 처리
+  // @PostMapping("/login")
+  // @ResponseBody
+  // public String loginMember(@RequestParam("id") String id, @RequestParam("pw") String pw, HttpSession session){
+  //   MemberDTO memberDTO = MemberDTO.loginMember(id, pw);
+  //   MemberDTO loginResult = memberService.login(memberDTO);
+  //   if(loginResult != null){
+  //     // 로그인 성공시
+  //     session.setAttribute("id", loginResult.getId());
+  //     return "confirm";
+  //   }
+  //   else {
+  //     // 로그인 실패시
+  //     return "null";
+  //   }
+  // }
+
 
   // 수정
   @GetMapping("/update")
-  public String updateForm(HttpSession session, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails){
-    if(principalDetails == null){
+  public String updateForm(HttpSession session, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    if (principalDetails == null) {
       return "redirect:/member/login";
     }
 
-    Long getId =principalDetails.getMember().getId();
+    Long getId = principalDetails.getMember().getId();
     MemberDTO memberDTO = memberService.updateForm(getId);
     model.addAttribute("updateMember", memberDTO);
     return "member/update";
   }
+
   @PostMapping("/update")
   public String update(@ModelAttribute MemberDTO memberDTO, @RequestParam("file") MultipartFile file) {
-    try{
+    try {
       memberService.update(memberDTO, file);
-    }catch (Exception e) {
+    } catch (Exception e) {
       e.printStackTrace();
     }
     return "redirect:/member/" + memberDTO.getId();
@@ -111,7 +117,7 @@ public class MemberController {
 
   // 삭제
   @GetMapping("/delete/{id}")
-  public String deleteById(@PathVariable Long id){
+  public String deleteById(@PathVariable Long id) {
     memberService.deleteById(id);
     return "redirect:/member/list";
   }
@@ -119,39 +125,52 @@ public class MemberController {
   // 로그아웃
   @GetMapping("/logout")
   @ResponseBody
-  public String logout(HttpSession session){
+  public String logout(HttpSession session) {
     session.invalidate();
     return "confirm";
   }
 
   // 아이디 찾기
   @GetMapping("/loginIdfind")
-  public String IdfindForm(){
+  public String IdfindForm() {
     return "member/loginIdfind";
   }
+
   @PostMapping("/loginIdfind")
-  public String Idfind(@ModelAttribute MemberDTO memberDTO, Model model){
+  public String Idfind(@ModelAttribute MemberDTO memberDTO, Model model) {
     String findloginID = memberService.findByEmail(memberDTO);
-    if(findloginID != null){
+    if (findloginID != null) {
       model.addAttribute("logId", findloginID);
       return "member/loginIdfindresult";
-    }
-    else {
-      return "member/login";
+    } else {
+      return "loginForm";
     }
   }
 
   @GetMapping("/loginPwfind")
-  public String PwfindForm(){
+  public String PwfindForm() {
     return "member/loginPwfinder";
   }
 
+//  @PostMapping("/loginPWfind")
+//  public String Pwfind(@ModelAttribute MemberDTO memberDTO){
+//
+//    memberService.findByLogIdandEmail();
+//  }
+
   @GetMapping("/test")
   @ResponseBody
-  public PrincipalDetails test(@AuthenticationPrincipal PrincipalDetails principalDetails){
-    if(principalDetails == null){
+  public PrincipalDetails test(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+    if (principalDetails == null) {
       return null;
     }
     return principalDetails;
   }
+
+  @GetMapping("/auth/login")
+  public @ResponseBody String login(String error, String exception){
+    log.error("error ={} , excepiton={}", error, exception);
+    return exception.toString();
+  }
+
 }

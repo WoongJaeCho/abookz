@@ -129,7 +129,8 @@ public class MemberService {
       e.printStackTrace();
     }
 
-    memberRepository.save(MemberEntity.toupdateMemberEntity(memberDTO));
+    MemberEntity.toupdateMemberEntity(memberDTO);
+//    memberRepository.save(MemberEntity.toupdateMemberEntity(memberDTO));
   }
 
   // 회원삭제
@@ -148,4 +149,14 @@ public class MemberService {
       return null;
     }
   }
+
+//  public String findByLogIdandEmail(MemberDTO memberDTO) {
+//    Optional<MemberEntity> byIdandEmail = memberRepository.findByLoginIdandEmail(memberDTO.getLoginId(), memberDTO.getEmail());
+//    if(byIdandEmail.isPresent()){
+//      return null;
+//    }
+//    else {
+//      return null;
+//    }
+//  }
 }

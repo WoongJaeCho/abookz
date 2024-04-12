@@ -29,6 +29,9 @@ public class BookDTO {
     private int itemPage;//상품쪽수
     private String link;//알라딘 상품 정보 페이지
     private String ISBN;
-
+    private Long aladinGrade;//  알라딘 제공 평점 10점까지
+    private int weight;//무게
+    private int sizeDepth;//책두께
+    private int price;//가격
 
 }

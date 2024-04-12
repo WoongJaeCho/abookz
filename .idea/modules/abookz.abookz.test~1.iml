@@ -134,5 +134,8 @@
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.glassfish.jaxb:txw2:4.0.5" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: com.sun.istack:istack-commons-runtime:4.1.2" level="project" />
   </component>
+  <component name="SonarLintModuleSettings">
+    <option name="uniqueId" value="23205290-fd95-496f-b4ca-152e39c7e063" />
+  </component>
   <component name="TestModuleProperties" production-module="abookz.main" />
 </module>

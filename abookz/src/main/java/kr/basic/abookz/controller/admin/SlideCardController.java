@@ -12,7 +12,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -26,15 +28,15 @@ public class SlideCardController {
     private final AladinService aladinService;
     @GetMapping
     public String Slide(Model model) throws Exception {
-        List<SlideCardDTO> slideCardDTOs = slideCardService.findAll();
+        List<SlideCardDTO> slideCardDTOs = slideCardService.findAllOrderByIdx();
 
         for (SlideCardDTO slideCardDTO : slideCardDTOs) {
             //List<BookDTO> byDTOISBN13 = bookService.findByDTOISBN13(slideCardDTO.getISBN13());
             String isbn13 = slideCardDTO.getISBN13()+"";
             BookDTO book = aladinService.searchGetOneItem(isbn13);
-            if(book.getTitle() != null){
                 slideCardDTO.setBook(book);
-            }
+//            if(book.getTitle() != null){
+//            }
         }
         model.addAttribute("slideCard", slideCardDTOs);
         return "admin/slideCard";
@@ -57,4 +59,20 @@ public class SlideCardController {
         slideCardService.deletebyId(id);
         return "redirect:/slide";
     }
+
+    @PostMapping("/order")
+    public String slideOrder(Model model, @RequestBody Map<String, String[]> slideIds){
+        String[] slideIdsArray = slideIds.get("slideIds");
+        List<SlideCardDTO> slideCardDTOs = slideCardService.findAll();
+        System.out.println("slideIds = " + Arrays.toString(slideIdsArray));
+        int idx = 1;
+        for(String slide : slideIdsArray){
+            slideCardDTOs.get(Integer.parseInt(slide)-1).setIdx(idx++);
+        }
+        for(SlideCardDTO slideCardDTO : slideCardDTOs){
+            slideCardService.update(slideCardDTO);
+        }
+        return "redirect:/slide";
+    }
+
 }

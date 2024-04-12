@@ -5,6 +5,7 @@ import jakarta.persistence.ForeignKey;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import kr.basic.abookz.entity.book.BookShelfEntity;
+import kr.basic.abookz.entity.review.MemoEntity;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -33,7 +34,18 @@ public class MemoDTO {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "BOOKSHELF_ID",foreignKey = @ForeignKey(name = "MEMO_IBFK_1"))
+    @JoinColumn(name = "BOOKSHELF_ID",foreignKey = @ForeignKey(name = "MEMODTO_IBFK_1"))
     private BookShelfEntity bookShelf;
+
+    public static MemoDTO toMemoDTO(MemoEntity memoEntity){
+        MemoDTO memoDTO = new MemoDTO();
+        memoDTO.setId(memoEntity.getId());
+        memoDTO.setPage(memoEntity.getPage());
+        memoDTO.setQuotes(memoEntity.getQuotes());
+        memoDTO.setNote(memoEntity.getNote());
+        memoDTO.setCreatedDate(memoEntity.getCreatedDate());
+        memoDTO.setBookShelf(memoEntity.getBookShelf());
+        return memoDTO;
+    }
 }
 

@@ -16,15 +16,19 @@ logging:
 
 upload:
   path: "src/main/resources/static/images/"
-  #path: "C:/eclipseWorkspace/abookz/abookz/src/main/resources/static/images/"
 
 spring:
-
-
   config:
     activate:
       on-profile: common
 
+  mvc:
+    view:
+      prefix: templates/
+      suffix: .html
+    hiddenmethod:
+      filter:
+        enabled: true
 
   servlet:
     multipart:

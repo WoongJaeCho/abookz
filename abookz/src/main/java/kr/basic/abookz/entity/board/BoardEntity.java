@@ -2,17 +2,20 @@ package kr.basic.abookz.entity.board;
 
 import jakarta.persistence.*;
 import kr.basic.abookz.dto.BoardDTO;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
 
+
 @Entity
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Table(name = "BOARD")
+@ToString
 public class BoardEntity extends BaseEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +26,8 @@ public class BoardEntity extends BaseEntity {
   @Column(length = 1000)
   private String contents; // 내용
   private int hits; // 조회수
+  @Enumerated(EnumType.STRING)
+  private Category category; // 카테고리
   @CreationTimestamp
   private LocalDate createDate; // 작성날짜
   @UpdateTimestamp
@@ -34,6 +39,7 @@ public class BoardEntity extends BaseEntity {
     boardEntity.setWriter(boardDTO.getWriter());
     boardEntity.setContents(boardDTO.getContents());
     boardEntity.setHits(0);
+    boardEntity.setCategory(boardDTO.getCategory());
     return boardEntity;
   }
 

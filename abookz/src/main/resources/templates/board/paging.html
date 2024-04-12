@@ -18,6 +18,7 @@
       <th>writer</th>
       <th>hits</th>
       <th>date</th>
+      <th>category</th>
     </tr>
     <tr th:each="board: ${boardList}">
       <td th:text="${board.id}"></td>
@@ -25,31 +26,40 @@
       <td th:text="${board.writer}"></td>
       <td th:text="${board.hits}"></td>
       <td th:text="${board.createDate}"></td>
+      <td th:text="${board.category}"></td>
     </tr>
   </table>
-  <!-- 첫번째 페이지로 이동 -->
-  <a th:href="@{/board/paging(page=1)}">First</a>
-  <!-- 이전 링크 활성화 비활성화 -->
-  <a th:href="${boardList.first} ? '#' : @{/board/paging(page=${boardList.number})}">prev</a>
-  <!-- 페이지 번호 링크(현재 페이지는 숫자만)
-        for(int page=startPage; page<=endPage; page++)-->
-  <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
-    <!-- 현재페이지는 링크 없이 숫자만 -->
-    <span th:if="${page == boardList.number + 1}" th:text="${page}"></span>
-    <!-- 현재페이지 번호가 아닌 다른 페이지번호에는 링크를 보여줌 -->
-    <span th:unless="${page == boardList.number + 1}">
+  <th:block th:unless="${category}">
+    <a th:href="@{/board/paging(page=1)}">First</a>
+    <a th:href="${boardList.first} ? '#' : @{/board/paging(page=${boardList.number})}">prev</a>
+    <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
+      <span th:if="${page == boardList.number + 1}" th:text="${page}"></span>
+      <span th:unless="${page == boardList.number + 1}">
         <a th:href="@{/board/paging(page=${page})}" th:text="${page}"></a>
+      </span>
     </span>
-</span>
-  <!-- 다음 링크 활성화 비활성화
-    사용자: 2페이지, getNumber: 1, 3페이지-->
-  <a th:href="${boardList.last} ? '#' : @{/board/paging(page=${boardList.number + 2})}">next</a>
-  <!-- 마지막 페이지로 이동 -->
-  <a th:href="@{/board/paging(page=${boardList.totalPages})}">Last</a>
+    <a th:href="${boardList.last} ? '#' : @{/board/paging(page=${boardList.number + 2})}">next</a>
+    <a th:href="@{/board/paging(page=${boardList.totalPages})}">Last</a>
+  </th:block>
+  <th:block th:if="${category}">
+    <a th:href="@{|/board/paging/${category}|(page=1)}">First</a>
+    <a th:href="${boardList.first} ? '#' : @{|/board/paging/${category}|(page=${boardList.number})}">prev</a>
+    <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
+      <span th:if="${page == boardList.number + 1}" th:text="${page}"></span>
+      <span th:unless="${page == boardList.number + 1}">
+        <a th:href="@{|/board/paging/${category}|(page=${page})}" th:text="${page}"></a>
+      </span>
+    </span>
+    <a th:href="${boardList.last} ? '#' : @{|/board/paging/${category}|(page=${boardList.number + 2})}">next</a>
+    <a th:href="@{|/board/paging/${category}|(page=${boardList.totalPages})}">Last</a>
+  </th:block>
 </div>
 <div id="footer">
   <a th:href="@{/}">메인</a>
   <a th:href="@{/board/save}">글작성</a>
+  <a th:href="@{/board/paging}" th:text="ALL"></a>
+  <a th:href="@{|/board/paging/${'FREE'}|}" th:text="FREE"></a>
+  <a th:href="@{|/board/paging/${'QUESTION'}|}" th:text="QUESTION"></a>
 </div>
 </body>
 </html>

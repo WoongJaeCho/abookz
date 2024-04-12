@@ -5,6 +5,7 @@ import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import kr.basic.abookz.dto.BookDTO;
+import kr.basic.abookz.dto.BookShelfDTO;
 import kr.basic.abookz.entity.book.BookEntity;
 import kr.basic.abookz.entity.book.BookShelfEntity;
 import kr.basic.abookz.repository.BookRepository;
@@ -15,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -67,6 +69,10 @@ public class BookService {
     }
 
 
+  public BookDTO findById(Long bookId) {
+    Optional<BookEntity> findBook = bookrepository.findById(bookId);
+    return mapEntityToDTO(findBook.get());
+  }
 }
 
 

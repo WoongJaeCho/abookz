@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head}">
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<div th:replace="~{fragments/header :: header}" /><br>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<div id="shelf_container">
+    <div id="shelf_left">
+        <hr class="shelfLeft_hr">
+        <p class="bookShelves">내 서재들</p>
+        <a href="/myshelf/tag/ALL" class="myShelf_" th:text="'전체(' + ${books.size()} + ')'">1</a>
+        <br>
+        <a href="/myshelf/tag/READ" class="myShelf_" th:text="'읽은 책(' + ${read} + ')'">1</a>
+        <br>
+        <a href="/myshelf/tag/WANT_TO_READ" class="myShelf_" th:text="'읽고싶은 책(' + ${want} + ')'">1</a>
+        <br>
+        <a href="/myshelf/tag/CURRENTLY_READING" class="myShelf_" th:text="'읽고있는 책(' + ${current} + ')'">1</a>
+        <hr class="shelf_left_center">
+        <p class="bookShelves">읽기 활동</p>
+        <a href="#" class="myShelf_" th:text="'나의 리뷰(' + ${books.size()} + ')'">1</a>
+        <br>
+        <a href="#" class="myShelf_" th:text="'나의 메모(' + ${books.size()} + ')'">1</a>
+        <br>
+        <a href="#" class="myShelf_" th:text="'나의 챌린지(' + ${books.size()} + ')'">1</a>
+        <br>
+    </div>
+    <div id="shelf_center">
+        <hr class="myShelf_hr">
+        <br>
+
+        <table class="shelf_table">
+            <thead>
+            <tr class="shelf_tr">
+                <th class="memo_th"> # </th>
+                <th class="memo_th">이미지</th>
+                <th class="memo_th">제목</th>
+                <th class="memo_th">서재</th>
+                <th class="memo_th">페이지</th>
+                <th class="memo_th">인용구</th>
+                <th class="memo_th">나의 메모</th>
+                <th class="memo_th">메모 수</th>
+            </tr>
+            </thead>
+            <tbody th:each="shelf, index : ${shelves}" th:with="count=${memoCount[__${index.index}__]}, memo=${memos[__${index.index}__]}">
+            <tr class="myShelf_tr" th:if="${count > 0}">
+                <td class="shelf_th" th:text="${index.index + 1}">1</td>
+                <td class="shelf_tdimg"><img class="cover_img" th:src="${shelf.getBookDTO().getCover()}" alt="책이미지"></td>
+                <td class="shelf_title" th:text="${#strings.contains(shelf.getBookDTO().getTitle, '(') ? #strings.substringBefore(shelf.getBookDTO().getTitle, '(') : #strings.contains(shelf.getBookDTO().getTitle, '-') ? #strings.substringBefore(shelf.getBookDTO().getTitle, '-') : shelf.getBookDTO().getTitle}">제목</td>
+                <td class="shelf_myShelf_read" th:text="${shelf.tag == null ? '읽고싶은 책' : shelf.tag.getKorean()}"></td>
+                <td class="shelf_page" th:text="${memo.page == null ? '-' : memo.page}">페이지</td>
+                <td class="shelf_page" th:text="${memo.quotes == null ? '-' : memo.quotes}">인용구</td>
+                <td class="shelf_page" th:text="${memo.note.length() > 20 ? memo.note.substring(0, 20) + '...' : memo.note}">노트</td>
+                <td class="shelf_page">
+                    <span th:if="${count == 0}" th:text="${count}"></span>
+                    <a th:unless="${count == 0}" th:href="@{|/memo/${shelf.id}|}" th:text="${count}" ></a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <script  src="/js/myShelf.js"></script>
+</div>
+<div id="searchResults"></div>
+<script defer src="/js/index.js"></script>
+</body>
+</html>

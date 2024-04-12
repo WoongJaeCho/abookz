@@ -7,7 +7,6 @@ import kr.basic.abookz.dto.BookShelfDTO;
 import kr.basic.abookz.entity.book.TagEnum;
 import kr.basic.abookz.service.BookService;
 import kr.basic.abookz.service.BookShelfService;
-import lombok.NoArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -36,12 +35,14 @@ public class BookShelfController {
     @GetMapping("/myshelf")
     public String getMyShelf(HttpSession session, RedirectAttributes redirectAttributes, Model model
             , @AuthenticationPrincipal PrincipalDetails principalDetails){
+
         Long id = principalDetails.getMember().getId();
         if(id == null) {
             redirectAttributes.addFlashAttribute("fail", "로그인이후 가능합니다");
             return "redirect:/member/login";
         }
         List<BookShelfDTO> shelf =shelfService.findAllDTOByMemberId(id);
+
        //밑에는 각 사이즈 가져오기 내서재들 옆 숫자표시 몇권있는지
         int read = (int) shelf.stream()
                 .map(item -> item.getTag())
@@ -68,6 +69,7 @@ public class BookShelfController {
         return "book/myShelf";
     }
     @GetMapping("/myshelf/tag/{tag}")
+
     public String myShelfTag(@PathVariable ("tag")String  tag, Model model,   @AuthenticationPrincipal PrincipalDetails principalDetails){
         Long memId= principalDetails.getMember().getId();
         System.out.println("tag.toUpperCase() = " + tag.toUpperCase());
@@ -87,6 +89,7 @@ public class BookShelfController {
                 // 태그가 유효하지 않은 경우의 처리
                 return "errorPage"; // 적절한 에러 페이지로 리다이렉트
             }
+
         }
 
         int read = (int) count.stream()

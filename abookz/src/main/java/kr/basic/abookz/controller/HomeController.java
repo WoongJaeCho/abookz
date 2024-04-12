@@ -1,6 +1,7 @@
 package kr.basic.abookz.controller;
 
 import jakarta.servlet.http.HttpSession;
+import kr.basic.abookz.config.auth.PrincipalDetails;
 import kr.basic.abookz.dto.BookDTO;
 import kr.basic.abookz.dto.BookShelfDTO;
 import kr.basic.abookz.dto.admin.SlideCardDTO;
@@ -8,12 +9,12 @@ import kr.basic.abookz.service.BookService;
 import kr.basic.abookz.service.BookShelfService;
 import kr.basic.abookz.service.admin.SlideCardService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.Duration;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -27,36 +28,37 @@ public class HomeController {
     private final BookShelfService bookShelfService;
     private final BookService bookService;
     @GetMapping("/")
-    public String index(Model model, HttpSession session) {
+    public String index(Model model, HttpSession session, @AuthenticationPrincipal PrincipalDetails principalDetails) {
 
-        List<SlideCardDTO> slideCard = adminService.findTop3();
+
+        List<SlideCardDTO> slideCard = adminService.findAllOrderByIdx();
+
 
         if( slideCard.size() != 0) {
             model.addAttribute("slideCard", slideCard);
         }
+        if(principalDetails != null) {
+            Long memId = principalDetails.getMember().getId();
 
-            Long memId = (Long) session.getAttribute("id");
 
             List<BookShelfDTO> shelves = bookShelfService.findAllByMemberIdAndTag(memId, CURRENTLY_READING);
-
             List<BookDTO> books = shelves.stream()
                     .map(BookShelfDTO::getBookDTO)
                     .flatMap(book -> bookService.findAllByDTOId(book.getId()).stream())
                     .toList();
-            LocalDate currentDate = LocalDate.now();
 
+            System.out.println("books = " + books);
 
-            if( shelves.size() != 0 && books.size() != 0 ) {
+            for (BookShelfDTO shelf : shelves) {
+                Duration duration = Duration.between(shelf.getStartDate(), LocalDateTime.now());
+                shelf.setDays(duration.toDays());
+            }
 
-                for(BookShelfDTO shelf : shelves){
-                    Duration duration = Duration.between(shelf.getStartDate(), LocalDateTime.now());
-                    shelf.setDays(duration.toDays());
-                }
-                
-                model.addAttribute("currentDate", currentDate);
+            if (shelves.size() != 0 && books.size() != 0) {
                 model.addAttribute("books", books);
                 model.addAttribute("shelves", shelves);
             }
+        }
 
         return "index";
     }

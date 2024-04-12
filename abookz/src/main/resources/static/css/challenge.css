@@ -1,0 +1,32 @@
+#bookWrap {
+    width: 1280px;
+    height: 90vh;
+    background-color: #aaa;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column-reverse;
+}
+#bookWrap .book{
+    width: 600px;
+    margin: 0 auto;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#bookWrap .b1{
+    transform: translateX(0px);
+    background-color: skyblue;
+}
+#bookWrap .b2{
+    transform: translateX(-20px);
+    background-color: rgb(200, 213, 224);
+}
+#bookWrap .b3{
+    transform: translateX(5px);
+    background-color: rgb(175, 206, 235);
+}
+#bookWrap .b4{
+    transform: translateX(-40px);
+    background-color: rgb(231, 234, 240);
+}

@@ -120,4 +120,7 @@
     <orderEntry type="library" name="jquery-3.5.1" level="application" />
     <orderEntry type="library" name="moment.js" level="application" />
   </component>
+  <component name="SonarLintModuleSettings">
+    <option name="uniqueId" value="f2862b6b-9fdc-47b7-b4ce-23470ca35ff7" />
+  </component>
 </module>

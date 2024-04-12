@@ -1,3 +1,4 @@
+
 package kr.basic.abookz.config.oauth;
 
 import com.nimbusds.openid.connect.sdk.claims.UserInfo;
@@ -34,7 +35,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         OAuth2User oAuth2User = super.loadUser(userRequest); // google 회원 프로필 조회
         System.out.println("oAuth2User = " + oAuth2User);
         System.out.println("get Attribute : " + oAuth2User.getAttributes());
-         // loadUser --> Authentication 객체 안에 들어간다
+        // loadUser --> Authentication 객체 안에 들어간다
         return processOAuthUser(userRequest , oAuth2User);
     }
     private OAuth2User processOAuthUser(OAuth2UserRequest userRequest , OAuth2User oAuth2User){
@@ -55,18 +56,18 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         //System.out.println("oAuth2UserInfo.getProvider() : " + oAuth2UserInfo.getProvider());
         //System.out.println("oAuth2UserInfo.getProviderId() : " + oAuth2UserInfo.getProviderId());
         Optional<MemberEntity> userOptional =
-                memberRepository.findByProviderAndProviderId(oAuth2UserInfo.getProvider(), oAuth2UserInfo.getProviderId());
+            memberRepository.findByProviderAndProviderId(oAuth2UserInfo.getProvider(), oAuth2UserInfo.getProviderId());
 
         MemberEntity member;
         if (!userOptional.isPresent()) {
             // user의 패스워드가 null이기 때문에 OAuth 유저는 일반적인 로그인을 할 수 없음.
             member = MemberEntity.builder()
-                    .loginId(oAuth2UserInfo.getProvider() + "_" + oAuth2UserInfo.getProviderId())
-                    .email(oAuth2UserInfo.getEmail())
-                    .provider(oAuth2UserInfo.getProvider())
-                    .providerId(oAuth2UserInfo.getProviderId())
-                    .name(oAuth2UserInfo.getName())
-                    .build();
+                .loginId(oAuth2UserInfo.getProvider() + "_" + oAuth2UserInfo.getProviderId())
+                .email(oAuth2UserInfo.getEmail())
+                .provider(oAuth2UserInfo.getProvider())
+                .providerId(oAuth2UserInfo.getProviderId())
+                .name(oAuth2UserInfo.getName())
+                .build();
             memberRepository.save(member);
         }else{
             member = userOptional.get();
