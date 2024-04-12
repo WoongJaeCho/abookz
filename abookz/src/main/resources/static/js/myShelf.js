@@ -43,10 +43,11 @@ function openModal(modal,popup) {
                 + '<tr><td colspan="4" class="modal_addDate"> 추가한 날짜 : ' + addDate+ '</td></tr>'
                 + '<tr><td colspan="4" class="modal_startDate"> 시작한 날짜 : ' + startDate + '</td></tr>'
                 +'<tr><td colspan="4" class="modal_startDate"> 목표 날짜 : ' + targetDate + '</td></tr>'
-                +'<tr><td colspan="4" class="modal_endDate"> 완독 날짜 : ' + endDate + '</td></tr>'
+                +'<tr><td colspan="4" id="modal_endDate"> 완독 날짜 : ' + endDate + '</td></tr>'
             +'<tr><td colspan="5" class="modal_page"><div class="progress-bar"><div class="progress"></div></div><div class="startPage">현재 : '+data.bookShelfDTO.currentPage +'</div><div class="endPage">마지막페이지 : ' +data.bookDTO.itemPage+'</div></td></tr>';
             modalContent.appendChild(table);
-            endDate.addEventListener("click", function (event){
+            let endClick= document.getElementById('modal_endDate');
+            endClick.addEventListener("click", function (event){
                 var x = event.clientX; // 클릭한 위치의 x 좌표
                 var y = event.clientY; // 클릭한 위치의 y 좌표
                 if(isInputCheck){
@@ -57,14 +58,15 @@ function openModal(modal,popup) {
                 input.className = "endDate"; // 클래스 설정
                 console.log(input.value);
                 // 생성한 input 요소를 컨테이너에 추가
-                endDate.appendChild(input);
+
+                endClick.appendChild(input);
                 // flatpickr 적용
                 flatpickr(input, {});
                 isInputCheck = true;
                 flatpickr(input, {
                     onChange: function(selectedDates, dateStr, instance) {
                         console.log(dateStr);
-                        endDate.removeChild(input);
+                        endClick.removeChild(input);
                         isInputCheck = false;
                     }
                 });
