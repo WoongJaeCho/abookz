@@ -73,7 +73,7 @@ public class AladinService {
 
     private String UrlGetOneBookItemPage(String isbn13) throws  Exception{
         return  "http://www.aladin.co.kr/ttb/api/ItemLookup.aspx?ttbkey="+ TTB_KEY +"&ItemIdType=ISBN&ItemId="+ isbn13
-                +"&Cover=big&MaxResults=100&start=1&SearchTarget=Book&output=js&Version=20131101";
+                +"&Cover=big&MaxResults=100&start=1&SearchTarget=Book&output=js&Version=20131101&OptResult=packing";
 
     }
     private String getUrlCategoryList(String category) throws  Exception{
@@ -170,8 +170,11 @@ public class AladinService {
         JSONArray jsonArray = jsonObject.getJSONArray("item");
         JSONObject itemObject = jsonArray.getJSONObject(0);
         JSONObject subInfoObject = itemObject.getJSONObject("subInfo");
-/*      JSONObject ratingInfo = subInfoObject.getJSONObject("ratingInfo");
-        JSONObject packingInfo = subInfoObject.getJSONObject("packing");*/
+        /*JSONObject ratingInfo = subInfoObject.getJSONObject("ratingInfo");
+        Long aladinGrade = ratingInfo.getLong("ratingScore");
+        JSONObject packingInfo = subInfoObject.getJSONObject("packing");
+        int weight = packingInfo.getInt("weight");
+        int sizeDepth = packingInfo.getInt("sizeDepth");*/
         String title = itemObject.getString("title");
         String author = itemObject.getString("author");
         String publisher = itemObject.getString("publisher");
@@ -191,8 +194,9 @@ public class AladinService {
     isbn = itemObject.getString("isbn");
 
         }
-        BookDTO item = BookDTO.builder().title(title)
-                    .author(author)
+        BookDTO item = BookDTO.builder()
+                .title(title)
+                .author(author)
                 .publisher(publisher)
                 .pubDate(pubDate)
                 .ISBN(isbn)
@@ -201,6 +205,9 @@ public class AladinService {
                 .description(description)
                 .link(link)
                 .itemPage(itemPage)
+                /*.aladinGrade(aladinGrade)
+                .weight(weight)
+                .sizeDepth(sizeDepth)*/
                 .build();
 
 
@@ -212,8 +219,9 @@ public class AladinService {
         JSONObject itemObject = jsonArray.getJSONObject(0);
         JSONObject subInfoObject = itemObject.getJSONObject("subInfo");
 //        JSONObject ratingInfo = itemObject.getJSONObject("ratingInfo");
-//        JSONObject packingInfo = itemObject.getJSONObject("packing");
-
+        /*JSONObject packingInfo = itemObject.getJSONObject("packing");
+        int weight = packingInfo.getInt("weight");
+        int sizeDepth = packingInfo.getInt("sizeDepth");*/
         String title = itemObject.getString("title");
         String author = itemObject.getString("author");
         String publisher = itemObject.getString("publisher");
@@ -229,7 +237,8 @@ public class AladinService {
         String isbn13String = null;
         String isbn13 = itemObject.getString("isbn13");
 
-        BookDTO item = BookDTO.builder().title(title)
+        BookDTO item = BookDTO.builder()
+                .title(title)
                 .author(author)
                 .publisher(publisher)
                 .pubDate(pubDate)
@@ -238,6 +247,8 @@ public class AladinService {
                 .description(description)
                 .link(link)
                 .itemPage(itemPage)
+                /*.weight(weight)
+                .sizeDepth(sizeDepth)*/
                 .build();
         System.out.println("item = " + item);
 
