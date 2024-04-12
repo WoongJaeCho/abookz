@@ -14,6 +14,7 @@ import static kr.basic.abookz.entity.member.RoleEnum.ROLE_USER;
 @Getter
 @Setter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
+@ToString
 public class MemberEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

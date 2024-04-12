@@ -14,9 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Arrays;
-import java.util.List;
-
 @Controller
 @RequestMapping("/board")
 @RequiredArgsConstructor
@@ -24,12 +21,17 @@ public class BoardController {
   // 생성자 주입
   private final BoardService boardService;
 
+  public boolean logincheck(@AuthenticationPrincipal PrincipalDetails principalDetails){
+    if(principalDetails == null){
+      return false;
+    }
+    return true;
+  }
+
   // 글쓰기(작성)
   @GetMapping("/save")
   public String saveForm(@AuthenticationPrincipal PrincipalDetails principalDetails, RedirectAttributes redirectAttributes, Model model){
-    Long id = principalDetails.getMember().getId();
-    if(principalDetails == null || principalDetails.getMember() == null || id == null){
-      redirectAttributes.addFlashAttribute("fail", "로그인 후 이용해주세요");
+    if(!logincheck(principalDetails)){
       return "redirect:/member/login";
     }
     model.addAttribute("writer", principalDetails.getMember().getLoginId());
@@ -51,19 +53,22 @@ public class BoardController {
 //    model.addAttribute("boardList", List);
 //    return "board/list";
 //  }
-//  @GetMapping("/{id}")
-//  public String findById(@PathVariable Long id, Model model, @PageableDefault(page = 1) Pageable pageable){
-//    // 해당 게시글의 조회수를 하나 올리고 게시글 데이터 가져와서 detail.html에 출력
-//    boardService.updateHits(id);
-//    BoardDTO boardDTO = boardService.findById(id);
-//    model.addAttribute("board", boardDTO);
-//    model.addAttribute("page", pageable.getPageNumber());
-//    return "board/detail";
-//  }
+  @GetMapping("/{id}")
+  public String findById(@PathVariable Long id, Model model, @PageableDefault(page = 1) Pageable pageable){
+    // 해당 게시글의 조회수를 하나 올리고 게시글 데이터 가져와서 detail.html에 출력
+    boardService.updateHits(id);
+    BoardDTO boardDTO = boardService.findById(id);
+    model.addAttribute("board", boardDTO);
+    model.addAttribute("page", pageable.getPageNumber());
+    return "board/detail";
+  }
 
   // 수정
   @GetMapping("/update/{id}")
-  public String updateForm(@PathVariable Long id, Model model){
+  public String updateForm(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long id, Model model){
+    if(!logincheck(principalDetails)){
+      return "redirect:/member/login";
+    }
     BoardDTO boardDTO = boardService.findById(id);
     model.addAttribute("boardUpdate", boardDTO);
     return "board/update";
@@ -77,7 +82,10 @@ public class BoardController {
 
   // 삭제
   @GetMapping("/delete/{id}")
-  public String deletePost(@PathVariable Long id){
+  public String deletePost(@AuthenticationPrincipal PrincipalDetails principalDetails ,@PathVariable Long id){
+    if(!logincheck(principalDetails)){
+      return "redirect:/member/login";
+    }
     boardService.delete(id);
     return "redirect:/board/list";
   }

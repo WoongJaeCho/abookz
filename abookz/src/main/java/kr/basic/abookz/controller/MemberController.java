@@ -2,12 +2,14 @@ package kr.basic.abookz.controller;
 
 import jakarta.servlet.http.HttpSession;
 import kr.basic.abookz.config.auth.PrincipalDetails;
+import kr.basic.abookz.dto.EmailDTO;
 import kr.basic.abookz.dto.MemberDTO;
 import kr.basic.abookz.service.MemberService;
 import lombok.RequiredArgsConstructor;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
@@ -24,11 +26,13 @@ import java.util.List;
 public class MemberController {
   // 생성자 주입
   private final MemberService memberService;
-  private final BCryptPasswordEncoder bCryptPasswordEncoder;
-//  private final JavaMailSender javaMailSender;
 
-//  @Value("${mail.username}")
-//  private String from;
+  public boolean logincheck(@AuthenticationPrincipal PrincipalDetails principalDetails){
+    if(principalDetails == null){
+      return false;
+    }
+    return true;
+  }
 
   // 조회
   @GetMapping("/list")
@@ -54,9 +58,6 @@ public class MemberController {
   @PostMapping("/save")
   public String saveMember(@ModelAttribute MemberDTO memberDTO) {
     System.out.println("memberDTO = " + memberDTO);
-    String initPassword = memberDTO.getPassword();
-    String enPassword = bCryptPasswordEncoder.encode(initPassword);
-    memberDTO.setPassword(enPassword);
     memberService.save(memberDTO);
     return "redirect:/";
   }
@@ -94,11 +95,10 @@ public class MemberController {
 
   // 수정
   @GetMapping("/update")
-  public String updateForm(HttpSession session, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
-    if (principalDetails == null) {
+  public String updateForm(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    if(!logincheck(principalDetails)){
       return "redirect:/member/login";
     }
-
     Long getId = principalDetails.getMember().getId();
     MemberDTO memberDTO = memberService.updateForm(getId);
     model.addAttribute("updateMember", memberDTO);
@@ -117,7 +117,10 @@ public class MemberController {
 
   // 삭제
   @GetMapping("/delete/{id}")
-  public String deleteById(@PathVariable Long id) {
+  public String deleteById(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long id) {
+    if(!logincheck(principalDetails)){
+      return "redirect:/member/login";
+    }
     memberService.deleteById(id);
     return "redirect:/member/list";
   }
@@ -143,7 +146,7 @@ public class MemberController {
       model.addAttribute("logId", findloginID);
       return "member/loginIdfindresult";
     } else {
-      return "loginForm";
+      return "member/loginForm";
     }
   }
 
@@ -154,7 +157,15 @@ public class MemberController {
 
   @PostMapping("/loginPWfind")
   public String Pwfind(@ModelAttribute MemberDTO memberDTO){
-    memberService.findByLogIdandEmail();
+    EmailDTO dto = memberService.createMailAndChangePassword(memberDTO.getEmail(), memberDTO.getLoginId());
+    if(dto == null){
+      System.out.println("오류 발생!");
+      return "member/loginForm";
+    }
+    else{
+      memberService.mailSend(dto);
+      return "member/loginPwfindResult";
+    }
   }
 
   @GetMapping("/test")

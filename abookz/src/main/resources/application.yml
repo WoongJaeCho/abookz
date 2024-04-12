@@ -58,13 +58,10 @@ spring:
           time_zone: Asia/Seoul
 
   mail:
-    host: smtp.gmail.com
-    port: 587
-    username: ghrt8426@gmail.com
-    password: bezx btfc hohb rjda
+    host: smtp.naver.com
+    port: 465
+    username: dbalstjr97@naver.com
+    password: youminseuk97
     properties:
-      mail:
-        smtp:
-          auth: true
-          starttls:
-            enable: true
+      mail.smtp.auth: true
+      mail.smtp.ssl.enable: true

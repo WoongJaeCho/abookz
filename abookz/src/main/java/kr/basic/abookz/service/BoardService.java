@@ -83,15 +83,6 @@ public class BoardService {
     return boardEntities.map(board -> new BoardDTO(board.getId(), board.getTitle(), board.getWriter(), board.getHits(), board.getCreateDate(), board.getCategory()));
   }
 
-  public List<BoardDTO> findAllByCategory(Category category) {
-    List<BoardEntity> boardEntity = boardRepository.findByCategory(category);
-    List<BoardDTO> boardDTO = new ArrayList<>();
-    for(BoardEntity e : boardEntity){
-      boardDTO.add(BoardDTO.toBoardDTO(e));
-    }
-    return boardDTO;
-  }
-
   public Page<BoardDTO> pagingCategory(Pageable pageable, Category category){
     int page = pageable.getPageNumber() - 1;
     int pageLimit = 5; // 한 페이지에 보여줄 글 갯수
