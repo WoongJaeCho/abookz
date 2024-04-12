@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 
-<body th:fragment="memo">
-<div id="memo" th:if="${books != null or shelves != null}" th:with="book=${books[0]}, shelf=${shelves[0]}" >
+<body th:fragment="memo" th:with="idx=${0}">
+<div id="memo" th:if="${books != null or shelves != null}" th:with="book=${books[idx]}, shelf=${shelves[idx]}" >
     <span class="close-modal">×</span>
     <h2> 메모 남기기 </h2>
     <form class="memo" action="/memo" method="post">

@@ -18,7 +18,7 @@
         </div>
     </article>
 
-    <section id="content">
+    <section id="content" th:with="idx=${0}">
         <div class="notice"> 공지사항 </div>
         <div class="recommend"> 에이북즈 도서 추천
             <a href="/slide">admin</a>
@@ -31,17 +31,17 @@
             <img src="/images/memo_card.png" alt="메모카드">
             <a href="/myshelf" class="memo_card">나의 서재</a>
         </div>
-        <div class="memo" sec:authorize="isAuthenticated()" th:unless="${books == null and shelves == null}" th:with="book=${books[0]}, shelf=${shelves[0]}" >
-            <img th:src="${book.cover}" alt="book_cover" class="memo_cover">
+        <div class="memo" sec:authorize="isAuthenticated()" th:unless="${books == null and shelves == null}" >
+            <img th:src="${books[idx].cover}" alt="book_cover" class="memo_cover">
             <div class="memo_text">
-                <div class="memo_title" th:text="${book.title}"></div>
-                <div class="memo_day" th:text="|${shelf.days+1}일째 읽는중|"> 5일째 읽는 중 </div>
+                <div class="memo_title" th:text="${books[idx].title}"></div>
+                <div class="memo_day" th:text="|${shelves[idx].days+1}일째 읽는중|"> 5일째 읽는 중 </div>
                 <div class="read_bar">
-                    <progress class="progress w-56" th:value="${(shelf.currentPage * 100) / book.itemPage}" max="100"></progress>
+                    <progress class="progress bg-stone-300 w-56" th:value="${(shelves[idx].currentPage * 100) / books[idx].itemPage}" max="100"></progress>
                 </div>
                 <div class="memo_page">
-                    <div class="per" th:text="${(shelf.currentPage * 100) / book.itemPage + '%'}"> 10% </div>
-                    <div class="page" th:text="|${shelf.currentPage}/${book.itemPage} 페이지|"> 30/300 페이지 </div>
+                    <div class="per" th:text="${(shelves[idx].currentPage * 100) / books[idx].itemPage + '%'}"> 10% </div>
+                    <div class="page" th:text="|${shelves[idx].currentPage}/${books[idx].itemPage} 페이지|"> 30/300 페이지 </div>
                 </div>
                 <a class="memo_btn" href="#">메모하기</a>
                 <div class="arrow left"></div>
