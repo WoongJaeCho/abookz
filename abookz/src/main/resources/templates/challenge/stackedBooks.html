@@ -7,11 +7,17 @@
 <body>
 <div th:replace="~{fragments/header :: header}" /><br>
 <div id="bookWrap" th:style="'height: ' + (${shelves.size() < 10 ? 85 : shelves.size()*10}) + 'vh;'" >
-        <div th:each="shelf, index : ${shelves}"
-             th:class="'book b' + (${index.index} % 4 + 1)"
-             th:text="${shelf.getBookDTO().getTitle.length() > 40 ? shelf.getBookDTO().getTitle.substring(0, 40) + '...' : shelf.getBookDTO().getTitle}"
-             th:style="'height: ' + (${shelf.getBookDTO().getSizeDepth()} * 2.5) + 'px;'">
-            1</div>
+    <div th:each="shelf, index : ${shelves}"
+         th:class="'book b' + (${index.index} % 4 + 1)"
+         th:text="${shelf.getBookDTO().getTitle.length() > 40 ? shelf.getBookDTO().getTitle.substring(0, 40) + '...' : shelf.getBookDTO().getTitle}"
+         th:style="'height: ' + (${shelf.getBookDTO().getSizeDepth()} * 2.5) + 'px;'">
+        1
     </div>
+    <div class="bubble" th:text="|${booksHeight / 10}cm|"> </div>
+    <div class="ruler" th:style="'height: ' + (${shelves.size() < 3 ?  300 : shelves.size()*80}) + 'px;'" >
+        <div th:each="i : ${idx}"
+             th:class="'milli' + (${i.index} % 10 == 0 ? '10' : '1')"></div>
+    </div>
+</div>
 </body>
 </html>
