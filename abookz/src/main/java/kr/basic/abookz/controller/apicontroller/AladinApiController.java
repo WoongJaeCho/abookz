@@ -18,7 +18,7 @@ public class AladinApiController {
     private final AladinService aladinService;
 
 
-    @RequestMapping(value = "/search", method = RequestMethod.POST)
+    @PostMapping(value = "/search")
     public List<BookDTO>  search(@RequestParam("query") String query,  RedirectAttributes redirectAttributes) {
         List<BookDTO> books = null;
         System.out.println("query" + query);

@@ -26,6 +26,7 @@
         <div class="memo" sec:authorize="!isAuthenticated()">
             <img src="/images/memo_card.png" alt="메모카드">
             <a href="/member/login" class="memo_card"> 로그인 하기 </a>
+
         </div>
         <div class="memo" sec:authorize="isAuthenticated()" th:if="${books == null or shelves == null }">
             <img src="/images/memo_card.png" alt="메모카드">
