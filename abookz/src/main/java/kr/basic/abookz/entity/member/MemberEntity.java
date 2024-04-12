@@ -31,6 +31,7 @@ public class MemberEntity {
 
   public MemberEntity(String loginId) {
     this.loginId = loginId;
+
   }
 
   //OAuth 를 위해 추가하는 필드
@@ -43,7 +44,7 @@ public class MemberEntity {
 //@OneToMany(mappedBy = "member" ,cascade = CascadeType.ALL)
 //  private List<MemoEntity> memoList = new ArrayList<>(); //회원이 작성한 메모 리스트
 
-  public static MemberEntity toMemberEntity(MemberDTO memberDTO){
+  public static MemberEntity toMemberEntity(MemberDTO memberDTO) {
     MemberEntity memberEntity = new MemberEntity();
     memberEntity.setLoginId(memberDTO.getLoginId());
     memberEntity.setPassword(memberDTO.getPassword());
@@ -54,7 +55,7 @@ public class MemberEntity {
     return memberEntity;
   }
 
-  public static MemberEntity toupdateMemberEntity(MemberDTO memberDTO){
+  public static MemberEntity toupdateMemberEntity(MemberDTO memberDTO) {
     MemberEntity memberEntity = new MemberEntity();
     memberEntity.setId(memberDTO.getId());
     memberEntity.setLoginId(memberDTO.getLoginId());
@@ -68,14 +69,20 @@ public class MemberEntity {
   }
 
   @Builder
-  public MemberEntity(String loginId, String password, String email, String provider, String providerId,String name) {
+  public MemberEntity(String loginId, String password, String email, String provider, String providerId, String name) {
     this.loginId = loginId;
     this.password = password;
     this.email = email;
     this.provider = provider;
     this.providerId = providerId;
-    this.role= ROLE_USER;
+    this.role = ROLE_USER;
     this.name = name;
   }
 
+  @PrePersist
+  protected void onPersist() {
+    if (this.profile == null || this.profile.trim().isEmpty()) {
+      this.profile = "/images/default_profile.png"; // 기본 프로필 이미지 경로 설정
+    }
+  }
 }

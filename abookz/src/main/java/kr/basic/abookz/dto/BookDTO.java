@@ -14,6 +14,7 @@ import java.time.LocalDate;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString
 public class BookDTO {
 
     private Long id;//pk

@@ -85,7 +85,7 @@ public class BookShelfService {
 
 
 
-    BookShelfDTO mapEntityToDTO(BookShelfEntity entity) {
+    public BookShelfDTO mapEntityToDTO(BookShelfEntity entity) {
         BookShelfDTO shelfDTO = mapper.map(entity, BookShelfDTO.class);
         BookDTO bookDTO = mapper.map(entity.getBook(), BookDTO.class);
         MemberDTO memberDTO = mapper.map(entity.getMember(), MemberDTO.class);

@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.9.0/dist/full.min.css" rel="stylesheet" type="text/css"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+
+<div class="collapse bg-base-200">
+  <input type="checkbox"/>
+  <div class="collapse-title text-xl font-medium">
+    리뷰 보기
+  </div>
+  <div class="collapse-content flex-column">
+    <div class="flex-column">
+      <!--더보기-->
+      <div class="join">
+        <div>
+          <input class="input input-bordered join-item" placeholder="Search"/>
+        </div>
+        <select class="select select-bordered join-item">
+          <option disabled selected>정렬</option>
+          <option>인기순</option>
+          <option>최신순</option>
+          <option>오래된순</option>
+        </select>
+        <button class="btn join-item">Search</button>
+      </div>
+
+      <!-- 리뷰 목록 반복 -->
+      <div th:if="${reviews == null}">
+        <p>No reviews available</p>
+      </div>
+      <div th:unless="${reviews == null}">
+        <div
+            th:text="|Displaying ${page.getNumber()+1}-${(page.getNumber()+1)*pageSize} of ${page.getTotalElements()} reviews|">
+          Displaying 1 of 1 review
+        </div>
+        <div th:each="review : ${reviews}">
+          <div class="review flex  w-[800px] h-[200px]">
+            <div class="w-1/4 border-4 flex flex-col">
+              <img class="profile_img w-[150px] h-[150px]" th:src="${review.bookShelfDTO.memberDTO.profile}"
+                   alt="프로필이미지">
+              <div th:text="${review.bookShelfDTO.memberDTO.name}">Member Name</div>
+            </div>
+            <div class="w-3/4 border-4 flex flex-col">
+              <div>
+                <div class="rating rating-md rating-half">
+                  <input type="radio" name="rating-10" class="rating-hidden"/>
+                  <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-1"
+                         data-rating="0.5"/>
+                  <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-2"
+                         data-rating="1.0"/>
+                  <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-1"
+                         data-rating="1.5"/>
+                  <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-2"
+                         data-rating="2.0"/>
+                  <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-1"
+                         data-rating="2.5"/>
+                  <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-2"
+                         data-rating="3.0"/>
+                  <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-1"
+                         data-rating="3.5"/>
+                  <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-2"
+                         data-rating="4.0"/>
+                  <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-1"
+                         data-rating="4.5"/>
+                  <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-2"
+                         data-rating="5.0"/>
+                </div>
+              </div>
+              <div class="flex">
+                <div class="mr-5" th:text="${review.bookShelfDTO.getTag().getKorean()}">Want to read</div>
+                <div th:text="${review.getCreatedDate()}">date</div>
+              </div>
+              <div>
+                <div th:text="${review.getContent()}">test</div>
+              </div>
+              <div class="flex">
+                <div class="m-5 flex ">
+                  <svg class="w-[40px] h-[40px]" xmlns="http://www.w3.org/2000/svg" version="1.1"
+                       viewBox="-5.0 -10.0 110.0 135.0">
+                    <path
+                        d="m83.602 50c0-3.8008-3.1016-6.8008-6.8008-6.8008h-19.602c3.6992-7.3008 7.8008-19.199 2.1016-27.898-1.6992-2.6992-4.3984-5.6992-7.3984-5.1992s-3.8984 4.1016-5.1016 9.1016c-1.1016 4.3984-2.5 9.8008-5.6016 15.5-2.1016 3.6992-4.6992 7.1016-7.6992 10.199v-2.6016c0-0.69922-0.60156-1.3008-1.3008-1.3008h-14.5c-0.69922 0-1.3008 0.60156-1.3008 1.3008s0.60156 1.3008 1.3008 1.3008h13.102v43.898h-13.102c-0.69922 0-1.3008 0.60156-1.3008 1.3008s0.60156 1.3008 1.3008 1.3008h14.398c0.69922 0 1.3008-0.60156 1.3008-1.3008v-3.8008l9.1992 3.1016c3.8984 1.3008 8 2 12.102 2h21.898c1.8008 0 3.5-0.69922 4.8008-2 1.3008-1.3008 2-3 2-4.8008 0-2.3008-1.1016-4.3008-2.8008-5.5 0.30078-0.19922 0.60156-0.5 0.80078-0.69922 1.3008-1.3008 2-3 2-4.8008 0-2.3008-1.1016-4.3008-2.8008-5.5 0.30078-0.19922 0.60156-0.5 0.80078-0.69922 1.3008-1.3008 2-3 2-4.8008 0-2.3008-1.1016-4.3008-2.8008-5.5 0.30078-0.19922 0.60156-0.5 0.80078-0.69922 1.4023-1.6016 2.2031-3.3008 2.2031-5.1016zm-3.9023 3c-0.80078 0.80078-1.8984 1.1992-3 1.1992-0.69922 0-1.3008 0.60156-1.3008 1.3008s0.60156 1.3008 1.3008 1.3008c2.3008 0 4.1992 1.8984 4.1992 4.1992 0 1.1016-0.39844 2.1992-1.1992 3s-1.8984 1.1992-3 1.1992c-0.69922 0-1.3008 0.60156-1.3008 1.3008s0.60156 1.3008 1.3008 1.3008c2.3008 0 4.1992 1.8984 4.1992 4.1992 0 1.1016-0.39844 2.1992-1.1992 3s-1.8984 1.1992-3 1.1992c-0.69922 0-1.3008 0.60156-1.3008 1.3008s0.60156 1.3008 1.3008 1.3008c2.3008 0 4.1992 1.8984 4.1992 4.1992 0 1.1016-0.39844 2.1992-1.1992 3s-1.8984 1.1992-3 1.1992h-21.898c-3.8984 0-7.6992-0.60156-11.301-1.8984l-10-3.3984v-33.504c4-3.6016 7.3984-7.8008 10-12.5 3.3008-6 4.8008-11.898 5.8984-16.102 0.89844-3.6992 1.6992-6.8984 3.1016-7.1992 0.89844-0.19922 2.6016 0.80078 4.8008 4.1016 5.6016 8.6992-0.39844 21.898-3.1992 27.102-0.19922 0.39844-0.19922 0.89844 0 1.3008 0.19922 0.39844 0.69922 0.60156 1.1016 0.60156h21.699c2.3008 0 4.1992 1.8984 4.1992 4.1992-0.10156 1.1992-0.60156 2.2969-1.4023 3.0977z"/>
+                  </svg>
+                  <div class="text-baset">Like</div>
+                </div>
+
+                <div class="m-5 flex collapse">
+                  <input type="checkbox"/>
+                  <svg class="w-[40px] h-[40px]" xmlns="http://www.w3.org/2000/svg" version="1.1"
+                       viewBox="-5.0 -10.0 110.0 135.0">
+                    <g>
+                      <path
+                          d="m34.375 44.531h21.875c2.1562 0 3.9062-1.75 3.9062-3.9062s-1.75-3.9062-3.9062-3.9062h-21.875c-2.1562 0-3.9062 1.75-3.9062 3.9062s1.75 3.9062 3.9062 3.9062z"/>
+                      <path
+                          d="m34.375 60.156h31.25c2.1562 0 3.9062-1.75 3.9062-3.9062s-1.75-3.9062-3.9062-3.9062h-31.25c-2.1562 0-3.9062 1.75-3.9062 3.9062s1.75 3.9062 3.9062 3.9062z"/>
+                      <path
+                          d="m10.582 78.973c-0.73047 2.9258 0.125 6.0273 2.2578 8.1602 2.1367 2.1367 5.2344 2.9961 8.1641 2.2617l10.16-2.5391h-0.003906c11.809 6.0312 25.793 6.043 37.609 0.03125 11.82-6.0117 20.043-17.316 22.121-30.414 2.0781-13.094-2.2383-26.395-11.613-35.77s-22.672-13.695-35.77-11.617c-13.094 2.0781-24.402 10.301-30.414 22.121-6.0117 11.816-6 25.797 0.027344 37.605zm16.477-53.531c6.25-5.6797 14.387-8.8359 22.832-8.8555 8.4453-0.023438 16.602 3.0898 22.883 8.7344 8.0391 7.418 11.961 18.289 10.512 29.133-1.4531 10.844-8.0938 20.297-17.801 25.344-9.707 5.043-21.262 5.043-30.969-0.003906-1.0078-0.52344-2.125-0.80078-3.2578-0.80078-0.5625 0-1.1211 0.066406-1.668 0.20312l-10.484 2.6211c-0.26562 0.070313-0.54688-0.007812-0.73828-0.20703-0.20313-0.1875-0.28125-0.47266-0.20313-0.73828l2.6172-10.484v-0.003907c0.40625-1.6562 0.19531-3.4062-0.59766-4.9219-3.3594-6.5117-4.5078-13.941-3.2695-21.16 1.2422-7.2227 4.8008-13.844 10.145-18.859z"/>
+                    </g>
+                  </svg>
+                  <div class="text-base collapse-title">comment</div>
+                  <div class="collapse-content">
+                    <div th:replace="~{review/comment :: comment}"/>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <!-- 페이징 컨테이너 시작 -->
+      <div class="pagination" th:unless="${reviews == null}" th:with="bookId=${reviews.get(0).bookShelfDTO.bookDTO.id}">
+        <!-- 'Previous' 링크: 현재 페이지가 첫 페이지(0)가 아닐 경우에만 표시 -->
+        <a th:if="${page.number > 0}"
+           th:href="@{/review/reviews(bookId=${bookId}, pageNumber=${page.number - 1})}"
+           rel="prev">Previous</a>
+
+        <!-- 페이지 번호를 위한 반복문: 0부터 시작하여 전체 페이지 수-1까지 반복 -->
+        <span th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}">
+
+    <!-- 각 페이지 번호에 대한 링크: 실제 페이지 번호(i)가 아니라 사용자에게 보여질 번호(i + 1)로 표시 -->
+          <!-- 현재 페이지(0부터 시작)에 +1하여 활성 페이지를 표시 -->
+    <a th:href="@{/review/reviews(bookId=${bookId}, pageNumber=${i})}"
+       th:text="${i + 1}"
+       th:classappend="${i == page.number} ? 'active' : ''">[Page ${i + 1}]</a>
+  </span>
+
+        <!-- 'Next' 링크: 현재 페이지가 마지막 페이지가 아닐 경우에만 표시 -->
+        <a th:if="${page.number < page.totalPages - 1}"
+           th:href="@{/review/reviews(bookId=${bookId}, pageNumber=${page.number + 1})}"
+           rel="next">Next</a>
+
+      </div>
+      <!-- 페이징 컨테이너 끝 -->
+
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>
