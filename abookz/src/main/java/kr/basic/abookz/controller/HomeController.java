@@ -40,7 +40,6 @@ public class HomeController {
         if(principalDetails != null) {
             Long memId = principalDetails.getMember().getId();
 
-
             List<BookShelfDTO> shelves = bookShelfService.findAllByMemberIdAndTag(memId, CURRENTLY_READING);
             List<BookDTO> books = shelves.stream()
                     .map(BookShelfDTO::getBookDTO)

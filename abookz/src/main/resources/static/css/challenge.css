@@ -5,6 +5,7 @@
     margin: 0 auto;
     display: flex;
     flex-direction: column-reverse;
+    position: relative;
 }
 #bookWrap .book{
     width: 600px;
@@ -29,4 +30,46 @@
 #bookWrap .b4{
     transform: translateX(-40px);
     background-color: rgb(231, 234, 240);
+}
+#bookWrap .bubble {
+    width: 150px;
+    height: 70px;
+    margin: 0 auto;
+    border: 3px solid black;
+    border-radius: 10px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5em;
+    font-weight: bold;
+}
+#bookWrap .ruler{
+    position: absolute;
+    background-color: #fff;
+    width: 100px;
+    height: 300px;
+    bottom: 0;
+    right: 150px;
+    display: flex;
+    flex-direction: column-reverse;
+}
+#bookWrap .ruler .milli1{
+    width: 10px;
+    margin-bottom: 5px;
+    border: 2px solid black;
+    display: flex;
+
+}
+#bookWrap .ruler .milli5{
+    width: 15px;
+    margin-bottom: 5px;
+    border: 2px solid black;
+    display: flex;
+}
+#bookWrap .ruler .milli10{
+    width: 20px;
+    margin-bottom: 5px;
+    border: 2px solid black;
+    display: flex;
 }

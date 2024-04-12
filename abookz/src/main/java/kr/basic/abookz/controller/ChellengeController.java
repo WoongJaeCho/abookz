@@ -40,8 +40,13 @@ public class ChellengeController {
                 .map(BookShelfDTO::getBookDTO)
                 .flatMap(book -> bookService.findAllByDTOId(book.getId()).stream())
                 .toList();
-
+        double booksHeight = 0;
+        for(BookShelfDTO shelf : shelves){
+            double sizeDepth = (double) shelf.getBookDTO().getSizeDepth();
+            booksHeight += sizeDepth;
+        }
         System.out.println("shelf = " + shelves);
+        model.addAttribute("booksHeight", booksHeight);
         model.addAttribute("books", books);
         model.addAttribute("shelves", shelves);
         return "challenge/stackedBooks";
