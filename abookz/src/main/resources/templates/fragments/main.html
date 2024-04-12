@@ -18,8 +18,10 @@
         </div>
     </article>
 
-    <section id="content" th:with="idx=${0}">
-        <div class="notice"> 공지사항 </div>
+
+    <section id="content">
+        <div class="notice"><a th:href="@{|board/paging/${'NOTICE'}|}">공지사항</a></div>
+
         <div class="recommend"> 에이북즈 도서 추천
             <a href="/slide">admin</a>
         </div>

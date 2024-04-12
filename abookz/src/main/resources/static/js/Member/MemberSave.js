@@ -10,6 +10,11 @@ function validcheck(form){
         form.password.focus();
         return false;
     }
+    // if(!form.password.value.match(/^(?=.*[a-zA-Z])(?=.*[!@#$%^*+=-])(?=.*[0-9]).{8,15}$/)){
+    //     alert("영문, 숫자, 특수기호 조합해서 8자리 이상 15자리 이하로 입력해주세요");
+    //     form.password.focus();
+    //     return false;
+    // }
     if(!form.email.value.match(/[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/)){
         alert("이메일 형식이 다릅니다");
         form.email.focus();

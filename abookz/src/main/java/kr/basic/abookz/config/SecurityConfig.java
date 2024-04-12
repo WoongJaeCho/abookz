@@ -38,7 +38,9 @@ public class SecurityConfig {
             authz -> authz
                 .requestMatchers("/member/save").permitAll()
                 .requestMatchers("/member/validId").permitAll()
-                .requestMatchers("/login").permitAll()
+                .requestMatchers("/member/loginIdfind").permitAll()
+                .requestMatchers("/member/loginPwfind").permitAll()
+                .requestMatchers("/member/loginPWfind").permitAll()
                 .requestMatchers("/member/**").authenticated()
                 .requestMatchers("/manager/**").hasAnyRole("MANAGER","ADMIN")
                 .requestMatchers("/admin/**").hasAnyRole("ADMIN")
