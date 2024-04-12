@@ -115,6 +115,10 @@
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.glassfish.jaxb:txw2:4.0.5" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: com.sun.istack:istack-commons-runtime:4.1.2" level="project" />
     <orderEntry type="library" name="flatpickr" level="application" />
+    <orderEntry type="library" name="jquery" level="application" />
+    <orderEntry type="library" name="flatpickr" level="application" />
+    <orderEntry type="library" name="jquery-3.5.1" level="application" />
+    <orderEntry type="library" name="moment.js" level="application" />
   </component>
   <component name="SonarLintModuleSettings">
     <option name="uniqueId" value="f2862b6b-9fdc-47b7-b4ce-23470ca35ff7" />

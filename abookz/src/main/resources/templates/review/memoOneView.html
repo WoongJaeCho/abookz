@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <div th:each="memo : ${memos}">
+        <div class="shelf_page" th:text="${memo.page == null ? '-' : 'p.'+ memo.page}">페이지</div>
+        <div class="shelf_page" th:text="${memo.createdDate == null ? '-' : #temporals.format(memo.createdDate,('yyyy-MM-dd HH:mm'))}">페이지</div>
+        <div class="shelf_page" th:text="${memo.quotes == null ? '-' : memo.quotes}">인용구</div>
+        <div class="shelf_page" th:text="${memo.note == null ? '-' : memo.note}">노트</div>
+    </div>
+</body>
+</html>

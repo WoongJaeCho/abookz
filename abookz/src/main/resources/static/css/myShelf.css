@@ -63,6 +63,85 @@ margin: 0 auto;
         border: 1px solid #ccc;
         padding: 20px;
         box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        z-index: 9999;
+        z-index: 1000;
         display: none; /* 초기에는 보이지 않도록 설정 */
     }
+.btn.btn-primary.btn-detail{
+    background-color: cyan;
+    width: 90px;
+    height: 20px;
+}
+.btn.btn-primary.btn-jittery{
+    background-color: red;
+    width: 90px;
+    height: 20px;
+}
+
+
+
+/* 모달창 */
+.modal {
+    display: none; /* 초기에는 보이지 않도록 설정 */
+    position: fixed; /* 위치 설정 */
+    z-index: 9999; /* 다른 요소 위에 표시되도록 설정 */
+    left: 0;
+    top: 0;
+    justify-content: center;
+    width: 100%; /* 화면 전체 너비로 설정 */
+    height: 100%; /* 화면 전체 높이로 설정 */
+    background-color: rgba(0, 0, 0, 0.4); /* 반투명한 배경 설정 */
+}
+#modal_content {
+    background-color: white; /* 모달 내용의 배경색 설정 */
+    position: fixed; /* 위치 설정 */
+    top: 50%; /* 화면 상단에서 절반 떨어진 위치부터 시작 */
+    left: 50%; /* 화면 왼쪽에서 절반 떨어진 위치부터 시작 */
+    transform: translate(-50%, -50%); /* 수직 및 수평 가운데 정렬 */
+    margin: 0 auto; /* 수평 가운데 정렬을 위해 */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 600px; /* 모달 너비 설정 */
+    height: 600px; /* 모달 높이 설정 */
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    animation-duration: 0.4s;
+}
+.modal_title{
+    font-size: 14px;
+    font-weight: bold;
+}
+.modal-table {
+    margin: 0 auto;
+    width: 100%;
+    border-collapse: collapse;
+}
+.modal_page {
+    position: relative;
+    text-align: center;
+    padding: 10px;
+}
+
+.progress-bar {
+    height: 20px; /* 선의 높이를 설정하세요 */
+    position: relative;
+    background-color: grey;
+}
+
+.startPage {
+    position: absolute;
+    top: 40px;
+    left: 0;
+    transform: translateY(50%);
+}
+
+.endPage {
+    position: absolute;
+    top: 40px;
+    right: 0;
+    transform: translateY(50%);
+}
+
+.progress {
+    height: 100%;
+    background-color: green;
+    width: 0;
+}

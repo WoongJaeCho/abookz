@@ -2,9 +2,11 @@ package kr.basic.abookz.service;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.PersistenceContext;
 import kr.basic.abookz.dto.BookDTO;
 import kr.basic.abookz.entity.book.BookEntity;
+import kr.basic.abookz.entity.book.BookShelfEntity;
 import kr.basic.abookz.repository.BookRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,6 +51,12 @@ public class BookService {
     public BookDTO findByDTOISBN13(Long ISBN13){
         BookEntity entities = bookrepository.findByISBN13(ISBN13);
         return mapEntityToDTO(entities);
+    }
+    public  BookDTO findByBookId(Long id){
+        BookEntity bookEntity = bookrepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Book not found with id " + id));
+        BookDTO bookDTO = mapEntityToDTO(bookEntity);
+        return bookDTO;
     }
 
     BookDTO mapEntityToDTO(BookEntity bookEntity){

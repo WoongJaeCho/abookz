@@ -31,7 +31,7 @@
             <img src="/images/memo_card.png" alt="메모카드">
             <a href="/myshelf" class="memo_card">나의 서재</a>
         </div>
-        <div class="memo" sec:authorize="isAuthenticated()" th:if="${books != null and shelves != null}" th:with="book=${books[0]}, shelf=${shelves[0]}" >
+        <div class="memo" sec:authorize="isAuthenticated()" th:unless="${books == null and shelves == null}" th:with="book=${books[0]}, shelf=${shelves[0]}" >
             <img th:src="${book.cover}" alt="book_cover" class="memo_cover">
             <div class="memo_text">
                 <div class="memo_title" th:text="${book.title}"></div>
