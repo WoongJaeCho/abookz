@@ -52,11 +52,10 @@ public class BookShelfApiController {
         }
         MemberDTO memberDTO = memberService.findById(id);
         BookDTO aladinGetBook = aladinService.getOneBookDTO(book);
-        BookDTO checkBook = bookService.insertBook(aladinGetBook);
         BookShelfDTO bookShelfDTO = BookShelfDTO.builder()
                 .memberDTO(memberDTO)
-                .bookDTO(checkBook).build();
-        String getValue = bookShelfService.insertBookShelfCheck(bookShelfDTO);
+                .bookDTO(aladinGetBook).build();
+        String getValue = bookShelfService.insertBookAndBookShelf(aladinGetBook,bookShelfDTO);
         System.out.println(getValue);
         if (getValue.equals("저장")) {
             data = aladinGetBook.getTitle() + "내 서재에 등록이 완료되었습니다";

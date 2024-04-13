@@ -104,6 +104,7 @@ margin: 0 auto;
     height: 600px; /* 모달 높이 설정 */
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     animation-duration: 0.4s;
+    z-index: 9999;
 }
 .modal_title{
     font-size: 14px;
