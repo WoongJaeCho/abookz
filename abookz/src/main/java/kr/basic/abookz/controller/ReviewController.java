@@ -20,7 +20,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Controller
 @Slf4j
@@ -85,23 +87,22 @@ public class ReviewController {
   }
 
   @GetMapping("/reviews")
-  public String getReviewsByBookId(
+  public ResponseEntity<Map<String, Object>> getReviewsByBookId(
       Model model,
-      @RequestParam(defaultValue = "2") Long bookId,
+      @RequestParam() String bookId ,
       @RequestParam(defaultValue = "0") int pageNumber,
       @RequestParam(defaultValue = "5") int pageSize,
       @RequestParam(defaultValue = "최신순") String sort) {
 
     PageRequest pageRequest = null;
 
-
     switch (sort) {
-      case "최신순" -> pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "createdDate"));
+      case "최신순" -> pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "createdDate"));
       case "오래된순" -> pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "createdDate"));
-      case "인기순" -> pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "createdDate"));
+      case "인기순" -> pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "reviewGrade"));
     }
 
-    Page<ReviewEntity> page = reviewService.getReviewsByBookId(bookId, pageRequest);
+    Page<ReviewEntity> page = reviewService.getReviewsByBookId(Long.valueOf(bookId), pageRequest);
     Page<ReviewDTO> dtoPage = page.map(r -> new ReviewDTO(
         r.getId(),
         r.getContent(),
@@ -123,13 +124,12 @@ public class ReviewController {
     boolean first = dtoPage.isFirst(); // 첫 번째 항목인가?
     boolean next = dtoPage.hasNext(); // 다음 페이지가 있는가?
 
-    model.addAttribute("page", dtoPage);
-    model.addAttribute("reviews", reviews);
-    model.addAttribute("pageSize", pageSize);
+    Map<String, Object> response = new HashMap<>();
+    response.put("reviews", reviews);
+    response.put("currentPage", dtoPage.getNumber());
+    response.put("totalPages", dtoPage.getTotalPages());
+    response.put("totalElements", dtoPage.getTotalElements());
 
-
-    return "/review/detailReview"; // 뷰 이름 반환
+    return ResponseEntity.ok(response);
   }
-
-
 }

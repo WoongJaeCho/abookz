@@ -9,7 +9,7 @@
 <div th:replace="~{fragments/header :: header}" /><br>
 
 
-<div id="book_container">
+<div id="book_container" >
      <div id="bookDetail">  <!--첵 패이지 영역 여기 벗어나면 댓글 영역 줄것-->
      <table id="book">
          <tr class="detail_tr">
@@ -60,14 +60,17 @@
      </table>
  </div>
     <hr class="reviewLine">    <!--아래는 아직 미구현-->
-    <div class="review">
-        <label for="reviewtext"></label><textarea id="reviewtext" name="review" rows="6"></textarea>
-        <button type="button" class="btn-register"  onclick="formCheckReply()">댓글등록</button>
-    </div>
+    <div th:replace="~{review/detailReview :: detailReview}" /><br>
+
+<!--    <div class="review">-->
+<!--        <label for="reviewtext"></label><textarea id="reviewtext" name="review" rows="6"></textarea>-->
+<!--        <button type="button" class="btn-register"  onclick="formCheckReply()">댓글등록</button>-->
+<!--    </div>-->
 </div>
 
 <div id="searchResults"></div>
 <script src="/js/detail.js"></script>
+<script defer src="/js/detailReview.js"></script>
 </body>
 </html>
 <script defer src="/js/index.js"></script>

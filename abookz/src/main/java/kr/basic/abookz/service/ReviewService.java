@@ -10,6 +10,7 @@ import kr.basic.abookz.dto.ReviewDTO;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -77,4 +78,7 @@ public class ReviewService {
         return reviewRepository.findByBookShelf_Book_Id(bookId,pageable);
     }
 
+  public Page<ReviewEntity> findAll(Pageable pageable) {
+      return reviewRepository.findAll(pageable);
+  }
 }
