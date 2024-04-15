@@ -33,3 +33,21 @@ body {
     height: 100%;
     object-fit: cover;
 }
+.pagingQuery:hover{
+    background-color: #2e9cdf;
+    color: #ffffff;
+}
+.pagingQuery{
+    margin-left: 3px;
+    padding: 0;
+    width:  30px;
+    height: 30px;
+    line-height: 30px;
+    -moz-border-radius: 100%;
+    -webkit-border-radius: 100%;
+    border-radius: 100%;
+}
+.pagingQuery :active{
+    background-color: #2e9cdf;
+    cursor: pointer;
+}

@@ -95,7 +95,7 @@ public class BookShelfApiController {
     Long memberId =  principalDetails.getMember().getId();
     System.out.println("memberId = " + memberId);
     Long id =jsonData.getId();
-    System.out.println("id = " + id);
+    System.out.println("Checkid = " + id);
     if(id == null){
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(URI.create("/myshelf"));
@@ -112,8 +112,7 @@ public class BookShelfApiController {
         Map<String, Object> response = new HashMap<>();
         BookShelfDTO bookShelfDTO = null;
                 bookShelfDTO=bookShelfService.findByBookShelfId(id);
-        System.out.println("bookShelfDTO = " + bookShelfDTO);
-               BookDTO bookDTO =bookService.findByBookId(bookShelfDTO.getId());
+               BookDTO bookDTO =bookService.findByBookId(bookShelfDTO.getBookDTO().getId());
         response.put("bookShelfDTO", bookShelfDTO);
         response.put("bookDTO", bookDTO);
                 return  response;

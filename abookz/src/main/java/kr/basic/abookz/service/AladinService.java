@@ -7,6 +7,9 @@ import kr.basic.abookz.entity.book.CategoryEnum;
 import lombok.extern.slf4j.Slf4j;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -27,12 +30,23 @@ public class AladinService {
     private static final String TTB_KEY = "ttbjun_40201143003"; // 여기에 TTBKey를 입력합니다.
 
     /* 상품 여러개 가져오는 json 타입형*/
-    public List<BookDTO> searchItems(String searchWord) throws Exception {
+    public Page<BookDTO> searchItems(String searchWord, Pageable pageable) throws Exception {
         String url = getUrl(searchWord);
         String response = restTemplate.getForObject(url, String.class);
+        List<BookDTO> allBooks = parseItemsFromJson(response);
 
-        return parseItemsFromJson(response);
+        // 페이징 처리
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), allBooks.size());
+        List<BookDTO> books = new ArrayList<>();
+
+        if (start <= end) {
+            books = allBooks.subList(start, end);
+        }
+
+        return new PageImpl<>(books, pageable, allBooks.size());
     }
+
     /*상품 1개 가져오기 */
     public BookDTO searchGetOneItem(String isbn13) throws  Exception{
             BookDTO vo = null;

@@ -9,7 +9,7 @@ let modal = document.getElementById("myModal");
 let modalContent = document.getElementById("modal_content");
 function onRadioChange(popup, selectedValue) {
     let value = popup.getAttribute('data-value');
-    console.log(value);
+    console.log(value +"value");
     console.log(selectedValue);
     popup.style.display = 'none';
 

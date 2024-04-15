@@ -33,6 +33,7 @@ public class BookShelfService {
     private final BookRepository bookRepository;
     @PersistenceContext
     private final EntityManager entityManager;
+    private final JPAQueryFactory 
 
      public List<BookShelfDTO> findAllDTOByMemberId(Long memberId) {
         List<BookShelfEntity> entities = bookShelfRepository.findAllByMemberId(memberId);
@@ -78,23 +79,24 @@ public class BookShelfService {
         BookShelfEntity bookShelf = bookShelfRepository.findById(bookShelfDTO.getId())
                 .orElseThrow(() -> new EntityNotFoundException("BookShelf not found with id " + bookShelfDTO.getId()));
         BookShelfEntity bookShelfSave = mapDTOToEntity(bookShelfDTO);
-        System.out.println("bookShelfSave = " + bookShelfSave);
-        bookShelf.setTag(bookShelfSave.getTag());
-        bookShelf.setEndDate(bookShelfSave.getEndDate());
-        bookShelf.setCurrentPage(bookShelfSave.getCurrentPage());
-        bookShelf.setTargetDate(bookShelfSave.getTargetDate());
-
-        if(bookShelf.getStartDate() == null) {
-            bookShelf.setStartDate(bookShelfSave.getStartDate());
-            bookShelfRepository.save(bookShelf);
-            System.out.println("저장진입");
+        if(bookShelfDTO.getTag() != null) {
+            bookShelf = BookShelfEntity.builder()
+                    .startDate(bookShelfSave.getStartDate())
+                    .tag(bookShelfSave.getTag()).
+                    build();
             return "성공";
         }
-            bookShelfRepository.save(bookShelf);
+           bookShelf =   BookShelfEntity.builder()
+                        .tag(bookShelfSave.getTag())
+                        .endDate(bookShelfSave.getEndDate())
+                        .currentPage(bookShelfSave.getCurrentPage())
+                        .targetDate(bookShelfSave.getTargetDate())
+                        .build();
+//        bookShelfRepository.save(bookShelf);
         return"성공";
     }
     public String deleteBookShelf(Long Id,Long memberId){
-      BookShelfEntity bookShelfEntity = bookShelfRepository.findByMemberIdAndBookId(Id,memberId);
+      BookShelfEntity bookShelfEntity = bookShelfRepository.findByIdAndMemberId(Id,memberId);
       if(bookShelfEntity == null){
           System.out.println("bookShelfEntity = " + bookShelfEntity);
           return "fail";
@@ -145,7 +147,7 @@ public class BookShelfService {
         return bookEntity;
     }
 
-    BookShelfDTO mapEntityToDTO(BookShelfEntity entity) {
+   public BookShelfDTO mapEntityToDTO(BookShelfEntity entity) {
 
         BookShelfDTO shelfDTO = mapper.map(entity, BookShelfDTO.class);
         BookDTO bookDTO = mapper.map(entity.getBook(), BookDTO.class);
@@ -155,7 +157,7 @@ public class BookShelfService {
         return shelfDTO;
     }
 
-    BookShelfEntity mapDTOToEntity(BookShelfDTO shelfDTO) {
+    public BookShelfEntity mapDTOToEntity(BookShelfDTO shelfDTO) {
         BookShelfEntity shelfEntity = mapper.map(shelfDTO, BookShelfEntity.class);
         if(shelfDTO.getBookDTO()!= null){
             BookEntity bookEntity = mapper.map(shelfDTO.getBookDTO(), BookEntity.class);
