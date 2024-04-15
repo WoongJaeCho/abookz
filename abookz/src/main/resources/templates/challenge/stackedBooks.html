@@ -14,9 +14,8 @@
         1
     </div>
     <div class="bubble" th:text="|${booksHeight / 10}cm|"> </div>
-    <div class="ruler" th:style="'height: ' + (${shelves.size() < 3 ?  300 : shelves.size()*70}) + 'px;'" >
-        <div th:each="i : ${idx}"
-             th:class="'milli' + (${i.index} % 10 == 0 ? '10' : '1')"></div>
+    <div class="ruler" th:style="'height: ' + (${booksHeight * 3}) + 'px;'" th:with="idx=${#numbers.sequence(0, booksHeight / 3)}">
+        <div th:each="index : ${idx}" th:class="'milli' + (${(index + 1) * 5 % 10 == 5 ? 5 : ((index + 1) * 5 % 10 == 0 ? 10 : null)})"></div>
     </div>
 </div>
 </body>

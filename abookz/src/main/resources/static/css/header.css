@@ -82,15 +82,17 @@ li{
 .nav > ul > li > ul > li > ul {
     position: absolute;
     display: block;
-    right: -10px;
+    right: -70px;
     top: 10px;
-    width: 230px;
+    width: 300px;
     flex-wrap: wrap;
     background-color: skyblue;
     z-index: 2;
+    overflow: hidden;
+    box-sizing: border-box;
 }
 .nav > ul > li > ul > li > ul  td {
-    padding: 10px 20px;
+    padding: 10px 10px;
 }
 .nav > ul > li > ul > li > ul  td > a:hover {
     text-decoration: underline;
@@ -226,7 +228,35 @@ main{
     background-color: #ccc;
     font-size: 1.5em;
     padding: 10px;
+    box-sizing: border-box;
+    position: relative;
 }
+#content .notice h3 {
+    margin-bottom: 5px;
+}
+#content .notice > a{
+    position: absolute;
+    font-size: 0.6em;
+    top: 23px;
+    left: 90px;
+}
+#content .notice li {
+    display: flex;
+    line-height: 32px;
+}
+#content .notice li a{
+    width: 70%;
+    font-size: 0.7em;
+}
+#content .notice a:hover{
+    text-decoration: underline;
+}
+#content .notice span{
+    width: 30%;
+    font-size: 0.7em;
+    text-align: right;
+}
+
 #content .recommend{
     width: 33.33%;
     height: 100%;
@@ -375,4 +405,33 @@ main{
     height: 100%;
     background-color: #cde;
 }
+#footer .snsIcon .sns_logo{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transform: translateY(50%);
+}
 
+#footer .snsIcon .sns_logo .sns{
+    display: inline-block;
+    width: 50px;
+    height: 50px;
+    margin: 0 5px;
+}
+#footer .snsIcon .sns_logo .sns img {
+    width: 100%;
+    height: auto;
+    transition: opacity 0.3s ease-in-out;
+}
+#footer .snsIcon .sns_logo .sns img.hover {
+    opacity: 0; /* 기본 이미지를 숨깁니다. */
+    position: absolute;
+    transform: translateY(-50px);
+    width: 50px;
+    height: 50px;
+}
+
+#footer .snsIcon .sns_logo .sns:hover img.hover {
+    opacity: 1; /* hover 상태일 때 다른 이미지를 보여줍니다. */
+    z-index: 2;
+}

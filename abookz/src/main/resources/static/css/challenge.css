@@ -53,23 +53,18 @@
     right: 150px;
     display: flex;
     flex-direction: column-reverse;
+    overflow: hidden;
 }
-#bookWrap .ruler .milli1{
-    width: 10px;
-    margin-bottom: 5px;
-    border: 2px solid black;
-    display: flex;
 
-}
 #bookWrap .ruler .milli5{
-    width: 15px;
-    margin-bottom: 5px;
+    width: 20px;
+    margin-bottom: 8.5px;
     border: 2px solid black;
     display: flex;
 }
 #bookWrap .ruler .milli10{
-    width: 20px;
-    margin-bottom: 5px;
+    width: 30px;
+    margin-bottom: 8.5px;
     border: 2px solid black;
     display: flex;
 }
