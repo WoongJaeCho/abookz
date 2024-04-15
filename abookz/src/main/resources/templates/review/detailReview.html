@@ -1,94 +1,111 @@
 <!DOCTYPE html>
-<html lang="ko">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
   <link href="https://cdn.jsdelivr.net/npm/daisyui@4.9.0/dist/full.min.css" rel="stylesheet" type="text/css"/>
   <script src="https://cdn.tailwindcss.com"></script>
-</head>
-<body class="bg-gray-100">
+  <script defer src="/js/detailReview.js"></script>
+<body>
 
-<div class="collapse collapse-arrow bg-base-200 rounded-box border border-gray-200 shadow-md p-4 m-4">
-  <input type="checkbox"/>
-  <div class="collapse-title text-xl font-medium">
-    리뷰 보기
-  </div>
-  <div class="collapse-content">
-    <div class="flex flex-col">
-      <!-- 검색 및 정렬 -->
-      <div class="flex flex-wrap items-center gap-2 mb-4">
-        <input class="input input-bordered flex-1" placeholder="Search"/>
-        <select class="select select-bordered">
-          <option disabled selected>정렬</option>
-          <option>인기순</option>
-          <option>최신순</option>
-          <option>오래된순</option>
-        </select>
-        <button class="btn btn-primary">Search</button>
-      </div>
-
-      <!-- 리뷰 목록 반복 -->
-      <div th:if="${reviews == null}">
-        <p>No reviews available</p>
-      </div>
-      <div th:unless="${reviews == null}" class="space-y-4">
-        <div
-            th:text="|Displaying ${page.getNumber()+1}-${(page.getNumber()+1)*pageSize} of ${page.getTotalElements()} reviews|">
-          Displaying 1 of 1 review
+<div th:fragment="detailReview"  id="detailReview_container" class="bg-gray-101">
+  <div class="collapse collapse-arrow bg-base-200 rounded-box border border-gray-200 shadow-md p-4 m-4">
+    <input type="checkbox"/>
+    <div class="collapse-title text-xl font-medium">
+      리뷰 보기
+    </div>
+    <div class="collapse-content">
+      <div class="flex flex-col">
+        <!-- 검색 및 정렬 -->
+        <div class="flex flex-wrap items-center gap-2 mb-4">
+          <input class="input input-bordered flex-1" placeholder="Search"/>
+          <select class="select select-bordered">
+            <option disabled selected>정렬</option>
+            <option>인기순</option>
+            <option>최신순</option>
+            <option>오래된순</option>
+          </select>
+          <button class="btn btn-primary">Search</button>
         </div>
-        <div th:each="review : ${reviews}" class="review bg-white shadow-lg rounded-lg overflow-hidden">
-          <div class="flex w-full">
-            <div class="w-1/4 p-4">
-              <img class="profile_img w-24 h-24 object-cover rounded-full mx-auto" th:src="${review.bookShelfDTO.memberDTO.profile}"
-                   alt="프로필이미지">
-              <div class="text-center mt-2" th:text="${review.bookShelfDTO.memberDTO.name}">Member Name</div>
-            </div>
-            <div class="w-3/4 p-4">
-              <div class="flex justify-between items-center mb-4">
-                <div th:text="${review.bookShelfDTO.getTag().getKorean()}">Want to read</div>
-                <div th:text="${review.getCreatedDate()}">date</div>
+
+        <!-- 리뷰 목록 반복 -->
+        <div th:if="${reviews == null}">
+          <p>No reviews available</p>
+        </div>
+        <div id="review_detail_content" th:unless="${reviews == null}" th:data-book-id="${reviews.get(0).getBookShelfDTO().getBookDTO().getId()}" class="space-y-4">
+          <div
+              th:text="|Displaying ${page.getNumber()+1}-${(page.getNumber()+1)*pageSize} of ${page.getTotalElements()} reviews|">
+            Displaying 1 of 1 review
+          </div>
+          <div th:each="review : ${reviews}" class="review bg-white shadow-lg rounded-lg overflow-hidden">
+            <input type="hidden" class="shelfGrade" th:value="${review.getBookShelfDTO().getBookShelfGrade()}" />
+            <div class="flex w-full">
+              <div class="w-1/4 p-4">
+                <img class="profile_img w-24 h-24 object-cover rounded-full mx-auto"
+                     th:src="${review.bookShelfDTO.memberDTO.profile}"
+                     alt="프로필이미지">
+                <div class="text-center mt-2" th:text="${review.bookShelfDTO.memberDTO.name}">Member Name</div>
               </div>
-              <div th:text="${review.getContent()}" class="mb-4">test</div>
-              <div class="flex justify-end space-x-4">
-                <div class="flex items-center">
-                  <button class="btn btn-sm btn-outline btn-accent">Like</button>
+              <div class="w-3/4 p-4">
+                <div class="flex ">
+                  <div class="rating rating-md rating-half">
+                    <!--                            <input type="radio" name="rating-10" class="rating-hidden" />-->
+                    <input type="radio" th:name="|rating-${review.id}|" class="pointer-events-none shelf-grade bg-yellow-500 mask mask-star-2 mask-half-1" data-rating="0.5"/>
+                    <input type="radio" th:name="|rating-${review.id}|" class="pointer-events-none shelf-grade bg-yellow-500 mask mask-star-2 mask-half-2" data-rating="1.0"/>
+                    <input type="radio" th:name="|rating-${review.id}|" class="pointer-events-none shelf-grade bg-yellow-500 mask mask-star-2 mask-half-1" data-rating="1.5"/>
+                    <input type="radio" th:name="|rating-${review.id}|" class="pointer-events-none shelf-grade bg-yellow-500 mask mask-star-2 mask-half-2" data-rating="2.0"/>
+                    <input type="radio" th:name="|rating-${review.id}|" class="pointer-events-none shelf-grade bg-yellow-500 mask mask-star-2 mask-half-1" data-rating="2.5"/>
+                    <input type="radio" th:name="|rating-${review.id}|" class="pointer-events-none shelf-grade bg-yellow-500 mask mask-star-2 mask-half-2" data-rating="3.0" />
+                    <input type="radio" th:name="|rating-${review.id}|" class="pointer-events-none shelf-grade bg-yellow-500 mask mask-star-2 mask-half-1" data-rating="3.5" />
+                    <input type="radio" th:name="|rating-${review.id}|" class="pointer-events-none shelf-grade bg-yellow-500 mask mask-star-2 mask-half-2" data-rating="4.0" />
+                    <input type="radio" th:name="|rating-${review.id}|" class="pointer-events-none shelf-grade bg-yellow-500 mask mask-star-2 mask-half-1" data-rating="4.5" />
+                    <input type="radio" th:name="|rating-${review.id}|" class="pointer-events-none shelf-grade bg-yellow-500 mask mask-star-2 mask-half-2" data-rating="5.0" />
+                  </div>
                 </div>
-                <div class="flex items-center">
-                  <label class="btn btn-sm btn-outline btn-info ml-2">comment</label>
+                <div class="flex justify-between items-center mb-4">
+                  <div th:text="${review.bookShelfDTO.getTag().getKorean()}">Want to read</div>
+                  <div th:text="${review.getCreatedDate()}">date</div>
                 </div>
+                <div th:text="${review.getContent()}" class="mb-4">test</div>
+                <div class="flex justify-end space-x-4">
+                  <div class="flex items-center">
+                    <button class="btn btn-sm btn-outline btn-accent">Like</button>
+                  </div>
+                  <div class="flex items-center">
+                    <label class="btn btn-sm btn-outline btn-info ml-2">comment</label>
+                  </div>
+                </div>
+                <div th:replace="~{review/comment :: comment}" />
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- 페이징 컨테이너 시작 -->
-      <div class="pagination flex justify-center items-center space-x-2 my-4">
-        <!-- 'Previous' 링크: 현재 페이지가 첫 페이지(0)가 아닐 경우에만 표시 -->
-        <a th:if="${page.number > 0}" th:href="@{/review/reviews(bookId=${bookId}, pageNumber=${page.number - 1})}" class="btn">
-          Previous
-        </a>
+        <!-- 페이징 컨테이너 시작 -->
+        <div id="pagination" th:unless="${page == null}" class="pagination flex justify-center items-center space-x-2 my-4">
+          <!-- 'Previous' 버튼: 현재 페이지가 첫 페이지(0)가 아닐 경우에만 표시 -->
+          <button th:onclick="'loadReviews(' + (${page.number - 1}) + ');'" class="btn" th:if="${page.number > 0}">
+            Previous
+          </button>
 
-        <!-- 페이지 번호를 위한 반복문: 0부터 시작하여 전체 페이지 수-1까지 반복 -->
-        <div th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}">
-          <!-- 각 페이지 번호에 대한 링크 -->
-          <a th:href="@{/review/reviews(bookId=${bookId}, pageNumber=${i})}"
-             th:text="${i + 1}"
-             th:classappend="${i == page.number} ? 'btn-active' : ''" class="btn">
-            [Page ${i + 1}]
-          </a>
+          <!-- 페이지 번호를 위한 반복문: 0부터 시작하여 전체 페이지 수-1까지 반복 -->
+          <div th:each="i : ${#numbers.sequence(0, page.totalPages - 1)}">
+            <!-- 각 페이지 번호에 대한 버튼 -->
+            <button th:onclick="'loadReviews(' + ${i} + ');'" th:text="${i + 1}" th:classappend="${i == page.number} ? 'btn-active' : ''" class="btn">
+              [[${i + 1}]]
+            </button>
+          </div>
+
+          <!-- 'Next' 버튼: 현재 페이지가 마지막 페이지가 아닐 경우에만 표시 -->
+          <button th:onclick="'loadReviews(' + (${page.number + 1}) + ');'" class="btn" th:if="${page.number < page.totalPages - 1}">
+            Next
+          </button>
         </div>
+        <!--페이징 끝-->
 
-        <!-- 'Next' 링크: 현재 페이지가 마지막 페이지가 아닐 경우에만 표시 -->
-        <a th:if="${page.number < page.totalPages - 1}" th:href="@{/reviews(bookId=${bookId}, pageNumber=${page.number + 1})}" class="btn">
-          Next
-        </a>
       </div>
-      <!-- 페이징 컨테이너 끝 -->
-
     </div>
   </div>
 </div>
-
 </body>
 </html>

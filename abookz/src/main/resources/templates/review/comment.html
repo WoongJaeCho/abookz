@@ -10,25 +10,33 @@
 
 <div th:fragment="comment" class="container mx-auto mt-10">
   <div class="comments">
-    <!-- 댓글 입력 필드 -->
-    <div class="mb-4">
-      <textarea class="textarea textarea-bordered w-full" placeholder="댓글을 입력하세요."></textarea>
-    </div>
+
     <!-- 댓글 리스트 -->
     <div class="space-y-4">
       <!-- 개별 댓글 -->
       <div class="flex items-start space-x-4">
-        <div class="avatar placeholder">
-          <div class="bg-neutral-focus text-neutral-content rounded-full w-12">
-            <span>SH</span>
+        <div class="avatar">
+          <div class="w-12 rounded-full">
+            <img src="avatar.jpg" alt="SH"/>
           </div>
         </div>
-        <div class="flex-1">
+        <div class="flex-1 p-4 bg-white shadow rounded-lg">
           <p class="text-lg font-semibold">SeungHyun Choi</p>
           <p class="text-sm">t</p>
+          <!-- 여기에 추가 댓글 내용이 들어갈 수 있습니다. -->
         </div>
       </div>
-      <!-- 반복되는 댓글 항목들... -->
+      <!-- 여기에 추가 댓글 항목들이 반복될 수 있습니다. -->
+    </div>
+
+    <!-- 댓글 입력 필드 -->
+    <div class="mb-5">
+      <textarea class="textarea textarea-bordered w-full" placeholder="댓글을 입력하세요."></textarea>
+    </div>
+
+    <!-- 댓글 작성 버튼 -->
+    <div class="text-right">
+      <button class="btn btn-primary">댓글 작성</button>
     </div>
   </div>
 </div>
