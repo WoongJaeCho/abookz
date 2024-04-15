@@ -19,8 +19,8 @@
       </tr>
       <tr>
         <td>작성자</td>
-        <td><input type="text" name="writer" id="writer" th:text="${writer}" disabled></td>
-        <td><input type="hidden" name="writer" th:value="${writer}"></td>
+        <td><input type="text" name="writer" th:value="${writer}" disabled/>
+            <input type="hidden" name="writer" th:value="${writer}">
       </tr>
       <tr>
         <td>내용</td>

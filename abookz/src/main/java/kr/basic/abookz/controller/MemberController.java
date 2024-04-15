@@ -72,7 +72,7 @@ public class MemberController {
   // 로그인
   @GetMapping("/loginForm")
   public String loginForm() {
-    return "member/loginForm";
+    return "/member/loginForm";
   }
 
   // 시큐리티 사용으로 인해 주석 처리
