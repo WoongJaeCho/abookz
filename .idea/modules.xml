@@ -4,9 +4,9 @@
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/abookz.abookz.iml" filepath="$PROJECT_DIR$/.idea/modules/abookz.abookz.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/abookz.abookz.main.iml" filepath="$PROJECT_DIR$/.idea/modules/abookz.abookz.main.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/abookz.abookz.main~1.iml" filepath="$PROJECT_DIR$/.idea/modules/abookz.abookz.main~1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/abookz.abookz.main~2.iml" filepath="$PROJECT_DIR$/.idea/modules/abookz.abookz.main~2.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/abookz.abookz.test.iml" filepath="$PROJECT_DIR$/.idea/modules/abookz.abookz.test.iml" />
-      <module fileurl="file://$PROJECT_DIR$/.idea/modules/abookz.abookz.test~1.iml" filepath="$PROJECT_DIR$/.idea/modules/abookz.abookz.test~1.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/abookz.abookz.test~2.iml" filepath="$PROJECT_DIR$/.idea/modules/abookz.abookz.test~2.iml" />
     </modules>
   </component>
 </project>

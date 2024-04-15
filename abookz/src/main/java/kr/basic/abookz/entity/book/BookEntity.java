@@ -22,6 +22,7 @@ public class BookEntity {
   private String author;//저자
   private String publisher;//출판사
   private LocalDate pubDate;//출판일
+  @Column(unique = true)
   private Long ISBN13;//isbn 13자리
   @Enumerated(EnumType.STRING)
   private CategoryEnum categoryName;//카테고리
@@ -34,7 +35,4 @@ public class BookEntity {
   private int sizeDepth;//책두께
   private int price;//가격
 
-  public BookEntity(String title) {
-    this.title = title;
-  }
 }
