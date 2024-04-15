@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -23,18 +25,15 @@ public class AladinApiController {
     private final AladinService aladinService;
 
 
-
     @RequestMapping(value = "/search", method = RequestMethod.POST)
-    public Page<BookDTO> search(@RequestParam("query") String query,
-                                @RequestParam(defaultValue = "0") int page,
-                                @RequestParam(defaultValue = "10") int size) {
-
+    public ResponseEntity<Page<BookDTO>> search(@RequestBody BookPagingDTO bookPagingDTO) {
         try {
-            List<BookDTO> books = aladinService.searchItems(query);
-            return new PageImpl<>(books, PageRequest.of(page, size), books.size());
+            Page<BookDTO>  books = aladinService.searchItems(bookPagingDTO.getQuery(), PageRequest.of(bookPagingDTO.getPage(), bookPagingDTO.getSize()));
+            System.out.println("books = " + books);
+            return ResponseEntity.ok(books);
         } catch (Exception e) {
             e.printStackTrace();
-            return new PageImpl<>(new ArrayList<>());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new PageImpl<>(new ArrayList<>()));
         }
     }
 }

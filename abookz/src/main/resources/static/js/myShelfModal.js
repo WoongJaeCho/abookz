@@ -13,6 +13,7 @@ function closeModal(modal) {
 // 모달창
 function openModal(modal, popup) {
     let value = popup.getAttribute('data-value');
+    console.log(value+ value);
     console.log("check");
     modal.style.display = "block";
     modal.style.opacity = "1";

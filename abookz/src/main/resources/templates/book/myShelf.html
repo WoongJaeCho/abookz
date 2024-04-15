@@ -54,7 +54,7 @@
             </tr>
         </thead>
         <tbody>
-        <tr class="myShelf_tr" th:each="book : ${books}">
+        <tr class="myShelf_tr" th:each=" book: ${books}">
             <td class="shelf_th" th:text="${bookStat.count}">1</td>
             <td class="shelf_tdimg">
                 <img class="cover_img" th:src="${book.cover}" alt="책이미지"></td>
