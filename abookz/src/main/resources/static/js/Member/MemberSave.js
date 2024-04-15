@@ -20,7 +20,7 @@ function validcheck(form){
         form.email.focus();
         return false;
     }
-    if(!form.nickname.value.trim()){
+    if(!form.name.value.trim()){
         alert("닉네임을 입력해주세요");
         form.nickname.focus();
         return false;
