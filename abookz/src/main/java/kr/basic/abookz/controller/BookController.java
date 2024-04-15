@@ -91,7 +91,10 @@ public class BookController {
       boolean next = dtoPage.hasNext(); // 다음 페이지가 있는가?
 
       model.addAttribute("page", dtoPage);
-      model.addAttribute("reviews", reviews);
+      if (reviews.size()!=0){
+
+        model.addAttribute("reviews", reviews);
+      }
       model.addAttribute("pageSize", pageSize);
     }
 
