@@ -79,30 +79,6 @@ for (var i = 0; i < readChange.length; i++) {
     let endDate = endDates[i];
     let deleteButton = deleteButtons[i];
     let  updateButton = updateButtons[i];
-  /*  endDate.addEventListener("click", function (event){
-        var x = event.clientX; // 클릭한 위치의 x 좌표
-        var y = event.clientY; // 클릭한 위치의 y 좌표
-        if(isInputCheck){
-            return;
-        }
-        var input = document.createElement("input");
-        input.type = "text";
-        input.className = "endDate"; // 클래스 설정
-        console.log(input.value);
-        // 생성한 input 요소를 컨테이너에 추가
-        endDate.appendChild(input);
-        // flatpickr 적용
-        flatpickr(input, {});
-        isInputCheck = true;
-        flatpickr(input, {
-            onChange: function(selectedDates, dateStr, instance) {
-                console.log(dateStr);
-                endDate.removeChild(input);
-                isInputCheck = false;
-            }
-        });
-    });*/
-
     element.addEventListener("click", function (event) {
         var x = event.clientX; // 클릭한 위치의 x 좌표
         var y = event.clientY; // 클릭한 위치의 y 좌표

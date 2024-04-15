@@ -1,13 +1,18 @@
 package kr.basic.abookz.controller.apicontroller;
 
 import kr.basic.abookz.dto.BookDTO;
+import kr.basic.abookz.dto.BookPagingDTO;
 import kr.basic.abookz.service.AladinService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -19,16 +24,15 @@ public class AladinApiController {
 
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
-    public List<BookDTO>  search(@RequestParam("query") String query,  RedirectAttributes redirectAttributes) {
-        List<BookDTO> books = null;
-        System.out.println("query" + query);
+    public Page<BookDTO> search(@RequestParam("query") String query,
+                                @RequestParam(defaultValue = "0") int page,
+                                @RequestParam(defaultValue = "10") int size) {
         try {
-            books = aladinService.searchItems(query);
-            return books;
-          } catch (Exception e) {
-            // 실제 환경에서는 예외 처리를 보다 세심하게 해야 합니다.
+            List<BookDTO> books = aladinService.searchItems(query);
+            return new PageImpl<>(books, PageRequest.of(page, size), books.size());
+        } catch (Exception e) {
             e.printStackTrace();
-            return books;
+            return new PageImpl<>(new ArrayList<>());
         }
     }
 }

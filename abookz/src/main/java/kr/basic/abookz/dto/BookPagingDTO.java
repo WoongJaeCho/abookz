@@ -5,9 +5,8 @@ import lombok.Data;
 
 //페이징DTO
 @Data
-public class PagingDTO {
+public class BookPagingDTO {
     private int page;
     private int size;
     private String sort;
-    private String desc;
 }

@@ -80,10 +80,14 @@ public class BookShelfService {
         BookShelfEntity bookShelfSave = mapDTOToEntity(bookShelfDTO);
         System.out.println("bookShelfSave = " + bookShelfSave);
         bookShelf.setTag(bookShelfSave.getTag());
+        bookShelf.setEndDate(bookShelfSave.getEndDate());
+        bookShelf.setCurrentPage(bookShelfSave.getCurrentPage());
+        bookShelf.setTargetDate(bookShelfSave.getTargetDate());
 
         if(bookShelf.getStartDate() == null) {
             bookShelf.setStartDate(bookShelfSave.getStartDate());
             bookShelfRepository.save(bookShelf);
+            System.out.println("저장진입");
             return "성공";
         }
             bookShelfRepository.save(bookShelf);

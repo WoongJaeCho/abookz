@@ -35,7 +35,6 @@ import java.util.Map;
 @Slf4j
 @RequiredArgsConstructor
 public class BookShelfApiController {
-    private final HttpSession httpSession;
     private final BookShelfService bookShelfService;
     private final MemberService memberService;
     private final BookService bookService;
@@ -68,16 +67,28 @@ public class BookShelfApiController {
     public ResponseEntity<Object> readingUpdate(@RequestBody BookShelfDTO jsonData) {
         LocalDateTime now = LocalDateTime.now();
         System.out.println(now);
-        BookShelfDTO bookShelfDTO =
-                BookShelfDTO.builder()
-                        .id(jsonData.getId())
-                        .tag(jsonData.getTag())
-                        .startDate(now).build();
-        bookShelfService.bookShelfUpdate(bookShelfDTO);
+        if(jsonData.getTag() != null) {
+            BookShelfDTO bookShelfDTO =
+                    BookShelfDTO.builder()
+                            .id(jsonData.getId())
+                            .tag(jsonData.getTag())
+                            .startDate(now).build();
+            bookShelfService.bookShelfUpdate(bookShelfDTO);
+        }else{
+            BookShelfDTO bookShelfDTO = BookShelfDTO
+                    .builder()
+                    .id(jsonData.getId())
+                    .endDate(jsonData.getEndDate())
+                    .targetDate(jsonData.getTargetDate())
+                    .currentPage(jsonData.getCurrentPage())
+                    .build();
+            bookShelfService.bookShelfUpdate(bookShelfDTO);
+        }
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(URI.create("/myshelf"));
         return new ResponseEntity<>(headers, HttpStatus.FOUND);
     }
+
 //나의 서재 삭제하기
 @PostMapping("/deleteMyShelf")
     public  ResponseEntity<Object> deleteMyShelf(@RequestBody BookShelfDTO jsonData,@AuthenticationPrincipal PrincipalDetails principalDetails){
