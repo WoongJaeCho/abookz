@@ -1,4 +1,3 @@
-<< << << < HEAD
 var resultsDiv = document.getElementById('searchResults');
 
 function searchBooks() {

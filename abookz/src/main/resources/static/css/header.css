@@ -45,6 +45,7 @@ li{
     margin-right: 10px;
     background-color: skyblue;
     box-sizing: border-box;
+    transition: all 300ms;
 }
 .nav > ul > li > a:hover{
     background-color: rgb(19, 168, 226);
@@ -54,6 +55,7 @@ li{
     position: absolute;
     display: none;
     background-color: #fff;
+    box-sizing: border-box;
 }
 
 .nav > ul > li > ul {
@@ -74,7 +76,8 @@ li{
     position: relative;
     /* background-color: skyblue; */
     top: 10px;
-    z-index: 1;
+    z-index: 3;
+    transition: all 300ms;
 }
 .nav > ul > li > ul > li > a:hover{
     background-color: rgb(19, 168, 226);
@@ -87,7 +90,7 @@ li{
     width: 300px;
     flex-wrap: wrap;
     background-color: skyblue;
-    z-index: 2;
+    z-index: 4;
     overflow: hidden;
     box-sizing: border-box;
 }
@@ -136,6 +139,7 @@ li{
     bottom: 0;
     right: 10px;
     padding: 10px 20px;
+    transition: all 300ms;
 }
 .join{
     width: 10%;
@@ -149,6 +153,7 @@ li{
     bottom: 0;
     left: 0;
     padding: 10px 20px;
+    transition: all 300ms;
 }
 .join > p:hover ,.login > p:hover {
     background-color: rgb(19, 168, 226);
@@ -225,7 +230,7 @@ main{
 #content .notice {
     width: 33.33%;
     height: 100%;
-    background-color: #ccc;
+    background-color: #cde;
     font-size: 1.5em;
     padding: 10px;
     box-sizing: border-box;
@@ -245,14 +250,14 @@ main{
     line-height: 32px;
 }
 #content .notice li a{
-    width: 70%;
+    width: 75%;
     font-size: 0.7em;
 }
 #content .notice a:hover{
     text-decoration: underline;
 }
 #content .notice span{
-    width: 30%;
+    width: 25%;
     font-size: 0.7em;
     text-align: right;
 }
@@ -264,6 +269,46 @@ main{
     font-size: 1.5em;
     padding: 10px;
 }
+#content .recommend .rec_book {
+    display: flex;
+    margin-top: 5px;
+}
+#content .recommend .rec_book ul {
+    width: 33.33%;
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+}
+#content .recommend .rec_book ul li .rec_cover{
+    height: 80%;
+    /*margin: 0 auto;*/
+}
+#content .recommend .rec_book ul li .rec_cover img{
+    width: 90px;
+    margin: 0 auto;
+}
+#content .recommend .rec_book ul li .rec_cover:hover img{
+    opacity: 0.8;
+}
+#content .recommend .rec_book ul li .rec_title {
+    height: 20%;
+    font-size: 13px;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+#content .recommend .rec_book ul li .rec_title:hover{
+    text-decoration: underline;
+}
+
+
+
+
+
+
 #content .memo {
     width: 33.33%;
     height: 100%;
@@ -316,6 +361,7 @@ main{
     border-radius: 20px;
     bottom: 20px;
     right: 70px;
+    transition: all 300ms;
 }
 #content .memo .memo_card{
     position: absolute;
@@ -324,8 +370,11 @@ main{
     border-radius: 20px;
     bottom: 20px;
     right: 150px;
+    transition: all 300ms;
 }
-
+#content .memo .memo_card:hover{
+    background-color: rgb(54, 184, 235);
+}
 #content .memo .memo_btn:hover{
     background-color: rgb(54, 184, 235);
 }
@@ -366,11 +415,11 @@ main{
     height: 100px;
     display: flex;
     margin: 0 auto;
+    background-color: #bcd;
 }
 #footer .footer1 {
     width: 80%;
     height: 100%;
-    background-color: #bcd;
 }
 #footer .footer1 .footer1-1 {
     width: 100%;
@@ -403,7 +452,7 @@ main{
 #footer .snsIcon {
     width: 20%;
     height: 100%;
-    background-color: #cde;
+
 }
 #footer .snsIcon .sns_logo{
     display: flex;
