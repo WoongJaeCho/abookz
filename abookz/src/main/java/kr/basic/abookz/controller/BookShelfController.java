@@ -20,9 +20,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Controller
@@ -35,36 +34,38 @@ public class BookShelfController {
     @GetMapping("/myshelf")
     public String getMyShelf(HttpSession session, RedirectAttributes redirectAttributes, Model model
             , @AuthenticationPrincipal PrincipalDetails principalDetails){
-
         Long id = principalDetails.getMember().getId();
         if(id == null) {
             redirectAttributes.addFlashAttribute("fail", "로그인이후 가능합니다");
             return "redirect:member/loginForm";
         }
-        List<BookShelfDTO> shelf =shelfService.findAllDTOByMemberId(id);
+        List<BookShelfDTO> myShelf =shelfService.findAllDTOByMemberIdOrderByIdDesc(id);
+        System.out.println("myShelf = " + myShelf);
 
        //밑에는 각 사이즈 가져오기 내서재들 옆 숫자표시 몇권있는지
-        int read = (int) shelf.stream()
+        int read = (int) myShelf.stream()
                 .map(item -> item.getTag())
                 .filter(tag -> tag != null && tag.getKorean().equals("읽은책"))
                 .count();
-        int want = (int) shelf.stream()
+        int want = (int) myShelf.stream()
                 .map(BookShelfDTO::getTag)
                 .filter(tag -> tag == null || tag == TagEnum.READ)
                 .count();
-        int current=(int)shelf.stream().map(item -> item.getTag())
+        int current=(int)myShelf.stream().map(item -> item.getTag())
                 .filter(tag -> tag != null && tag.getKorean().equals("읽고있는책")).count();
 
-        List<BookDTO> books = shelf.stream()
+
+        List<BookDTO> books = myShelf.stream()
                 .map(BookShelfDTO::getBookDTO)
-                .flatMap(book -> bookService.findAllByDTOId(book.getId()).stream())
+                .flatMap(book -> bookService.findAllByIdOrderByIdDesc(book.getId()).stream())
                 .toList();
+        System.out.println("books = " + books);
         //숫자 카운터 보내기용
         model.addAttribute("read", read);
         model.addAttribute("want", want);
         model.addAttribute("current",current);
-        model.addAttribute("all", shelf);
-        model.addAttribute("shelf", shelf);
+        model.addAttribute("all",myShelf);
+        model.addAttribute("shelf",myShelf);
         model.addAttribute("books",books);
         return "book/myShelf";
     }
@@ -74,7 +75,7 @@ public class BookShelfController {
         Long memId= principalDetails.getMember().getId();
         System.out.println("tag.toUpperCase() = " + tag.toUpperCase());
         if(memId== null){
-            return "member/login";
+            return "/member/login";
         }
         List<BookShelfDTO> myShelf;
         //밑에는 카운터용
@@ -84,7 +85,8 @@ public class BookShelfController {
         } else {
             try {
                 TagEnum tagEnum = TagEnum.valueOf(tag.toUpperCase());
-                myShelf = shelfService.findAllByMemberIdAndTag(memId,tagEnum );
+                myShelf = shelfService.findAllByMemberIdAndTagOrderByIdDesc(memId,tagEnum);
+                System.out.println(" myShelf= " +myShelf );
             } catch (IllegalArgumentException e) {
                 // 태그가 유효하지 않은 경우의 처리
                 return "errorPage"; // 적절한 에러 페이지로 리다이렉트
@@ -105,8 +107,9 @@ public class BookShelfController {
 
         List<BookDTO> books = myShelf.stream()
                 .map(BookShelfDTO::getBookDTO)
-                .flatMap(book -> bookService.findAllByDTOId(book.getId()).stream())
+                .flatMap(book -> bookService.findAllByIdOrderByIdDesc(book.getId()).stream())
                 .toList();
+        System.out.println("books = " + books);
         model.addAttribute("all", count);
         model.addAttribute("read", read);
         model.addAttribute("want", want);

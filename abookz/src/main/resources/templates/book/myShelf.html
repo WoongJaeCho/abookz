@@ -33,24 +33,25 @@
     <br>
 </div>
 <div id="shelf_center">
+    <button class="btn btn-secondary mr-5" id="largeButton">간략히</button>
+    <button class="btn btn-primary" id="smallButton">자세히</button>
     <hr class="myShelf_hr">
     <br>
-
-    <table class="shelf_table">
+<div class="overflow-x-auto" id="myShelfDiv">
+    <table class="table">
         <thead>
         <tr class="shelf_tr">
             <th class="shelf_th" ># </th>
             <th class="shelf_th">이미지</th>
             <th class="shelf_th">제목</th>
             <th class="shelf_th">작가</th>
-            <th class="shelf_th">페이지수</th>
             <th class="shelf_th">진행량</th>
             <th class="shelf_th">서재</th>
             <th class="shelf_th">시작일</th>
             <th class="shelf_th">완독일</th>
             <th class="shelf_th">상세보기</th>
             <th class="shelf_th">리뷰작성</th>
-            <th class="shelf_th">삭제</th>
+            <th class="shelf_th">삭제하기</th>
             </tr>
         </thead>
         <tbody>
@@ -65,8 +66,7 @@
             </td>
             <td class="shelf_author" th:text="${#strings.length(book.author) > 10 ? #strings.substring(book.author, 0, 10) + '...' :
                                  (#strings.contains(book.author, '(') ? #strings.substringBefore(book.author, '(') : book.author)}">작가</td>
-        <td class="shelf_page" th:text="${book.itemPage}">페이지</td>
-            <td class="shelf_myShelf" th:text="${shelf[bookStat.index].currentPage == null ? '0' :shelf[bookStat.index].getCurrentPage()}">읽은페이지</td>
+            <td class="shelf_page" th:text="${ (shelf[bookStat.index].currentPage == null ? '0' : shelf[bookStat.index].getCurrentPage()) + ' / ' + book.itemPage}">페이지</td>
             <td class="shelf_myShelf_read" th:text="${shelf[bookStat.index].tag == null ? '읽고싶은 책' : shelf[bookStat.index].tag.getKorean()}">상태</td>
             <div class="popup" th:attr="data-value=${shelf[bookStat.index].getId()}">
                 <input type="radio" id="value1" name="stats" value="READ">
@@ -77,15 +77,33 @@
                 <label for="value3">읽고 있는 책</label>
             </div>
             <td class="shelf_myShelf_add"  th:text="${#temporals.format(shelf[bookStat.index].addDate,('yyyy-MM-dd'))}">추가일</td>
-            <td class="shelf_myShelf_start" th:text="${shelf[bookStat.index].startDate == null ? '미정' : #temporals.format(shelf[bookStat.index].startDate,('yyyy-MM-dd'))}">시작일</td>
+            <td class="shelf_myShelf_start" th:text="${shelf[bookStat.index].startDate == null ? '-' : #temporals.format(shelf[bookStat.index].startDate,('yyyy-MM-dd'))}">시작일</td>
             <td class="shelf_myShelf_update"> <button class="btn btn-primary btn-detail"> 상세보기</button></td>
             <td class="shelf_myShelf_review" ><a th:href="@{/review/{bookShelfId}/{bookId}(bookShelfId=${shelf[bookStat.index].getId()},bookId=${book.getId()})}">리뷰</a></td>
-            <td class="shelf_myShelf_delete" th:attr="data-value=${shelf[bookStat.index].getId()}" > <button class="btn btn-primary btn-jittery">삭제하기
-            </button></td>
+            <td class="shelf_myShelf_delete" th:attr="data-value=${shelf[bookStat.index].getId()}" ><button class="btn btn-square btn-outline">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+            </button>   </td>
 
         </tr>
         </tbody>
     </table>
+</div>
+    <div id="listWrap">
+        <div id="booklist" class="card card-side bg-base-100 shadow-xl" th:each=" book: ${books}">
+            <input type="hidden" class="wrap_popup" th:attr="data-value=${shelf[bookStat.index].getId()}"/>
+            <figure><img class="w-40" th:src="${book.cover}" alt="cover"/></figure>
+            <div class="card-body">
+                <h2 class="card-title" th:text="${#strings.length(book.title) > 8 ? #strings.substring(book.title, 0, 7) + '...' : book.title}">New movie is released!</h2>
+                <p></p>
+                <div class="card-actions justify-end">
+                    <div class="myShelf_wrap_delete" th:attr="data-value=${shelf[bookStat.index].getId()}" ><button class="btn btn-square btn-outline">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" /></svg>
+                    </button>   </div>
+                    <div class="myShelf_wrap_update"> <button class="btn btn-primary btn-detail"> 상세보기</button></div>
+                </div>
+            </div>
+        </input>
+    </div>
     <!-- 모달 -->
     <div class="modal" id="myModal">
         <div id="modal_content">
@@ -93,8 +111,9 @@
     </div>
 
 </div>
-    <script  src="/js/myShelf.js"></script>
-    <script  src="/js/myShelfModal.js"></script>
+    <script src="/js/myShelfChange.js"></script>
+    <script src="/js/myShelf.js"></script>
+    <script src="/js/myShelfModal.js"></script>
 </div>
 <div id="searchResults"></div>
 <script defer src="/js/index.js"></script>

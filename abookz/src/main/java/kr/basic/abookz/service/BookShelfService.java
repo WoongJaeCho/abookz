@@ -41,6 +41,13 @@ public class BookShelfService {
                 .map(this::mapEntityToDTO)
                 .collect(Collectors.toList());
     }
+    public List<BookShelfDTO> findAllDTOByMemberIdOrderByIdDesc(Long memberId) {
+        List<BookShelfEntity> entities = bookShelfRepository.findAllByMemberIdOrderByIdDesc(memberId);
+
+        return entities.stream()
+                .map(this::mapEntityToDTO)
+                .collect(Collectors.toList());
+    }
     @Transactional
     public String insertBookAndBookShelf(BookDTO bookDTO, BookShelfDTO bookShelfDTO) {
 

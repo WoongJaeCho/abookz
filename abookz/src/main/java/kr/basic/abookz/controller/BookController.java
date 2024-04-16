@@ -47,7 +47,7 @@ public class BookController {
       @RequestParam(defaultValue = "5") int pageSize,
       @RequestParam(defaultValue = "최신순") String sort) throws Exception {
     BookDTO book = aladinService.searchGetOneItem(isbn13);
-    book.setId(bookService.findByDTOISBN13(Long.valueOf(isbn13)).getId());
+/*    book.setId(bookService.findByDTOISBN13(Long.valueOf(isbn13)).getId());*/
     model.addAttribute("book", book);
     System.out.println("book = " + book);
 

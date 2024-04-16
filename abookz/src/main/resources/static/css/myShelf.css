@@ -67,12 +67,14 @@ margin: 0 auto;
         display: none; /* 초기에는 보이지 않도록 설정 */
     }
 .btn.btn-primary.btn-detail{
-    background-color: cyan;
+    background-color: skyblue;
+    border: skyblue;
+    color: black;
     width: 90px;
     height: 20px;
 }
 .btn.btn-primary.btn-jittery{
-    background-color: red;
+
     width: 90px;
     height: 20px;
 }
@@ -157,7 +159,7 @@ margin: 0 auto;
 .submit-modal {
     margin: auto;
     padding: 10px 20px;
-    background-color: greenyellow;
+    background-color: skyblue;
     font-size: 24px;
     font-weight: bold;
     color: white;
