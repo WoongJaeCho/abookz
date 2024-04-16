@@ -76,9 +76,10 @@
                  <a class="detail_link" th:href="${book.link}" target="_blank">알라딘바로가기</a>
              </td>
          </tr>
+         <input type="hidden" id="bookId" th:value="${book.id}">
      </table>
  </div>
-    <hr class="reviewLine">    <!--아래는 아직 미구현-->
+<!--    <hr class="reviewLine">    &lt;!&ndash;아래는 아직 미구현&ndash;&gt;-->
     <div th:replace="~{review/detailReview :: detailReview}" /><br>
 
 <!--    <div class="review">-->

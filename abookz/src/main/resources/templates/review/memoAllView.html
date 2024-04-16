@@ -30,6 +30,7 @@
         <a href="#" class="myShelf_" th:text="'나의 챌린지(' + ${books.size()} + ')'">1</a>
         <br>
     </div>
+
     <div id="shelf_center">
         <hr class="myShelf_hr">
         <br>
@@ -54,7 +55,7 @@
                 <td class="shelf_title" th:text="${#strings.contains(shelf.getBookDTO().getTitle, '(') ? #strings.substringBefore(shelf.getBookDTO().getTitle, '(') : #strings.contains(shelf.getBookDTO().getTitle, '-') ? #strings.substringBefore(shelf.getBookDTO().getTitle, '-') : shelf.getBookDTO().getTitle}">제목</td>
                 <td class="shelf_myShelf_read" th:text="${shelf.tag == null ? '읽고싶은 책' : shelf.tag.getKorean()}"></td>
                 <td class="shelf_page" th:text="${memo.page == null ? '-' : memo.page}">페이지</td>
-                <td class="shelf_page" th:text="${memo.quotes == null ? '-' : memo.quotes}">인용구</td>
+                <td class="shelf_page" th:text="${memo.quotes == null ? '-' : memo.quotes.length() > 20 ? memo.quotes.substring(0, 20) + '...' : memo.quotes}">인용구</td>
                 <td class="shelf_page" th:text="${memo.note.length() > 20 ? memo.note.substring(0, 20) + '...' : memo.note}">노트</td>
                 <td class="shelf_page">
                     <span th:if="${count == 0}" th:text="${count}"></span>

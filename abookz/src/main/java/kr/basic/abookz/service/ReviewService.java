@@ -67,7 +67,6 @@ public class ReviewService {
         ReviewEntity reviewEntity = reviewRepository.findById(reviewDTO.getId())
             .orElseThrow(() -> new EntityNotFoundException("Review not found with id: " + reviewDTO.getId()));
 
-        reviewEntity.setReviewGrade(reviewDTO.getReviewGrade());
         reviewEntity.setContent(reviewDTO.getContent());
         reviewEntity.setIsSpoilerActive(reviewDTO.getIsSpoilerActive());
 

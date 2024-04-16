@@ -36,12 +36,10 @@ public class SecurityConfig {
         http.csrf(AbstractHttpConfigurer::disable);
         http.authorizeHttpRequests(
             authz -> authz
-                .requestMatchers("/member/save").permitAll()
-                .requestMatchers("/member/validId").permitAll()
-                .requestMatchers("/member/loginIdfind").permitAll()
-                .requestMatchers("/member/loginPwfind").permitAll()
-                .requestMatchers("/member/loginPWfind").permitAll()
+                .requestMatchers("/member/save", "/member/validId", "/member/loginIdfind", "/member/loginPwfind", "/member/loginPWfind").permitAll()
                 .requestMatchers("/member/**").authenticated()
+                .requestMatchers("/myshelf").authenticated()
+                .requestMatchers("/challenge").authenticated()
                 .requestMatchers("/manager/**").hasAnyRole("MANAGER","ADMIN")
                 .requestMatchers("/admin/**").hasAnyRole("ADMIN")
                 .anyRequest().permitAll()
@@ -50,7 +48,7 @@ public class SecurityConfig {
                 form.loginPage("/member/loginForm")
                     .loginProcessingUrl("/login")
                     .failureHandler(customAuthFailureHandler())
-                    .defaultSuccessUrl("/")
+                    .successHandler(customSuccessHandler)
                     .permitAll();
 
             }

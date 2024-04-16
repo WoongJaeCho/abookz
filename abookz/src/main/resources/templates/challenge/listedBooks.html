@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang="en">
+<head th:replace="~{fragments/head :: head}">
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}" /><br>
+<div id="listWrap">
+    <div id="booklist" class="card card-side bg-base-100 shadow-xl" th:each="book, index : ${books}" th:with="shelf=${shelves[__${index.index}__]}">
+        <figure><img class="w-40" th:src="${book.cover}" alt="cover"/></figure>
+        <div class="card-body">
+            <h2 class="card-title" th:text="${#strings.length(book.title) > 8 ? #strings.substring(book.title, 0, 7) + '...' : book.title}">New movie is released!</h2>
+            <p>★★★★★</p>
+            <div class="card-actions justify-end">
+                <button th:onclick="|location.href='/review/' + @{${shelf.id}} + '/' + @{${book.id}}|" class="btn btn-primary btn-sm">나의 리뷰</button>
+            </div>
+        </div>
+</div>
+</div>
+<!--<div id="bookWrap" th:style="'height: ' + (${shelves.size() < 10 ? 85 : shelves.size()*10}) + 'vh;'" >-->
+<!--    <div th:each="shelf, index : ${shelves}"-->
+<!--         th:class="'book b' + (${index.index} % 4 + 1)"-->
+<!--         th:text="${shelf.getBookDTO().getTitle.length() > 40 ? shelf.getBookDTO().getTitle.substring(0, 40) + '...' : shelf.getBookDTO().getTitle}"-->
+<!--         th:style="'height: ' + (${shelf.getBookDTO().getSizeDepth()} * 2.5) + 'px;'">-->
+<!--        1-->
+<!--    </div>-->
+<!--    <div class="bubble" th:text="|${booksHeight / 10}cm|"> </div>-->
+<!--    <div class="ruler" th:style="'height: ' + (${booksHeight * 3}) + 'px;'" th:with="idx=${#numbers.sequence(0, booksHeight / 3)}">-->
+<!--        <div th:each="index : ${idx}" th:class="'milli' + (${(index + 1) * 5 % 10 == 5 ? 5 : ((index + 1) * 5 % 10 == 0 ? 10 : null)})"></div>-->
+<!--    </div>-->
+<!--</div>-->
+</body>
+</html>

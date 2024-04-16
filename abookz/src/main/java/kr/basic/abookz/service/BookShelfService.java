@@ -74,6 +74,10 @@ public class BookShelfService {
         List<BookShelfEntity> entities = bookShelfRepository.findAllByMemberIdAndTag(memId,tagEnum);
         return entities.stream().map(this::mapEntityToDTO).collect(Collectors.toList());
     }
+    public List<BookShelfDTO> findAllByMemberIdAndTagOrderByIdDesc(Long memId,TagEnum tagEnum){
+        List<BookShelfEntity> entities = bookShelfRepository.findAllByMemberIdAndTagOrderByIdDesc(memId,tagEnum);
+        return entities.stream().map(this::mapEntityToDTO).collect(Collectors.toList());
+    }
     public String bookShelfUpdate(BookShelfDTO bookShelfDTO){
         BookShelfEntity bookShelf = bookShelfRepository.findById(bookShelfDTO.getId())
                 .orElseThrow(() -> new EntityNotFoundException("BookShelf not found with id " + bookShelfDTO.getId()));

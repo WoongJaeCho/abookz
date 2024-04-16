@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
 
@@ -24,7 +26,8 @@ public class ReviewEntity {
   private Long id;//pk
 
   private String content;//내용
-  private Double reviewGrade;//평점(1,2,3,4,5) 별표시
+  @CreationTimestamp
+  @DateTimeFormat(pattern = "YYYY-MM-DD HH:MM:SS")
   private LocalDateTime createdDate;//작성날짜
   private Boolean isSpoilerActive;//스포일러 방지기능
   //  @OneToMany(mappedBy = "like",fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
@@ -32,9 +35,4 @@ public class ReviewEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "BOOKSHELF_ID",foreignKey = @ForeignKey(name = "REVIEW_IBFK_1"))
   private BookShelfEntity bookShelf;
-
-  @PrePersist
-  public void prePersist() {
-    this.createdDate = LocalDateTime.now().withSecond(0).withNano(0);
-  }
 }

@@ -42,12 +42,12 @@ public class MemberController {
     return "member/list";
   }
 
-  @GetMapping("/{id}")
-  public String findById(@PathVariable Long id, Model model) {
-    MemberDTO memberDTO = memberService.findById(id);
-    model.addAttribute("member", memberDTO);
-    return "member/detail";
-  }
+//  @GetMapping("/{id}")
+//  public String findById(@PathVariable Long id, Model model) {
+//    MemberDTO memberDTO = memberService.findById(id);
+//    model.addAttribute("member", memberDTO);
+//    return "member/detail";
+//  }
 
   // 가입
   @GetMapping("/save")
@@ -97,7 +97,7 @@ public class MemberController {
   @GetMapping("/update")
   public String updateForm(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
     if(!logincheck(principalDetails)){
-      return "redirect:/member/login";
+      return "redirect:member/loginForm";
     }
     Long getId = principalDetails.getMember().getId();
     MemberDTO memberDTO = memberService.updateForm(getId);
@@ -119,7 +119,7 @@ public class MemberController {
   @GetMapping("/delete/{id}")
   public String deleteById(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long id) {
     if(!logincheck(principalDetails)){
-      return "redirect:/member/login";
+      return "redirect:member/loginForm";
     }
     memberService.deleteById(id);
     return "redirect:/member/list";

@@ -68,3 +68,19 @@
     border: 2px solid black;
     display: flex;
 }
+
+
+#listWrap{
+    width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+#listWrap #booklist{
+    /*width: 170px;*/
+    margin: 10px;
+}
+#listWrap #booklist img{
+    padding: 10px;
+}

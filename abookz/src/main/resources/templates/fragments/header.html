@@ -54,8 +54,8 @@
                 </li>
                 <li><a href="#">챌린지</a>
                     <ul class="submenu">
-                        <li><a href="/challenge">쌓아보기</a></li>
-                        <li><a href="#">menu2</a></li>
+                        <li><a href="/challenge/stack">쌓아보기</a></li>
+                        <li><a href="/challenge/list">리스트 보기</a></li>
                         <li><a href="#">menu3</a></li>
                     </ul>
                 </li>
@@ -75,7 +75,7 @@
 
             </form>
         </div>
-        <a class="login"  sec:authorize="!isAuthenticated()" href="/member/login"><p>로그인</p></a>
+        <a class="login"  sec:authorize="!isAuthenticated()" href="/member/loginForm"><p>로그인</p></a>
         <a class="join" sec:authorize="!isAuthenticated()" href="/member/save"><p>회원가입</p></a>
         <a class="login" sec:authorize="isAuthenticated()" href="javascript:void(0)" onclick="Logout();"><p>로그아웃</p></a>
         <a class="join" sec:authorize="isAuthenticated()" href="/member/update"><p>정보수정</p></a>
