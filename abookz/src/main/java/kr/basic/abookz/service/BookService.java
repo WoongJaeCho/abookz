@@ -26,17 +26,17 @@ public class BookService {
 
     private final BookRepository bookrepository;
     private final ModelMapper mapper;
-/*    @PersistenceContext
-    private EntityManagerFactory entityManagerFactory;*/
+    @PersistenceContext
+    private EntityManager entityManager;
     @Transactional
     public BookDTO insertBook(BookDTO bookDTO){
 
             BookEntity  saveBook=mapDTOToEntity(bookDTO);
-           BookEntity bookEntity =bookrepository.findByISBN13(saveBook.getISBN13());
-           if(bookEntity== null){
-               /* EntityManager entityManager=entityManagerFactory.createEntityManager();
-                entityManager.getTransaction().begin();*/
-                BookEntity insert = bookrepository.save(saveBook);
+             System.out.println("saveBook = " + saveBook);
+
+           if(bookrepository.findByISBN13(saveBook.getISBN13())== null){
+               entityManager.persist(saveBook);
+               entityManager.flush();
                return bookDTO;
            }
         System.out.println("중복 ISBN값 존재");

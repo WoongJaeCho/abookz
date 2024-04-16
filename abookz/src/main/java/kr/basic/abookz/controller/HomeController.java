@@ -2,9 +2,12 @@ package kr.basic.abookz.controller;
 
 import jakarta.servlet.http.HttpSession;
 import kr.basic.abookz.config.auth.PrincipalDetails;
+import kr.basic.abookz.dto.BoardDTO;
 import kr.basic.abookz.dto.BookDTO;
 import kr.basic.abookz.dto.BookShelfDTO;
 import kr.basic.abookz.dto.admin.SlideCardDTO;
+import kr.basic.abookz.entity.board.BoardEntity;
+import kr.basic.abookz.service.BoardService;
 import kr.basic.abookz.service.BookService;
 import kr.basic.abookz.service.BookShelfService;
 import kr.basic.abookz.service.admin.SlideCardService;
@@ -16,8 +19,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import java.time.Duration;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+import static kr.basic.abookz.entity.board.Category.*;
 import static kr.basic.abookz.entity.book.TagEnum.CURRENTLY_READING;
 
 @Controller
@@ -27,16 +33,65 @@ public class HomeController {
     private final SlideCardService adminService;
     private final BookShelfService bookShelfService;
     private final BookService bookService;
+    private final BoardService boardService;
+
     @GetMapping("/")
     public String index(Model model, HttpSession session, @AuthenticationPrincipal PrincipalDetails principalDetails) {
 
-
+        // @@ slide
         List<SlideCardDTO> slideCard = adminService.findAllOrderByIdx();
-
 
         if( slideCard.size() != 0) {
             model.addAttribute("slideCard", slideCard);
         }
+
+        // @@ notice
+//        List<BoardDTO> boards = new ArrayList<>();
+//        List<BoardDTO> boardEvent = boardService.findByCategory(EVENT);
+//        List<BoardDTO> boardNotice = boardService.findByCategory(NOTICE);
+//        List<BoardDTO> boardFree = boardService.findByCategory(FREE);
+
+//        if(boardEvent.size() != 0 && boardNotice.size() != 0 && boardFree.size() != 0) {
+//            boards.set(0, boardEvent.get(0));
+//            boards.set(1, boardNotice.get(0));
+//            boards.set(2, boardFree.get(0));
+//            boards.set(3, boardFree.get(1));
+//            boards.set(4, boardFree.get(2));
+//            boards.set(5, boardFree.get(3));
+//        }
+//        if(boardEvent.size() == 0 && boardNotice.size() != 0 && boardFree.size() != 0){
+//            boards.set(0, boardNotice.get(0));
+//            boards.set(1, boardFree.get(0));
+//            boards.set(2, boardFree.get(1));
+//            boards.set(3, boardFree.get(2));
+//            boards.set(4, boardFree.get(3));
+//            boards.set(5, boardFree.get(4));
+//        }
+//        if(boardEvent.size() != 0 && boardNotice.size() == 0 && boardFree.size() != 0){
+//            boards.set(0, boardEvent.get(0));
+//            boards.set(1, boardFree.get(0));
+//            boards.set(2, boardFree.get(1));
+//            boards.set(3, boardFree.get(2));
+//            boards.set(4, boardFree.get(3));
+//            boards.set(5, boardFree.get(4));
+//        }
+//        if(boardEvent.size() == 0 && boardNotice.size() == 0 && boardFree.size() != 0){
+//            boards.set(0, boardFree.get(0));
+//            boards.set(1, boardFree.get(1));
+//            boards.set(2, boardFree.get(2));
+//            boards.set(3, boardFree.get(3));
+//            boards.set(4, boardFree.get(4));
+//            boards.set(5, boardFree.get(5));
+//        }
+//        if(boardEvent.size() == 0 && boardNotice.size() == 0 && boardFree.size() == 0){
+//
+//        }
+//        if(boards.size() == 6){
+//            model.addAttribute("boards", boards);
+//        }
+
+
+        // @@ memo
         if(principalDetails != null) {
             Long memId = principalDetails.getMember().getId();
 

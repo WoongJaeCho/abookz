@@ -8,8 +8,8 @@
 <div th:replace="~{fragments/header :: header}" /><br>
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
-<script src="https://getbootstrap.com/docs/3.4/javascript/#modals"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script type="text/javascript" src="/lib/jquery-3.7.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
 <div id="shelf_container">
@@ -49,12 +49,12 @@
             <th class="shelf_th">시작일</th>
             <th class="shelf_th">완독일</th>
             <th class="shelf_th">상세보기</th>
-            <th class="shelf_th">삭제</th>
             <th class="shelf_th">리뷰작성</th>
+            <th class="shelf_th">삭제</th>
             </tr>
         </thead>
         <tbody>
-        <tr class="myShelf_tr" th:each="book : ${books}">
+        <tr class="myShelf_tr" th:each=" book: ${books}">
             <td class="shelf_th" th:text="${bookStat.count}">1</td>
             <td class="shelf_tdimg">
                 <img class="cover_img" th:src="${book.cover}" alt="책이미지"></td>
@@ -73,8 +73,8 @@
             </div>
             <td class="shelf_myShelf_add"  th:text="${#temporals.format(shelf[bookStat.index].addDate,('yyyy-MM-dd'))}">추가일</td>
             <td class="shelf_myShelf_start" th:text="${shelf[bookStat.index].startDate == null ? '미정' : #temporals.format(shelf[bookStat.index].startDate,('yyyy-MM-dd'))}">시작일</td>
-            <td class="shelf_myShelf_review" ><a th:href="@{/review/{bookShelfId}/{bookId}(bookShelfId=${shelf[bookStat.index].getId()},bookId=${book.getId()})}">리뷰</a></td>
             <td class="shelf_myShelf_update"> <button class="btn btn-primary btn-detail"> 상세보기</button></td>
+            <td class="shelf_myShelf_review" ><a th:href="@{/review/{bookShelfId}/{bookId}(bookShelfId=${shelf[bookStat.index].getId()},bookId=${book.getId()})}">리뷰</a></td>
             <td class="shelf_myShelf_delete" th:attr="data-value=${shelf[bookStat.index].getId()}" > <button class="btn btn-primary btn-jittery">삭제하기
             </button></td>
 
@@ -89,6 +89,7 @@
 
 </div>
     <script  src="/js/myShelf.js"></script>
+    <script  src="/js/myShelfModal.js"></script>
 </div>
 <div id="searchResults"></div>
 <script defer src="/js/index.js"></script>

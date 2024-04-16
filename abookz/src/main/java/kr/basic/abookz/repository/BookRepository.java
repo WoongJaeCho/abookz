@@ -16,6 +16,8 @@ import java.util.stream.Collectors;
 public interface BookRepository extends JpaRepository<BookEntity, Long> {
        List<BookEntity> findAllByISBN13(Long ISBN13);
        BookEntity findByISBN13(Long ISBN13);
+
+       boolean existsBookEntityByISBN13(Long ISBN13);
        List<BookEntity> findAllById(Long id);
 
        Optional<BookEntity> findById(Long id);

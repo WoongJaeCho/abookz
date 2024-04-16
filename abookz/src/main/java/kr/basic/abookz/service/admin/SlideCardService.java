@@ -5,6 +5,7 @@ import jakarta.persistence.PersistenceContext;
 import kr.basic.abookz.dto.admin.SlideCardDTO;
 import kr.basic.abookz.entity.admin.SlideCardEntity;
 import kr.basic.abookz.repository.admin.SlideCardRepository;
+import kr.basic.abookz.service.AladinService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -19,6 +20,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -30,6 +32,7 @@ public class SlideCardService {
 
     private final SlideCardRepository cardRepository;
     private final ModelMapper mapper;
+    private final AladinService aladinService;
 
     @Value("${upload.path}" + "slides/")
     private String uploadPath;
@@ -39,7 +42,14 @@ public class SlideCardService {
 
     public List<SlideCardDTO> findAllOrderByIdx(){
         List<SlideCardEntity> cardEntities = cardRepository.findAllByOrderByIdx();
+        List<SlideCardDTO> slides = new ArrayList<>();
         System.out.println("cardEntities = " + cardEntities);
+//        for(SlideCardEntity cardEntity : cardEntities){
+//            SlideCardDTO slideCardDTO = mapEntityToDTO(cardEntity);
+//            if(aladinService.searchGetOneItem(slideCardDTO.getISBN13()+""){
+//
+//            }
+//        }
         return cardEntities.stream()
                 .map(this::mapEntityToDTO)
                 .collect(Collectors.toList());
