@@ -1,5 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Title</title>
+</head>
 <head th:replace="~{fragments/head :: head}">
   <meta charset="UTF-8">
   <title>Title</title>
@@ -7,81 +11,80 @@
 <body>
 <div th:replace="~{fragments/header :: header}"/><br>
 <div class="container" id="boardContainer">
-<div class="btn-group" role="group" aria-label="Basic outlined example">
-  <a class="btn btn-outline-primary" th:href="@{/board/paging}" th:text="전체글"></a>
-  <a class="btn btn-outline-primary" th:href="@{|/board/paging/${'NOTICE'}|}" th:text="공지사항"></a>
-  <a class="btn btn-outline-primary" th:href="@{|/board/paging/${'EVENT'}|}" th:text="이벤트"></a>
-  <a class="btn btn-outline-primary" th:href="@{|/board/paging/${'FREE'}|}" th:text="자유게시판"></a>
-  <a class="btn btn-outline-primary" th:href="@{|/board/paging/${'QUESTION'}|}" th:text="질문게시판"></a>
+<div class="btn-group py-3" role="group" aria-label="Basic outlined example">
+  <a class="btn btn-outline-primary py-1" th:href="@{/board/paging}" th:text="전체글"></a>
+  <a class="btn btn-outline-primary py-1" th:href="@{|/board/paging/${'NOTICE'}|}" th:text="공지사항"></a>
+  <a class="btn btn-outline-primary py-1" th:href="@{|/board/paging/${'EVENT'}|}" th:text="이벤트"></a>
+  <a class="btn btn-outline-primary py-1" th:href="@{|/board/paging/${'FREE'}|}" th:text="자유게시판"></a>
+  <a class="btn btn-outline-primary py-1" th:href="@{|/board/paging/${'QUESTION'}|}" th:text="질문게시판"></a>
 </div>
-  <table class="table table-hover text-center table-bordered" id="boardTable">
-    <thead class="table-light">
-    <tr>
-      <th>번호</th>
-      <th>카테고리</th>
-      <th>제목</th>
-      <th>작성자</th>
-      <th>조회수</th>
-      <th>작성날짜</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:each="board: ${boardList}">
-      <td th:text="${board.id}"></td>
-      <td th:text="${board.category}"></td>
-      <td><a id="boardTitle" th:href="@{|/board/${board.id}|(page=${boardList.number + 1})}" th:text="${board.title}"></a></td>
-      <td th:text="${board.writer}"></td>
-      <td th:text="${board.hits}"></td>
-      <td th:text="${board.createDate}"></td>
-    </tr>
-    </tbody>
-  </table>
-  <nav aria-label="Page navigation example">
-  <th:block th:unless="${category}">
-    <ul class="pagination justify-content-center">
-      <li th:unless="${boardList.first}" class="page-item"><a class="page-link" th:href="@{/board/paging(page=1)}" th:classappend="${boardList.first} ? 'disabled'">First</a></li>
-      <li th:unless="${boardList.first}" class="page-item">
-        <a class="page-link" th:href="@{/board/paging(page=${boardList.number})}">Prev</a>
-      </li>
-      <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
-        <li class="page-item" th:classappend="${page == boardList.number + 1} ? 'active'">
-          <a class="page-link" th:if="${page != boardList.number + 1}" th:href="@{/board/paging(page=${page})}" th:text="${page}"></a>
-          <span class="page-link" th:unless="${page != boardList.number + 1}" th:text="${page}"></span>
+  <div class="overflow-x-auto bg-white dark:bg-neutral-700">
+    <table class="min-w-full text-left text-sm whitespace-nowrap" id="boardTable">
+      <thead class="uppercase tracking-wider border-b-2 dark:border-neutral-600 bg-neutral-50 dark:bg-neutral-800 border-t">
+        <tr>
+          <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">번호</th>
+          <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">카테고리</th>
+          <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">제목</th>
+          <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">작성자</th>
+          <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">조회수</th>
+          <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">작성날짜</th>
+        </tr>
+        </thead>
+      <tbody>
+      <tr class="border-b dark:border-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-600" th:each="board: ${boardList}">
+        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" th:text="${board.id}"></td>
+        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" th:text="${board.category}"></td>
+        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600"><a th:href="@{|/board/${board.id}|(page=${boardList.number + 1})}" th:text="${board.title}" id="boardTitle"></a></td>
+        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" th:text="${board.writer}"></td>
+        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" th:text="${board.hits}"></td>
+        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" th:text="${board.createDate}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <nav class="mt-5 flex items-center justify-center text-sm" aria-label="Page navigation example">
+    <th:block th:unless="${category}">
+      <ul class="list-style-none flex">
+        <li th:unless="${boardList.first}"><a class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white" th:href="@{/board/paging(page=1)}">First</a></li>
+        <li th:unless="${boardList.first}">
+          <a class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white" th:href="@{/board/paging(page=${boardList.number})}">Prev</a>
         </li>
-      </th:block>
-      <li th:unless="${boardList.last}" class="page-item">
-        <a class="page-link" th:href="@{/board/paging(page=${boardList.number + 2})}">Next</a>
-      </li>
-      <li th:unless="${boardList.last}" class="page-item">
-        <a class="page-link" th:href="@{/board/paging(page=${boardList.totalPages})}">Last</a>
-      </li>
-    </ul>
-  </th:block>
-  <th:block th:if="${category}">
-    <ul class="pagination justify-content-center">
-      <li class="page-item" th:unless="${boardList.first}"><a class="page-link" th:href="@{|/board/paging/${category}|(page=1)}">First</a></li>
-      <li class="page-item" th:unless="${boardList.first}">
-        <a class="page-link" th:href="@{|/board/paging/${category}|(page=${boardList.number})}">Prev</a>
-      </li>
-      <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
-        <li class="page-item" th:classappend="${page == boardList.number + 1} ? 'active'">
-          <a class="page-link" th:if="${page != boardList.number + 1}" th:href="@{|/board/paging/${category}|(page=${page})}" th:text="${page}"></a>
-          <span class="page-link" th:unless="${page != boardList.number + 1}" th:text="${page}"></span>
+        <li aria-current="page" th:each="page : ${#numbers.sequence(startPage, endPage)}">
+          <a class="relative block rounded bg-blue-100 px-3 py-1.5 text-sm font-medium text-blue-700 transition-all duration-300" th:if="${page != boardList.number + 1}" th:href="@{/board/paging(page=${page})}" th:text="${page}"></a>
+          <span class="relative block rounded bg-blue-100 px-3 py-1.5 text-sm font-medium text-blue-700 transition-all duration-300" th:if="${page == boardList.number + 1}" th:text="${page}"></span>
         </li>
+        <li th:unless="${boardList.last}" class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white">
+          <a class="page-link" th:href="@{/board/paging(page=${boardList.number + 2})}">Next</a>
+        </li>
+        <li th:unless="${boardList.last}" class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white">
+          <a class="page-link" th:href="@{/board/paging(page=${boardList.totalPages})}">Last</a>
+        </li>
+      </ul>
       </th:block>
-        <li th:unless="${boardList.last}" class="page-item">
-          <a class="page-link" th:href="@{|/board/paging/${category}|(page=${boardList.number + 2})}">Next</a>
-      </li>
-      <li th:unless="${boardList.last}" class="page-item">
-        <a class="page-link" th:href="@{|/board/paging/${category}|(page=${boardList.totalPages})}">Last</a>
-      </li>
-    </ul>
-  </th:block>
+      <th:block th:if="${category}">
+        <ul class="pagination justify-content-center">
+          <li class="page-item" th:unless="${boardList.first}"><a class="page-link" th:href="@{|/board/paging/${category}|(page=1)}">First</a></li>
+          <li class="page-item" th:unless="${boardList.first}">
+            <a class="page-link" th:href="@{|/board/paging/${category}|(page=${boardList.number})}">Prev</a>
+          </li>
+          <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
+            <li class="page-item" th:classappend="${page == boardList.number + 1} ? 'active'">
+              <a class="page-link" th:if="${page != boardList.number + 1}" th:href="@{|/board/paging/${category}|(page=${page})}" th:text="${page}"></a>
+              <span class="page-link" th:unless="${page != boardList.number + 1}" th:text="${page}"></span>
+            </li>
+          </th:block>
+          <li th:unless="${boardList.last}" class="page-item">
+            <a class="page-link" th:href="@{|/board/paging/${category}|(page=${boardList.number + 2})}">Next</a>
+          </li>
+          <li th:unless="${boardList.last}" class="page-item">
+            <a class="page-link" th:href="@{|/board/paging/${category}|(page=${boardList.totalPages})}">Last</a>
+          </li>
+        </ul>
+      </th:block>
   </nav>
-    <a class="icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);" th:href="@{/board/save}">
-      <svg class="bi" aria-hidden="true"><use xlink:href="#clipboard"></use></svg>
-      글작성
-    </a>
+  <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+    <a class="btn btn-outline-primary text-center" th:href="@{/board/save}" role="button" th:value="글작성">글작성</a>
+  </div>
 </div>
 </body>
 </html>
