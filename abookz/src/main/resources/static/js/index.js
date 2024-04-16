@@ -1,4 +1,3 @@
-<< << << < HEAD
 var resultsDiv = document.getElementById('searchResults');
 
 function searchBooks() {
@@ -9,7 +8,7 @@ function searchBooks() {
     return;
 
   }
-  fetchBooks(query, 1, 10)
+  fetchBooks(query, 0, 10)
 }
 
 function fetchBooks(query, page, size) {

@@ -40,7 +40,7 @@ public class ReviewController {
                              @PathVariable("bookId") Long bookId,
                              @AuthenticationPrincipal PrincipalDetails principalDetails) {
     if (principalDetails == null) {
-      return "redirect:/member/login";
+      return "redirect:member/loginForm";
     }
     MemberEntity member = principalDetails.getMember();
     BookShelfDTO shelf = shelfService.findByIdAndBookId(bookShelfId, bookId);
@@ -59,7 +59,7 @@ public class ReviewController {
                             @PathVariable("bookId") Long bookId,
                             @AuthenticationPrincipal PrincipalDetails principalDetails) {
     if (principalDetails == null) {
-      return "redirect:/member/login";
+      return "redirect:member/loginForm";
     }
     System.out.println("reviewDTO = " + reviewDTO);
     if (reviewService.findByBookShelfId(bookShelfId) == null) {
@@ -78,6 +78,7 @@ public class ReviewController {
     if (principalDetails == null) {
       return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
     }
+    Long currentMemberId = principalDetails.getMember().getId();
     System.out.println("ratingDTO = " + ratingDTO);
     BookShelfDTO shelf = shelfService.findByIdAndBookId(ratingDTO.getBookShelfId(), ratingDTO.getBookId());
     shelf.setBookShelfGrade(ratingDTO.getRating());
@@ -88,7 +89,7 @@ public class ReviewController {
 
   @GetMapping("/reviews")
   public ResponseEntity<Map<String, Object>> getReviewsByBookId(
-      Model model,
+      Model model,@AuthenticationPrincipal PrincipalDetails principalDetails,
       @RequestParam() String bookId ,
       @RequestParam(defaultValue = "0") int pageNumber,
       @RequestParam(defaultValue = "5") int pageSize,
@@ -103,12 +104,14 @@ public class ReviewController {
     }
 
     Page<ReviewEntity> page = reviewService.getReviewsByBookId(Long.valueOf(bookId), pageRequest);
+
+
     Page<ReviewDTO> dtoPage = page.map(r -> new ReviewDTO(
         r.getId(),
         r.getContent(),
-        r.getReviewGrade(),
         r.getCreatedDate(),
         r.getIsSpoilerActive(),
+        principalDetails != null ? (likeService.checkIfUserLikedReview(r.getId(), principalDetails.getMember().getId())? true: false) : false,
         shelfService.mapEntityToDTO(r.getBookShelf())
     ));
 

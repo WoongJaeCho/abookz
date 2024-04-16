@@ -34,7 +34,7 @@
         <div class="notice" th:unless="${boards == null}">
             <h3> 게시판 </h3><a th:href="@{|board/paging|}"> 더보기 ></a>
             <ul th:each="board : ${boards}">
-                <li th:text="${board.category == 'EVENT'}">
+                <li >
                     <a th:if="${board.category eq 'EVENT'}" href="#" th:text="|[이벤트] + ${board.title}|"></a>
                     <a th:if="${board.category eq 'NOTICE'}" href="#" th:text="|[공지사항] + ${board.title}|"></a>
                     <a th:unless="${board.category eq 'NOTICE' || board.category eq 'EVENT'}" href="#" th:text="${board.title}"></a>
@@ -48,7 +48,7 @@
         </div>
         <div class="memo" sec:authorize="!isAuthenticated()">
             <img src="/images/memo_card.png" alt="메모카드">
-            <a href="/member/login" class="memo_card"> 로그인 하기 </a>
+            <a href="/member/loginForm" class="memo_card"> 로그인 하기 </a>
 
         </div>
         <div class="memo" sec:authorize="isAuthenticated()" th:if="${books == null or shelves == null }">

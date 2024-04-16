@@ -92,7 +92,7 @@ public class HomeController {
             }
             model.addAttribute("boards", boards);
         }
-
+        System.out.println("boards = " + boards);
 
         // @@ memo
         if(principalDetails != null) {

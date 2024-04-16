@@ -9,6 +9,7 @@ import kr.basic.abookz.entity.member.MemberEntity;
 import kr.basic.abookz.entity.review.LikeEntity;
 import kr.basic.abookz.entity.review.ReviewEntity;
 import kr.basic.abookz.repository.LikeRepository;
+import kr.basic.abookz.repository.MemberRepository;
 import kr.basic.abookz.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -31,16 +32,21 @@ public class LikeService {
   private final BookShelfService bookShelfService;
   private final EntityManager em;
   private final LikeRepository likeRepository;
-
+  private final MemberRepository memberRepository;
 
   public List<LikeDTO> findAllByReview_Id(Long ReviewId) {
     List<LikeEntity> findLike = likeRepository.findAllByReview_Id(ReviewId);
-
 
     return findLike.stream()
         .map(this::mapEntityToDTO)
         .collect(Collectors.toList());
   }
+
+  public Optional<LikeDTO> findByReview_IdAndMember_Id(Long reviewId,Long memberId){
+    Optional<LikeEntity> byReviewIdAndMemberId = likeRepository.findByReview_IdAndMember_Id(reviewId, memberId);
+    return Optional.ofNullable(mapEntityToDTO(byReviewIdAndMemberId.get()));
+  }
+
 
   // DTO에서 Entity로 매핑
   public LikeEntity mapDTOToEntity(LikeDTO likeDTO) {
@@ -70,4 +76,25 @@ public class LikeService {
     return likeDTO;
   }
 
+  public boolean toggleLike(Long reviewId, Long memberId) {
+    Optional<LikeEntity> findLike = likeRepository.findByReview_IdAndMember_Id(reviewId, memberId);
+    if (findLike.isPresent()) {
+      likeRepository.delete(findLike.get());
+      return false; // 좋아요 제거됨
+    } else {
+      LikeEntity newLike = new LikeEntity();
+      ReviewEntity review = reviewRepository.findById(reviewId)
+          .orElseThrow(() -> new IllegalArgumentException("Review with ID " + reviewId + " not found."));
+      MemberEntity member = memberRepository.findById(memberId)
+          .orElseThrow(() -> new IllegalArgumentException("Member with ID " + memberId + " not found."));
+      newLike.setReview(review);
+      newLike.setMember(member);
+      likeRepository.save(newLike);
+      return true;
+    }
+  }
+
+  public boolean checkIfUserLikedReview(Long reviewId, Long memberId) {
+    return likeRepository.existsByReview_IdAndMember_Id(reviewId, memberId);
+  }
 }
