@@ -102,7 +102,7 @@ public class BoardService {
   }
 
   public List<BoardDTO> findByCategory(Category category){
-    List<BoardEntity> EntityList = boardRepository.findByCategoryOrderByCreateDateDesc(category);
+    List<BoardEntity> EntityList = boardRepository.findByCategoryOrderByIdDesc(category);
     List<BoardDTO> DTOList = new ArrayList<>();
     for(BoardEntity e : EntityList){
       DTOList.add(BoardDTO.toBoardDTO(e));

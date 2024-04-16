@@ -5,7 +5,7 @@ let nav = document.querySelectorAll(".nav > ul > li");
 nav.forEach((navItem, index) => {
     if (index !== 0) { // 첫 번째 요소를 제외
         navItem.addEventListener("mouseover", function () {
-            this.querySelector('.submenu').style.height = "350px";
+            this.querySelector('.submenu').style.height = "318px";
         });
         navItem.addEventListener("mouseout", function () {
             this.querySelector('.submenu').style.height = "0px";
