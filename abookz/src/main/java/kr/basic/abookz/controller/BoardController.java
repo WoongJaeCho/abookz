@@ -34,7 +34,7 @@ public class BoardController {
     if(!logincheck(principalDetails)){
       return "redirect:/member/login";
     }
-    model.addAttribute("writer", principalDetails.getMember().getLoginId());
+    model.addAttribute("writer", principalDetails.getMember().getName());
     return "board/save";
   }
   @PostMapping("/save")

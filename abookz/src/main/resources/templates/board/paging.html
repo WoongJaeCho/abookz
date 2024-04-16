@@ -1,65 +1,87 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="~{fragments/head :: head}">
   <meta charset="UTF-8">
   <title>Title</title>
 </head>
 <body>
-<div id="header">
-  <div id="List">
-    <h2>게시글 목록</h2>
-  </div>
+<div th:replace="~{fragments/header :: header}"/><br>
+<div class="container" id="boardContainer">
+<div class="btn-group" role="group" aria-label="Basic outlined example">
+  <a class="btn btn-outline-primary" th:href="@{/board/paging}" th:text="전체글"></a>
+  <a class="btn btn-outline-primary" th:href="@{|/board/paging/${'NOTICE'}|}" th:text="공지사항"></a>
+  <a class="btn btn-outline-primary" th:href="@{|/board/paging/${'EVENT'}|}" th:text="이벤트"></a>
+  <a class="btn btn-outline-primary" th:href="@{|/board/paging/${'FREE'}|}" th:text="자유게시판"></a>
+  <a class="btn btn-outline-primary" th:href="@{|/board/paging/${'QUESTION'}|}" th:text="질문게시판"></a>
 </div>
-<div id="boardList_table">
-  <table id="board_table" border="1">
+  <table class="table table-hover text-center table-bordered" id="boardTable">
+    <thead class="table-light">
     <tr>
-      <th>id</th>
-      <th>title</th>
-      <th>writer</th>
-      <th>hits</th>
-      <th>date</th>
-      <th>category</th>
+      <th>번호</th>
+      <th>카테고리</th>
+      <th>제목</th>
+      <th>작성자</th>
+      <th>조회수</th>
+      <th>작성날짜</th>
     </tr>
+    </thead>
+    <tbody>
     <tr th:each="board: ${boardList}">
       <td th:text="${board.id}"></td>
-      <td><a th:href="@{|/board/${board.id}|(page=${boardList.number + 1})}" th:text="${board.title}"></a></td>
+      <td th:text="${board.category}"></td>
+      <td><a id="boardTitle" th:href="@{|/board/${board.id}|(page=${boardList.number + 1})}" th:text="${board.title}"></a></td>
       <td th:text="${board.writer}"></td>
       <td th:text="${board.hits}"></td>
       <td th:text="${board.createDate}"></td>
-      <td th:text="${board.category}"></td>
     </tr>
+    </tbody>
   </table>
+  <nav aria-label="Page navigation example">
   <th:block th:unless="${category}">
-    <a th:href="@{/board/paging(page=1)}">First</a>
-    <a th:href="${boardList.first} ? '#' : @{/board/paging(page=${boardList.number})}">prev</a>
-    <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
-      <span th:if="${page == boardList.number + 1}" th:text="${page}"></span>
-      <span th:unless="${page == boardList.number + 1}">
-        <a th:href="@{/board/paging(page=${page})}" th:text="${page}"></a>
-      </span>
-    </span>
-    <a th:href="${boardList.last} ? '#' : @{/board/paging(page=${boardList.number + 2})}">next</a>
-    <a th:href="@{/board/paging(page=${boardList.totalPages})}">Last</a>
+    <ul class="pagination justify-content-center">
+      <li th:unless="${boardList.first}" class="page-item"><a class="page-link" th:href="@{/board/paging(page=1)}" th:classappend="${boardList.first} ? 'disabled'">First</a></li>
+      <li th:unless="${boardList.first}" class="page-item">
+        <a class="page-link" th:href="@{/board/paging(page=${boardList.number})}">Prev</a>
+      </li>
+      <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
+        <li class="page-item" th:classappend="${page == boardList.number + 1} ? 'active'">
+          <a class="page-link" th:if="${page != boardList.number + 1}" th:href="@{/board/paging(page=${page})}" th:text="${page}"></a>
+          <span class="page-link" th:unless="${page != boardList.number + 1}" th:text="${page}"></span>
+        </li>
+      </th:block>
+      <li th:unless="${boardList.last}" class="page-item">
+        <a class="page-link" th:href="@{/board/paging(page=${boardList.number + 2})}">Next</a>
+      </li>
+      <li th:unless="${boardList.last}" class="page-item">
+        <a class="page-link" th:href="@{/board/paging(page=${boardList.totalPages})}">Last</a>
+      </li>
+    </ul>
   </th:block>
   <th:block th:if="${category}">
-    <a th:href="@{|/board/paging/${category}|(page=1)}">First</a>
-    <a th:href="${boardList.first} ? '#' : @{|/board/paging/${category}|(page=${boardList.number})}">prev</a>
-    <span th:each="page: ${#numbers.sequence(startPage, endPage)}">
-      <span th:if="${page == boardList.number + 1}" th:text="${page}"></span>
-      <span th:unless="${page == boardList.number + 1}">
-        <a th:href="@{|/board/paging/${category}|(page=${page})}" th:text="${page}"></a>
-      </span>
-    </span>
-    <a th:href="${boardList.last} ? '#' : @{|/board/paging/${category}|(page=${boardList.number + 2})}">next</a>
-    <a th:href="@{|/board/paging/${category}|(page=${boardList.totalPages})}">Last</a>
+    <ul class="pagination justify-content-center">
+      <li class="page-item" th:unless="${boardList.first}"><a class="page-link" th:href="@{|/board/paging/${category}|(page=1)}">First</a></li>
+      <li class="page-item" th:unless="${boardList.first}">
+        <a class="page-link" th:href="@{|/board/paging/${category}|(page=${boardList.number})}">Prev</a>
+      </li>
+      <th:block th:each="page : ${#numbers.sequence(startPage, endPage)}">
+        <li class="page-item" th:classappend="${page == boardList.number + 1} ? 'active'">
+          <a class="page-link" th:if="${page != boardList.number + 1}" th:href="@{|/board/paging/${category}|(page=${page})}" th:text="${page}"></a>
+          <span class="page-link" th:unless="${page != boardList.number + 1}" th:text="${page}"></span>
+        </li>
+      </th:block>
+        <li th:unless="${boardList.last}" class="page-item">
+          <a class="page-link" th:href="@{|/board/paging/${category}|(page=${boardList.number + 2})}">Next</a>
+      </li>
+      <li th:unless="${boardList.last}" class="page-item">
+        <a class="page-link" th:href="@{|/board/paging/${category}|(page=${boardList.totalPages})}">Last</a>
+      </li>
+    </ul>
   </th:block>
-</div>
-<div id="footer">
-  <a th:href="@{/}">메인</a>
-  <a th:href="@{/board/save}">글작성</a>
-  <a th:href="@{/board/paging}" th:text="ALL"></a>
-  <a th:href="@{|/board/paging/${'FREE'}|}" th:text="FREE"></a>
-  <a th:href="@{|/board/paging/${'QUESTION'}|}" th:text="QUESTION"></a>
+  </nav>
+    <a class="icon-link icon-link-hover" style="--bs-icon-link-transform: translate3d(0, -.125rem, 0);" th:href="@{/board/save}">
+      <svg class="bi" aria-hidden="true"><use xlink:href="#clipboard"></use></svg>
+      글작성
+    </a>
 </div>
 </body>
 </html>

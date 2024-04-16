@@ -33,7 +33,6 @@ public class BookShelfService {
     private final BookRepository bookRepository;
     @PersistenceContext
     private final EntityManager entityManager;
-    private final JPAQueryFactory 
 
      public List<BookShelfDTO> findAllDTOByMemberId(Long memberId) {
         List<BookShelfEntity> entities = bookShelfRepository.findAllByMemberId(memberId);
