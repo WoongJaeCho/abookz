@@ -313,6 +313,15 @@ main{
     width: 33.33%;
     height: 100%;
     background-color: #aaa;
+    /*display: flex;*/
+    position: relative;
+    overflow: hidden;
+}
+#content .memo .memoWrap{
+    display: flex;
+}
+#content .memo .memoWrap .inner{
+    width: 426.61px;
     display: flex;
     position: relative;
 }
@@ -378,7 +387,7 @@ main{
 #content .memo .memo_btn:hover{
     background-color: rgb(54, 184, 235);
 }
-.arrow {
+#content .memo .arrow {
     width: 20px;
     height: 20px;
     border-style: solid;
@@ -390,21 +399,21 @@ main{
     cursor: pointer; /* 커서를 포인터로 변경하여 클릭 가능하도록 함 */
 }
 
-.memo_text .left {
+#content .memo .left {
     left: 10px;
     transform: translateY(-50%) rotate(-135deg);
 }
 
-.memo_text .right {
+#content .memo .right {
     right: 10px;
     transform: translateY(-50%) rotate(45deg);
 }
 
-.memo_text .left:hover {
+#content .memo .left:hover {
     transform: translateY(-50%) rotate(-135deg) scale(1.2);
 }
 
-.memo_text .right:hover {
+#content .memo .right:hover {
     transform: translateY(-50%) rotate(45deg) scale(1.2);
 }
 

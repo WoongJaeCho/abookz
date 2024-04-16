@@ -35,12 +35,33 @@ setInterval(() => {
     }
 }, 3000)
 
+let curIdx = 0;
+let memoWrap = document.querySelector('.memoWrap');
+let memoInner = document.querySelectorAll('.inner');
+let firstClone = memoWrap.firstElementChild.cloneNode(true);
+memoWrap.append(firstClone);
+
 document.querySelector('.memo').addEventListener('click', function(event) {
     if (event.target.classList.contains('arrow')) {
         if (event.target.classList.contains('left')) {
-            alert('왼쪽 화살표를 클릭했습니다!');
+            // alert('왼쪽 화살표를 클릭했습니다!');
+            curIdx--;
+            if(curIdx < 0){
+                curIdx = memoInner.length - 1;
+            }
         } else if (event.target.classList.contains('right')) {
-            alert('오른쪽 화살표를 클릭했습니다!');
+            // alert('오른쪽 화살표를 클릭했습니다!');
+            curIdx++;
+        }
+        memoWrap.style.marginLeft = -curIdx * 100 + "%";
+        memoWrap.style.transition = "all 600ms";
+
+        if(curIdx == memoInner.length){
+            setTimeout(()=>{
+                memoWrap.style.marginLeft = "0";
+                memoWrap.style.transition = "0s";
+                curIdx = 0;
+            },600)
         }
     }
 });
