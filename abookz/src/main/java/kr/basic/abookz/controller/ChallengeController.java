@@ -21,12 +21,12 @@ import java.util.List;
 @Controller
 @RequiredArgsConstructor
 @RequestMapping("/challenge")
-public class ChellengeController {
+public class ChallengeController {
 
     private final BookShelfService bookShelfService;
     private final BookService bookService;
 
-    @GetMapping
+    @GetMapping("/stack")
     public String stackedBooks(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model,
                                RedirectAttributes redirectAttributes){
 
@@ -50,6 +50,27 @@ public class ChellengeController {
         model.addAttribute("books", books);
         model.addAttribute("shelves", shelves);
         return "challenge/stackedBooks";
+    }
+
+    @GetMapping("/list")
+    public String listedBooks(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model,
+                               RedirectAttributes redirectAttributes){
+
+        Long id = principalDetails.getMember().getId();
+        if(id == null) {
+            redirectAttributes.addFlashAttribute("fail", "로그인이후 가능합니다");
+            return "redirect:/member/login";
+        }
+        List<BookShelfDTO> shelves =bookShelfService.findAllByMemberIdAndTagOrderByIdDesc(id, TagEnum.READ);
+        List<BookDTO> books = shelves.stream()
+                .map(BookShelfDTO::getBookDTO)
+                .flatMap(book -> bookService.findAllByDTOId(book.getId()).stream())
+                .toList();
+
+        System.out.println("shelf = " + shelves);
+        model.addAttribute("books", books);
+        model.addAttribute("shelves", shelves);
+        return "challenge/listedBooks";
     }
 
 }

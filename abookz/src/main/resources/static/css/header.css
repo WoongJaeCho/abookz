@@ -341,7 +341,7 @@ main{
     display: flex;
     justify-content: start;
     align-items: center;
-    height: 10px;
+    height: 5px;
 }
 #content .memo .read_bar .bar{
     border: 1px solid black;

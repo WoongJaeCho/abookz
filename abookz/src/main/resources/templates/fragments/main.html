@@ -61,7 +61,12 @@
         </div>
         <div class="recommend" th:unless="${aladinBooks.size() != 0}"> 에이북즈 도서 추천
             <a href="/slide">admin</a>
-
+            <ul th:each="book : ${aladinBooks}">
+                <li>
+                    <a class="rec_cover" th:href="@{/content/{ISBN}(ISBN=${book.ISBN13})}"><img class="rec_cover" th:src="${book.cover}"></a>
+                    <a class="rec_title" th:href="@{/content/{ISBN}(ISBN=${book.ISBN13})}" th:text="${book.title}"></a>
+                </li>
+            </ul>
         </div>
 
         <div class="memo" sec:authorize="!isAuthenticated()">
@@ -79,15 +84,15 @@
                 <div class="memo_title" th:text="${books[idx].title}"></div>
                 <div class="memo_day" th:text="|${shelves[idx].days+1}일째 읽는중|"> 5일째 읽는 중 </div>
                 <div class="read_bar">
-                    <progress class="progress bg-stone-300 w-56" th:value="${(shelves[idx].currentPage * 100) / books[idx].itemPage}" max="100"></progress>
+                    <progress class="progress bg-stone-300 w-56 h-2" th:value="${(shelves[idx].currentPage * 100) / books[idx].itemPage}" max="100"></progress>
                 </div>
                 <div class="memo_page">
                     <div class="per" th:text="${(shelves[idx].currentPage * 100) / books[idx].itemPage + '%'}"> 10% </div>
                     <div class="page" th:text="|${shelves[idx].currentPage}/${books[idx].itemPage} 페이지|"> 30/300 페이지 </div>
                 </div>
                 <a class="memo_btn" href="#">메모하기</a>
-                <div class="arrow left"></div>
-                <div class="arrow right"></div>
+                <div class="arrow left" th:if="${books.size()>1}"></div>
+                <div class="arrow right" th:if="${books.size()>1}"></div>
             </div>
         </div>
     </section>
