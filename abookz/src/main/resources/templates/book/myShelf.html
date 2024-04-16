@@ -12,7 +12,7 @@
 <script type="text/javascript" src="/lib/jquery-3.7.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
-<div id="shelf_container">
+<div id="shelf_container" class="shelf_container">
 <div id="shelf_left">
 <hr class="shelfLeft_hr">
     <p class="bookShelves">내 서재들</p>
@@ -58,8 +58,13 @@
             <td class="shelf_th" th:text="${bookStat.count}">1</td>
             <td class="shelf_tdimg">
                 <img class="cover_img" th:src="${book.cover}" alt="책이미지"></td>
- <td class="shelf_title" th:text="${#strings.contains(book.title, '(') ? #strings.substringBefore(book.title, '(') : #strings.contains(book.title, '-') ? #strings.substringBefore(book.title, '-') : book.title}">제목</td>
-        <td class="shelf_author"   th:text="${#strings.substringBefore(book.author, '(')}">작가</td>
+            <td class="shelf_title">
+                <a th:href="@{'/content/' + ${book.getISBN13()}}" th:text="${#strings.length(book.title) > 15 ? #strings.substring(book.title, 0, 15) + '...' :
+            (#strings.contains(book.title, '(') ? #strings.substringBefore(book.title, '(') :
+            (#strings.contains(book.title, '-') ? #strings.substringBefore(book.title, '-') : book.title))}">제목</a>
+            </td>
+            <td class="shelf_author" th:text="${#strings.length(book.author) > 10 ? #strings.substring(book.author, 0, 10) + '...' :
+                                 (#strings.contains(book.author, '(') ? #strings.substringBefore(book.author, '(') : book.author)}">작가</td>
         <td class="shelf_page" th:text="${book.itemPage}">페이지</td>
             <td class="shelf_myShelf" th:text="${shelf[bookStat.index].currentPage == null ? '0' :shelf[bookStat.index].getCurrentPage()}">읽은페이지</td>
             <td class="shelf_myShelf_read" th:text="${shelf[bookStat.index].tag == null ? '읽고싶은 책' : shelf[bookStat.index].tag.getKorean()}">상태</td>

@@ -45,6 +45,7 @@ public class HomeController {
             model.addAttribute("slideCard", slideCard);
         }
 
+
         // @@ notice
 //        List<BoardDTO> boards = new ArrayList<>();
 //        List<BoardDTO> boardEvent = boardService.findByCategory(EVENT);

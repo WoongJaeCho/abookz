@@ -1,4 +1,4 @@
-<< << << < HEAD
+
 var resultsDiv = document.getElementById('searchResults');
 
 function searchBooks() {
@@ -32,7 +32,6 @@ function fetchBooks(query, page, size) {
       console.log(data);
       if (data.content && data.content.length > 0) {
         data.content.forEach(book => {
-          console.log(book.author + "작가");
           createBookElement(book, resultsDiv);
         });
         createPaginationControls(data.totalPages, data.number, query);
@@ -62,15 +61,18 @@ function fetchBooks(query, page, size) {
 function createPaginationControls(totalPages, currentPage, query) {
   var paginationDiv = document.createElement('div');
   paginationDiv.id = 'pagingQueryDiv';
-  paginationDiv.innerHTML = ''; // 기존 페이지네이션 컨트롤을 지우고 새로 시작
+  paginationDiv.innerHTML = '';
 
   for (let i = 0; i < totalPages; i++) {
     var pageButton = document.createElement('button');
     pageButton.className = "pagingQuery";
     pageButton.textContent = i + 1;
-    pageButton.onclick = function () {
-      fetchBooks(query, i, 10);
-    };
+    // 클로저 문제를 해결하기 위해 각 버튼에 대한 클로저 생성
+    (function(page) {
+      pageButton.onclick = function () {
+        fetchBooks(query, page, 10);
+      };
+    })(i);
     paginationDiv.appendChild(pageButton);
   }
 
@@ -78,38 +80,92 @@ function createPaginationControls(totalPages, currentPage, query) {
 }
 
 function createBookElement(book, resultsDiv) {
-  var table = document.createElement('table');
-  table.className = 'query_table';
 
-  var coverRow = document.createElement('tr');
-  coverRow.className = 'query_tr';
-  var coverCell = document.createElement('td');
-  coverCell.className = 'query_td';
-  coverCell.setAttribute('rowspan', '5');
-  coverCell.setAttribute('width', '300');
+  var divElement = document.createElement('div');
+  divElement.className = 'queryBook card lg:card-side bg-base-100 shadow-xl flex justify-center mt-2 mb-2 w-[900px] h-[300px]';
+
+
+  var figure = document.createElement('figure');
+  figure.className = 'image-full';
+
+  var alink = document.createElement('a');
+  alink.href = "/content/" + book.isbn13;
+
   var coverImage = document.createElement('img');
   coverImage.src = book.cover; // Ensure the `book.cover` URL is correct
-  coverImage.className = "cover_img";
+  coverImage.className = "image-full";
   coverImage.alt = 'Book Cover';
-  var coverDetail = document.createElement('a');
-  coverDetail.href = "/content/" + book.isbn13; // Ensure the link is correct
-  coverDetail.appendChild(coverImage);
-  coverCell.appendChild(coverDetail);
-  coverRow.appendChild(coverCell);
-  table.appendChild(coverRow);
 
-  // Add title, author, and publication date rows
-  appendTextRow(table, book.title);
-  appendTextRow(table, book.author);
-  appendTextRow(table, book.pubDate);
 
-  resultsDiv.appendChild(table);
+  var divBody = document.createElement('div');
+  divBody.className = "card-body w-[700px]";
+
+  var pTitle = document.createElement('p');
+  pTitle.className = "text-lg";
+  var spanTitle = document.createElement("span");
+  var titleText = document.createTextNode(book.title.length > 30 ? book.title.substring(0, 30) + '...' : book.title);
+
+
+  var pAuthor = document.createElement('p');
+  pAuthor.className = "text-sm";
+  var spanAuthor = document.createElement("span");
+  var authorText = document.createTextNode(book.author.length > 30 ? book.author.substring(0, 30) + '...' : book.author);
+
+  // Create the paragraph element for the book description
+  var pDescription = document.createElement('p');
+  pDescription.className = "text-sm";
+  var spanDescription = document.createElement("span");
+  spanDescription.innerHTML = book.description.replace(/\n/g, '<br/>');
+  var divButton = document.createElement('div');
+  divButton.className='card-actions justify-end';
+  var buttonMyShelf = document.createElement('button');
+  buttonMyShelf.className ='btn btn-primary';
+  buttonMyShelf.textContent='서재 담기';
+  buttonMyShelf.addEventListener('click', function (){
+    var myShelfBook = book.isbn13
+    console.log(myShelfBook+" myShelfBook");
+    wantToRead(myShelfBook)
+  })
+  resultsDiv.appendChild(divElement);
+  divElement.appendChild(figure);
+  figure.appendChild(alink);
+  alink.appendChild(coverImage);
+  divElement.appendChild(divBody);
+  divBody.appendChild(pTitle);
+  pTitle.appendChild(spanTitle);
+  spanTitle.appendChild(titleText);
+  divBody.appendChild(pAuthor);
+  pAuthor.appendChild(spanAuthor);
+  spanAuthor.appendChild(authorText);
+  divBody.appendChild(pDescription);
+  pDescription.appendChild(spanDescription);
+  divBody.appendChild(divButton);
+  divButton.appendChild(buttonMyShelf);
 }
 
-function appendTextRow(table, text) {
-  var row = document.createElement('tr');
-  var cell = document.createElement('td');
-  cell.textContent = text; // Display the text in a cell
-  row.appendChild(cell);
-  table.appendChild(row);
+
+
+function wantToRead (isbn){
+  var isbn13 = isbn;
+  fetch('/want?book=' + isbn13,{
+    method: 'POST',
+    headers: {
+      'Content-Type' : 'application/json'
+    },
+    body: JSON.stringify({isbn13 : isbn13})
+  })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.text();
+      })
+      .then(data => {
+        alert(data);
+      })
+      .catch(error => {
+        console.error('There was a problem with the fetch operation:', error);
+        alert("이미 등록 되어있습니다");
+
+      });
 }
