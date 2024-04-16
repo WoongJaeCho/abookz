@@ -1,7 +1,7 @@
 body{
 margin: 0 auto;
 }
-#shelf_container {
+.shelf_container {
     width: 100%;
     display: flex;
     justify-content: space-between;

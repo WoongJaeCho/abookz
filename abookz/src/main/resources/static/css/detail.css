@@ -7,6 +7,10 @@ body{
 #book_container{
 
 }
+.detail-grade{
+    width: 12px;
+    height: 12px;
+}
 #bookDetail{
     width: 100%;
     height: 600px;
@@ -16,7 +20,7 @@ body{
 }
 #book {
 
-    width: 800px;
+    width: 850px;
     height: 500px;
     margin: auto; /* 가운데 정렬을 위해 추가 */
 }
@@ -29,9 +33,23 @@ body{
     height: 100%;
     object-fit: cover;
 }
+.rating {
+    font-size: 24px;
+    color: #ddd; /* 기본 색상 */
+}
+
+.aladinStar {
+    cursor: default;
+    display: inline-block;
+}
+
 .reviewLine{
     width: 50%;
     border: 1px solid grey;
+}
+#bookDetailGrade{
+    text-align:  center;
+    align-items: center;
 }
 .review{
     border: 1px solid red;
@@ -51,8 +69,44 @@ body{
     text-align: center;
     align-items: center;
 }
-#btn_want{
-    background-color: cyan;
+#btn_want {
+    background-color: skyblue;
     color: white;
-    align-items: center;
+    padding: 10px 20px;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+#btn_want:hover {
+    background-color: deepskyblue;
+    border-color: #01939A;
+    box-shadow: 0 5px 0 0 deepskyblue;
+}
+
+#btn_want:active {
+    transform: translateY(2px);
+}
+.detail_link {
+    display: inline-block;
+    padding: 10px 20px;
+    border: 2px solid transparent;
+    border-radius: 5px;
+    background-color: skyblue;
+    color: #fff;
+    text-decoration: none;
+    transition: all 0.3s ease;
+}
+
+.detail_link:hover {
+    background-color: deepskyblue;
+    border-color: #01939A;
+    box-shadow: 0 5px 0 0 deepskyblue;
+}
+
+.detail_link:active {
+    transform: translateY(2px);
 }
