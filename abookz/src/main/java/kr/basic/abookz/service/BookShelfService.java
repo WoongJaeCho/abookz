@@ -99,7 +99,7 @@ public class BookShelfService {
                 System.out.println("값체크 Read");
                 bookShelfSave = builder.endDate(now).build();
                 bookShelf.setEndDate(bookShelfSave.getEndDate());
-                bookShelf.setTag(bookShelfSave.getTag());
+                bookShelf.setTag(tagEnum);
 
 
                 return "성공";
@@ -107,12 +107,12 @@ public class BookShelfService {
                 System.out.println("값체크 커런트");
                 bookShelfSave = builder.startDate(now).build();
                 bookShelf.setStartDate(bookShelfSave.getStartDate());
-                bookShelf.setTag(bookShelfSave.getTag());
+                bookShelf.setTag(tagEnum);
 
                 return "성공";
             }
 
-                bookShelf.setTag(bookShelfSave.getTag());
+                bookShelf.setTag(tagEnum);
                     bookShelf.setEndDate(null);
               bookShelf.setStartDate(null);
             return "성공";

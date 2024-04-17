@@ -44,6 +44,7 @@ public class BookShelfApiController {
     @RequestMapping(value = "/want",method = RequestMethod.POST)
     public String wantToRead(@RequestParam("book") String book, Authentication authentication,
                              @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
+        System.out.println("book = " + book);
         Long id = principalDetails.getMember().getId();
         String data = null;
         MemberDTO memberDTO = memberService.findById(id);
