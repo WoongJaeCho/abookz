@@ -117,6 +117,15 @@ public class MemoController {
         return "review/memoOneView";
     }
 
+    @PostMapping("/{curIdx}")
+    @ResponseBody
+    public int getCurIdx(@PathVariable("curIdx") int curIdx) {
+        System.out.println("#####curIdx = " + curIdx);
+        // 여기서 curIdx 값을 가져오는 로직을 구현하고 반환합니다.
+        // 예시로 현재 curIdx 값을 바로 반환하는 것으로 설정했습니다.
+
+        return curIdx;
+    }
 }
 
 
