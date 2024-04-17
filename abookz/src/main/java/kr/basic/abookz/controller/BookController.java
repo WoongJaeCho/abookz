@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -40,11 +41,6 @@ public class BookController {
   private final ReviewService reviewService;
   private final PrincipalDetailsService principalDetailsService;
 
-  @GetMapping("/search")
-  public String getSearh() {
-    return "/index";
-  }
-
   @GetMapping("/content/{isbn13}")
   public String getOneDetail(@PathVariable("isbn13") String isbn13, Model model,
                              @RequestParam(defaultValue = "0") int pageNumber,
@@ -53,24 +49,36 @@ public class BookController {
     BookDTO book = aladinService.searchGetOneItem(isbn13);
     model.addAttribute("book", book);
     System.out.println("book = " + book);
-
+    
     return "/book/detail";
   }
 
   @GetMapping("/category/{category}")
-  public String choiceCategory(@PathVariable("category") String category, Model model) throws Exception {
-    List<BookDTO> getCategoryList = aladinService.choiceGetCategoryList(category);
-    model.addAttribute("books", getCategoryList);
-    System.out.println("getCategoryList = " + getCategoryList);
+  public String choiceCategory(@PathVariable("category") String category
+          ,@RequestParam(defaultValue = "0") int page
+          ,@RequestParam(defaultValue = "10")int size, Model model) throws Exception {
+    Pageable pageable = PageRequest.of(page, size);
+    Page<BookDTO> bookPage = aladinService.choiceGetCategoryList(category,pageable);
+    System.out.println("bookPage = " + bookPage);
+    model.addAttribute("categoryCheck", category);
+    model.addAttribute("books", bookPage.getContent());
+    model.addAttribute("currentPage", bookPage.getNumber());
+    model.addAttribute("totalPages", bookPage.getTotalPages());
+    model.addAttribute("totalItems", bookPage.getTotalElements());
     return "book/category";
   }
 
   /* 베스트 셀러나 신간 리스트 가져오기*/
   @GetMapping("/bestSeller/{type}")
-  public String choiceQueryType(@PathVariable("type") String type, Model model) throws Exception {
-    List<BookDTO> queryTypeList = aladinService.getQueryTypeList(type);
-    model.addAttribute("books", queryTypeList);
-    System.out.println("getQueryTypeList = " + queryTypeList);
-    return "book/queryType";
+  public String choiceQueryType(@PathVariable("type") String type,
+                                @RequestParam(defaultValue = "0") int page
+          ,@RequestParam(defaultValue = "10")int size,Model model) throws Exception {
+    Pageable pageable = PageRequest.of(page, size);
+    Page<BookDTO> bookPage = aladinService.getQueryPagingList(type, pageable);
+    model.addAttribute("books", bookPage.getContent());
+    model.addAttribute("currentPage", bookPage.getNumber());
+    model.addAttribute("totalPages", bookPage.getTotalPages());
+    model.addAttribute("totalItems", bookPage.getTotalElements());
+    return "book/category";
   }
 }
