@@ -118,6 +118,8 @@ public class HomeController {
             }
 
             if (shelves.size() != 0 && books.size() != 0) {
+//                int curIdx = 0;
+//                model.addAttribute("curIdx", curIdx);
                 model.addAttribute("books", books);
                 model.addAttribute("shelves", shelves);
             }

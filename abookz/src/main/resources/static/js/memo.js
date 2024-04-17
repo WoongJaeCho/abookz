@@ -40,22 +40,47 @@ document.addEventListener('DOMContentLoaded', function() {
     disableFutureTime(); // 현재 이후의 시간을 선택할 수 없도록 설정
 });
 
-
-// document.getElementById('submitBtn').addEventListener('click', function() {
-//     // note textarea의 값을 확인하여 빈 값이면 폼을 제출하지 않음
-//     if (document.getElementById('note').value.trim() === '') {
-//         alert('나의 생각을 입력해주세요.');
-//         return;
+// function validateForm() {
+//     let page = document.querySelectorAll(".page");
+//     let quotes = document.querySelectorAll(".quotes");
+//     let note = document.querySelectorAll(".note");
+//
+//     if (!page[curIdx].value || !quotes[curIdx].value || !note[curIdx].value) {
+//         alert("모든 필드를 작성해주세요.");
+//         return false;
 //     }
-//     document.getElementById('memoForm').submit();
-// });
+//     return true;
+// }
 
-let closeModal = document.querySelector('.close-modal');
-let memoModal = document.querySelector("#memo");
-let memoBtn = document.querySelector('.memo_btn');
-closeModal.addEventListener('click', ()=>{
-    memoModal.style.display = "none";
-})
-memoBtn.addEventListener("click", ()=>{
-    memoModal.style.display = "block";
-})
+
+let closeModal = document.querySelectorAll('.close-modal');
+let memoModal = document.querySelectorAll("#memo_modal_inner");
+let memoBtn = document.querySelectorAll('.memo_btn');
+let overlay = document.querySelector('#overlay');
+
+
+// closeModal[curIdx].addEventListener('click', ()=>{
+//     memoModal[curIdx].style.display = "none";
+//     overlay.style.display = "none";
+// })
+// console.log(curIdx);
+// memoBtn[curIdx].addEventListener("click", ()=>{
+//     console.log(memoBtn[curIdx]);
+//     memoModal[curIdx].style.display = "block";
+//     overlay.style.display = "block";
+//     // memoModal.setAttribute("th:with", "idx=" + curIdx);
+// })
+// 각 요소에 대해 forEach를 사용하여 이벤트 리스너를 추가합니다.
+closeModal.forEach((element, index) => {
+    element.addEventListener('click', () => {
+        memoModal[index].style.display = "none";
+        overlay.style.display = "none";
+    });
+});
+
+memoBtn.forEach((element, index) => {
+    element.addEventListener("click", () => {
+        memoModal[index].style.display = "block";
+        overlay.style.display = "block";
+    });
+});

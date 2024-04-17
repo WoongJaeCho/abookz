@@ -1,11 +1,12 @@
 /* 모달 스타일 */
 
-#memo {
+#memo_modal_inner {
     display: none;
-    position: absolute;
+    position: fixed;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
+    z-index: 10;
     background-color: #fff;
     width: 600px;
     max-width: calc(100% - 40px);
@@ -15,14 +16,18 @@
     overflow-y: auto; /* 내용이 넘칠 경우 스크롤 생성 */
 }
 
-#memo h2 {
+#memo form.memo {
+    width: 100%;
+}
+
+#memo_modal_inner h2 {
     text-align: center;
     margin-bottom: 10px;
     font-size: 1.5em;
     font-weight: bold;
 }
 
-.memo {
+form.memo {
     display: flex;
 }
 
@@ -91,4 +96,15 @@
     right: 10px;
     font-size: 2.5em;
     cursor: pointer;
+}
+
+#overlay{
+    position: fixed;
+    z-index: 9;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(211, 211, 211, 0.5);
+    display: none;
 }
