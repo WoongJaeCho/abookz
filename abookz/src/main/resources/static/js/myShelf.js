@@ -86,6 +86,7 @@ for (var i = 0; i < readChange.length; i++) {
         if(isPopupCheck){
             return;
         }
+
         var x = event.clientX; // 클릭한 위치의 x 좌표
         var y = event.clientY; // 클릭한 위치의 y 좌표
 
@@ -94,14 +95,12 @@ for (var i = 0; i < readChange.length; i++) {
         popup.style.left = x + 'px';
         popup.style.display = 'block';
 
+        isPopupCheck = true;
         let radiosInPopup = popup.querySelectorAll('input[type="radio"][name="stats"]');
+
         radiosInPopup.forEach(function(radio) {
             radio.addEventListener('change', function() {
-                if(isPopupCheck){
-                    return;
-                }
                 if (this.checked) {
-                    isPopupCheck = true;
                     onRadioChange(popup, this.value);
                 }
             });
