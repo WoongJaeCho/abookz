@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 @Controller
 @Slf4j
@@ -91,6 +92,7 @@ public class ReviewController {
   public ResponseEntity<Map<String, Object>> getReviews(
       Model model,@AuthenticationPrincipal PrincipalDetails principalDetails,
       @RequestParam() String ISBN13,
+      @RequestParam(defaultValue = "") String query,
       @RequestParam(defaultValue = "0") int pageNumber,
       @RequestParam(defaultValue = "5") int pageSize,
       @RequestParam(defaultValue = "최신순") String sort) {
@@ -100,11 +102,21 @@ public class ReviewController {
     switch (sort) {
       case "최신순" -> pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.DESC, "createdDate"));
       case "오래된순" -> pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "createdDate"));
-      case "인기순" -> pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "reviewGrade"));
+      case "인기순" -> pageRequest = PageRequest.of(pageNumber, pageSize);
     }
 
-    Page<ReviewEntity> page = reviewService.getReviewsByISBN13(ISBN13, pageRequest);
 
+    Page<ReviewEntity> page;
+    if (Objects.equals(query, "")) {
+      page = reviewService.getReviewsByISBN13(ISBN13, pageRequest);
+    }if (sort.equals("인기순")) {
+      page = reviewService.findReviewsByLikes(ISBN13, query ,pageRequest);
+    }else{
+      page = reviewService.findReviewsByContent(ISBN13, query,pageRequest);
+    }
+    System.out.println("query = " + query);
+    System.out.println("page = " + page);
+    System.out.println("sort = " + sort);
 
     Page<ReviewDTO> dtoPage = page.map(r -> new ReviewDTO(
         r.getId(),
@@ -112,6 +124,7 @@ public class ReviewController {
         r.getCreatedDate(),
         r.getIsSpoilerActive(),
         principalDetails != null ? (likeService.checkIfUserLikedReview(r.getId(), principalDetails.getMember().getId())? true: false) : false,
+        likeService.findAllByReview_Id(r.getId()).size(),
         shelfService.mapEntityToDTO(r.getBookShelf())
     ));
 

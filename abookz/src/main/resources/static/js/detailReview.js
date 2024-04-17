@@ -1,7 +1,7 @@
-function loadReviews(pageNumber) {
-  const ISBN13 = document.getElementById('ISBN13').value; // Fetch the book ID from the hidden input
+function loadReviews(pageNumber, query,sort) {
+  const ISBN13 = document.getElementById('ISBN13').value;
 
-  fetch(`/review/reviews?pageNumber=${pageNumber}&ISBN13=${ISBN13}`, {
+  fetch(`/review/reviews?pageNumber=${pageNumber}&ISBN13=${ISBN13}&query=${encodeURIComponent(query)}&sort=${encodeURIComponent(sort)}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -10,7 +10,7 @@ function loadReviews(pageNumber) {
       .then(response => response.json())
       .then(data => {
         updateReviewSection(data.reviews);  // 리뷰 섹션 업데이트
-        updatePagination(data.currentPage, data.totalPages);  // 페이징 정보 업데이트
+        updatePagination(data.currentPage, data.totalPages,query,sort);  // 페이징 정보 업데이트
       })
       .catch(error => console.error('Error loading the reviews:', error));
 }
@@ -23,6 +23,7 @@ function updateReviewSection(data) {
   data.forEach(review => {
     let tagDescription;
 
+    const likeText =  review.likesCount  >= 2  ? 'Likes' : 'Like';
     // 스포일러 여부에 따른 클래스와 버튼 추가
     const spoilerClass = review.isSpoilerActive ? 'blur-lg' : '';
     const spoilerBtnDisabled = review.isSpoilerActive ? 'btn-disabled' : '';
@@ -65,7 +66,7 @@ function updateReviewSection(data) {
               <div class="w-3/4 p-4">
                 <div class="flex ">
                  <div class="rating rating-md rating-half">
-                    <!--                            <input type="radio" name="rating-10" class="rating-hidden" />-->
+                                                <input type="radio" name="rating-${review.id}" class="rating-hidden" data-rating="0" />
                     <input type="radio" name="rating-${review.id}" class="pointer-events-none shelf-grade bg-yellow-500 mask mask-star-2 mask-half-1" data-rating="0.5"/>
                     <input type="radio" name="rating-${review.id}" class="pointer-events-none shelf-grade bg-yellow-500 mask mask-star-2 mask-half-2" data-rating="1.0"/>
                     <input type="radio" name="rating-${review.id}" class="pointer-events-none shelf-grade bg-yellow-500 mask mask-star-2 mask-half-1" data-rating="1.5"/>
@@ -88,7 +89,7 @@ function updateReviewSection(data) {
                     <button class="btn-like btn btn-sm btn-outline btn-accent ${likeButtonClass} ${spoilerBtnDisabled}" onclick="clickLike(this,${review.id})"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z" />
                       </svg>
-                      <span class="">Like</spanc>
+                      <span class="">${review.likesCount} ${likeText}</spanc>
                     </button>
                   </div>
                   <div class="flex items-center">
@@ -113,14 +114,14 @@ function updateReviewSection(data) {
 
 }
 
-function updatePagination(currentPage, totalPages) {
+function updatePagination(currentPage, totalPages,query,sort) {
   const paginationContainer = document.getElementById('pagination');
   paginationContainer.innerHTML = '';
 
   if (currentPage > 0) {
     const prevButton = document.createElement('button');
     prevButton.innerText = 'Previous';
-    prevButton.onclick = () => loadReviews(currentPage - 1);
+    prevButton.onclick = () => loadReviews(currentPage - 1,query,sort);
     paginationContainer.appendChild(prevButton);
   }
 
@@ -128,29 +129,33 @@ function updatePagination(currentPage, totalPages) {
     const pageButton = document.createElement('button');
     pageButton.innerText = i + 1;
     pageButton.className = currentPage === i ? 'btn btn-active' : 'btn';
-    pageButton.onclick = () => loadReviews(i);
+    pageButton.onclick = () => loadReviews(i,query,sort);
     paginationContainer.appendChild(pageButton);
   }
 
   if (currentPage < totalPages - 1) {
     const nextButton = document.createElement('button');
     nextButton.innerText = 'Next';
-    nextButton.onclick = () => loadReviews(currentPage + 1);
+    nextButton.onclick = () => loadReviews(currentPage + 1,query,sort);
     paginationContainer.appendChild(nextButton);
   }
 }
 
 
-function setInitialRating(value) {
+function setInitialRating() {
   const reviews = document.querySelectorAll('.review'); // 모든 리뷰 컨테이너 선택
   reviews.forEach(review => {
-    const grade = parseFloat(review.querySelector('.shelfGrade').value); // 각 리뷰의 평점 값을 가져옴
-    const ratingInputs = review.querySelectorAll(`input[type="radio"][data-rating="${grade}"]`); // 해당 평점과 일치하는 라디오 버튼 선택
-    if (ratingInputs.length > 0) {
-      ratingInputs[0].checked = true; // 해당 라디오 버튼을 체크 상태로 설정
-    }
+    const gradeInput = review.querySelector('.shelfGrade'); // 각 리뷰의 평점 입력 필드 선택
+    const grade = parseFloat(gradeInput.value);
+    console.log(gradeInput);
+    console.log(grade);
+      const ratingInputs = review.querySelectorAll(`input[type="radio"][data-rating="${grade}"]`); // 해당 평점과 일치하는 라디오 버튼 선택
+      if (ratingInputs.length > 0) {
+        ratingInputs[0].checked = true; // 해당 라디오 버튼을 체크 상태로 설정
+      }
   });
 }
+
 
 function setInitialLike() {
   const reviews = document.querySelectorAll('.review'); // 모든 리뷰 컨테이너 선택
@@ -165,17 +170,27 @@ function setInitialLike() {
 }
 
 document.addEventListener("DOMContentLoaded", function () {
-  loadReviews(0);
+  loadReviews(0,"","최신순");
 });
 
 function toggleFill(element, fillClass) {
   const svg = element.querySelector('svg');
-  if (svg.classList.contains(fillClass)) {
-    svg.classList.remove(fillClass);  // SVG에서 fillClass 제거
-    svg.setAttribute('fill', 'none'); // fill 속성을 none으로 설정
-  } else {
-    svg.classList.add(fillClass);     // fillClass 추가
-    svg.removeAttribute('fill');      // fill 속성 제거
+
+  // 'fill-current' 클래스를 처리
+  if (fillClass === 'fill-current') {
+    if (!svg.classList.contains('fill-current')) {
+      svg.classList.add('fill-current');     // 'fill-current' 클래스 추가
+      svg.classList.remove('fill-none');     // 'fill-none' 클래스 제거
+      svg.style.fill = 'currentColor';       // fill 속성을 'currentColor'로 설정
+    }
+  }
+  // 'fill-none' 클래스를 처리
+  else if (fillClass === 'fill-none') {
+    if (!svg.classList.contains('fill-none')) {
+      svg.classList.add('fill-none');        // 'fill-none' 클래스 추가
+      svg.classList.remove('fill-current');  // 'fill-current' 클래스 제거
+      svg.style.fill = 'none';               // fill 속성을 'none'으로 설정
+    }
   }
 }
 
@@ -195,12 +210,11 @@ function revealSpoiler(button, reviewId) {
 }
 
 function clickLike(button, reviewId) {
-
   fetch(`/like/${reviewId}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer your-token-here'  // 실제 토큰으로 교체 필요
+      'Authorization': 'Bearer your-token-here'  // 토큰 교체
     },
     body: JSON.stringify({ like: true })
   })
@@ -214,20 +228,30 @@ function clickLike(button, reviewId) {
             throw new Error('Network response was not ok');
           }
         }
+
         return response.json();
       })
       .then(data => {
-        // 응답에 따라 '좋아요' 상태를 업데이트
+        // 좋아요 상태 및 수 업데이트
+        const likeText = data.likesCount >= 2 ? 'Likes' : 'Like';
+        button.querySelector('span').textContent = `${data.likesCount} ${likeText}`;
         if (data.liked) {
-          toggleFill(button, 'fill-current');  // 좋아요 버튼의 UI 업데이트 함수
           button.classList.add('liked');
+          toggleFill(button, 'fill-current');
         } else {
-          toggleFill(button, 'fill-none');  // 좋아요 버튼의 UI 업데이트 함수
           button.classList.remove('liked');
+          toggleFill(button, 'fill-none');
         }
       })
       .catch(error => {
         console.error('Error:', error);
-        alert(error.message);  // 사용자에게 오류 메시지 표시
-      })
+        alert('Error: ' + error.message);
+      });
 }
+
+function searchReviews() {
+  const query = document.getElementById('searchQuery').value;
+  const sort = document.getElementById('review_sort').value; // 정렬 값 추출
+  loadReviews(0, query,sort);  // 페이지 로딩 함수에 검색어 파라미터 추가
+}
+

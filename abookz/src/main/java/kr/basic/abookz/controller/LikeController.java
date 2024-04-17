@@ -37,7 +37,10 @@ public class LikeController {
     }
     Long memberId = principalDetails.getMember().getId();
     boolean liked = likeService.toggleLike(reviewId, memberId);  // Like 서비스에서 좋아요 상태 토글
-    Map<String, Boolean> response = Collections.singletonMap("liked", liked);
+    int likesCount = likeService.findAllByReview_Id(reviewId).size();
+    Map<String, Object> response = new HashMap<>();
+    response.put("liked", liked);
+    response.put("likesCount", likesCount);  // 좋아요 총 수 응답에 추가
     return ResponseEntity.ok(response);
   }
 
