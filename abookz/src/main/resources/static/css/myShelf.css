@@ -2,7 +2,8 @@ body{
 margin: 0 auto;
 }
 .shelf_container {
-    width: 100%;
+    width: 1280px;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
 }
@@ -109,6 +110,7 @@ margin: 0 auto;
     animation-duration: 0.4s;
     z-index: 9999;
 }
+
 .modal_title{
     font-size: 14px;
     font-weight: bold;
@@ -125,9 +127,19 @@ margin: 0 auto;
 }
 
 #progress-bar {
-    height: 20px; /* 선의 높이를 설정하세요 */
+    height: 20px;
     position: relative;
     background-color: white;
+}
+.progressWrap-bar {
+    height: 20px;
+    position: relative;
+    background-color: lightgray;
+}
+.progressWrap {
+    height: 100%;
+    background-color: green;
+    width: 0;
 }
 
 .startPage {
