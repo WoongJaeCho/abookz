@@ -13,4 +13,5 @@ public enum TagEnum {
   TagEnum(String korean) {
     this.korean = korean;
   }
+
 }

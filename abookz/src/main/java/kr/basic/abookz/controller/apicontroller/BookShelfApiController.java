@@ -5,6 +5,7 @@ import kr.basic.abookz.config.auth.PrincipalDetails;
 import kr.basic.abookz.dto.BookDTO;
 import kr.basic.abookz.dto.BookShelfDTO;
 import kr.basic.abookz.dto.MemberDTO;
+import kr.basic.abookz.entity.book.CategoryEnum;
 import kr.basic.abookz.service.AladinService;
 import kr.basic.abookz.service.BookService;
 import kr.basic.abookz.service.BookShelfService;
@@ -45,10 +46,6 @@ public class BookShelfApiController {
                              @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
         Long id = principalDetails.getMember().getId();
         String data = null;
-        if (id == null) {
-            data = "로그인부터해주세요";
-            return data;
-        }
         MemberDTO memberDTO = memberService.findById(id);
         BookDTO aladinGetBook = aladinService.getOneBookDTO(book);
         BookShelfDTO bookShelfDTO = BookShelfDTO.builder()
@@ -59,21 +56,23 @@ public class BookShelfApiController {
         if (getValue.equals("저장")) {
             data = aladinGetBook.getTitle() + "내 서재에 등록이 완료되었습니다";
             return data;
+        }else if(getValue.equals("실패")){
+            data = "이미 등록되어있습니다";
+            return data;
         }
-        data = "이미 등록되어있습니다";
-        return data;
+        data = "로그인부터 해주세요";
+        return  data;
     }
     @PostMapping("/readingUpdate")
     public ResponseEntity<Object> readingUpdate(@RequestBody BookShelfDTO jsonData) {
-        LocalDateTime now = LocalDateTime.now();
-        System.out.println(now);
-        if(jsonData.getTag() != null) {
+        System.out.println("jsonData.toString() = " + jsonData.toString());
+        if(jsonData.getTag() != null && jsonData.getTag().toString() != null) {
             BookShelfDTO bookShelfDTO =
                     BookShelfDTO.builder()
                             .id(jsonData.getId())
                             .tag(jsonData.getTag())
-                            .startDate(now).build();
-            bookShelfService.bookShelfUpdate(bookShelfDTO);
+                            .build();
+            bookShelfService.bookShelfUpdateTag(bookShelfDTO);
         }else{
             BookShelfDTO bookShelfDTO = BookShelfDTO
                     .builder()
@@ -82,7 +81,7 @@ public class BookShelfApiController {
                     .targetDate(jsonData.getTargetDate())
                     .currentPage(jsonData.getCurrentPage())
                     .build();
-            bookShelfService.bookShelfUpdate(bookShelfDTO);
+            bookShelfService.bookShelfUpdateDate(bookShelfDTO);
         }
         HttpHeaders headers = new HttpHeaders();
         headers.setLocation(URI.create("/myshelf"));

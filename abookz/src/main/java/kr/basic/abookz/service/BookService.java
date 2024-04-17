@@ -22,13 +22,14 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional
 public class BookService {
 
     private final BookRepository bookrepository;
     private final ModelMapper mapper;
     @PersistenceContext
     private EntityManager entityManager;
-    @Transactional
+
     public BookDTO insertBook(BookDTO bookDTO){
 
             BookEntity  saveBook=mapDTOToEntity(bookDTO);
@@ -43,6 +44,10 @@ public class BookService {
            return bookDTO;
     }
 
+    public List<BookDTO> findAllByIdOrderByIdDesc(Long id){
+        List<BookEntity> entities = bookrepository.findAllByIdOrderByIdDesc(id) ;
+        return entities.stream().map(this::mapEntityToDTO).collect(Collectors.toList());
+    }
     public List<BookDTO> findAllByDTOId(Long id){
         List<BookEntity> entities =bookrepository.findAllById(id);
         return entities.stream()

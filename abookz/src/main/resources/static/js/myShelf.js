@@ -7,6 +7,7 @@ var updateButtons =  document.getElementsByClassName("shelf_myShelf_update");
 var deleteButtons =  document.getElementsByClassName("shelf_myShelf_delete");
 let modal = document.getElementById("myModal");
 let modalContent = document.getElementById("modal_content");
+let isPopupCheck=  false;
 function onRadioChange(popup, selectedValue) {
     let value = popup.getAttribute('data-value');
     console.log(value +"value");
@@ -70,6 +71,7 @@ function deleteInput(deleteButton) {
         .catch(error => {
             console.error('오류 발생:', error);
         });
+    isPopupCheck = false;
 }
 
 for (var i = 0; i < readChange.length; i++) {
@@ -79,7 +81,11 @@ for (var i = 0; i < readChange.length; i++) {
     let endDate = endDates[i];
     let deleteButton = deleteButtons[i];
     let  updateButton = updateButtons[i];
+    console.log(popup);
     element.addEventListener("click", function (event) {
+        if(isPopupCheck){
+            return;
+        }
         var x = event.clientX; // 클릭한 위치의 x 좌표
         var y = event.clientY; // 클릭한 위치의 y 좌표
 
@@ -91,7 +97,11 @@ for (var i = 0; i < readChange.length; i++) {
         let radiosInPopup = popup.querySelectorAll('input[type="radio"][name="stats"]');
         radiosInPopup.forEach(function(radio) {
             radio.addEventListener('change', function() {
+                if(isPopupCheck){
+                    return;
+                }
                 if (this.checked) {
+                    isPopupCheck = true;
                     onRadioChange(popup, this.value);
                 }
             });

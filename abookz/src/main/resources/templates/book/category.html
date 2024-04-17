@@ -1,49 +1,52 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
     <head th:replace="~{fragments/head :: head}">
     <meta charset="UTF-8">
     <title>Title</title>
 </head>
-<body>
-<div th:replace="~{fragments/header :: header}" /><br>
-<div id="shelf_container" class="m-auto">
+    <body>
+    <div th:replace="~{fragments/header :: header}" /><br>
+
+    <div id="shelf_container" class="m-auto">
         <div id="shelf_center">
-            <div class="card lg:card-side bg-base-100 shadow-xl flex justify-center mt-2 mb-2 w-[900px] h-[300px] " th:each="book :${books}">
+            <div class="card lg:card-side bg-base-100 shadow-xl flex justify-center mt-2 mb-2 w-[900px] h-[300px]" th:each="book :${books}">
                 <figure class="image-full"><a th:href="@{'/content/' + ${book.ISBN13}}"><img class="image-full" th:src="${book.cover}" alt="category"/></a></figure>
-                <div class="card-body w-[700px]" >
-                   <a th:href="@{'/content/' + ${book.ISBN13}}">
-                       <p class="text-lg">제목: <span th:text="${#strings.length(book.title) > 30 ? #strings.substring(book.title, 0, 30) + '...' : book.title}">제목</span></p></a>
-                    <p  class="text-sm">작가 : <span th:text="${#strings.length(book.author) > 30 ? #strings.substring(book.author, 0, 30) + '...' : book.author}">작가</span></p>
+                <input class="getIsbn13" type="hidden" th:attr="value=${book.ISBN13}"/>
+                <div class="card-body w-[700px]">
+                    <a th:href="@{'/content/' + ${book.ISBN13}}">
+                        <p class="text-lg">제목: <span th:text="${#strings.length(book.title) > 30 ? #strings.substring(book.title, 0, 30) + '...' : book.title}">제목</span></p>
+                    </a>
+                    <p class="text-sm">작가 : <span th:text="${#strings.length(book.author) > 30 ? #strings.substring(book.author, 0, 30) + '...' : book.author}">작가</span></p>
                     <p class="text-sm">
                         <span th:utext="${#strings.replace(book.description, '\n', '<br/>')}"></span>
                     </p>
                     <div class="card-actions justify-end">
-    <button class="btn btn-primary"  >서재담기</button>
+                        <div class="bookCategoryBtn">
+                            <button class="btn btn-primary">서재 등록</button>
+                        </div>
                     </div>
                 </div>
             </div>
+        </div>
+        <script src="/js/category.js"></script>
+    </div>
 
-            <div class="pagingQueryDiv flex justify-center" th:if="${categoryCheck}">
-                    <div class="pagingQuery" th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
-                        <a th:href="@{/category/{category}(category=${category}, page=${pageNumber})}">
-                            <span th:text="${pageNumber + 1}"></span>
-                        </a>
-                    </div>
-            </div>
-                <div class="pagingQueryDiv flex justify-center" th:unless="${categoryCheck}">
-                    <div class="pagingQuery" th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
-                        <a th:href="@{/bestSeller/{type}(type=${type}, page=${pageNumber})}">
-                            <span th:text="${pageNumber + 1}"></span>
-                        </a>
-                    </div>
-
-            </div>
+    <div class="pagingQueryDiv flex justify-center" th:if="${categoryCheck}">
+        <div class="pagingQuery" th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
+            <a th:href="@{/category/{category}(category=${category}, page=${pageNumber})}">
+                <span th:text="${pageNumber + 1}"></span>
+            </a>
         </div>
     </div>
-</div>
+    <div class="pagingQueryDiv flex justify-center" th:unless="${categoryCheck}">
+        <div class="pagingQuery" th:each="pageNumber : ${#numbers.sequence(0, totalPages - 1)}">
+            <a th:href="@{/bestSeller/{type}(type=${type}, page=${pageNumber})}">
+                <span th:text="${pageNumber + 1}"></span>
+            </a>
+        </div>
+    </div>
 
-<div id="searchResults"></div>
-<script defer src="/js/index.js"></script>
-</body>
+    <div id="searchResults"></div>
+    <script defer src="/js/index.js"></script>
+    </body>
 </html>
