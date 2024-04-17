@@ -73,8 +73,8 @@ public class ReviewService {
         return reviewEntity;
     }
 
-    public Page<ReviewEntity> getReviewsByBookId(Long bookId, Pageable pageable) {
-        return reviewRepository.findByBookShelf_Book_Id(bookId,pageable);
+    public Page<ReviewEntity> getReviewsByISBN13(String ISBN13, Pageable pageable) {
+        return reviewRepository.findByBookISBN13(ISBN13,pageable);
     }
 
   public Page<ReviewEntity> findAll(Pageable pageable) {

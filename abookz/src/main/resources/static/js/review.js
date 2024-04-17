@@ -6,21 +6,26 @@ document.addEventListener('DOMContentLoaded', function () {
   setInitialRating(initialRatingValue);
 
   // 별점 클릭 이벤트 리스너 설정
-  const ratings = document.querySelectorAll('.shelf-grade');
-  ratings.forEach(function (rating) {
-    rating.addEventListener('click', function () {
+  const shelfRatingContainer = document.querySelector('.shelf-rating');
+  const ratingInputs = shelfRatingContainer.querySelectorAll('input[type="radio"]');
+  ratingInputs.forEach(function (input) {
+    input.addEventListener('click', function () {
       const ratingValue = this.getAttribute('data-rating');
       submitRating(ratingValue);
     });
   });
 });
 
-// 초기 선택된 별점 설정
 function setInitialRating(value) {
-  const ratingInputs = document.querySelectorAll('.shelf-grade');
+  const shelfRatingContainer = document.querySelector('.shelf-rating');
+  const ratingInputs = shelfRatingContainer.querySelectorAll('input[type="radio"]');  // 모든 라디오 버튼을 선택
+  const hiddenRatingInput = shelfRatingContainer.querySelector('.rating-hidden');
+
   ratingInputs.forEach(function(input) {
+    // data-rating 속성이 주어진 value와 일치하는지 확인
     if (input.getAttribute('data-rating') === value) {
-      input.checked = true;
+      hiddenRatingInput.checked = false;
+      input.checked = true;  // 조건을 만족하는 라디오 버튼을 체크
     }
   });
 }

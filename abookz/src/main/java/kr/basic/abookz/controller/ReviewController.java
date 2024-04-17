@@ -88,9 +88,9 @@ public class ReviewController {
   }
 
   @GetMapping("/reviews")
-  public ResponseEntity<Map<String, Object>> getReviewsByBookId(
+  public ResponseEntity<Map<String, Object>> getReviews(
       Model model,@AuthenticationPrincipal PrincipalDetails principalDetails,
-      @RequestParam() String bookId ,
+      @RequestParam() String ISBN13,
       @RequestParam(defaultValue = "0") int pageNumber,
       @RequestParam(defaultValue = "5") int pageSize,
       @RequestParam(defaultValue = "최신순") String sort) {
@@ -103,7 +103,7 @@ public class ReviewController {
       case "인기순" -> pageRequest = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "reviewGrade"));
     }
 
-    Page<ReviewEntity> page = reviewService.getReviewsByBookId(Long.valueOf(bookId), pageRequest);
+    Page<ReviewEntity> page = reviewService.getReviewsByISBN13(ISBN13, pageRequest);
 
 
     Page<ReviewDTO> dtoPage = page.map(r -> new ReviewDTO(

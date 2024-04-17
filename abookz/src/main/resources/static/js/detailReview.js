@@ -1,7 +1,7 @@
 function loadReviews(pageNumber) {
-  const bookId = document.getElementById('bookId').value; // Fetch the book ID from the hidden input
+  const ISBN13 = document.getElementById('ISBN13').value; // Fetch the book ID from the hidden input
 
-  fetch(`/review/reviews?pageNumber=${pageNumber}&bookId=${bookId}`, {
+  fetch(`/review/reviews?pageNumber=${pageNumber}&ISBN13=${ISBN13}`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
