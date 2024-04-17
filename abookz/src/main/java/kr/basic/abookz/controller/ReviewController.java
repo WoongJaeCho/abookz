@@ -74,18 +74,24 @@ public class ReviewController {
   }
 
   @PostMapping("/rating")
-  public ResponseEntity<String> submitRating(@RequestBody RatingDTO ratingDTO,
-                                             @AuthenticationPrincipal PrincipalDetails principalDetails) {
+  @ResponseBody
+  public ResponseEntity<?> submitRating(@RequestBody RatingDTO ratingDTO,
+                                        @AuthenticationPrincipal PrincipalDetails principalDetails) {
     if (principalDetails == null) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED)
+          .body("{\"message\":\"로그인이 필요합니다.\"}");
     }
-    Long currentMemberId = principalDetails.getMember().getId();
-    System.out.println("ratingDTO = " + ratingDTO);
-    BookShelfDTO shelf = shelfService.findByIdAndBookId(ratingDTO.getBookShelfId(), ratingDTO.getBookId());
-    shelf.setBookShelfGrade(ratingDTO.getRating());
-    shelfService.updateGrade(shelf);
-    System.out.println("shelf = " + shelf);
-    return ResponseEntity.ok().body("{\"message\":\"별점이 성공적으로 등록되었습니다.\"}");
+
+    try {
+      Long currentMemberId = principalDetails.getMember().getId();
+      BookShelfDTO shelf = shelfService.findByIdAndBookId(ratingDTO.getBookShelfId(), ratingDTO.getBookId());
+      shelf.setBookShelfGrade(ratingDTO.getRating());
+      shelfService.updateGrade(shelf);
+      return ResponseEntity.ok("{\"message\":\"별점이 성공적으로 저장되었습니다.\"}");
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+          .body("{\"message\":\"서버 오류가 발생했습니다. 다시 시도해주세요.\"}");
+    }
   }
 
   @GetMapping("/reviews")
