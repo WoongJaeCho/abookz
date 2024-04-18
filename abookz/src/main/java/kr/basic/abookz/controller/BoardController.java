@@ -32,7 +32,7 @@ public class BoardController {
   @GetMapping("/save")
   public String saveForm(@AuthenticationPrincipal PrincipalDetails principalDetails, RedirectAttributes redirectAttributes, Model model){
     if(!logincheck(principalDetails)){
-      return "redirect:member/loginForm";
+      return "redirect:/member/loginForm";
     }
     model.addAttribute("writer", principalDetails.getMember().getName());
     return "board/save";
@@ -54,12 +54,13 @@ public class BoardController {
 //    return "board/list";
 //  }
   @GetMapping("/{id}")
-  public String findById(@PathVariable Long id, Model model, @PageableDefault(page = 1) Pageable pageable){
+  public String findById(@PathVariable Long id, Model model, @PageableDefault(page = 1) Pageable pageable, @AuthenticationPrincipal PrincipalDetails principalDetails){
     // 해당 게시글의 조회수를 하나 올리고 게시글 데이터 가져와서 detail.html에 출력
     boardService.updateHits(id);
     BoardDTO boardDTO = boardService.findById(id);
     model.addAttribute("board", boardDTO);
     model.addAttribute("page", pageable.getPageNumber());
+    model.addAttribute("writer", principalDetails.getMember().getName());
     return "board/detail";
   }
 
@@ -67,16 +68,18 @@ public class BoardController {
   @GetMapping("/update/{id}")
   public String updateForm(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long id, Model model){
     if(!logincheck(principalDetails)){
-      return "redirect:member/loginForm";
+      return "redirect:/member/loginForm";
     }
     BoardDTO boardDTO = boardService.findById(id);
     model.addAttribute("boardUpdate", boardDTO);
     return "board/update";
   }
   @PostMapping("/update")
-  public String update(@ModelAttribute BoardDTO boardDTO, Model model){
+  public String update(@ModelAttribute BoardDTO boardDTO, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails){
+    System.out.println(boardDTO);
     BoardDTO board = boardService.update(boardDTO);
     model.addAttribute("board", board);
+    model.addAttribute("writer", principalDetails.getMember().getName());
     return "board/detail";
   }
 
