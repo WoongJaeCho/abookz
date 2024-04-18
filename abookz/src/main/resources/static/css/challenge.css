@@ -78,8 +78,10 @@
 }
 
 #listWrap #booklist{
-    /*width: 170px;*/
+    width: 170px;
     margin: 10px;
+    display: flex;
+    flex-direction: column;
 }
 #listWrap #booklist img{
     padding: 10px;

@@ -1,4 +1,3 @@
-
 var resultsDiv = document.getElementById('searchResults');
 
 function searchBooks() {
@@ -68,7 +67,7 @@ function createPaginationControls(totalPages, currentPage, query) {
     pageButton.className = "pagingQuery";
     pageButton.textContent = i + 1;
     // 클로저 문제를 해결하기 위해 각 버튼에 대한 클로저 생성
-    (function(page) {
+    (function (page) {
       pageButton.onclick = function () {
         fetchBooks(query, page, 10);
       };
@@ -117,13 +116,13 @@ function createBookElement(book, resultsDiv) {
   var spanDescription = document.createElement("span");
   spanDescription.innerHTML = book.description.replace(/\n/g, '<br/>');
   var divButton = document.createElement('div');
-  divButton.className='card-actions justify-end';
+  divButton.className = 'card-actions justify-end';
   var buttonMyShelf = document.createElement('button');
-  buttonMyShelf.className ='btn btn-primary';
-  buttonMyShelf.textContent='서재 담기';
-  buttonMyShelf.addEventListener('click', function (){
+  buttonMyShelf.className = 'btn btn-primary';
+  buttonMyShelf.textContent = '서재 담기';
+  buttonMyShelf.addEventListener('click', function () {
     var myShelfBook = book.isbn13
-    console.log(myShelfBook+" myShelfBook");
+    console.log(myShelfBook + " myShelfBook");
     wantToRead(myShelfBook)
   })
   resultsDiv.appendChild(divElement);
@@ -145,27 +144,29 @@ function createBookElement(book, resultsDiv) {
 
 
 
-function wantToRead (isbn){
+function wantToRead(isbn) {
   var isbn13 = isbn;
-  fetch('/want?book=' + isbn13,{
-    method: 'POST',
-    headers: {
-      'Content-Type' : 'application/json'
-    },
-    body: JSON.stringify({isbn13 : isbn13})
-  })
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Network response was not ok');
-        }
-        return response.text();
+  fetch('/want?book=' + isbn13, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        isbn13: isbn13
       })
-      .then(data => {
-        alert(data);
-      })
-      .catch(error => {
-        console.error('There was a problem with the fetch operation:', error);
-        alert("이미 등록 되어있습니다");
+    })
+    .then(response => {
+      if (!response.ok) {
+        throw new Error('Network response was not ok');
+      }
+      return response.text();
+    })
+    .then(data => {
+      alert(data);
+    })
+    .catch(error => {
+      console.error('There was a problem with the fetch operation:', error);
+      alert("이미 등록 되어있습니다");
 
-      });
+    });
 }

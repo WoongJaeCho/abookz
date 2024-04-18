@@ -41,8 +41,8 @@ public class BookShelfEntity {
   private int dailyPage;//하루목표 페이지
   //50page
   private int currentPage; //현재읽은페이지
-
-  private Double bookShelfGrade;//평점(1,2,3,4,5) 별표시
+  @Column(name = "BOOK_SHELF_GRADE", nullable = false, columnDefinition = "Double default 0.0")
+  private Double bookShelfGrade;
 
   @Enumerated(EnumType.STRING)
   @Column(columnDefinition = "WANT_TO_READ")
@@ -54,6 +54,7 @@ public class BookShelfEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "BOOK_ID", foreignKey = @ForeignKey(name = "BOOKSHELF_IBFK_2"))
   private BookEntity book;
+
 
 @OneToMany(mappedBy = "bookShelf", orphanRemoval = true)
 private List<MemoEntity> childListMemo = new ArrayList<>();

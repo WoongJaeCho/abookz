@@ -8,7 +8,7 @@
 <input type="hidden" id="shelfGrade" th:value="${shelf.bookShelfGrade}" />
 <div th:replace="~{fragments/header :: header}" /><br>
 
-    <div class="review-container p-4">
+    <div class="review-container  p-4">
         <div class="flex flex-col m-3 shadow-lg">
 
             <div class="flex justify-center items-center p-2">
@@ -18,18 +18,18 @@
 
                     <div class="text-center" th:text="|${book.author} (${book.itemPage})p|">by Bernard Werber (30p)</div>
                     <div class="flex justify-center">
-                        <div class="rating rating-lg rating-half">
-<!--                            <input type="radio" name="rating-10" class="rating-hidden" />-->
-                            <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-1" data-rating="0.5"/>
-                            <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-2" data-rating="1.0"/>
-                            <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-1" data-rating="1.5"/>
-                            <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-2" data-rating="2.0"/>
-                            <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-1" data-rating="2.5"/>
-                            <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-2" data-rating="3.0" />
-                            <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-1" data-rating="3.5" />
-                            <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-2" data-rating="4.0" />
-                            <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-1" data-rating="4.5" />
-                            <input type="radio" name="rating-10" class="shelf-grade bg-yellow-500 mask mask-star-2 mask-half-2" data-rating="5.0" />
+                        <div class="rating rating-lg rating-half shelf-rating">
+                            <input type="radio" name="rating-10" class="rating-hidden"  checked/>
+                            <input type="radio" name="rating-10" class=" bg-yellow-500 mask mask-star-2 mask-half-1" data-rating="0.5"/>
+                            <input type="radio" name="rating-10" class=" bg-yellow-500 mask mask-star-2 mask-half-2" data-rating="1.0"/>
+                            <input type="radio" name="rating-10" class=" bg-yellow-500 mask mask-star-2 mask-half-1" data-rating="1.5"/>
+                            <input type="radio" name="rating-10" class=" bg-yellow-500 mask mask-star-2 mask-half-2" data-rating="2.0"/>
+                            <input type="radio" name="rating-10" class=" bg-yellow-500 mask mask-star-2 mask-half-1" data-rating="2.5"/>
+                            <input type="radio" name="rating-10" class=" bg-yellow-500 mask mask-star-2 mask-half-2" data-rating="3.0" />
+                            <input type="radio" name="rating-10" class=" bg-yellow-500 mask mask-star-2 mask-half-1" data-rating="3.5" />
+                            <input type="radio" name="rating-10" class=" bg-yellow-500 mask mask-star-2 mask-half-2" data-rating="4.0" />
+                            <input type="radio" name="rating-10" class=" bg-yellow-500 mask mask-star-2 mask-half-1" data-rating="4.5" />
+                            <input type="radio" name="rating-10" class=" bg-yellow-500 mask mask-star-2 mask-half-2" data-rating="5.0" />
                         </div>
                     </div>
 
@@ -46,7 +46,7 @@
 
                         <div class="form-control mt-4">
                             <label class="cursor-pointer">
-                                <input type="checkbox" name="isSpoilerActive" checked="checked" class="checkbox mr-2" />
+                                <input type="checkbox" name="isSpoilerActive"  class="checkbox mr-2" />
                                 <span class="label-text">스포일러 방지를 하시겠습니까?</span>
                             </label>
                         </div>
