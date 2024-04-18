@@ -45,14 +45,13 @@ public class BookShelfController {
        //밑에는 각 사이즈 가져오기 내서재들 옆 숫자표시 몇권있는지
         int read = (int) myShelf.stream()
                 .map(item -> item.getTag())
-                .filter(tag -> tag != null && tag.getKorean().equals("읽은책"))
-                .count();
+                .filter(tag -> tag != null && tag.getKorean().equals("읽은 책")).count();
         int want = (int) myShelf.stream()
                 .map(BookShelfDTO::getTag)
                 .filter(tag -> tag == null || tag == TagEnum.READ)
                 .count();
         int current=(int)myShelf.stream().map(item -> item.getTag())
-                .filter(tag -> tag != null && tag.getKorean().equals("읽고있는책")).count();
+                .filter(tag -> tag != null && tag.getKorean().equals("읽고있는 책")).count();
 
 
         List<BookDTO> books = myShelf.stream()

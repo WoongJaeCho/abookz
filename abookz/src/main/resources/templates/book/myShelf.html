@@ -45,13 +45,13 @@
             <th class="shelf_th text-center">이미지</th>
             <th class="shelf_th text-center">제목</th>
             <th class="shelf_th text-center">작가</th>
-            <th class="shelf_th text-center">진행량</th>
-            <th class="shelf_th text-center">서재</th>
+            <th class="shelf_th text-center w-28">진행량</th>
+            <th class="shelf_th text-center w-28">서재</th>
             <th class="shelf_th text-center w-28">시작일</th>
             <th class="shelf_th text-center w-28">완독일</th>
             <th class="shelf_th text-center">상세보기</th>
             <th class="shelf_th text-center">리뷰작성</th>
-            <th class="shelf_th text-center">삭제하기</th>
+            <th class="shelf_th text-center">삭제</th>
             </tr>
         </thead>
         <tbody>
@@ -60,14 +60,14 @@
             <td class="shelf_tdimg text-center">
                 <img class="cover_img " th:src="${book.cover}" alt="책이미지"></td>
             <td class="shelf_title text-center">
-                <a th:href="@{'/content/' + ${book.getISBN13()}}" th:text="${#strings.length(book.title) > 15 ? #strings.substring(book.title, 0, 15) + '...' :
+                <a th:href="@{'/content/' + ${book.getISBN13()}}" th:text="${#strings.length(book.title) > 13 ? #strings.substring(book.title, 0, 13) + '...' :
             (#strings.contains(book.title, '(') ? #strings.substringBefore(book.title, '(') :
             (#strings.contains(book.title, '-') ? #strings.substringBefore(book.title, '-') : book.title))}">제목</a>
             </td>
             <td class="shelf_author text-center" th:text="${#strings.length(book.author) > 10 ? #strings.substring(book.author, 0, 10) + '...' :
                                  (#strings.contains(book.author, '(') ? #strings.substringBefore(book.author, '(') : book.author)}">작가</td>
-            <td class="shelf_page text-center" th:text="${ (shelf[bookStat.index].currentPage == null ? '0' : shelf[bookStat.index].getCurrentPage()) + ' / ' + book.itemPage}">페이지</td>
-            <td class="shelf_myShelf_read text-center" th:text="${shelf[bookStat.index].tag == null ? '읽고싶은 책' : shelf[bookStat.index].tag.getKorean()}">상태</td>
+            <td class="shelf_page text-center w-28" th:text="${ (shelf[bookStat.index].currentPage == null ? '0' : shelf[bookStat.index].getCurrentPage()) + ' / ' + book.itemPage}">페이지</td>
+            <td class="shelf_myShelf_read text-center w-28" th:text="${shelf[bookStat.index].tag == null ? '읽고싶은 책' : shelf[bookStat.index].tag.getKorean()}">상태</td>
             <div class="popup" th:attr="data-value=${shelf[bookStat.index].getId()}">
                 <input type="radio" id="value1" name="stats" value="READ">
                 <label for="value1">읽은 책</label><br>
@@ -88,8 +88,8 @@
         </tbody>
     </table>
     </div>
-    <div id="listWrap">
-        <div id="booklist" class="card card-side bg-base-100 shadow-xl w-3/4" th:each=" book: ${books}">
+    <div id="myShelfListWrap">
+        <div id="booklist" class="card card-side bg-base-100 shadow-xl w-3/4 mb-2  mx-auto" th:each=" book: ${books}">
             <input type="hidden" class="wrap_popup" th:attr="data-value=${shelf[bookStat.index].getId()}"/>
             <figure><img class="w-40" th:src="${book.cover}" alt="cover"/></figure>
             <div class="card-body">

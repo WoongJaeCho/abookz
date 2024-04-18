@@ -45,6 +45,7 @@ public class BookShelfEntity {
   private Double bookShelfGrade;//평점(1,2,3,4,5) 별표시
 
   @Enumerated(EnumType.STRING)
+  @Column(columnDefinition = "WANT_TO_READ")
   private TagEnum tag; // READ,WANT_TO_READ,CURRENTLY_READING
 
   @ManyToOne(fetch = FetchType.LAZY)

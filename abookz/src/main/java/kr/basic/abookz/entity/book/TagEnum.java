@@ -4,9 +4,9 @@ import lombok.Getter;
 
 @Getter
 public enum TagEnum {
-  READ("읽은책"),
-  WANT_TO_READ("읽고싶은책"),
-  CURRENTLY_READING("읽고있는책");
+  READ("읽은 책"),
+  WANT_TO_READ("읽고싶은 책"),
+  CURRENTLY_READING("읽고있는 책");
 
   private final String korean;
   //저장은 영어로 되있지만 get으로 한국어를 읽어옴

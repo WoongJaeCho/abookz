@@ -10,8 +10,7 @@ let modalContent = document.getElementById("modal_content");
 let isPopupCheck=  false;
 function onRadioChange(popup, selectedValue) {
     let value = popup.getAttribute('data-value');
-    console.log(value +"value");
-    console.log(selectedValue);
+
     popup.style.display = 'none';
 
     let jsonData = {
@@ -44,7 +43,6 @@ function onRadioChange(popup, selectedValue) {
 }
 function deleteInput(deleteButton) {
     let value = deleteButton.getAttribute('data-value');
-    console.log(value);
     let jsonData = {
         id : value,
 
@@ -81,7 +79,6 @@ for (var i = 0; i < readChange.length; i++) {
     let endDate = endDates[i];
     let deleteButton = deleteButtons[i];
     let  updateButton = updateButtons[i];
-    console.log(popup);
     element.addEventListener("click", function (event) {
         if(isPopupCheck){
             return;
@@ -108,7 +105,7 @@ for (var i = 0; i < readChange.length; i++) {
     });
     deleteButton.addEventListener("click",() =>{
         if(confirm("정말로 삭제하시겠습니까?")){
-            console.log("진입");
+
             deleteInput(deleteButton);
         }else{
 
@@ -116,7 +113,7 @@ for (var i = 0; i < readChange.length; i++) {
     })
     updateButton.addEventListener("click", function() {
         openModal(modal,popup);
-        console.log("모달 열기 버튼 클릭됨");
+
     });
 
 }
