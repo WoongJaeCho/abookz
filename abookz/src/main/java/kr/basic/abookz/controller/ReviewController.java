@@ -41,7 +41,7 @@ public class ReviewController {
                              @PathVariable("bookId") Long bookId,
                              @AuthenticationPrincipal PrincipalDetails principalDetails) {
     if (principalDetails == null) {
-      return "redirect:member/loginForm";
+      return "/member/loginForm";
     }
     MemberEntity member = principalDetails.getMember();
     BookShelfDTO shelf = shelfService.findByIdAndBookId(bookShelfId, bookId);
@@ -60,7 +60,7 @@ public class ReviewController {
                             @PathVariable("bookId") Long bookId,
                             @AuthenticationPrincipal PrincipalDetails principalDetails) {
     if (principalDetails == null) {
-      return "redirect:member/loginForm";
+      return "/member/loginForm";
     }
     System.out.println("reviewDTO = " + reviewDTO);
     if (reviewService.findByBookShelfId(bookShelfId) == null) {
