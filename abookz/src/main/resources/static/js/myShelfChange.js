@@ -90,8 +90,8 @@ function loadMoreBooks(){
     })
 .then(response => response.json())
         .then(data => {
-            if (data.content.length <= 5) {
-                document.getElementById('moreSlice').style.display = 'none';  // 다음 페이지가 없다면 버튼 숨기기
+            if (data.content.last) {
+                document.getElementById('moreSlice').style.display = 'none';
             }
             const books = data.content;
             console.log("Loaded books:", books);

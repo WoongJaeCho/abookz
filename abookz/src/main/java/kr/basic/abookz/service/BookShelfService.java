@@ -108,7 +108,7 @@ public class BookShelfService {
                 bookShelf.setEndDate(bookShelfSave.getEndDate());
                 bookShelf.setTag(tagEnum);
                 bookShelf.setBookShelfGrade(bookShelfSave.getBookShelfGrade());
-
+                bookShelf.setCurrentPage(bookShelfSave.getCurrentPage());
                 return "성공";
             }else if(tagEnum == TagEnum.CURRENTLY_READING) {
                 System.out.println("값체크 커런트");
@@ -136,11 +136,8 @@ public class BookShelfService {
         LocalDateTime now = LocalDateTime.now();
         int check =bookShelf.getBook().getItemPage();
         if(bookShelfSave.getCurrentPage() == check) {
-
-            System.out.println("now = " + now);
             bookShelf.setTag(TagEnum.READ);
             bookShelf.setEndDate(now);
-            System.out.println("bookShelf 다 읽은 값 체크= " + bookShelf);
             return "성공";
         }
         bookShelf.setEndDate(bookShelfSave.getEndDate());

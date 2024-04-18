@@ -166,7 +166,7 @@ function wantToRead(isbn) {
     })
     .catch(error => {
       console.error('There was a problem with the fetch operation:', error);
-      alert("이미 등록 되어있습니다");
+      alert("로그인부터 해주세요");
 
     });
 }

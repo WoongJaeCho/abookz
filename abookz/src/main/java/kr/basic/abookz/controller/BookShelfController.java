@@ -67,6 +67,7 @@ public class BookShelfController {
         model.addAttribute("all",myShelf);
         model.addAttribute("shelf",myShelf);
         model.addAttribute("currentPage",page);
+        model.addAttribute("isLastPage", myShelfSlice.isLast());
         model.addAttribute("shelfSlice",myShelfSlice);
         model.addAttribute("books",books);
         return "book/myShelf";
