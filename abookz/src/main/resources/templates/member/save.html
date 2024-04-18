@@ -1,44 +1,58 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="~{fragments/head :: head}">
   <meta charset="UTF-8">
   <title>회원가입</title>
-  <script src="/js/Member/MemberSave.js" type="text/javascript" defer></script>
 </head>
 <body>
-  <div id="header">
-    <div id="title">
-      <h2>회원가입</h2>
+<div th:replace="~{fragments/header :: header}"/><br>
+<div class="container flex justify-center items-center" id="CreateContainer">
+  <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+      <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Create Your Account</h2>
+    </div>
+
+    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+      <form class="space-y-6" action="/member/save" method="POST">
+        <div>
+          <div class="flex items-center justify-between">
+            <label for="logId" class="block text-sm font-medium leading-6 text-gray-900">Id</label>
+            <div class="text-sm">
+              <button class="font-semibold text-indigo-600 hover:text-indigo-500" id="checkId" th:text="중복확인"></button>
+            </div>
+          </div>
+          <div class="mt-2">
+            <input id="logId" name="loginId" type="text" autocomplete="text" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:indent-2">
+          </div>
+        </div>
+
+        <div>
+          <label for="pw" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
+          <div class="mt-2">
+            <input id="pw" name="password" type="password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:indent-2">
+          </div>
+        </div>
+
+        <div>
+          <label for="email" class="block text-sm font-medium leading-6 text-gray-900">Email</label>
+          <div class="mt-2">
+            <input id="email" name="email" type="email" autocomplete="email" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:indent-2">
+          </div>
+        </div>
+
+        <div>
+          <label for="Nickname" class="block text-sm font-medium leading-6 text-gray-900">Nickname</label>
+          <div class="mt-2">
+            <input id="Nickname" name="name" type="text" autocomplete="text" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:indent-2">
+          </div>
+        </div>
+
+        <div>
+          <button onclick="validcheck(form)" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Create Account</button>
+        </div>
+      </form>
     </div>
   </div>
-  <div id="saveForm">
-  <form action="/member/save" method="post">
-    <table border="1">
-      <tr>
-        <td>Id</td>
-        <td><input type="text" name="loginId" id="logId" autofocus required/>
-          <input type="button" value="중복체크" id="checkId" class="btn btn-outline-dark"></td>
-      </tr>
-      <tr>
-        <td>Password</td>
-        <td><input type="password" name="password" id="pw" required></td>
-      </tr>
-      <tr>
-        <td>Email</td>
-        <td><input type="email" name="email" id="email" required></td>
-      </tr>
-      <tr>
-        <td>Nickname</td>
-        <td><input type="text" name="name" id="name" required></td>
-      </tr>
-      <tr>
-        <td colspan="2" id="btns">
-          <input type="button" value="가입" onclick="validcheck(form)">
-          <input type="reset" value="취소">
-        </td>
-      </tr>
-    </table>
-  </form>
-  </div>
+</div>
 </body>
 </html>

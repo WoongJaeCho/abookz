@@ -51,3 +51,7 @@ m
 build.gradle,f\0\f07866736216be0ee2aba49e392191aeae700a35
 _
 /src/main/java/kr/basic/abookz/dto/BoardDTO.java,e\0\e019ad1a4149e90d6c96b2570e8e07b0679e989a
+n
+>src/main/java/kr/basic/abookz/controller/MemberController.java,7\9\79eefc4fd96ebd594e876fba8795a47b43b4e714
+h
+8src/main/java/kr/basic/abookz/config/SecurityConfig.java,5\b\5b1e628e6c5c0849cdba1bdd77ef9e10f0134025

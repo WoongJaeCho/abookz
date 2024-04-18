@@ -1,0 +1,16 @@
+
+¦
+java:S6833"eReplace the "@Controller" annotation by "@RestController" and remove all "@ResponseBody" annotations.(íœ¡ñùÿÿÿÿJ$5cf5dc0f-ed2f-42e0-86f2-43e59239e428
+|
+java:S1126"AReplace this if-then-else statement by a single return statement.(Ï€¨J$3bfb5677-05a8-47d8-8e0a-6bb37a910dff
+ƒ	java:S125."<This block of commented-out lines of code should be removed.(ö—ëÂÿÿÿÿÿ8æŒùõî1J$a64492de-eab5-4d41-830d-939de5840c2a
+f	java:S106<"+Replace this use of System.out by a logger.(¸‘–ýJ$f9199c3e-3da3-4fea-bc77-92dc1d7f87f2
+r	java:S106D"+Replace this use of System.out by a logger.(»«Åûÿÿÿÿ8êŒùõî1J$4a7038fa-f1fa-40ca-8827-f39407384072
+~	java:S125Q"<This block of commented-out lines of code should be removed.(£‰äè8íŒùõî1J$332cc0c3-8963-4bd6-83ca-a287075753d6
+	java:S100Š"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(ãá½¡ùÿÿÿÿJ$0f075fc1-be61-4bf5-a0af-33fef10acecd
+	java:S100"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(é€´‰ùÿÿÿÿJ$28f55080-10eb-4e2f-8f36-dc650abf3f90
+	java:S100š"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.( …€ÉúÿÿÿÿJ$81ddba3c-b1ed-4f6b-b471-106159690e2e
+	java:S100Ÿ"NRename this method name to match the regular expression '^[a-z][a-zA-Z0-9]*$'.(Ñ‘†ØûÿÿÿÿJ$8c1643ba-2799-48d9-8e4f-2cd2d878ecd9
+n	java:S106¢"+Replace this use of System.out by a logger.(¦ð¯¿8úŒùõî1J$1c930295-2314-4c6a-a001-1d2c533c6488
+Ž
+java:S1858¸"L"exception" is already a string, there's no need to call "toString()" on it.(éËéÃÿÿÿÿÿJ$e9e84abc-4dfa-49c0-9524-f16f6725919a

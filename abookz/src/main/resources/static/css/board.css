@@ -1,3 +1,8 @@
+#boardContainer{
+    width: 1280px;
+    height: 100%;
+}
+
 #boardTitle:hover{
     text-decoration: underline;
     color: #333333;

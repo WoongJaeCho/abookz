@@ -71,7 +71,6 @@ function getResult(data){
         alert("이 아이디는 사용 불가능 합니다");
         document.getElementById("logId").value = "";
         document.getElementById("logId").focus();
-        document.getElementById("logId").style.border = "3px red solid";
         check = -1;
     }
 }
