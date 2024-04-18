@@ -77,6 +77,7 @@ public class MemoController {
 
         List<MemoDTO> memos = memoService.findAllbyId(bookshelfId);
 
+        model.addAttribute("bookshelfId",bookshelfId);
         model.addAttribute("memos", memos);
 
         Long memId = principalDetails.getMember().getId();
@@ -117,15 +118,13 @@ public class MemoController {
         return "review/memoOneView";
     }
 
-    @PostMapping("/{curIdx}")
-    @ResponseBody
-    public int getCurIdx(@PathVariable("curIdx") int curIdx) {
-        System.out.println("#####curIdx = " + curIdx);
-        // 여기서 curIdx 값을 가져오는 로직을 구현하고 반환합니다.
-        // 예시로 현재 curIdx 값을 바로 반환하는 것으로 설정했습니다.
+    @GetMapping("/{bookshelfId}/{id}")
+    public String deleteMemo(@PathVariable("id") Long id,@PathVariable("bookshelfId") Long bookshelfId){
+        memoService.delete(id);
 
-        return curIdx;
+        return "redirect:/memo/{bookshelfId}";
     }
+
 }
 
 
