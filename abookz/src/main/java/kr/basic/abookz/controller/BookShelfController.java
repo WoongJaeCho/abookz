@@ -37,7 +37,7 @@ public class BookShelfController {
         Long id = principalDetails.getMember().getId();
         if(id == null) {
             redirectAttributes.addFlashAttribute("fail", "로그인이후 가능합니다");
-            return "/member/loginForm";
+            return "member/loginForm";
         }
         List<BookShelfDTO> myShelf =shelfService.findAllDTOByMemberIdOrderByIdDesc(id);
         Slice<BookShelfDTO> myShelfSlice = shelfService.SliceBookShelfDTO(id,page,size);

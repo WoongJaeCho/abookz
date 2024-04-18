@@ -32,7 +32,7 @@ public class BoardController {
   @GetMapping("/save")
   public String saveForm(@AuthenticationPrincipal PrincipalDetails principalDetails, RedirectAttributes redirectAttributes, Model model){
     if(!logincheck(principalDetails)){
-      return "/member/loginForm";
+      return "member/loginForm";
     }
     model.addAttribute("writer", principalDetails.getMember().getName());
     return "board/save";
@@ -67,7 +67,7 @@ public class BoardController {
   @GetMapping("/update/{id}")
   public String updateForm(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long id, Model model){
     if(!logincheck(principalDetails)){
-      return "/member/loginForm";
+      return "member/loginForm";
     }
     BoardDTO boardDTO = boardService.findById(id);
     model.addAttribute("boardUpdate", boardDTO);
@@ -84,7 +84,7 @@ public class BoardController {
   @GetMapping("/delete/{id}")
   public String deletePost(@AuthenticationPrincipal PrincipalDetails principalDetails ,@PathVariable Long id){
     if(!logincheck(principalDetails)){
-      return "/member/loginForm";
+      return "member/loginForm";
     }
     boardService.delete(id);
     return "redirect:/board/list";
