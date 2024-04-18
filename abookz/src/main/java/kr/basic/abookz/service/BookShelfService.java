@@ -92,6 +92,7 @@ public class BookShelfService {
                 .orElseThrow(() -> new EntityNotFoundException("BookShelf not found with id " + bookShelfDTO.getId()));
         System.out.println("bookShelf = " + bookShelf);
         BookShelfEntity bookShelfSave = mapDTOToEntity(bookShelfDTO);
+        System.out.println("bookShelfSave = " + bookShelfSave);
         BookShelfEntity.BookShelfEntityBuilder builder = BookShelfEntity.builder();
         TagEnum tagEnum =bookShelfDTO.getTag();
         System.out.println("tagEnum = " + tagEnum);
@@ -100,7 +101,7 @@ public class BookShelfService {
                 bookShelfSave = builder.endDate(now).build();
                 bookShelf.setEndDate(bookShelfSave.getEndDate());
                 bookShelf.setTag(tagEnum);
-
+                bookShelf.setBookShelfGrade(bookShelfSave.getBookShelfGrade());
 
                 return "성공";
             }else if(tagEnum == TagEnum.CURRENTLY_READING) {
@@ -108,7 +109,7 @@ public class BookShelfService {
                 bookShelfSave = builder.startDate(now).build();
                 bookShelf.setStartDate(bookShelfSave.getStartDate());
                 bookShelf.setTag(tagEnum);
-
+                bookShelf.setBookShelfGrade(bookShelfSave.getBookShelfGrade());
                 return "성공";
             }
 

@@ -169,7 +169,7 @@ public class AladinService {
                     /*    .categoryName(cate)*/
                         .publisher(publisher)
                         .pubDate(pubDate)
-                        .ISBN(isbn13)
+                        .ISBN13(isbn13)
                         .ISBN(isbn)
                         .cover(cover)
                         .description(description)
