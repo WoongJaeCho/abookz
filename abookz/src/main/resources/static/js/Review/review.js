@@ -52,6 +52,7 @@ function submitRating(ratingValue) {
       .then(data => {
         console.log('Success:', data.message);
         updateRatingFeedback(data.message, true);
+        // updateRatingFeedback('별점 저장에 실패하였습니다. 다시 시도해주세요.', false);//실패 테스트용
       })
       .catch(error => {
         console.error('Error:', error);
