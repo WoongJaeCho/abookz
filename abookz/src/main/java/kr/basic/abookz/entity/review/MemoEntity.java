@@ -5,10 +5,7 @@ import kr.basic.abookz.dto.MemoDTO;
 import kr.basic.abookz.entity.book.BookShelfEntity;
 import kr.basic.abookz.entity.member.MemberEntity;
 import kr.basic.abookz.entity.book.BookEntity;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.LocalDateTime;
 
@@ -18,6 +15,7 @@ import java.time.LocalDateTime;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = {"bookShelf"})
 public class MemoEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,18 +28,6 @@ public class MemoEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "BOOKSHELF_ID",foreignKey = @ForeignKey(name = "MEMO_IBFK_1"))
   private BookShelfEntity bookShelf;
-
-  @Override
-  public String toString() {
-    return "MemoEntity{" +
-            "id=" + id +
-            ", page=" + page +
-            ", quotes='" + quotes + '\'' +
-            ", note='" + note + '\'' +
-            ", createdDate=" + createdDate +
-            ", bookShelf=" + bookShelf +
-            '}';
-  }
 
   public static MemoEntity toMemoEntity(MemoDTO memoDTO){
     MemoEntity memoEntity = new MemoEntity();
