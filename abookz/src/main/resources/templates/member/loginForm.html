@@ -1,42 +1,49 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="~{fragments/head :: head}">
   <meta charset="UTF-8">
   <title>login</title>
-  <script type="text/javascript" src="/js/Member/MemberLogin.js" defer></script>
 </head>
 <body>
-  <div id="header">
-    <div id="title">
-      <h2>로그인</h2>
+  <div class="container flex justify-center items-center" id="LoginContainer">
+    <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+      <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+        <img class="mx-auto h-10 w-auto" src="/images/logo-h.png" alt="Your Company">
+        <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign in to your account</h2>
+      </div>
+
+      <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+        <form class="space-y-6" action="/login" method="POST">
+          <div>
+            <label for="Id" class="block text-sm font-medium leading-6 text-gray-900">Id</label>
+            <div class="mt-2">
+              <input id="Id" name="loginId" type="text" autocomplete="text" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+            </div>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between">
+              <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
+              <div class="text-sm">
+                <a href="/member/loginPwfind" class="font-semibold text-indigo-600 hover:text-indigo-500">비밀번호를 잊으셨나요?</a>
+              </div>
+            </div>
+            <div class="mt-2">
+              <input id="password" name="password" type="password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6">
+            </div>
+          </div>
+
+          <div>
+            <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign in</button>
+          </div>
+        </form>
+
+        <p class="mt-10 text-center text-sm text-gray-500">
+          회원이 아니신가요?
+          <a href="/member/save" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">회원 가입</a>
+        </p>
+      </div>
     </div>
-  </div>
-  <div id="loginForm">
-    <form action="/login" method="post">
-      <table border="1">
-        <tr>
-          <td>Id</td>
-          <td><input type="text" name="username" id="logId"/></td>
-        </tr>
-        <tr>
-          <td>Password</td>
-          <td><input type="password" name="password" id="pw"/></td>
-        </tr>
-        <tr>
-          <td colspan="2" id="btns">
-            <button>로그인</button>
-            <input type="reset" value="취소">
-          </td>
-        </tr>
-        <tr>
-          <td colspan="2" id="findbtns">
-            <a href="/member/loginIdfind"><p>아이디 찾기</p></a>
-            <a href="/member/loginPwfind"><p>비밀번호 찾기</p></a>
-          </td>
-        </tr>
-      </table>
-<!--      <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>-->
-    </form>
   </div>
 
   <button onclick='location.href="/oauth2/authorization/google"'> 구글 로그인 하기 </button>
