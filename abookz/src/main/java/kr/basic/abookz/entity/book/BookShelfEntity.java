@@ -21,7 +21,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@ToString(exclude = {"member" ,"book"})
+@ToString(exclude = {"member", "book"})
 public class BookShelfEntity {
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -49,34 +49,17 @@ public class BookShelfEntity {
   private TagEnum tag = TagEnum.WANT_TO_READ;  // READ,WANT_TO_READ,CURRENTLY_READING
 
   @ManyToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "MEM_ID",foreignKey = @ForeignKey(name = "BOOKSHELF_IBFK_1"))
+  @JoinColumn(name = "MEM_ID", foreignKey = @ForeignKey(name = "BOOKSHELF_IBFK_1"))
   private MemberEntity member; // 리뷰 작성 회원
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "BOOK_ID", foreignKey = @ForeignKey(name = "BOOKSHELF_IBFK_2"))
   private BookEntity book;
 
 
-@OneToMany(mappedBy = "bookShelf", orphanRemoval = true)
-private List<MemoEntity> childListMemo = new ArrayList<>();
+  @OneToMany(mappedBy = "bookShelf", orphanRemoval = true)
+  private List<MemoEntity> childListMemo = new ArrayList<>();
 
-@OneToMany(mappedBy = "bookShelf", orphanRemoval = true)
-private List<ReviewEntity> childListReview = new ArrayList<>();
-
-  @Override
-  public String toString() {
-    return "BookShelfEntity{" +
-            "id=" + id +
-            ", addDate=" + addDate +
-            ", startDate=" + startDate +
-            ", endDate=" + endDate +
-            ", targetDate=" + targetDate +
-            ", dailyPage=" + dailyPage +
-            ", currentPage=" + currentPage +
-            ", bookShelfGrade=" + bookShelfGrade +
-            ", tag=" + tag +
-            ", member=" + member +
-            ", book=" + book +
-            '}';
-  }
+  @OneToMany(mappedBy = "bookShelf", orphanRemoval = true)
+  private List<ReviewEntity> childListReview = new ArrayList<>();
 
 }
