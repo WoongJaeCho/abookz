@@ -33,7 +33,7 @@ public class ChallengeController {
         Long id = principalDetails.getMember().getId();
         if(id == null) {
             redirectAttributes.addFlashAttribute("fail", "로그인이후 가능합니다");
-            return "/member/loginForm";
+            return "member/loginForm";
         }
         List<BookShelfDTO> shelves =bookShelfService.findAllByMemberIdAndTag(id, TagEnum.READ);
         List<BookDTO> books = shelves.stream()

@@ -145,11 +145,11 @@ function updatePagination(currentPage, totalPages,query,sort) {
 function setInitialRating() {
   const reviews = document.querySelectorAll('.review'); // 모든 리뷰 컨테이너 선택
   reviews.forEach(review => {
-    const gradeInput = review.querySelector('.shelfGrade'); // 각 리뷰의 평점 입력 필드 선택
-    const grade = parseFloat(gradeInput.value);
+    const gradeInput = review.querySelector('.shelfGrade'); // 평점 입력 필드 선택
+    const gradeValue = parseFloat(gradeInput.value).toFixed(1);
     console.log(gradeInput);
-    console.log(grade);
-      const ratingInputs = review.querySelectorAll(`input[type="radio"][data-rating="${grade}"]`); // 해당 평점과 일치하는 라디오 버튼 선택
+    console.log(gradeValue);
+      const ratingInputs = review.querySelectorAll(`input[type="radio"][data-rating="${gradeValue}"]`); // 해당 평점과 일치하는 라디오 버튼 선택
       if (ratingInputs.length > 0) {
         ratingInputs[0].checked = true; // 해당 라디오 버튼을 체크 상태로 설정
       }

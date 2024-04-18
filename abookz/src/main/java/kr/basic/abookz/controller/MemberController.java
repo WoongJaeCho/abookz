@@ -72,7 +72,7 @@ public class MemberController {
   // 로그인
   @GetMapping("/loginForm")
   public String loginForm() {
-    return "/member/loginForm";
+    return "member/loginForm";
   }
 
   // 시큐리티 사용으로 인해 주석 처리
@@ -97,7 +97,7 @@ public class MemberController {
   @GetMapping("/update")
   public String updateForm(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
     if(!logincheck(principalDetails)){
-      return "/member/loginForm";
+      return "member/loginForm";
     }
     Long getId = principalDetails.getMember().getId();
     MemberDTO memberDTO = memberService.updateForm(getId);
@@ -119,7 +119,7 @@ public class MemberController {
   @GetMapping("/delete/{id}")
   public String deleteById(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long id) {
     if(!logincheck(principalDetails)){
-      return "/member/loginForm";
+      return "member/loginForm";
     }
     memberService.deleteById(id);
     return "redirect:/member/list";

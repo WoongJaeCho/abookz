@@ -51,7 +51,7 @@ public class BookController {
     model.addAttribute("book", book);
     System.out.println("book = " + book);
 
-    return "/book/detail";
+    return "book/detail";
   }
 
   @GetMapping("/category/{category}")

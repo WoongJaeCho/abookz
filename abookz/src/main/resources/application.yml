@@ -36,8 +36,11 @@ spring:
       max-request-size: 10MB
       enabled: true
 
-  thymeleaf:
-    prefix: classpath:/templates/
+#  thymeleaf:
+#    prefix: classpath:/templates/
+#    suffix: .html
+#    enabled: true
+
 
   jpa:
     show-sql: true
