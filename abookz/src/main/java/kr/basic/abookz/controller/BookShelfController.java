@@ -9,14 +9,12 @@ import kr.basic.abookz.service.BookService;
 import kr.basic.abookz.service.BookShelfService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Slice;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDateTime;
@@ -32,20 +30,23 @@ public class BookShelfController {
     private final BookService bookService;
     //   내 서재로 가기
     @GetMapping("/myshelf")
-    public String getMyShelf(HttpSession session, RedirectAttributes redirectAttributes, Model model
-            , @AuthenticationPrincipal PrincipalDetails principalDetails){
+    public String getMyShelf(RedirectAttributes redirectAttributes, Model model
+            , @AuthenticationPrincipal PrincipalDetails principalDetails,
+                             @RequestParam(defaultValue = "0") int page,
+                             @RequestParam(defaultValue = "5") int size  ){
         Long id = principalDetails.getMember().getId();
         if(id == null) {
             redirectAttributes.addFlashAttribute("fail", "로그인이후 가능합니다");
             return "/member/loginForm";
         }
         List<BookShelfDTO> myShelf =shelfService.findAllDTOByMemberIdOrderByIdDesc(id);
-        System.out.println("myShelf = " + myShelf);
+        Slice<BookShelfDTO> myShelfSlice = shelfService.SliceBookShelfDTO(id,page,size);
 
        //밑에는 각 사이즈 가져오기 내서재들 옆 숫자표시 몇권있는지
         int read = (int) myShelf.stream()
                 .map(item -> item.getTag())
-                .filter(tag -> tag != null && tag.getKorean().equals("읽은 책")).count();
+                .filter(tag -> tag != null && tag.getKorean().equals("읽은 책"))
+                .count();
         int want = (int) myShelf.stream()
                 .map(BookShelfDTO::getTag)
                 .filter(tag -> tag == null || tag == TagEnum.READ)
@@ -65,11 +66,12 @@ public class BookShelfController {
         model.addAttribute("current",current);
         model.addAttribute("all",myShelf);
         model.addAttribute("shelf",myShelf);
+        model.addAttribute("currentPage",page);
+        model.addAttribute("shelfSlice",myShelfSlice);
         model.addAttribute("books",books);
         return "book/myShelf";
     }
     @GetMapping("/myshelf/tag/{tag}")
-
     public String myShelfTag(@PathVariable ("tag")String  tag, Model model,   @AuthenticationPrincipal PrincipalDetails principalDetails){
         Long memId= principalDetails.getMember().getId();
         System.out.println("tag.toUpperCase() = " + tag.toUpperCase());
@@ -117,5 +119,6 @@ public class BookShelfController {
         model.addAttribute("books",books);
         return "book/myShelf";
     }
+
 
 }

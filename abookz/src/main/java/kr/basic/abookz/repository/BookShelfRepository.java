@@ -4,6 +4,8 @@ import kr.basic.abookz.dto.BookDTO;
 import kr.basic.abookz.dto.BookShelfDTO;
 import kr.basic.abookz.entity.book.BookShelfEntity;
 import kr.basic.abookz.entity.book.TagEnum;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -27,7 +29,7 @@ public interface BookShelfRepository extends JpaRepository<BookShelfEntity,Long>
 
     void deleteBookShelfEntityById(Long Id);
     Optional<BookShelfEntity> findByIdAndBookId(Long id, Long bookId);
-
+    Slice<BookShelfEntity> findAllByMemberIdOrderByIdDesc(Long memberId, Pageable pageable);
 
 }
 

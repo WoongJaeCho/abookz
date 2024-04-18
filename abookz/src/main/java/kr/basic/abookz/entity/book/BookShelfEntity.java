@@ -46,7 +46,7 @@ public class BookShelfEntity {
 
   @Enumerated(EnumType.STRING)
   @Column(columnDefinition = "VARCHAR(20) DEFAULT 'WANT_TO_READ'")
-  private TagEnum tag; // READ,WANT_TO_READ,CURRENTLY_READING
+  private TagEnum tag = TagEnum.WANT_TO_READ;  // READ,WANT_TO_READ,CURRENTLY_READING
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "MEM_ID",foreignKey = @ForeignKey(name = "BOOKSHELF_IBFK_1"))

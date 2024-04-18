@@ -160,7 +160,8 @@ public class AladinService {
             String description = itemObject.getString("description");
 
             String link = itemObject.getString("link");
-            if(itemObject.has("isbn13") || !itemObject.getString("isbn13").isEmpty()) {
+            //979 978
+            if(itemObject.has("isbn13") || itemObject.getString("isbn13").isEmpty()) {
                 String isbn = itemObject.getString("isbn");
                 String isbn13 = itemObject.getString("isbn13");
                 BookDTO bookDTO = BookDTO.builder()

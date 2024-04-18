@@ -79,3 +79,51 @@ function progressBarCheckWrap(progressBar,myShelfWrapPage){
     progress.style.width = progressPercentage + '%';
     progress.style.backgroundColor = 'pink';
 }
+
+let currentPageSlice = 0;
+const sizeSlice = 5;
+
+function loadMoreBooks(){
+    currentPageSlice++;
+    const url = `/myshelfSlice?page=${currentPageSlice}&size=${sizeSlice}`;
+    fetch(url,{
+    })
+.then(response => response.json())
+        .then(data => {
+            const books = data.content;
+            console.log("Loaded books:", books);
+            const bookListElement = document.getElementById('myShelfListWrap');
+            books.forEach(book => {
+                const bookHTML = `
+    <div class="card card-side bg-base-100 shadow-xl w-3/4 mb-2 mx-auto">
+        <input type="hidden" class="wrap_popup" value="${book.id}"/>
+        <figure><img class="w-40" src="${book.bookDTO.cover}" alt="cover"/></figure>
+        <div class="card-body">
+            <span class="text-center mb-2 font-extrabold text-lg">${book.bookDTO.title.length > 40 ? book.bookDTO.title.substring(0, 40) + '...' : book.bookDTO.title}</span>
+            <span>${book.bookDTO.author}</span>
+            <div class="progressWrap-bar"></div>
+            <span class="myShelfWrapPage">읽은 페이지 : ${book.currentPage ? book.currentPage : '0'} / ${book.bookDTO.itemPage}</span>
+        </div>
+        <div class="flex flex-col justify-end">
+            <div class="myShelf_wrap_delete flex-1 m-0">
+                <button class="btn btn-square btn-outline">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                    </svg>
+                </button>
+            </div>
+            <a href="/review/${book.id}/${book.bookDTO.bookId}" class="btn btn-primary btn-review flex-1">리뷰</a>
+            <button class="btn btn-primary btn-detail flex-1">상세보기</button>
+        </div>
+    </div>`;
+                bookListElement.insertAdjacentHTML('beforeend', bookHTML);
+            });
+            if (!data.hasNext) {
+                document.getElementById('loadMore').style.display = 'none';  // 다음 페이지가 없다면 버튼 숨기기
+            }
+        })
+        .catch(error => {
+            console.error('Error loading data:', error);
+            alert('데이터 로딩 중 오류가 발생했습니다.');
+        });
+}

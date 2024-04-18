@@ -1,5 +1,6 @@
 package kr.basic.abookz.controller.apicontroller;
 
+import jakarta.servlet.http.HttpSession;
 import kr.basic.abookz.dto.BookDTO;
 import kr.basic.abookz.dto.BookPagingDTO;
 import kr.basic.abookz.service.AladinService;
@@ -23,11 +24,12 @@ import java.util.List;
 public class AladinApiController {
 
     private final AladinService aladinService;
-
+    private  final HttpSession session;
 
     @RequestMapping(value = "/search", method = RequestMethod.POST)
     public ResponseEntity<Page<BookDTO>> search(@RequestBody BookPagingDTO bookPagingDTO) {
         try {
+            session.setAttribute("q",bookPagingDTO.getQuery());
             Page<BookDTO>  books = aladinService.searchItems(bookPagingDTO.getQuery(), PageRequest.of(bookPagingDTO.getPage(), bookPagingDTO.getSize()));
             System.out.println("books = " + books);
             return ResponseEntity.ok(books);

@@ -13,6 +13,7 @@ import kr.basic.abookz.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import org.springframework.data.domain.Slice;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,6 +31,7 @@ import org.springframework.web.bind.annotation.*;
 import java.net.URI;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -51,18 +53,17 @@ public class BookShelfApiController {
         BookDTO aladinGetBook = aladinService.getOneBookDTO(book);
         BookShelfDTO bookShelfDTO = BookShelfDTO.builder()
                 .memberDTO(memberDTO)
-                .bookDTO(aladinGetBook).build();
+                .bookDTO(aladinGetBook)
+                .build();
         String getValue = bookShelfService.insertBookAndBookShelf(aladinGetBook,bookShelfDTO);
         System.out.println(getValue);
         if (getValue.equals("저장")) {
             data = aladinGetBook.getTitle() + "내 서재에 등록이 완료되었습니다";
             return data;
-        }else if(getValue.equals("실패")){
+        }
             data = "이미 등록되어있습니다";
             return data;
-        }
-        data = "로그인부터 해주세요";
-        return  data;
+
     }
     @PostMapping("/readingUpdate")
     public ResponseEntity<Object> readingUpdate(@RequestBody BookShelfDTO jsonData) {
@@ -116,6 +117,16 @@ public class BookShelfApiController {
         response.put("bookShelfDTO", bookShelfDTO);
         response.put("bookDTO", bookDTO);
                 return  response;
+    }
+    @GetMapping("/myshelfSlice")
+    public ResponseEntity<Slice<BookShelfDTO>>getMyShelf(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size
+            , @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        System.out.println("page = " + page);
+        System.out.println("진입 체크");
+        Long memberId = principalDetails.getMember().getId();;
+        Slice<BookShelfDTO> bookShelfDTO =  bookShelfService.SliceBookShelfDTO(memberId,page,size);
+        System.out.println("bookShelfDTO = " + bookShelfDTO);
+        return ResponseEntity.ok(bookShelfDTO);
     }
 }
 

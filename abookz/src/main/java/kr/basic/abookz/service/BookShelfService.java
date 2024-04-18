@@ -15,6 +15,10 @@ import kr.basic.abookz.repository.BookShelfRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -122,21 +126,33 @@ public class BookShelfService {
 
     }
     public String bookShelfUpdateDate(BookShelfDTO bookShelfDTO){
-        BookShelfEntity bookShelf = bookShelfRepository.findById(bookShelfDTO.getId())
+         BookShelfEntity bookShelf = bookShelfRepository.findById(bookShelfDTO.getId())
                 .orElseThrow(() -> new EntityNotFoundException("BookShelf not found with id " + bookShelfDTO.getId()));
-        System.out.println("bookShelf = " + bookShelf);
         BookShelfEntity bookShelfSave = mapDTOToEntity(bookShelfDTO);
-        System.out.println("bookShelfSave = " + bookShelfSave);
         bookShelf.setStartDate(bookShelfSave.getStartDate());
         bookShelf.setTargetDate(bookShelfSave.getTargetDate());
-        bookShelf.setEndDate(bookShelfSave.getEndDate());
         bookShelf.setCurrentPage(bookShelfSave.getCurrentPage());
         bookShelf.setTargetDate(bookShelfSave.getTargetDate());
+        int check =bookShelf.getBook().getItemPage();
+        if(bookShelfSave.getCurrentPage() == check) {
+            LocalDateTime now = LocalDateTime.now();
+            System.out.println("now = " + now);
+            bookShelf.setTag(TagEnum.READ);
+            bookShelf.setEndDate(now);
+            System.out.println("bookShelf 다 읽은 값 체크= " + bookShelf);
+            return "성공";
+        }
+        bookShelf.setEndDate(bookShelfSave.getEndDate());
+        bookShelf.setTag(TagEnum.CURRENTLY_READING);
         return"성공";
     }
-
-    public String deleteBookShelf(Long Id,Long memberId){
-      BookShelfEntity bookShelfEntity = bookShelfRepository.findByIdAndMemberId(Id,memberId);
+    public Slice<BookShelfDTO>  SliceBookShelfDTO(Long id,int page, int size){
+        Pageable pageable = PageRequest.of(page,size);
+        Slice<BookShelfEntity> bookShelfSlice =bookShelfRepository.findAllByMemberIdOrderByIdDesc(id,pageable);
+        return bookShelfSlice.map(this::mapEntityToDTO);
+    }
+    public String deleteBookShelf(Long id,Long memberId){
+      BookShelfEntity bookShelfEntity = bookShelfRepository.findByIdAndMemberId(id,memberId);
       if(bookShelfEntity == null){
           System.out.println("bookShelfEntity = " + bookShelfEntity);
           return "fail";
