@@ -158,38 +158,23 @@ public class AladinService {
             }
             String cover = itemObject.getString("cover");
             String description = itemObject.getString("description");
-//           ""
-            //int itemPage = itemObject.getInt("")
+
             String link = itemObject.getString("link");
-            if(itemObject.getString("isbn13") == null) {
+            if(itemObject.has("isbn13") || !itemObject.getString("isbn13").isEmpty()) {
                 String isbn = itemObject.getString("isbn");
+                String isbn13 = itemObject.getString("isbn13");
                 BookDTO bookDTO = BookDTO.builder()
                         .title(title)
                         .author(author)
                     /*    .categoryName(cate)*/
                         .publisher(publisher)
                         .pubDate(pubDate)
-                        .ISBN(isbn) // ISBN이 null일 수 있으므로 빌더에서 처리해야 합니다.
+                        .ISBN13(isbn13)
+                        .ISBN(isbn)
                         .cover(cover)
                         .description(description)
                         .link(link)
                         // .itemPage(itemPage) // 페이지 수를 처리하는 로직을 추가해야 한다면 이 부분을 활성화합니다.
-                        .build();
-                items.add(bookDTO);
-            }else {
-                String isbn13 = itemObject.getString("isbn13");
-                BookDTO bookDTO = BookDTO.builder()
-                        .title(title)
-                        .author(author)
-                        .publisher(publisher)
-                        .pubDate(pubDate)
-                        /*.ISBN(ISBN) // ISBN이 null일 수 있으므로 빌더에서 처리해야 합니다.*/
-                        .ISBN13(isbn13)
-                        /*.categoryName(categoryName)*/
-                        .cover(cover)
-                        .description(description)
-                        .link(link)
-                        // .itemPage(itemPage)
                         .build();
                 items.add(bookDTO);
             }
@@ -225,29 +210,25 @@ public class AladinService {
         //int itemPage = itemObject.getInt("")
         String link = itemObject.getString("link");
         int itemPage  = subInfoObject.getInt("itemPage");
-        String isbn = null;
-        String isbn13 = null;
-        if (itemObject.has("isbn13")) {
-            isbn13 = itemObject.getString("isbn13");
-        } else if (itemObject.has("isbn")) {
-    isbn = itemObject.getString("isbn");
+        String isbn13 = itemObject.getString("isbn13");
+        String isbn = itemObject.getString("isbn");
+        BookDTO item = null;
 
-        }
-        BookDTO item = BookDTO.builder()
-                .title(title)
-                .author(author)
-                .publisher(publisher)
-                .pubDate(pubDate)
-                .ISBN(isbn)
-                .ISBN13(isbn13)
-                .cover(cover)
-                .description(description)
-                .aladinGrade(aladinGrade)
-                .link(link)
-                .itemPage(itemPage)
-                .weight(weight)
-                .sizeDepth(sizeDepth)
-                .build();
+             item = BookDTO.builder()
+                    .title(title)
+                    .author(author)
+                    .publisher(publisher)
+                    .pubDate(pubDate)
+                    .ISBN(isbn)
+                    .ISBN13(isbn13)
+                    .cover(cover)
+                    .description(description)
+                    .aladinGrade(aladinGrade)
+                    .link(link)
+                    .itemPage(itemPage)
+                    .weight(weight)
+                    .sizeDepth(sizeDepth)
+                    .build();
 
 
         return item;

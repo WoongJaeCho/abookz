@@ -1,7 +1,7 @@
 const changeButtonSmall = document.getElementById('smallButton');
 const changeButtonLarge = document.getElementById('largeButton');
 const myShelfDiv =document.getElementById('myShelfDiv');
-const myShelfWrap =document.getElementById('listWrap');
+const myShelfWrap =document.getElementById('myShelfListWrap');
 myShelfWrap.style.display='none';
 let isChangeCheckButton =false;
 window.onload = function() {

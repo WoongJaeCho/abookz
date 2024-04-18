@@ -130,16 +130,19 @@ margin: 0 auto;
     height: 20px;
     position: relative;
     background-color: white;
+    border-radius: 10px;
 }
 .progressWrap-bar {
     height: 20px;
     position: relative;
     background-color: lightgray;
+    border-radius: 10px;
 }
 .progressWrap {
     height: 100%;
     background-color: green;
     width: 0;
+    border-radius: 10px;
 }
 
 .startPage {

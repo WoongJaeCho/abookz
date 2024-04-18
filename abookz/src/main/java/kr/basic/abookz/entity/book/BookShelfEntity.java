@@ -5,6 +5,7 @@ import kr.basic.abookz.entity.member.MemberEntity;
 import kr.basic.abookz.entity.review.MemoEntity;
 import kr.basic.abookz.entity.review.ReviewEntity;
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -41,10 +42,11 @@ public class BookShelfEntity {
   private int dailyPage;//하루목표 페이지
   //50page
   private int currentPage; //현재읽은페이지
-  @Column(name = "BOOK_SHELF_GRADE", nullable = false, columnDefinition = "Double default 0.0")
+  @Column(name = "BOOK_SHELF_GRADE",  columnDefinition = "DOUBLE DEFAULT '0.0'")
   private Double bookShelfGrade;
 
   @Enumerated(EnumType.STRING)
+  @Column(columnDefinition = "VARCHAR(20) DEFAULT 'WANT_TO_READ'")
   private TagEnum tag; // READ,WANT_TO_READ,CURRENTLY_READING
 
   @ManyToOne(fetch = FetchType.LAZY)
