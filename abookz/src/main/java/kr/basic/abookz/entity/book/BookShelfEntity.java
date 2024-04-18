@@ -2,12 +2,16 @@ package kr.basic.abookz.entity.book;
 
 import jakarta.persistence.*;
 import kr.basic.abookz.entity.member.MemberEntity;
+import kr.basic.abookz.entity.review.MemoEntity;
+import kr.basic.abookz.entity.review.ReviewEntity;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "BOOKSHELF")
@@ -49,5 +53,29 @@ public class BookShelfEntity {
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "BOOK_ID", foreignKey = @ForeignKey(name = "BOOKSHELF_IBFK_2"))
   private BookEntity book;
+
+
+@OneToMany(mappedBy = "bookShelf", orphanRemoval = true)
+private List<MemoEntity> childListMemo = new ArrayList<>();
+
+@OneToMany(mappedBy = "bookShelf", orphanRemoval = true)
+private List<ReviewEntity> childListReview = new ArrayList<>();
+
+  @Override
+  public String toString() {
+    return "BookShelfEntity{" +
+            "id=" + id +
+            ", addDate=" + addDate +
+            ", startDate=" + startDate +
+            ", endDate=" + endDate +
+            ", targetDate=" + targetDate +
+            ", dailyPage=" + dailyPage +
+            ", currentPage=" + currentPage +
+            ", bookShelfGrade=" + bookShelfGrade +
+            ", tag=" + tag +
+            ", member=" + member +
+            ", book=" + book +
+            '}';
+  }
 
 }

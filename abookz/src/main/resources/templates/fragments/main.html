@@ -54,7 +54,7 @@
                 <ul th:each="book : ${aladinBooks}">
                     <li>
                         <a class="rec_cover" th:href="@{/content/{ISBN}(ISBN=${book.ISBN13})}"><img class="rec_cover" th:src="${book.cover}"></a>
-                        <a class="rec_title" th:href="@{/content/{ISBN}(ISBN=${book.ISBN13})}" th:text="${book.title}"></a>
+                        <a class="rec_title" th:href="@{/content/{ISBN}(ISBN=${book.ISBN13})}" th:text="${#strings.length(book.title) > 25 ? book.title.substring(0, 23) + '...' : book.title}"></a>
                     </li>
                 </ul>
             </div>
@@ -64,7 +64,7 @@
             <ul th:each="book : ${aladinBooks}">
                 <li>
                     <a class="rec_cover" th:href="@{/content/{ISBN}(ISBN=${book.ISBN13})}"><img class="rec_cover" th:src="${book.cover}"></a>
-                    <a class="rec_title" th:href="@{/content/{ISBN}(ISBN=${book.ISBN13})}" th:text="${book.title}"></a>
+                    <a class="rec_title" th:href="@{/content/{ISBN}(ISBN=${book.ISBN13})}" th:text="${#strings.length(book.title) > 25 ? book.title.substring(0, 23) + '...' : book.title}"></a>
                 </li>
             </ul>
         </div>
@@ -83,7 +83,7 @@
                 <div class="inner" th:each="book, index : ${books}" th:with="shelf=${shelves[__${index.index}__]}">
                     <img th:src="${book.cover}" alt="book_cover" class="memo_cover">
                     <div class="memo_text">
-                        <div class="memo_title" th:text="${book.title}"></div>
+                        <div class="memo_title" th:text="${#strings.length(book.title) > 35 ? book.title.substring(0, 32) + '...' : book.title}"></div>
                         <div class="memo_day" th:text="|${shelf.days+1}일째 읽는중|"> 5일째 읽는 중 </div>
                         <div class="read_bar">
                             <progress class="progress bg-stone-300 w-56 h-2" th:value="${(shelf.currentPage * 100) / book.itemPage}" max="100"></progress>
@@ -93,29 +93,14 @@
                             <div class="page" th:text="|${shelf.currentPage}/${book.itemPage} 페이지|"> 30/300 페이지 </div>
                         </div>
                     </div>
+                    <a class="memo_btn" href="#">메모하기</a>
+                    <div th:replace="~{review/memo :: memo}" /><br>
                 </div>
             </div>
-            <a class="memo_btn" href="#">메모하기</a>
-            <div class="arrow left" th:if="${books.size()>1}"></div>
-            <div class="arrow right" th:if="${books.size()>1}"></div>
+            <div id="overlay"></div>
+            <div class="arrow left" th:if="${books.size() > 1}"></div>
+            <div class="arrow right" th:if="${books.size() > 1}"></div>
         </div>
-<!--        </div><div class="memo" sec:authorize="isAuthenticated()" th:unless="${books == null and shelves == null}" th:with="idx=${0}">-->
-<!--            <img th:src="${books[idx].cover}" alt="book_cover" class="memo_cover">-->
-<!--            <div class="memo_text">-->
-<!--                <div class="memo_title" th:text="${books[idx].title}"></div>-->
-<!--                <div class="memo_day" th:text="|${shelves[idx].days+1}일째 읽는중|"> 5일째 읽는 중 </div>-->
-<!--                <div class="read_bar">-->
-<!--                    <progress class="progress bg-stone-300 w-56 h-2" th:value="${(shelves[idx].currentPage * 100) / books[idx].itemPage}" max="100"></progress>-->
-<!--                </div>-->
-<!--                <div class="memo_page">-->
-<!--                    <div class="per" th:text="${(shelves[idx].currentPage * 100) / books[idx].itemPage + '%'}"> 10% </div>-->
-<!--                    <div class="page" th:text="|${shelves[idx].currentPage}/${books[idx].itemPage} 페이지|"> 30/300 페이지 </div>-->
-<!--                </div>-->
-<!--                <a class="memo_btn" href="#">메모하기</a>-->
-<!--                <div class="arrow left" th:if="${books.size()>1}"></div>-->
-<!--                <div class="arrow right" th:if="${books.size()>1}"></div>-->
-<!--            </div>-->
-<!--        </div>-->
     </section>
 
 </main>

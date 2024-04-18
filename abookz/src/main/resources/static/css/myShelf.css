@@ -2,7 +2,8 @@ body{
 margin: 0 auto;
 }
 .shelf_container {
-    width: 100%;
+    width: 1280px;
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
 }
@@ -67,12 +68,14 @@ margin: 0 auto;
         display: none; /* 초기에는 보이지 않도록 설정 */
     }
 .btn.btn-primary.btn-detail{
-    background-color: cyan;
+    background-color: skyblue;
+    border: skyblue;
+    color: black;
     width: 90px;
     height: 20px;
 }
 .btn.btn-primary.btn-jittery{
-    background-color: red;
+
     width: 90px;
     height: 20px;
 }
@@ -107,6 +110,7 @@ margin: 0 auto;
     animation-duration: 0.4s;
     z-index: 9999;
 }
+
 .modal_title{
     font-size: 14px;
     font-weight: bold;
@@ -123,9 +127,19 @@ margin: 0 auto;
 }
 
 #progress-bar {
-    height: 20px; /* 선의 높이를 설정하세요 */
+    height: 20px;
     position: relative;
     background-color: white;
+}
+.progressWrap-bar {
+    height: 20px;
+    position: relative;
+    background-color: lightgray;
+}
+.progressWrap {
+    height: 100%;
+    background-color: green;
+    width: 0;
 }
 
 .startPage {
@@ -157,7 +171,7 @@ margin: 0 auto;
 .submit-modal {
     margin: auto;
     padding: 10px 20px;
-    background-color: greenyellow;
+    background-color: skyblue;
     font-size: 24px;
     font-weight: bold;
     color: white;

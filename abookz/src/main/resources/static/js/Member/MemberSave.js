@@ -22,15 +22,15 @@ function validcheck(form){
     }
     if(!form.name.value.trim()){
         alert("닉네임을 입력해주세요");
-        form.nickname.focus();
+        form.name.focus();
         return false;
     }
 
-    if(check == 0){
+    if(check === 0){
         alert("Id 중복체크 해주세요");
         return false;
     }
-    else if(check == -1){
+    else if(check === -1){
         alert("Id 중복체크 다시하세요");
         return false
     }
