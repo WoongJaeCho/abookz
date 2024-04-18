@@ -13,11 +13,10 @@ function closeModal(modal) {
 // 모달창
 function openModal(modal, popup) {
     let value = popup.getAttribute('data-value');
-    console.log(value+ value);
-    console.log("check");
+    console.log( "value"+value);
     modal.style.display = "block";
     modal.style.opacity = "1";
- disableClickOutside();
+    disableClickOutside();
     fetch("/modal?id=" + value, {
         method: "POST",
         headers: {
@@ -27,13 +26,11 @@ function openModal(modal, popup) {
     })
         .then(response => response.json())
         .then(data => {
-            function checkModal() {
-                console.log("asdsadasdasd");
-            }
+            console.log("data" + data.toString() )
 
             let table = document.createElement('table');
             table.className = 'modal-table';
-            console.log("check1234");
+
             // 첵 제목 행
             let titleRow = document.createElement('tr');
             let titleCell = document.createElement('td');
@@ -97,9 +94,9 @@ function openModal(modal, popup) {
 
             const closeBtn = document.getElementById('myShelfClose');
             closeBtn.addEventListener("click", function() {
-                    closeModal(modal);
-                    modalContent.removeChild(table);
-                });
+                closeModal(modal);
+                modalContent.removeChild(table);
+            });
             const modalPage = document.getElementById('modal_page');
             const progressBar = document.getElementById('progress-bar').firstElementChild;
             const maxPage = data.bookDTO.itemPage;
@@ -108,9 +105,10 @@ function openModal(modal, popup) {
             const progressPercentage = (currentPage / maxPage) * 100;
             progressBar.style.width = progressPercentage + '%';
             progressBar.style.backgroundColor = 'pink';
+
             modalPage.addEventListener('input', function(event) {
                 const input = event.target;
-               currentPage = parseInt(input.value, 10) || 0;
+                currentPage = parseInt(input.value, 10) || 0;
 
                 if (currentPage > maxPage) {
                     input.value = maxPage;
@@ -124,10 +122,10 @@ function openModal(modal, popup) {
                 progressBar.style.width = progressPercentage + '%';
                 progressBar.style.backgroundColor = 'pink';
             });
-                const submitModal = document.getElementById('modal_submit');
-                submitModal.addEventListener('click', () => {
-                    changeDateModal(value,modalStartDate,modalAddDate,modalEndDate,modalTargetDate,currentPage);
-                });
+            const submitModal = document.getElementById('modal_submit');
+            submitModal.addEventListener('click', () => {
+                changeDateModal(value,modalStartDate,modalAddDate,modalEndDate,modalTargetDate,currentPage);
+            });
 
         })
         .catch(error => console.error('Error:', error));
@@ -138,7 +136,9 @@ function createDataRow(id, label, value) {
     var labelTd = document.createElement('td');
     labelTd.textContent = label;
     var valueTd = document.createElement('td');
-    if( id ===  'modal_addDate' ){
+    console.log("id chec ="+id)
+    console.log("value chec ="+value)
+    if( id ===  'modal_addDate'){
         var inputAddDate = document.createElement('input');
         inputAddDate.type = 'text';
         inputAddDate.className = 'date-picker start-date';

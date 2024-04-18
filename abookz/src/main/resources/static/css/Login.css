@@ -2,3 +2,23 @@
     width: 1280px;
     height: 100%;
 }
+#CreateContainer{
+    width: 1280px;
+    height: 100%;
+}
+#buttongroup{
+    display: flex;
+    justify-content: center;
+}
+#buttongroup button{
+    margin: 0 10px;
+}
+#googlebtn{
+    color: #ea4335;
+}
+#naverbtn{
+    color: #04cf5c;
+}
+#kakaobtn{
+    color: #F7E600;
+}

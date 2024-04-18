@@ -42,12 +42,12 @@ public class MemberController {
     return "member/list";
   }
 
-//  @GetMapping("/{id}")
-//  public String findById(@PathVariable Long id, Model model) {
-//    MemberDTO memberDTO = memberService.findById(id);
-//    model.addAttribute("member", memberDTO);
-//    return "member/detail";
-//  }
+  @GetMapping("/{id}")
+  public String findById(@PathVariable Long id, Model model) {
+    MemberDTO memberDTO = memberService.findById(id);
+    model.addAttribute("member", memberDTO);
+    return "member/detail";
+  }
 
   // 가입
   @GetMapping("/save")

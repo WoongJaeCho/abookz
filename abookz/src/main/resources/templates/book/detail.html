@@ -18,23 +18,23 @@
              </td>
          </tr>
          <tr>
-             <td class="detail_td" colspan="1">책 제목:</td>
+             <td class="detail_td" colspan="1">제목:</td>
              <td  class="detail_title" colspan="3" th:text="${book.title}">
                     제목
              </td>
          </tr>
          <tr>
-             <td  class="detail_td">책 작가:</td>
+             <td  class="detail_td">작가:</td>
              <td  class="book_author" th:text="${book.author}">
                     작가
              </td>
-             <td class="detail_td">책 페이지:</td>
+             <td class="detail_td">페이지:</td>
              <td class="detail_itemPage" th:text="${book.itemPage}">
                     책페이지
              </td>
          </tr>
          <tr class="detail_tr">
-             <td  class="detail_td" colspan="1" >출판날짜:</td>
+             <td  class="detail_td" colspan="1" >출판일:</td>
              <td class="detail_pubDate" colspan="1" th:text="${book.pubDate}">
                     출판날짜
              </td>
@@ -45,7 +45,7 @@
          </tr>
          <tr class="detail_tr">
 
-             <td class="detail_td">알라딘 평점 :</td>
+             <td class="detail_td" colspan="2">알라딘 평점 :</td>
                  <td id="bookDetailGrade" th:attr="grade=${book.aladinGrade}">
                     <div class="aladdinGrade rating rating-md rating-half">
                      <input type="radio" name="rating-7" class="rating-hidden" id="notRating"/>
@@ -90,7 +90,7 @@
 
 <div id="searchResults"></div>
 <script src="/js/detail.js"></script>
-<script defer src="/js/detailReview.js"></script>
+<script defer src="/js/Review/detailReview.js"></script>
 </body>
 </html>
 <script defer src="/js/index.js"></script>

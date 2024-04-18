@@ -18,6 +18,7 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -36,6 +37,13 @@ public class BookShelfService {
 
      public List<BookShelfDTO> findAllDTOByMemberId(Long memberId) {
         List<BookShelfEntity> entities = bookShelfRepository.findAllByMemberId(memberId);
+
+        return entities.stream()
+                .map(this::mapEntityToDTO)
+                .collect(Collectors.toList());
+    }
+    public List<BookShelfDTO> findAllDTOByMemberIdOrderByIdDesc(Long memberId) {
+        List<BookShelfEntity> entities = bookShelfRepository.findAllByMemberIdOrderByIdDesc(memberId);
 
         return entities.stream()
                 .map(this::mapEntityToDTO)
@@ -67,7 +75,7 @@ public class BookShelfService {
             return "저장";
         } else {
             // 이미 책꽂이에 존재하면 실패 반환
-            return "이미 등록되어 있습니다";
+            return "실패";
         }
     }
     public List<BookShelfDTO> findAllByMemberIdAndTag(Long memId,TagEnum tagEnum){
@@ -78,25 +86,52 @@ public class BookShelfService {
         List<BookShelfEntity> entities = bookShelfRepository.findAllByMemberIdAndTagOrderByIdDesc(memId,tagEnum);
         return entities.stream().map(this::mapEntityToDTO).collect(Collectors.toList());
     }
-    public String bookShelfUpdate(BookShelfDTO bookShelfDTO){
+    public String bookShelfUpdateTag(BookShelfDTO bookShelfDTO){
+        LocalDateTime now = LocalDateTime.now();
+        BookShelfEntity bookShelf = bookShelfRepository.findById(bookShelfDTO.getId())
+                .orElseThrow(() -> new EntityNotFoundException("BookShelf not found with id " + bookShelfDTO.getId()));
+        System.out.println("bookShelf = " + bookShelf);
+        BookShelfEntity bookShelfSave = mapDTOToEntity(bookShelfDTO);
+        BookShelfEntity.BookShelfEntityBuilder builder = BookShelfEntity.builder();
+        TagEnum tagEnum =bookShelfDTO.getTag();
+        System.out.println("tagEnum = " + tagEnum);
+            if(tagEnum == TagEnum.READ) {
+                System.out.println("값체크 Read");
+                bookShelfSave = builder.endDate(now).build();
+                bookShelf.setEndDate(bookShelfSave.getEndDate());
+                bookShelf.setTag(tagEnum);
+
+
+                return "성공";
+            }else if(tagEnum == TagEnum.CURRENTLY_READING) {
+                System.out.println("값체크 커런트");
+                bookShelfSave = builder.startDate(now).build();
+                bookShelf.setStartDate(bookShelfSave.getStartDate());
+                bookShelf.setTag(tagEnum);
+
+                return "성공";
+            }
+
+                bookShelf.setTag(tagEnum);
+                    bookShelf.setEndDate(null);
+              bookShelf.setStartDate(null);
+            return "성공";
+
+    }
+    public String bookShelfUpdateDate(BookShelfDTO bookShelfDTO){
         BookShelfEntity bookShelf = bookShelfRepository.findById(bookShelfDTO.getId())
                 .orElseThrow(() -> new EntityNotFoundException("BookShelf not found with id " + bookShelfDTO.getId()));
         System.out.println("bookShelf = " + bookShelf);
         BookShelfEntity bookShelfSave = mapDTOToEntity(bookShelfDTO);
         System.out.println("bookShelfSave = " + bookShelfSave);
-        if(bookShelfDTO.getTag() != null) {
-            bookShelf.setStartDate(bookShelfSave.getStartDate());
-            bookShelf.setTag(bookShelfSave.getTag());
-
-            return "성공";
-        }
         bookShelf.setStartDate(bookShelfSave.getStartDate());
-        bookShelf.setTag(bookShelfSave.getTag());
+        bookShelf.setTargetDate(bookShelfSave.getTargetDate());
         bookShelf.setEndDate(bookShelfSave.getEndDate());
         bookShelf.setCurrentPage(bookShelfSave.getCurrentPage());
         bookShelf.setTargetDate(bookShelfSave.getTargetDate());
         return"성공";
     }
+
     public String deleteBookShelf(Long Id,Long memberId){
       BookShelfEntity bookShelfEntity = bookShelfRepository.findByIdAndMemberId(Id,memberId);
       if(bookShelfEntity == null){

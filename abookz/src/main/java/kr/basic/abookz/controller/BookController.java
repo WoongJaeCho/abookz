@@ -43,22 +43,22 @@ public class BookController {
 
   @GetMapping("/content/{isbn13}")
   public String getOneDetail(@PathVariable("isbn13") String isbn13, Model model,
-                             @RequestParam(defaultValue = "0") int pageNumber,
-                             @RequestParam(defaultValue = "5") int pageSize,
-                             @RequestParam(defaultValue = "최신순") String sort) throws Exception {
+      @RequestParam(defaultValue = "0") int pageNumber,
+      @RequestParam(defaultValue = "5") int pageSize,
+      @RequestParam(defaultValue = "최신순") String sort) throws Exception {
     BookDTO book = aladinService.searchGetOneItem(isbn13);
+/*    book.setId(bookService.findByDTOISBN13(Long.valueOf(isbn13)).getId());*/
     model.addAttribute("book", book);
     System.out.println("book = " + book);
-    
+
     return "/book/detail";
   }
 
   @GetMapping("/category/{category}")
-  public String choiceCategory(@PathVariable("category") String category
-          ,@RequestParam(defaultValue = "0") int page
-          ,@RequestParam(defaultValue = "10")int size, Model model) throws Exception {
+  public String choiceCategory(@PathVariable("category") String category, @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size, Model model) throws Exception {
     Pageable pageable = PageRequest.of(page, size);
-    Page<BookDTO> bookPage = aladinService.choiceGetCategoryList(category,pageable);
+    Page<BookDTO> bookPage = aladinService.choiceGetCategoryList(category, pageable);
     System.out.println("bookPage = " + bookPage);
     model.addAttribute("categoryCheck", category);
     model.addAttribute("books", bookPage.getContent());
@@ -68,11 +68,11 @@ public class BookController {
     return "book/category";
   }
 
-  /* 베스트 셀러나 신간 리스트 가져오기*/
+  /* 베스트 셀러나 신간 리스트 가져오기 */
   @GetMapping("/bestSeller/{type}")
   public String choiceQueryType(@PathVariable("type") String type,
-                                @RequestParam(defaultValue = "0") int page
-          ,@RequestParam(defaultValue = "10")int size,Model model) throws Exception {
+      @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Model model)
+      throws Exception {
     Pageable pageable = PageRequest.of(page, size);
     Page<BookDTO> bookPage = aladinService.getQueryPagingList(type, pageable);
     model.addAttribute("books", bookPage.getContent());

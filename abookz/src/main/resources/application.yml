@@ -15,7 +15,7 @@ logging:
     com.boot.first: info
 
 upload:
-  path: "src/main/resources/static/images/"
+  path: "abookz/src/main/resources/static/images/"
 
 spring:
   config:
