@@ -66,6 +66,8 @@ public class BookShelfService {
 
         BookShelfEntity bookShelfEntity = mapDTOToEntity(bookShelfDTO);
         bookShelfEntity.setBook(saveBook);
+        bookShelfEntity.setBookShelfGrade(0.0);
+        bookShelfEntity.setTag(TagEnum.WANT_TO_READ);
         BookShelfEntity existingBookShelf = bookShelfRepository.findByMemberIdAndBookId(
                 bookShelfEntity.getMember().getId(), bookShelfEntity.getBook().getId());
 

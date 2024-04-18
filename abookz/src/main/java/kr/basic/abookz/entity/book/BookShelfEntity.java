@@ -42,7 +42,6 @@ public class BookShelfEntity {
   private int dailyPage;//하루목표 페이지
   //50page
   private int currentPage; //현재읽은페이지
-  @Column(name = "BOOK_SHELF_GRADE",  columnDefinition = "DOUBLE DEFAULT '0.0'")
   private Double bookShelfGrade;
 
   @Enumerated(EnumType.STRING)

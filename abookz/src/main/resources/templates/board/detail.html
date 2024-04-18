@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
   <meta charset="UTF-8">
   <title>detail</title>
@@ -34,7 +34,9 @@
       <td colspan="3" id="btns">
         <a th:href="@{/board/paging(page=${page})}">목록</a>
         <a th:href="@{|/board/update/${board.id}|}">수정</a>
-        <a th:href="@{|/board/delete/${board.id}|}">삭제</a>
+        <div th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? true : false}">
+          <a th:href="@{|/board/delete/${board.id}|}">삭제</a>
+        </div>
       </td>
     </tr>
   </table>

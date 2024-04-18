@@ -74,7 +74,7 @@ public class BookShelfController {
         Long memId= principalDetails.getMember().getId();
         System.out.println("tag.toUpperCase() = " + tag.toUpperCase());
         if(memId== null){
-            return "/member/login";
+            return "member/loginForm";
         }
         List<BookShelfDTO> myShelf;
         //밑에는 카운터용

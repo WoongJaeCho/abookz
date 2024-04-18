@@ -42,6 +42,7 @@ public class SecurityConfig {
                 .requestMatchers("/challenge").authenticated()
                 .requestMatchers("/manager/**").hasAnyRole("MANAGER","ADMIN")
                 .requestMatchers("/admin/**").hasAnyRole("ADMIN")
+                .requestMatchers("/slide").hasAnyRole("ADMIN")
                 .anyRequest().permitAll()
         ).formLogin(
             form->{
