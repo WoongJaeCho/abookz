@@ -27,7 +27,6 @@ public interface ReviewRepository extends JpaRepository<ReviewEntity,Long> {
       "ORDER BY likes.likeCount DESC", nativeQuery = true)
   Page<ReviewEntity> findByBookISBN13AndContentSortedByLikes(@Param("ISBN13") String ISBN13, @Param("content") String content, Pageable pageable);
 
-
 }
 
 

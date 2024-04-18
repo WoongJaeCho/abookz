@@ -9,6 +9,8 @@ import org.hibernate.annotations.CreationTimestamp;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "REVIEW")
@@ -27,8 +29,9 @@ public class ReviewEntity {
   @CreationTimestamp
   private LocalDateTime createdDate;//작성날짜
   private Boolean isSpoilerActive;//스포일러 방지기능
-  //  @OneToMany(mappedBy = "like",fetch = FetchType.LAZY ,cascade = CascadeType.ALL)
-  //  private List<Like> likeList= new ArrayList<>(); 리뷰의 좋아요
+  @OneToMany(mappedBy = "review", orphanRemoval = true)
+  private List<LikeEntity> likeList = new ArrayList<>();
+
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "BOOKSHELF_ID",foreignKey = @ForeignKey(name = "REVIEW_IBFK_1"))
   private BookShelfEntity bookShelf;

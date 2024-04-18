@@ -1,11 +1,13 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head th:replace="~{fragments/head :: head}">
   <meta charset="UTF-8">
   <title>save</title>
 </head>
 <body>
-<div th:replace="~{fragments/header :: header}"></div><br>
+<div th:replace="~{fragments/header :: header}"></div>
+<br>
 <div id="header">
   <div id="boardTitle">
     <h2>게시글 작성</h2>
@@ -21,7 +23,7 @@
       <tr>
         <td>작성자</td>
         <td><input type="text" name="writer" th:value="${writer}" disabled/>
-            <input type="hidden" name="writer" th:value="${writer}">
+          <input type="hidden" name="writer" th:value="${writer}">
       </tr>
       <tr>
         <td>내용</td>
@@ -30,12 +32,14 @@
       <tr>
         <td>카테고리</td>
         <td><input type="text" name="category" list="category" required>
-        <datalist id="category">
-          <option value="FREE"></option>
-          <option value="QUESTION"></option>
-          <option value="NOTICE"></option>
-          <option value="EVENT"></option>
-        </datalist>
+          <datalist id="category">
+            <option value="FREE"></option>
+            <option value="QUESTION"></option>
+            <div th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? true : false}">
+              <option value="NOTICE"></option>
+              <option value="EVENT"></option>
+            </div>
+          </datalist>
         </td>
       </tr>
       <tr>
