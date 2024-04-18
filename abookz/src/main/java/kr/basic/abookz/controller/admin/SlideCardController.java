@@ -7,6 +7,9 @@ import kr.basic.abookz.service.BookService;
 import kr.basic.abookz.service.admin.SlideCardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +30,13 @@ public class SlideCardController {
 
     private final AladinService aladinService;
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public String Slide(Model model) throws Exception {
+        SecurityContextHolder.getContext().getAuthentication().getAuthorities().stream()
+            .filter(a -> a.getAuthority().equals("ROLE_ADMIN"))
+            .findFirst()
+            .orElseThrow(() -> new AccessDeniedException("Access denied"));
+
         List<SlideCardDTO> slideCardDTOs = slideCardService.findAllOrderByIdx();
 
         for (SlideCardDTO slideCardDTO : slideCardDTOs) {
