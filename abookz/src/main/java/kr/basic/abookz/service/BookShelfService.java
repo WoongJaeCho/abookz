@@ -133,9 +133,10 @@ public class BookShelfService {
         bookShelf.setTargetDate(bookShelfSave.getTargetDate());
         bookShelf.setCurrentPage(bookShelfSave.getCurrentPage());
         bookShelf.setTargetDate(bookShelfSave.getTargetDate());
+        LocalDateTime now = LocalDateTime.now();
         int check =bookShelf.getBook().getItemPage();
         if(bookShelfSave.getCurrentPage() == check) {
-            LocalDateTime now = LocalDateTime.now();
+
             System.out.println("now = " + now);
             bookShelf.setTag(TagEnum.READ);
             bookShelf.setEndDate(now);
@@ -144,6 +145,7 @@ public class BookShelfService {
         }
         bookShelf.setEndDate(bookShelfSave.getEndDate());
         bookShelf.setTag(TagEnum.CURRENTLY_READING);
+        bookShelf.setStartDate(now);
         return"성공";
     }
     public Slice<BookShelfDTO>  SliceBookShelfDTO(Long id,int page, int size){

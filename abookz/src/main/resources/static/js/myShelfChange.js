@@ -90,6 +90,9 @@ function loadMoreBooks(){
     })
 .then(response => response.json())
         .then(data => {
+            if (data.content.length <= 5) {
+                document.getElementById('moreSlice').style.display = 'none';  // 다음 페이지가 없다면 버튼 숨기기
+            }
             const books = data.content;
             console.log("Loaded books:", books);
             const bookListElement = document.getElementById('myShelfListWrap');
@@ -118,12 +121,8 @@ function loadMoreBooks(){
     </div>`;
                 bookListElement.insertAdjacentHTML('beforeend', bookHTML);
             });
-            if (!data.hasNext) {
-                document.getElementById('loadMore').style.display = 'none';  // 다음 페이지가 없다면 버튼 숨기기
-            }
         })
         .catch(error => {
             console.error('Error loading data:', error);
-            alert('데이터 로딩 중 오류가 발생했습니다.');
         });
 }
