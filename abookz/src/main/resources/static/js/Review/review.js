@@ -51,17 +51,17 @@ function submitRating(ratingValue) {
       .then(response => response.json())
       .then(data => {
         console.log('Success:', data.message);
-        updateRatingFeedback(data.message, true);
+        updateFeedback(data.message, true);
         // updateRatingFeedback('별점 저장에 실패하였습니다. 다시 시도해주세요.', false);//실패 테스트용
       })
       .catch(error => {
         console.error('Error:', error);
-        updateRatingFeedback('별점 저장에 실패하였습니다. 다시 시도해주세요.', false);
+        updateFeedback('별점 저장에 실패하였습니다. 다시 시도해주세요.', false);
       });
 }
 
 // 피드백 메시지 업데이트
-function updateRatingFeedback(message, isSuccess ) {
+function updateFeedback(message, isSuccess ) {
   console.log("updatefeedback");
   let feedbackElement = document.getElementById('rating-feedback');
   if (!feedbackElement) {

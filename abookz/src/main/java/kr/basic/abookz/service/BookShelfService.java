@@ -18,7 +18,6 @@ import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Slice;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,6 +25,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static kr.basic.abookz.entity.book.TagEnum.READ;
 
 @Slf4j
 @Service
@@ -102,7 +103,7 @@ public class BookShelfService {
         BookShelfEntity.BookShelfEntityBuilder builder = BookShelfEntity.builder();
         TagEnum tagEnum =bookShelfDTO.getTag();
         System.out.println("tagEnum = " + tagEnum);
-            if(tagEnum == TagEnum.READ) {
+            if(tagEnum == READ) {
                 System.out.println("값체크 Read");
                 bookShelfSave = builder.endDate(now).build();
                 bookShelf.setEndDate(bookShelfSave.getEndDate());
@@ -138,7 +139,7 @@ public class BookShelfService {
         if(bookShelfSave.getCurrentPage() == check) {
 
             System.out.println("now = " + now);
-            bookShelf.setTag(TagEnum.READ);
+            bookShelf.setTag(READ);
             bookShelf.setEndDate(now);
             System.out.println("bookShelf 다 읽은 값 체크= " + bookShelf);
             return "성공";
@@ -226,4 +227,19 @@ public class BookShelfService {
         }
         return shelfEntity;
     }
+
+  public double averageWeightOfReadBooks() {
+    List<Object[]> results = bookShelfRepository.findTotalWeightByMemberForReadBooks();
+    double totalWeight = 0;
+    for (Object[] result : results) {
+      Long memberId = (Long) result[0];
+      Long sumWeight = (Long) result[1];  // DB에서 가져온 값은 Long일 수 있습니다.
+
+      // Long 타입의 sumWeight를 Double로 변환
+      double weight = sumWeight != null ? sumWeight.doubleValue() : 0.0;
+      totalWeight += weight;
+    }
+
+    return results.size() > 0 ? totalWeight / results.size() : 0.0;
+  }
 }

@@ -19,6 +19,7 @@ configurations {
 
 repositories {
     mavenCentral()
+    maven { url 'https://jitpack.io' }
 }
 
 dependencies {
@@ -44,8 +45,6 @@ dependencies {
 
     // 이메일발송시 필요한 설정값
     implementation 'org.springframework.boot:spring-boot-starter-mail'
-
-
 }
 
 tasks.named('test') {
