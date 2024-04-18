@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="ko-KR">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="/css/header.css">
+  <link rel="stylesheet" type="text/css" href="/css/index.css">
+  <script type="text/javascript" src="/js/Member/MemberLogout.js" defer></script>
+  <script type="text/javascript" src="/js/Member/MemberLogin.js" defer></script>
+  <script src="/js/Member/MemberSave.js" type="text/javascript" defer></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.9.0/dist/full.min.css" rel="stylesheet" type="text/css" />
+  <script src="https://cdn.jsdelivr.net/npm/tw-elements/js/tw-elements.umd.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/xeicon@2.3.3/xeicon.min.css">
+  <title>abookz</title>
+  <link rel="stylesheet" type="text/css" href="/css/myShelf.css">
+  <link rel="stylesheet" type="text/css" href="/css/detail.css">
+  <link rel="stylesheet" type="text/css" href="/css/memo.css">
+  <link rel="stylesheet" type="text/css" href="/css/admin.css">
+  <link rel="stylesheet" type="text/css" href="/css/challenge.css">
+  <link rel="stylesheet" type="text/css" href="/css/board.css">
+  <link rel="stylesheet" type="text/css" href="/css/Login.css">
+
+  <script defer src="/js/main.js"></script>
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Interactive Balance Scale</title>
+  <link rel="stylesheet" href="./src/css/normalize.css" />
+  <style>
+      #canvas {
+          width: 800px;  // 원하는 크기 설정
+      height: 600px;
+          display: block;  // 블록 레벨 요소로 설정
+      margin: auto;    // 페이지 중앙에 배치
+      }
+  </style>
+
+  <script async src="https://ga.jspm.io/npm:es-module-shims@1.7.2/dist/es-module-shims.js"></script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://unpkg.com/three@0.152.2/build/three.module.js",
+        "three/examples/jsm/": "https://unpkg.com/three@0.152.2/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+<div th:replace="~{fragments/header :: header}" /><br>
+
+<div id="controls_container" class="m-auto">
+  <input type="number" id="weight" placeholder="무게 입력 (kg)">
+  <select id="panSelection">
+    <option value="left">왼쪽 접시</option>
+    <option value="right">오른쪽 접시</option>
+  </select>
+  <button id="addWeightButton">무게 추가</button>
+</div>
+<canvas id="canvas"></canvas>
+
+<script src="/js/three.js" type="module"></script>
+
+</body>
+</html>

@@ -73,4 +73,11 @@ public class ChallengeController {
         return "challenge/listedBooks";
     }
 
+    @GetMapping("/scale")
+    public String scale(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model,
+                              RedirectAttributes redirectAttributes){
+
+        return "challenge/balanceScale";
+    }
+
 }
