@@ -1,54 +1,55 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-
+<!--<head th:replace="~{fragments/head :: head}">-->
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
     <link rel="stylesheet" type="text/css" href="/css/admin.css">
+    <link rel="stylesheet" href="/css/header.css">
+    <script defer src="/js/main.js"></script>
 </head>
 <body>
-<!--<div th:replace="~{fragments/header :: header}" /><br>-->
-<div id="slideCard">
-    <h1> 슬라이드 카드 설정 </h1>
+<div th:replace="~{fragments/header :: header}" /><br>
+    <div id="slideCard">
+        <h1> 슬라이드 카드 설정 </h1>
 
-        <table>
-            <thead>
-                <th th:width="80">슬라이드 순서</th>
-                <th th:width="300">도서 제목</th>
-                <th th:width="150">도서 ISBN13</th>
-                <th th:width="100">등록일자</th>
-                <th th:width="200">슬라이드 파일</th>
-                <th> 삭제 </th>
-            </thead>
-            <tbody id="slideTable">
-            <tr th:each="card, index : ${slideCard}" th:data-id="${card.id}" draggable="true" id="slide">
-                <td th:text="${index.index + 1}">1</td>
-                <td th:if="${card.book == null}" > ISBN13 값이 잘못 되었습니다.<br>삭제 후 재생성 바람. </td>
-                <td th:unless="${card.book == null}" th:text="${card.book.getTitle()}">데일 카네기 인간관계론</td>
-                <td th:text="${card.ISBN13}"> 9791187142560 </td>
-                <td th:text="${card.addDate}">2024-04-07</td>
-                <td>
-                    <div th:if="${card.book == null}"> ISBN13 값 오류 </div>
-                    <img th:unless="${card.book == null}" th:src="@{/images/slides/{fileName}(fileName=${card.slideFileName})}" th:alt="${card.slideFileName}">
-                </td>
-                <td>
-                    <input type="button" value="삭제" th:onclick="|location.href='/slide/'+ @{${card.id}} |"/>
+            <table>
+                <thead>
+                    <th th:width="80">슬라이드 순서</th>
+                    <th th:width="300">도서 제목</th>
+                    <th th:width="150">도서 ISBN13</th>
+                    <th th:width="100">등록일자</th>
+                    <th th:width="200">슬라이드 파일</th>
+                    <th th:width="50"> 삭제 </th>
+                </thead>
+                <tbody id="slideTable">
+                <tr th:each="card, index : ${slideCard}" th:data-id="${card.id}" draggable="true" id="slide">
+                    <td th:text="${index.index + 1}">1</td>
+                    <td th:if="${card.book == null}" > ISBN13 값이 잘못 되었습니다.<br>삭제 후 재생성 바람. </td>
+                    <td th:unless="${card.book == null}" th:text="${card.book.getTitle()}">데일 카네기 인간관계론</td>
+                    <td th:text="${card.ISBN13}"> 9791187142560 </td>
+                    <td th:text="${card.addDate}">2024-04-07</td>
+                    <td>
+                        <div th:if="${card.book == null}"> ISBN13 값 오류 </div>
+                        <img th:unless="${card.book == null}" th:src="@{/images/slides/{fileName}(fileName=${card.slideFileName})}" th:alt="${card.slideFileName}">
+                    </td>
+                    <td>
+                        <input type="button" value="삭제" th:onclick="|location.href='/slide/'+ @{${card.id}} |"/>
 
-                </td>
-            </tr>
-            </tbody>
-        </table>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
 
-    <form id="slideForm" action="/slide" method="post" enctype="multipart/form-data">
-        <span> ISBN13 입력 : </span>
-        <input type="number" name="ISBN13" id="ISBN13" placeholder="13자리를 입력해 주세요."/> <br>
-        <span> 슬라이드 파일 (파일 형식 JPG 또는 PNG / 파일 사이즈 1280 x 400 px) : </span><br>
-        <input type="file" name="file" id="file"/>
-        <input type="hidden" name="idx" th:value="${slideCard.size()+1}">
-        <input type="button" onclick="fileUpload(form)" value="업로드">
-    </form>
-
-</div>
+        <form id="slideForm" action="/slide" method="post" enctype="multipart/form-data">
+            <span> ISBN13 입력 : </span>
+            <input type="number" name="ISBN13" id="ISBN13" placeholder="13자리를 입력해 주세요."/> <br>
+            <span> 슬라이드 파일 (파일 형식 JPG 또는 PNG / 파일 사이즈 1280 x 400 px) : </span><br>
+            <input type="file" name="file" id="file"/>
+            <input type="hidden" name="idx" th:value="${slideCard.size()+1}">
+            <input type="button" onclick="fileUpload(form)" value="업로드">
+        </form>
+    </div>
 </body>
 </html>
 

@@ -48,21 +48,6 @@ document.querySelector('.memo').addEventListener('click', function(event) {
         if (event.target.classList.contains('left')) {
             // alert('왼쪽 화살표를 클릭했습니다!');
             curIdx--;
-            // if(curIdx < 0){
-            //     let lastClone = memoWrap.childNodes[memoInner.length - 1];
-            //     memoWrap.insertBefore(lastClone, firstClone);
-            //     // memoWrap.style.marginLeft = "-100%";
-            //
-            //     memoWrap.style.marginLeft = "0%";
-            //     memoWrap.style.transition = "all 600ms";
-            //
-            //     setTimeout(()=>{
-            //         memoWrap.style.marginLeft = -(memoInner.length) * 100 + "%";
-            //         memoWrap.style.transition = "0s";
-            //         curIdx = memoInner.length-1;
-            //     },600)
-            //
-            // }
             if(curIdx < 0){
                 curIdx = memoInner.length - 1;
             }

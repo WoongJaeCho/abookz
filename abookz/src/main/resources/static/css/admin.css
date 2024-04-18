@@ -1,18 +1,21 @@
-#slideCard{
-    margin: 10px auto;
 
+
+#slideCard{
+    width: 1280px;
+    margin: 10px auto;
 }
 
-#slideCard h1{
+#slideCard h1 {
     font-size: 2em;
     font-weight: bold;
+    text-align: center;
 }
 
 #slideCard table {
     text-align: center;
     justify-content: center;
-    border: 1px solid black;
-
+    /*border: 1px solid black;*/
+    margin: 10px auto;
 }
 #slideCard table th{
     background-color: #a17883;
@@ -20,7 +23,7 @@
 
 #slideCard table tr, 
 #slideCard table td{
-    border: 1px solid black;
+    /*border: 1px solid black;*/
     background-color: #EEE;
 }
 #slideCard table td img{
@@ -33,6 +36,7 @@
 #slideCard #slideForm{
     margin-top: 20px;
     /*display: flex;*/
+    margin-left: 200px;
 }
 #slideCard #slideForm #ISBN13{
     margin-bottom: 10px;

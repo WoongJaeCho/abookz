@@ -26,6 +26,10 @@ public class MemoService {
         memoRepository.save(memoEntity);
     }
 
+    public void delete(Long id) {
+        memoRepository.deleteById(id);
+    }
+
     public List<MemoDTO> findAllbyId(Long bookshelfId){
         List<MemoEntity> memoEntities = memoRepository.findAllByBookShelf_id(bookshelfId);
         List<MemoDTO> memoDTOS = new ArrayList<>();
