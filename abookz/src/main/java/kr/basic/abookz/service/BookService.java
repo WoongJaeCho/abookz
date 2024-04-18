@@ -53,7 +53,7 @@ public class BookService {
     public BookDTO findByDTOISBN13(Long ISBN13){
         BookEntity entities = bookrepository.findByISBN13(ISBN13);
       if (entities == null) {
-        return null; // 또는 custom logic
+        return null;
       }
 
         return mapEntityToDTO(entities);

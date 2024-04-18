@@ -74,24 +74,27 @@ public class BookShelfService {
         List<BookShelfEntity> entities = bookShelfRepository.findAllByMemberIdAndTag(memId,tagEnum);
         return entities.stream().map(this::mapEntityToDTO).collect(Collectors.toList());
     }
+    public List<BookShelfDTO> findAllByMemberIdAndTagOrderByIdDesc(Long memId,TagEnum tagEnum){
+        List<BookShelfEntity> entities = bookShelfRepository.findAllByMemberIdAndTagOrderByIdDesc(memId,tagEnum);
+        return entities.stream().map(this::mapEntityToDTO).collect(Collectors.toList());
+    }
     public String bookShelfUpdate(BookShelfDTO bookShelfDTO){
         BookShelfEntity bookShelf = bookShelfRepository.findById(bookShelfDTO.getId())
                 .orElseThrow(() -> new EntityNotFoundException("BookShelf not found with id " + bookShelfDTO.getId()));
+        System.out.println("bookShelf = " + bookShelf);
         BookShelfEntity bookShelfSave = mapDTOToEntity(bookShelfDTO);
+        System.out.println("bookShelfSave = " + bookShelfSave);
         if(bookShelfDTO.getTag() != null) {
-            bookShelf = BookShelfEntity.builder()
-                    .startDate(bookShelfSave.getStartDate())
-                    .tag(bookShelfSave.getTag()).
-                    build();
+            bookShelf.setStartDate(bookShelfSave.getStartDate());
+            bookShelf.setTag(bookShelfSave.getTag());
+
             return "성공";
         }
-           bookShelf =   BookShelfEntity.builder()
-                        .tag(bookShelfSave.getTag())
-                        .endDate(bookShelfSave.getEndDate())
-                        .currentPage(bookShelfSave.getCurrentPage())
-                        .targetDate(bookShelfSave.getTargetDate())
-                        .build();
-//        bookShelfRepository.save(bookShelf);
+        bookShelf.setStartDate(bookShelfSave.getStartDate());
+        bookShelf.setTag(bookShelfSave.getTag());
+        bookShelf.setEndDate(bookShelfSave.getEndDate());
+        bookShelf.setCurrentPage(bookShelfSave.getCurrentPage());
+        bookShelf.setTargetDate(bookShelfSave.getTargetDate());
         return"성공";
     }
     public String deleteBookShelf(Long Id,Long memberId){

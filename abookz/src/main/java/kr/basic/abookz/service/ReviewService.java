@@ -23,62 +23,71 @@ import java.util.Optional;
 @Transactional
 public class ReviewService {
 
-    private final ReviewRepository reviewRepository;
-    private final ModelMapper mapper;
-    private final BookShelfService bookShelfService;
-    private final EntityManager em;
+  private final ReviewRepository reviewRepository;
+  private final ModelMapper mapper;
+  private final BookShelfService bookShelfService;
+  private final LikeService likeService;
+  private final EntityManager em;
 
 
-    public ReviewEntity save(ReviewDTO reviewDTO)  {
-        ReviewEntity reviewEntity = mapDTOToEntity(reviewDTO);
-        return reviewRepository.save(reviewEntity);
+  public ReviewEntity save(ReviewDTO reviewDTO) {
+    ReviewEntity reviewEntity = mapDTOToEntity(reviewDTO);
+    return reviewRepository.save(reviewEntity);
+  }
+
+  public ReviewDTO findByBookShelfId(Long id) {
+    Optional<ReviewEntity> findReview = reviewRepository.findByBookShelfId(id);
+
+    return mapEntityToDTO(findReview.orElse(null));
+  }
+
+  private ReviewDTO mapEntityToDTO(ReviewEntity entity) {
+    if (entity == null) {
+      return null;
     }
+    ReviewDTO reviewDTO = mapper.map(entity, ReviewDTO.class);
+    BookShelfDTO bookShelfDTO = mapper.map(entity.getBookShelf(), BookShelfDTO.class);
+    reviewDTO.setBookShelfDTO(bookShelfDTO);
+    return reviewDTO;
+  }
 
-    public ReviewDTO findByBookShelfId(Long id){
-        Optional<ReviewEntity> findReview = reviewRepository.findByBookShelfId(id);
-
-        return mapEntityToDTO(findReview.orElse(null));
+  private ReviewEntity mapDTOToEntity(ReviewDTO reviewDTO) {
+    ReviewEntity reviewEntity = mapper.map(reviewDTO, ReviewEntity.class);
+    if (reviewDTO.getBookShelfDTO() != null) {
+      Long bookShelfId = reviewDTO.getBookShelfDTO().getId();
+      BookShelfEntity bookShelfEntity = bookShelfService.mapDTOToEntity(bookShelfService.findById(bookShelfId));
+      reviewEntity.setBookShelf(bookShelfEntity);
     }
+    return reviewEntity;
+  }
 
-    private ReviewDTO mapEntityToDTO(ReviewEntity entity) {
-        if (entity ==null) {
-            return null;
-        }
-        ReviewDTO reviewDTO = mapper.map(entity, ReviewDTO.class);
-        BookShelfDTO bookShelfDTO = mapper.map(entity.getBookShelf(), BookShelfDTO.class);
-        reviewDTO.setBookShelfDTO(bookShelfDTO);
-        return  reviewDTO;
-    }
-    private ReviewEntity mapDTOToEntity(ReviewDTO reviewDTO) {
-        ReviewEntity reviewEntity = mapper.map(reviewDTO, ReviewEntity.class);
-        if(reviewDTO.getBookShelfDTO() != null){
-            Long bookShelfId = reviewDTO.getBookShelfDTO().getId();
-            BookShelfEntity bookShelfEntity = bookShelfService.mapDTOToEntity(bookShelfService.findById(bookShelfId)) ;
-            reviewEntity.setBookShelf(bookShelfEntity);
-        }
-        return reviewEntity;
-    }
+  public Optional<ReviewEntity> findById(Long id) {
+    return reviewRepository.findById(id);
+  }
 
-    public Optional<ReviewEntity> findById(Long id) {
-        return reviewRepository.findById(id);
-    }
+  public ReviewEntity Update(ReviewDTO reviewDTO) {
+    ReviewEntity reviewEntity = reviewRepository.findById(reviewDTO.getId())
+        .orElseThrow(() -> new EntityNotFoundException("Review not found with id: " + reviewDTO.getId()));
 
-    public ReviewEntity Update(ReviewDTO reviewDTO){
-        ReviewEntity reviewEntity = reviewRepository.findById(reviewDTO.getId())
-            .orElseThrow(() -> new EntityNotFoundException("Review not found with id: " + reviewDTO.getId()));
+    reviewEntity.setContent(reviewDTO.getContent());
+    reviewEntity.setIsSpoilerActive(reviewDTO.getIsSpoilerActive());
 
-        reviewEntity.setReviewGrade(reviewDTO.getReviewGrade());
-        reviewEntity.setContent(reviewDTO.getContent());
-        reviewEntity.setIsSpoilerActive(reviewDTO.getIsSpoilerActive());
+    return reviewEntity;
+  }
 
-        return reviewEntity;
-    }
-
-    public Page<ReviewEntity> getReviewsByBookId(Long bookId, Pageable pageable) {
-        return reviewRepository.findByBookShelf_Book_Id(bookId,pageable);
-    }
+  public Page<ReviewEntity> getReviewsByISBN13(String ISBN13, Pageable pageable) {
+    return reviewRepository.findByBookISBN13(ISBN13, pageable);
+  }
 
   public Page<ReviewEntity> findAll(Pageable pageable) {
-      return reviewRepository.findAll(pageable);
+    return reviewRepository.findAll(pageable);
+  }
+
+  public Page<ReviewEntity> findReviewsByContent( String ISBN13, String query,Pageable pageable) {
+    return reviewRepository.findByBookISBN13AndContent(ISBN13, query, pageable);
+  }
+
+  public Page<ReviewEntity> findReviewsByLikes(String ISBN13, String query, Pageable pageable) {
+    return reviewRepository.findByBookISBN13AndContentSortedByLikes(ISBN13, query, pageable);
   }
 }

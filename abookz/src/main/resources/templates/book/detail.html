@@ -44,6 +44,25 @@
              </td>
          </tr>
          <tr class="detail_tr">
+
+             <td class="detail_td">알라딘 평점 :</td>
+                 <td id="bookDetailGrade" th:attr="grade=${book.aladinGrade}">
+                    <div class="aladdinGrade rating rating-md rating-half">
+                     <input type="radio" name="rating-7" class="rating-hidden" id="notRating"/>
+                     <input type="radio" name="rating-7" class="aladinStar mask mask-star-2 bg-yellow-400 mask-half-1"  data-rating="0.5" disabled/>
+                     <input type="radio" name="rating-7" class="aladinStar mask mask-star-2 bg-yellow-400 mask-half-2" data-rating="1.0" disabled/>
+                     <input type="radio" name="rating-7" class="aladinStar mask mask-star-2 bg-yellow-400 mask-half-1" data-rating="1.5" disabled/>
+                     <input type="radio" name="rating-7" class="aladinStar mask mask-star-2 bg-yellow-400 mask-half-2" data-rating="2.0" disabled/>
+                     <input type="radio" name="rating-7" class="aladinStar mask mask-star-2 bg-yellow-400 mask-half-1" data-rating="2.5" disabled/>
+                     <input type="radio" name="rating-7" class="aladinStar mask mask-star-2 bg-yellow-400 mask-half-2" data-rating="3.0" disabled/>
+                     <input type="radio" name="rating-7" class="aladinStar mask mask-star-2 bg-yellow-400 mask-half-1" data-rating="3.5" disabled/>
+                     <input type="radio" name="rating-7" class="aladinStar mask mask-star-2 bg-yellow-400 mask-half-2" data-rating="4.0" disabled/>
+                     <input type="radio" name="rating-7" class="aladinStar mask mask-star-2 bg-yellow-400 mask-half-1" data-rating="4.5" disabled/>
+                     <input type="radio" name="rating-7" class="aladinStar mask mask-star-2 bg-yellow-400 mask-half-2" data-rating="5.0" disabled/>
+                     </div>
+                 </td>
+         </tr>
+         <tr class="detail_tr">
              <td class="detail_want" colspan="4">
                  <button id="btn_want" th:isbn13="${book.ISBN13}" th:onclick="wantToRead(this.getAttribute('isbn13'))">Want To Read</button></td>
          </tr>
@@ -54,12 +73,13 @@
          </tr>
          <tr class="detail_tr">
              <td class="detail_td" colspan="4">
-                 <a class="detail_link" th:href="${book.link}" target="_blank">알라딘링크</a>
+                 <a class="detail_link" th:href="${book.link}" target="_blank">알라딘바로가기</a>
              </td>
          </tr>
+         <input type="hidden" id="ISBN13" th:value="${book.ISBN13}">
      </table>
  </div>
-    <hr class="reviewLine">    <!--아래는 아직 미구현-->
+<!--    <hr class="reviewLine">    &lt;!&ndash;아래는 아직 미구현&ndash;&gt;-->
     <div th:replace="~{review/detailReview :: detailReview}" /><br>
 
 <!--    <div class="review">-->

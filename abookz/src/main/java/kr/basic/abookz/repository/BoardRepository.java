@@ -24,5 +24,5 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Long> {
   List<BoardEntity> findByCategory(Category category);
   Page<BoardEntity> findAllByCategory(Pageable pageable, Category category, PageRequest pageRequest);
 
-  List<BoardEntity> findByCategoryOrderByCreateDateDesc(Category category);
+  List<BoardEntity> findByCategoryOrderByIdDesc(Category category);
 }

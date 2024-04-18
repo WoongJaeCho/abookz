@@ -55,12 +55,35 @@ public class AladinService {
             vo = getOneDetail(getOneBookPage);
         return  vo;
     }
-    public List<BookDTO> choiceGetCategoryList(String category) throws Exception{
+    public  Page<BookDTO> choiceGetCategoryList(String category ,Pageable pageable) throws Exception{
         List<BookDTO>  vo = null;
         String url = getUrlCategoryList(category);
         String choice = restTemplate.getForObject(url,String.class);
-                vo=parseItemsFromJson(choice);
-        return vo;
+        vo=parseItemsFromJson(choice);
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), vo.size());
+        List<BookDTO> books = new ArrayList<>();
+
+        if (start <= end) {
+            books = vo.subList(start, end);
+        }
+        Page<BookDTO> page = new PageImpl<>(books, pageable, vo.size());
+        return page;
+    }
+    public Page<BookDTO> getQueryPagingList(String type, Pageable pageable) throws  Exception{
+        List<BookDTO> vo = null;
+        String url = getUrlQueryTypeList(type);
+        String query = restTemplate.getForObject(url,String.class);
+        vo=parseItemsFromJson(query);
+        int start = (int) pageable.getOffset();
+        int end = Math.min((start + pageable.getPageSize()), vo.size());
+        List<BookDTO> books = new ArrayList<>();
+
+        if (start <= end) {
+            books = vo.subList(start, end);
+        }
+        Page<BookDTO> page = new PageImpl<>(books, pageable, vo.size());
+        return  page;
     }
     public List<BookDTO> getQueryTypeList(String type) throws  Exception{
         List<BookDTO> vo = null;
@@ -185,7 +208,9 @@ public class AladinService {
         JSONObject itemObject = jsonArray.getJSONObject(0);
         JSONObject subInfoObject = itemObject.getJSONObject("subInfo");
         JSONObject ratingInfo = subInfoObject.getJSONObject("ratingInfo");
+        System.out.println("ratingInfo = " + ratingInfo);
         Long aladinGrade = ratingInfo.getLong("ratingScore");
+        System.out.println("aladinGrade = " + aladinGrade);
         JSONObject packingInfo = subInfoObject.getJSONObject("packing");
         int weight = packingInfo.getInt("weight");
         int sizeDepth = packingInfo.getInt("sizeDepth");
@@ -217,6 +242,7 @@ public class AladinService {
                 .ISBN13(isbn13)
                 .cover(cover)
                 .description(description)
+                .aladinGrade(aladinGrade)
                 .link(link)
                 .itemPage(itemPage)
                 .weight(weight)
@@ -239,6 +265,7 @@ public class AladinService {
         String author = itemObject.getString("author");
         String publisher = itemObject.getString("publisher");
         String change = itemObject.getString("pubDate");
+        Long aladinGrade = ratingInfo.getLong("ratingScore");
         LocalDate pubDate = LocalDate.parse(change, formatter);
         /*CategoryEntity categoryName= CategoryEntity.fromString(itemObject.getString("categoryName"));*/
         String cover = itemObject.getString("cover");
@@ -259,6 +286,7 @@ public class AladinService {
                 .cover(cover)
                 .description(description)
                 .link(link)
+                .aladinGrade(aladinGrade)
                 .itemPage(itemPage)
                 .weight(weight)
                 .sizeDepth(sizeDepth)
