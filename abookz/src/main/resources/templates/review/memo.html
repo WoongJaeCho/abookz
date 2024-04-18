@@ -15,7 +15,7 @@
             <div class="text_memo">
                 <div>
                     <p> 페이지 </p>
-                    <input type="number" class="page" id="page" name="page" min="1" th:max="${book.itemPage}" placeholder="페이지를 입력하세요." /> <br>
+                    <input type="number" class="page" id="page" name="page" min="1" th:max="${book.itemPage}" placeholder="페이지를 입력하세요." required/> <br>
                 </div>
                 <div>
                     <p> 작성 시간 </p>
@@ -23,7 +23,7 @@
                 </div>
                 <div>
                     <p> 인용문구 </p>
-                    <textarea id="quotes" name="quotes" placeholder="인상 깊은 문구를 입력하세요." ></textarea> <br>
+                    <textarea id="quotes" name="quotes" placeholder="인상 깊은 문구를 입력하세요." required></textarea> <br>
                 </div>
                 <div>
                     <p> 나의 생각 </p>
