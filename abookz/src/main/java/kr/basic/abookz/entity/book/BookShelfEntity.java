@@ -42,12 +42,11 @@ public class BookShelfEntity {
   private int dailyPage;//하루목표 페이지
   //50page
   private int currentPage; //현재읽은페이지
-  @Column(name = "BOOK_SHELF_GRADE",  columnDefinition = "DOUBLE DEFAULT '0.0'")
   private Double bookShelfGrade;
 
   @Enumerated(EnumType.STRING)
   @Column(columnDefinition = "VARCHAR(20) DEFAULT 'WANT_TO_READ'")
-  private TagEnum tag; // READ,WANT_TO_READ,CURRENTLY_READING
+  private TagEnum tag = TagEnum.WANT_TO_READ;  // READ,WANT_TO_READ,CURRENTLY_READING
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "MEM_ID",foreignKey = @ForeignKey(name = "BOOKSHELF_IBFK_1"))
