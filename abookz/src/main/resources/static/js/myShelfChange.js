@@ -104,8 +104,7 @@ function loadMoreBooks(){
 .then(response => response.json())
         .then(data => {
             const books = data.content;
-            console.log("Is last page:", data.content.last);
-            console.log("Is last page:", data.last);
+
             if (data.last) {
                 document.getElementById('moreSlice').style.display = 'none';
             }

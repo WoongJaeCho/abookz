@@ -76,13 +76,11 @@ public class BookShelfService {
                 bookShelfEntity.getMember().getId(), bookShelfEntity.getBook().getId());
 
         if (existingBookShelf == null) {
-            // 책꽂이가 존재하지 않으면 새로 저장
             bookShelfRepository.save(bookShelfEntity);
             return "저장";
-        } else {
-            // 이미 책꽂이에 존재하면 실패 반환
-            return "실패";
         }
+            return "실패";
+
     }
     public List<BookShelfDTO> findAllByMemberIdAndTag(Long memId,TagEnum tagEnum){
         List<BookShelfEntity> entities = bookShelfRepository.findAllByMemberIdAndTag(memId,tagEnum);
@@ -106,14 +104,12 @@ public class BookShelfService {
                 if(bookShelf.getStartDate() == null) {
                     bookShelf.setStartDate(now);
                 }
-                System.out.println("값체크 Read");
                 bookShelf.setEndDate(now);
                 bookShelf.setTag(tagEnum);
                 bookShelf.setBookShelfGrade(bookShelfSave.getBookShelfGrade());
                 bookShelf.setCurrentPage(bookShelf.getBook().getItemPage());
                 return "성공";
             }else if(tagEnum == TagEnum.CURRENTLY_READING) {
-                System.out.println("값체크 커런트");
                 bookShelfSave = builder.startDate(now).build();
                 bookShelf.setStartDate(bookShelfSave.getStartDate());
                 bookShelf.setTag(tagEnum);
@@ -164,7 +160,6 @@ public class BookShelfService {
           System.out.println("bookShelfEntity = " + bookShelfEntity);
           return "fail";
       }
-        System.out.println(" 성공" );
         bookShelfRepository.deleteById(bookShelfEntity.getId());
       return "suc";
     }

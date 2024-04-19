@@ -46,9 +46,24 @@ function fetchBooks(query, page, size) {
         if (bookContainer) {
           bookContainer.style.display = 'none';
         }
-
+        let bookWarpContainer = document.getElementById('bookWrap');
+        if(bookWarpContainer){
+          bookWarpContainer.style.display = 'none';
+        }
+        let controlsContainer =document.getElementById('controls_container');
+        if(controlsContainer){
+          controlsContainer.style.display = 'none';
+        }
+        let canvasDiv= document.getElementById('canvas');
+        if(canvasDiv){
+          canvasDiv.style.display='none';
+        }
+        let boardContainer = document.getElementById('boardContainer');
+          if(boardContainer){
+            boardContainer.style.display='none';
+          }
       } else {
-        resultsDiv.textContent = 'No results found';
+        resultsDiv.textContent = '검색 결과가 없습니다';
       }
     })
     .catch(error => {
