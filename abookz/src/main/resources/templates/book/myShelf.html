@@ -16,8 +16,9 @@
     <div id="shelf_left">
 <hr class="shelfLeft_hr">
     <p class="bookShelves">내 서재들</p>
-    <a href="/myshelf/tag/ALL" class="myShelf_" th:text="'전체(' + ${read+want+current} + ')'">1</a>
-    <br>
+    <a th:if="${tagValue}" href="/myshelf/tag/ALL" class="myShelf_" th:text="'전체(' + ${read+want+current} + ')'">1</a>
+        <a th:unless="${tagValue}" href="/myshelf/tag/ALL" class="myShelf_" th:text="'전체(' + ${books.size()} + ')'">1</a>
+        <br>
     <a href="/myshelf/tag/READ" class="myShelf_" th:text="'읽은 책(' + ${read} + ')'">1</a>
     <br>
     <a href="/myshelf/tag/WANT_TO_READ" class="myShelf_" th:text="'읽고싶은 책(' + ${want} + ')'">1</a>

@@ -43,10 +43,8 @@ public class BookShelfController {
                 .map(item -> item.getTag())
                 .filter(tag -> tag != null && tag.getKorean().equals("읽은 책"))
                 .count();
-        int want = (int) myShelf.stream()
-                .map(BookShelfDTO::getTag)
-                .filter(tag -> tag == null || tag == TagEnum.READ)
-                .count();
+        int want=(int)myShelf.stream().map(item -> item.getTag())
+                .filter(tag -> tag != null && tag.getKorean().equals("읽고싶은 책")).count();
         int current=(int)myShelf.stream().map(item -> item.getTag())
                 .filter(tag -> tag != null && tag.getKorean().equals("읽고있는 책")).count();
 
@@ -73,12 +71,13 @@ public class BookShelfController {
                              @RequestParam(defaultValue = "0") int page,
                              @RequestParam(defaultValue = "5") int size){
         Long memId= principalDetails.getMember().getId();
+
         System.out.println("tag.toUpperCase() = " + tag.toUpperCase());
         List<BookShelfDTO> myShelf;
         List<BookShelfDTO> count = shelfService.findAllDTOByMemberIdOrderByIdDesc(memId);
         Slice<BookShelfDTO> myShelfSlice;
-        if (tag.equalsIgnoreCase("ALL")) {
-            myShelf = shelfService.findAllDTOByMemberId(memId);
+        if (tag.equals("ALL")) {
+            myShelf = shelfService.findAllDTOByMemberIdOrderByIdDesc(memId);
             myShelfSlice =shelfService.SliceBookShelfDTO(memId,page,size);
         } else {
             try {
