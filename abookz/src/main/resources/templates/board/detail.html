@@ -33,9 +33,9 @@
     <tr>
       <td colspan="3" id="btns">
         <a th:href="@{/board/paging(page=${page})}">목록</a>
-        <a th:href="@{|/board/update/${board.id}|}">수정</a>
+        <a th:if="${writer == board.writer}" th:href="@{|/board/update/${board.id}|}">수정</a>
         <div th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? true : false}">
-          <a th:href="@{|/board/delete/${board.id}|}">삭제</a>
+          <a th:if="${writer == board.writer}" th:href="@{|/board/delete/${board.id}|}">삭제</a>
         </div>
       </td>
     </tr>
