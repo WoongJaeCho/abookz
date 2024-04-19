@@ -2,6 +2,7 @@ package kr.basic.abookz.entity.board;
 
 import jakarta.persistence.*;
 import kr.basic.abookz.dto.BoardDTO;
+import kr.basic.abookz.entity.member.MemberEntity;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -32,6 +33,10 @@ public class BoardEntity extends BaseEntity {
   private LocalDate createDate; // 작성날짜
   @UpdateTimestamp
   private LocalDate updateDate; // 수정날짜
+
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "MEM_ID", foreignKey = @ForeignKey(name = "BOARD_IBFK_1"))
+  private MemberEntity member; // 리뷰 작성 회원
 
   public static BoardEntity toSaveEntity(BoardDTO boardDTO){
     BoardEntity boardEntity = new BoardEntity();
