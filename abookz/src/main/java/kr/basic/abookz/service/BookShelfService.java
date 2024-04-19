@@ -103,12 +103,14 @@ public class BookShelfService {
         TagEnum tagEnum =bookShelfDTO.getTag();
         System.out.println("tagEnum = " + tagEnum);
             if(tagEnum == TagEnum.READ) {
+                if(bookShelf.getStartDate() == null) {
+                    bookShelf.setStartDate(now);
+                }
                 System.out.println("값체크 Read");
-                bookShelfSave = builder.endDate(now).build();
-                bookShelf.setEndDate(bookShelfSave.getEndDate());
+                bookShelf.setEndDate(now);
                 bookShelf.setTag(tagEnum);
                 bookShelf.setBookShelfGrade(bookShelfSave.getBookShelfGrade());
-                bookShelf.setCurrentPage(bookShelfSave.getCurrentPage());
+                bookShelf.setCurrentPage(bookShelf.getBook().getItemPage());
                 return "성공";
             }else if(tagEnum == TagEnum.CURRENTLY_READING) {
                 System.out.println("값체크 커런트");
@@ -122,6 +124,7 @@ public class BookShelfService {
                 bookShelf.setTag(tagEnum);
                     bookShelf.setEndDate(null);
               bookShelf.setStartDate(null);
+              bookShelf.setCurrentPage(0);
             return "성공";
 
     }
