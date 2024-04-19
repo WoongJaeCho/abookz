@@ -134,20 +134,20 @@ public class AladinService {
             String publisher = itemObject.getString("publisher");
             String change = itemObject.getString("pubDate");
             LocalDate pubDate = LocalDate.parse(change, formatter);
-           String categoryName = itemObject.getString("categoryName");
+            String categoryName = itemObject.getString("categoryName");
             int index = categoryName.indexOf(">");
             String[] categories = categoryName.split(">");
             CategoryEnum cate = null;
-            String selectedCategory ="";
-            if(categories.length==0 || categories.length == 1 ) {
-                for(CategoryEnum category : CategoryEnum.values()){
-                    if(category.getCategoryName().equals(selectedCategory)){
-                    cate=category;
-                        }
+            String selectedCategory = "";
+            if (categories.length == 0 || categories.length == 1) {
+                for (CategoryEnum category : CategoryEnum.values()) {
+                    if (category.getCategoryName().equals(selectedCategory)) {
+                        cate = category;
+                    }
                 }
 
-            }else {
-                 selectedCategory = categories[1].trim().toLowerCase();
+            } else {
+                selectedCategory = categories[1].trim().toLowerCase();
                 System.out.println("selectedCategory = " + selectedCategory);
                 for (CategoryEnum category : CategoryEnum.values()) {
                     if (category.getCategoryName().equals(selectedCategory)) {
@@ -158,28 +158,33 @@ public class AladinService {
             }
             String cover = itemObject.getString("cover");
             String description = itemObject.getString("description");
-
             String link = itemObject.getString("link");
-            //979 978
-            if(itemObject.has("isbn13") || itemObject.getString("isbn13").isEmpty()) {
-                String isbn = itemObject.getString("isbn");
-                String isbn13 = itemObject.getString("isbn13");
-                BookDTO bookDTO = BookDTO.builder()
-                        .title(title)
-                        .author(author)
-                    /*    .categoryName(cate)*/
-                        .publisher(publisher)
-                        .pubDate(pubDate)
-                        .ISBN13(isbn13)
-                        .ISBN(isbn)
-                        .cover(cover)
-                        .description(description)
-                        .link(link)
-                        // .itemPage(itemPage) // 페이지 수를 처리하는 로직을 추가해야 한다면 이 부분을 활성화합니다.
-                        .build();
-                items.add(bookDTO);
-            }
+            String isbngetCheck = itemObject.getString("isbn13");
+            if (isbngetCheck.length()>=3) {
 
+                String isIsbn13BookCheck = isbngetCheck.substring(0, 3);
+
+                //979 978
+                if (isIsbn13BookCheck.equals("978") || isIsbn13BookCheck.equals("979")) {
+                    String isbn = itemObject.getString("isbn");
+                    String isbn13 = itemObject.getString("isbn13");
+                    BookDTO bookDTO = BookDTO.builder()
+                            .title(title)
+                            .author(author)
+                            /*    .categoryName(cate)*/
+                            .publisher(publisher)
+                            .pubDate(pubDate)
+                            .ISBN13(isbn13)
+                            .ISBN(isbn)
+                            .cover(cover)
+                            .description(description)
+                            .link(link)
+                            // .itemPage(itemPage) // 페이지 수를 처리하는 로직을 추가해야 한다면 이 부분을 활성화합니다.
+                            .build();
+                    items.add(bookDTO);
+                }
+
+            }
         }
         return items;
     }
