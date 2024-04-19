@@ -35,10 +35,6 @@ public class BookShelfController {
                              @RequestParam(defaultValue = "0") int page,
                              @RequestParam(defaultValue = "5") int size  ){
         Long id = principalDetails.getMember().getId();
-        if(id == null) {
-            redirectAttributes.addFlashAttribute("fail", "로그인이후 가능합니다");
-            return "member/loginForm";
-        }
         List<BookShelfDTO> myShelf =shelfService.findAllDTOByMemberIdOrderByIdDesc(id);
         Slice<BookShelfDTO> myShelfSlice = shelfService.SliceBookShelfDTO(id,page,size);
 
@@ -73,22 +69,22 @@ public class BookShelfController {
         return "book/myShelf";
     }
     @GetMapping("/myshelf/tag/{tag}")
-    public String myShelfTag(@PathVariable ("tag")String  tag, Model model,   @AuthenticationPrincipal PrincipalDetails principalDetails){
+    public String myShelfTag(@PathVariable ("tag")String  tag, Model model,   @AuthenticationPrincipal PrincipalDetails principalDetails,
+                             @RequestParam(defaultValue = "0") int page,
+                             @RequestParam(defaultValue = "5") int size){
         Long memId= principalDetails.getMember().getId();
         System.out.println("tag.toUpperCase() = " + tag.toUpperCase());
-        if(memId== null){
-            return "member/loginForm";
-        }
         List<BookShelfDTO> myShelf;
-        //밑에는 카운터용
-        List<BookShelfDTO> count = shelfService.findAllDTOByMemberId(memId);
+        List<BookShelfDTO> count = shelfService.findAllDTOByMemberIdOrderByIdDesc(memId);
+        Slice<BookShelfDTO> myShelfSlice;
         if (tag.equalsIgnoreCase("ALL")) {
             myShelf = shelfService.findAllDTOByMemberId(memId);
+            myShelfSlice =shelfService.SliceBookShelfDTO(memId,page,size);
         } else {
             try {
                 TagEnum tagEnum = TagEnum.valueOf(tag.toUpperCase());
                 myShelf = shelfService.findAllByMemberIdAndTagOrderByIdDesc(memId,tagEnum);
-                System.out.println(" myShelf= " +myShelf );
+                myShelfSlice =shelfService.SliceBookShelfDTOIdAndTag(memId,tagEnum,page,size);
             } catch (IllegalArgumentException e) {
                 // 태그가 유효하지 않은 경우의 처리
                 return "errorPage"; // 적절한 에러 페이지로 리다이렉트
@@ -98,25 +94,29 @@ public class BookShelfController {
 
         int read = (int) count.stream()
                 .map(BookShelfDTO::getTag)
-                .filter(tagEnum -> tagEnum != null && tagEnum.getKorean().equals("읽은책"))
+                .filter(tagEnum -> tagEnum != null && tagEnum.getKorean().equals("읽은 책"))
                 .count();
         int want = (int) count.stream()
                 .map(BookShelfDTO::getTag)
-                .filter(tagEnum -> tagEnum == null || tagEnum.getKorean().equals("읽고싶은책"))
+                .filter(tagEnum -> tagEnum == null || tagEnum.getKorean().equals("읽고싶은 책"))
                 .count();
         int current=(int)count.stream().map(BookShelfDTO::getTag)
-                .filter(tagEnum -> tagEnum != null && tagEnum.getKorean().equals("읽고있는책")).count();
+                .filter(tagEnum -> tagEnum != null && tagEnum.getKorean().equals("읽고있는 책")).count();
 
         List<BookDTO> books = myShelf.stream()
                 .map(BookShelfDTO::getBookDTO)
                 .flatMap(book -> bookService.findAllByIdOrderByIdDesc(book.getId()).stream())
                 .toList();
         System.out.println("books = " + books);
-        model.addAttribute("all", count);
+        model.addAttribute("tagValue", tag);
         model.addAttribute("read", read);
         model.addAttribute("want", want);
         model.addAttribute("current",current);
-        model.addAttribute("shelf", myShelf);
+        model.addAttribute("all",myShelf);
+        model.addAttribute("shelf",myShelf);
+        model.addAttribute("currentPage",page);
+        model.addAttribute("isLastPage", myShelfSlice.isLast());
+        model.addAttribute("shelfSlice",myShelfSlice);
         model.addAttribute("books",books);
         return "book/myShelf";
     }

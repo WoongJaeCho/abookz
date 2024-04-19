@@ -150,6 +150,11 @@ public class BookShelfService {
         Slice<BookShelfEntity> bookShelfSlice =bookShelfRepository.findAllByMemberIdOrderByIdDesc(id,pageable);
         return bookShelfSlice.map(this::mapEntityToDTO);
     }
+    public Slice<BookShelfDTO>  SliceBookShelfDTOIdAndTag(Long id,TagEnum tagEnum,int page, int size){
+        Pageable pageable = PageRequest.of(page,size);
+        Slice<BookShelfEntity> bookShelfSlice =bookShelfRepository.findAllByMemberIdAndTagOrderByIdDesc(id,tagEnum,pageable);
+        return bookShelfSlice.map(this::mapEntityToDTO);
+    }
     public String deleteBookShelf(Long id,Long memberId){
       BookShelfEntity bookShelfEntity = bookShelfRepository.findByIdAndMemberId(id,memberId);
       if(bookShelfEntity == null){
