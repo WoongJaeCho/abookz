@@ -8,9 +8,9 @@
 <body>
 <div th:replace="~{fragments/header :: header}"></div>
 <br>
-<div id="header">
+<div id="header" class="flex justify-center">
   <div id="boardTitle">
-    <h2>게시글 작성</h2>
+    <h1 class="m-auto">게시글 작성</h1>
   </div>
 </div>
 <div id="saveForm">
@@ -31,7 +31,8 @@
       </tr>
       <tr>
         <td>카테고리</td>
-        <td><input type="text" name="category" list="category" required>
+        <td>
+          <input type="text" name="category" list="category" required>
           <datalist id="category">
             <option value="FREE"></option>
             <option value="QUESTION"></option>

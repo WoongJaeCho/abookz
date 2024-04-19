@@ -58,6 +58,10 @@ function fetchBooks(query, page, size) {
         if(canvasDiv){
           canvasDiv.style.display='none';
         }
+        let listWrapDiv = document.getElementById('listWrap');
+        if(listWrapDiv){
+          listWrapDiv.style.display= 'none';
+        }
         let boardContainer = document.getElementById('boardContainer');
           if(boardContainer){
             boardContainer.style.display='none';

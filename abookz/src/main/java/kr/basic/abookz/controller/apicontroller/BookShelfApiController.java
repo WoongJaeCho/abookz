@@ -125,11 +125,17 @@ public class BookShelfApiController {
     public ResponseEntity<Slice<BookShelfDTO>> getMyShelf(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size
             , @RequestParam String tag
             , @AuthenticationPrincipal PrincipalDetails principalDetails) {
+        System.out.println("tag = " + tag);
         Long memberId = principalDetails.getMember().getId();
         if (tag.equals("null")) {
 
             Slice<BookShelfDTO> bookShelfDTO = bookShelfService.SliceBookShelfDTO(memberId, page, size);
             System.out.println("bookShelfDTO = " + bookShelfDTO);
+            return ResponseEntity.ok(bookShelfDTO);
+        }
+        else if(tag.equals("ALL")){
+
+            Slice<BookShelfDTO> bookShelfDTO = bookShelfService.SliceBookShelfDTO(memberId,page,size);
             return ResponseEntity.ok(bookShelfDTO);
         }
             TagEnum tagEnum = TagEnum.valueOf(tag.toUpperCase());

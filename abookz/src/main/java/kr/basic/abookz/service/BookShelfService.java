@@ -133,8 +133,11 @@ public class BookShelfService {
         bookShelf.setCurrentPage(bookShelfSave.getCurrentPage());
         bookShelf.setTargetDate(bookShelfSave.getTargetDate());
         LocalDateTime now = LocalDateTime.now();
-        int check =bookShelf.getBook().getItemPage();
-        if(bookShelfSave.getCurrentPage() == check) {
+        int itemPage =bookShelf.getBook().getItemPage();
+        if(bookShelfSave.getCurrentPage() == itemPage) {
+            if(bookShelf.getStartDate() == null){
+                bookShelf.setStartDate(now);
+            }
             bookShelf.setTag(TagEnum.READ);
             bookShelf.setEndDate(now);
             return "성공";
