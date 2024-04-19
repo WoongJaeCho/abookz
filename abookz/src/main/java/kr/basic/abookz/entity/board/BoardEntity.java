@@ -55,6 +55,7 @@ public class BoardEntity extends BaseEntity {
     boardEntity.setWriter(boardDTO.getWriter());
     boardEntity.setContents(boardDTO.getContents());
     boardEntity.setHits(boardDTO.getHits());
+    boardEntity.setCategory(boardDTO.getCategory());
     boardEntity.setCreateDate(boardDTO.getCreateDate());
     boardEntity.setUpdateDate(boardDTO.getUpdateDate());
     return boardEntity;
