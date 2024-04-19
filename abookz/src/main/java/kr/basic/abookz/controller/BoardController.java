@@ -3,6 +3,7 @@ package kr.basic.abookz.controller;
 import kr.basic.abookz.config.auth.PrincipalDetails;
 import kr.basic.abookz.dto.BoardDTO;
 import kr.basic.abookz.entity.board.Category;
+import kr.basic.abookz.entity.member.RoleEnum;
 import kr.basic.abookz.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -35,6 +36,8 @@ public class BoardController {
       return "redirect:/member/loginForm";
     }
     model.addAttribute("writer", principalDetails.getMember().getName());
+    String roleValue = String.valueOf(principalDetails.getMember().getRole());
+    model.addAttribute("role" , roleValue);
     return "board/save";
   }
   @PostMapping("/save")
@@ -60,7 +63,12 @@ public class BoardController {
     BoardDTO boardDTO = boardService.findById(id);
     model.addAttribute("board", boardDTO);
     model.addAttribute("page", pageable.getPageNumber());
-    model.addAttribute("writer", principalDetails.getMember().getName());
+    if(principalDetails != null){
+      model.addAttribute("writer", principalDetails.getMember().getName());
+    }
+    else{
+      model.addAttribute("writer", null);
+    }
     return "board/detail";
   }
 

@@ -1,38 +1,63 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="~{fragments/head :: head}">
   <meta charset="UTF-8">
   <title>update</title>
 </head>
 <body>
-  <form action="/board/update" method="post" name="updateForm">
-    <table>
-      <tr>
-        <td>제목</td>
-        <td><input type="text" th:value="${boardUpdate.title}" name="title"></td>
-      </tr>
-      <tr>
-        <td>작성자</td>
-        <td><input type="text" th:value="${boardUpdate.writer}" name="writer" disabled></td>
-        <td><input type="hidden" th:value="${boardUpdate.writer}" name="writer"></td>
-      </tr>
-      <tr>
-        <td>내용</td>
-        <td><textarea rows="10" cols="20" name="contents" th:text="${boardUpdate.contents}"></textarea></td>
-      </tr>
-      <tr>
-        <td><input type="hidden" th:value="${boardUpdate.id}" name="id"></td>
-        <td><input type="hidden" th:value="${boardUpdate.createDate}" name="createDate"></td>
-        <td><input type="hidden" th:value="${boardUpdate.hits}" name="hits"></td>
-        <td><input type="hidden" th:value="${boardUpdate.category}" name="category"></td>
-      </tr>
-      <tr>
-        <td colspan="2" id="btns">
-          <input type="submit" value="수정">
-          <input type="reset" value="취소">
-        </td>
-      </tr>
-    </table>
-  </form>
+<div th:replace="~{fragments/header :: header}"/><br>
+<div class="container flex justify-center items-center" id="boardContainer">
+  <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+      <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Edit Post</h2>
+    </div>
+
+    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+      <form action="/board/update" method="post" name="updateForm">
+        <!-- Text input -->
+        <div class="mb-4 w-full">
+          <div>
+            <label for="title" class="block text-sm font-medium leading-6 text-gray-900">제목</label>
+          </div>
+          <div class="mt-2">
+            <input placeholder="제목" type="text" id="title" name="title" th:value="${boardUpdate.title}" class="w-full block rounded-lg border dark:border-none dark:bg-neutral-600 py-[9px] px-3 pr-4 text-sm focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none" required />
+          </div>
+        </div>
+
+        <!-- Text input -->
+        <div class="mb-4 w-full">
+          <div>
+            <label for="writer" class="block text-sm font-medium leading-6 text-gray-900">작성자</label>
+          </div>
+          <div class="mt-2">
+            <input placeholder="작성자" type="text" id="writer" name="writer" th:value="${boardUpdate.writer}" class="w-full block rounded-lg border dark:border-none dark:bg-neutral-600 py-[9px] px-3 pr-4 text-sm focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none" disabled />
+            <input type="hidden" name="writer" th:value="${boardUpdate.writer}">
+          </div>
+        </div>
+
+
+        <!-- Textarea -->
+        <div class="mb-4 w-full">
+          <div>
+            <label for="contents" class="block text-sm font-medium leading-6 text-gray-900">본문</label>
+          </div>
+          <div class="mt-2">
+            <textarea placeholder="본문" name="contents" id="contents" th:text="${boardUpdate.contents}" rows="4" class="w-full block rounded-lg border dark:border-none dark:bg-neutral-600 py-[9px] px-3 pr-4 text-sm focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none" required></textarea>
+          </div>
+        </div>
+
+
+        <!-- Submit Button -->
+        <div>
+          <input type="hidden" name="id" id="id" th:value="${boardUpdate.id}">
+          <input type="hidden" name="category" id="category" th:value="${boardUpdate.category}">
+          <input type="hidden" name="hits" id="hits" th:value="${boardUpdate.hits}">
+          <input type="hidden" name="createDate" id="createDate" th:value="${boardUpdate.createDate}">
+          <button type="submit" class="block mb-4 w-full rounded-full bg-blue-500 text-neutral-50 shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] hover:bg-blue-600 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-blue-800 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] active:bg-blue-700 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal transition duration-150 ease-in-out focus:outline-none focus:ring-0">Submit</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
 </body>
 </html>
