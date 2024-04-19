@@ -9,6 +9,7 @@
 #buttongroup{
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 #buttongroup button{
     margin: 0 10px;
