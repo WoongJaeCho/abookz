@@ -30,6 +30,6 @@ public interface BookShelfRepository extends JpaRepository<BookShelfEntity,Long>
     void deleteBookShelfEntityById(Long Id);
     Optional<BookShelfEntity> findByIdAndBookId(Long id, Long bookId);
     Slice<BookShelfEntity> findAllByMemberIdOrderByIdDesc(Long memberId, Pageable pageable);
-
+    Slice<BookShelfEntity> findAllByMemberIdAndTagOrderByIdDesc(Long memberId,TagEnum tagEnum,Pageable pageable);
 }
 

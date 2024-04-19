@@ -16,7 +16,7 @@
     <div id="shelf_left">
 <hr class="shelfLeft_hr">
     <p class="bookShelves">내 서재들</p>
-    <a href="/myshelf/tag/ALL" class="myShelf_" th:text="'전체(' + ${all.size()} + ')'">1</a>
+    <a href="/myshelf/tag/ALL" class="myShelf_" th:text="'전체(' + ${read+want+current} + ')'">1</a>
     <br>
     <a href="/myshelf/tag/READ" class="myShelf_" th:text="'읽은 책(' + ${read} + ')'">1</a>
     <br>
@@ -90,6 +90,8 @@
     </div>
     <div id="myShelfListWrap">
         <div id="booklist" class="card card-side bg-base-100 shadow-xl w-3/4 mb-2  mx-auto" th:each=" shelfslice: ${shelfSlice}">
+            <input type="hidden" th:if="${tagValue}" th:attr="tag-value=${tagValue}" id="tagGetAttribute"/>
+            <input type="hidden" th:unless="${tagValue}">
             <input type="hidden" class="wrap_popup" th:attr="data-value=${shelfslice.id}"/>
             <figure><img class="w-40" th:src="${shelfslice.getBookDTO().cover}" alt="cover"/></figure>
             <div class="card-body">
@@ -107,10 +109,12 @@
                 </div>
 
         </div>
-
+        </div>
+    <div id="pagingButtonDiv">
+        <button th:if="${!isLastPage}" id="moreSlice" onclick="loadMoreBooks()"> 더보기 </button>
     </div>
 
-    <button id="moreSlice" onclick="loadMoreBooks()"> 더보기 </button>
+
     </div>
     <!-- 모달 -->
     <div class="modal" id="myModal">

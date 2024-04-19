@@ -88,7 +88,7 @@
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.OpenProjectViewOnStart": "true",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "Spring Boot.AbookzApplication.executor": "Debug",
+    "Spring Boot.AbookzApplication.executor": "Run",
     "git-widget-placeholder": "origin/dev-LJY",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/ecpliseworkspace/JYproject/abookz/abookz/src/main/resources/static/lib",
@@ -158,7 +158,7 @@
       <method v="2" />
     </configuration>
     <configuration name="AbookzApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="abookz.abookz.main~2" />
+      <module name="abookz.abookz.main" />
       <option name="SPRING_BOOT_MAIN_CLASS" value="kr.basic.abookz.AbookzApplication" />
       <extension name="coverage">
         <pattern>
@@ -197,7 +197,7 @@
       <workItem from="1712538209443" duration="468000" />
       <workItem from="1712538748928" duration="33447000" />
       <workItem from="1712625413409" duration="25399000" />
-      <workItem from="1712655251030" duration="184323000" />
+      <workItem from="1712655251030" duration="202892000" />
     </task>
     <servers />
   </component>
