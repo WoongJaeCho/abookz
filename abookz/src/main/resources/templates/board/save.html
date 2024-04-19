@@ -6,70 +6,53 @@
   <title>save</title>
 </head>
 <body>
-
-<div th:replace="~{fragments/header :: header}"/><br>
-<div class="container flex justify-center items-center" id="boardContainer">
-  <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-      <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Create Post</h2>
-    </div>
-
-    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-    <form action="/board/save" method="post">
-      <!-- Text input -->
-      <div class="mb-4 w-full">
-        <div>
-          <label for="title" class="block text-sm font-medium leading-6 text-gray-900">제목</label>
-        </div>
-        <div class="mt-2">
-          <input placeholder="제목" type="text" id="title" name="title" class="w-full block rounded-lg border dark:border-none dark:bg-neutral-600 py-[9px] px-3 pr-4 text-sm focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none" required/>
-        </div>
-      </div>
-
-      <!-- Text input -->
-      <div class="mb-4 w-full">
-        <div>
-          <label for="writer" class="block text-sm font-medium leading-6 text-gray-900">작성자</label>
-        </div>
-        <div class="mt-2">
-          <input th:value="${writer}" type="text" id="writer" name="writer" class="w-full block rounded-lg border dark:border-none dark:bg-neutral-600 py-[9px] px-3 pr-4 text-sm focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none" disabled/>
-          <input type="hidden" name="writer" th:value="${writer}">
-        </div>
-      </div>
-
-      <!-- Textarea -->
-      <div class="mb-4 w-full">
-        <div>
-          <label for="contents" class="block text-sm font-medium leading-6 text-gray-900">본문</label>
-        </div>
-        <div class="mt-2">
-          <textarea placeholder="본문" id="contents" name="contents" rows="4" class="w-full block rounded-lg border dark:border-none dark:bg-neutral-600 py-[9px] px-3 pr-4 text-sm focus:border-blue-400 focus:ring-1 focus:ring-blue-400 focus:outline-none" required></textarea>
-        </div>
-      </div>
-
-      <div class="mb-4 w-full">
-        <div>
-          <label for="category" class="block text-sm font-medium leading-6 text-gray-900">카테고리</label>
-        </div>
-        <div class="mt-2">
-          <select class="select select-bordered w-full max-w-ws" name="category" id="category">
-            <option>FREE</option>
-            <option>QUESTION</option>
-            <option th:if="${role == 'ROLE_ADMIN'}">NOTICE</option>
-            <option th:if="${role == 'ROLE_ADMIN'}">EVENT</option>
-          </select>
-        </div>
-      </div>
-      <!-- Submit Button -->
-      <div>
-        <button type="submit" class="block mb-4 w-full rounded-full bg-blue-500 text-neutral-50 shadow-[0_4px_9px_-4px_rgba(51,45,45,0.7)] hover:bg-blue-600 hover:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] focus:bg-blue-800 focus:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] active:bg-blue-700 active:shadow-[0_8px_9px_-4px_rgba(51,45,45,0.2),0_4px_18px_0_rgba(51,45,45,0.1)] px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal transition duration-150 ease-in-out focus:outline-none focus:ring-0">Submit</button>
-      </div>
-    </form>
-    </div>
+<div th:replace="~{fragments/header :: header}"></div>
+<br>
+<div id="header" class="flex justify-center">
+  <div id="boardTitle">
+    <h1 class="m-auto">게시글 작성</h1>
   </div>
+</div>
+<div id="saveForm">
+  <form action="/board/save" method="post">
+    <table border="1">
+      <tr>
+        <td>제목</td>
+        <td><input type="text" name="title" id="title" autofocus required/>
+      </tr>
+      <tr>
+        <td>작성자</td>
+        <td><input type="text" name="writer" th:value="${writer}" disabled/>
+          <input type="hidden" name="writer" th:value="${writer}">
+      </tr>
+      <tr>
+        <td>내용</td>
+        <td><textarea rows="10" cols="20" name="contents" required></textarea></td>
+      </tr>
+      <tr>
+        <td>카테고리</td>
+        <td>
+          <input type="text" name="category" list="category" required>
+          <datalist id="category">
+            <option value="FREE"></option>
+            <option value="QUESTION"></option>
+            <div th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? true : false}">
+              <option value="NOTICE"></option>
+              <option value="EVENT"></option>
+            </div>
+          </datalist>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2" id="btns">
+          <input type="submit" value="작성">
+          <input type="reset" value="취소">
+        </td>
+      </tr>
+    </table>
+  </form>
 </div>
 <div id="searchResults"></div>
 <script defer src="/js/index.js"></script>
-
 </body>
 </html>
