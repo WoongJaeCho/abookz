@@ -2,18 +2,17 @@ package kr.basic.abookz.service;
 
 import jakarta.persistence.EntityManager;
 import kr.basic.abookz.dto.CommentDTO;
-import kr.basic.abookz.dto.LikeDTO;
 import kr.basic.abookz.dto.MemberDTO;
 import kr.basic.abookz.dto.ReviewDTO;
 import kr.basic.abookz.entity.member.MemberEntity;
 import kr.basic.abookz.entity.review.CommentEntity;
-import kr.basic.abookz.entity.review.LikeEntity;
 import kr.basic.abookz.entity.review.ReviewEntity;
 import kr.basic.abookz.repository.CommentRepository;
-import kr.basic.abookz.repository.LikeRepository;
 import kr.basic.abookz.repository.ReviewRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,4 +66,12 @@ public class CommentService {
     return commentDTO;
   }
 
+  public Slice<CommentDTO> findAllByReview_Id(Long reviewId, Pageable pageable) {
+    return commentRepository.findAllByReview_Id(reviewId, pageable)
+        .map(this::mapEntityToDTO);
+  }
+
+  public CommentDTO save(CommentEntity comment) {
+     return mapEntityToDTO(commentRepository.save(comment));
+  }
 }

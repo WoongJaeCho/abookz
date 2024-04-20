@@ -1,4 +1,4 @@
-function loadReviews(pageNumber, query,sort) {
+function loadReviews(pageNumber, query, sort) {
   const ISBN13 = document.getElementById('ISBN13').value;
 
   fetch(`/review/reviews?pageNumber=${pageNumber}&ISBN13=${ISBN13}&query=${encodeURIComponent(query)}&sort=${encodeURIComponent(sort)}`, {
@@ -10,48 +10,60 @@ function loadReviews(pageNumber, query,sort) {
       .then(response => response.json())
       .then(data => {
         updateReviewSection(data.reviews);  // 리뷰 섹션 업데이트
-        updatePagination(data.currentPage, data.totalPages,query,sort);  // 페이징 정보 업데이트
+        updatePagination(data.currentPage, data.totalPages, query, sort);  // 페이징 정보 업데이트
       })
       .catch(error => console.error('Error loading the reviews:', error));
 }
 
 function updateReviewSection(data) {
   const reviewContainer = document.getElementById('review_detail_content');
-  reviewContainer.innerHTML = '';  // 기존 리뷰 내용을 비움
+  reviewContainer.innerHTML = '';
 
-  // 새로운 리뷰 내용을 생성하여 페이지에 추가
   data.forEach(review => {
-    let tagDescription;
+    const reviewElement = createReviewElement(review);
+    reviewContainer.appendChild(reviewElement);
+    console.log(`Review ID for comment section: ${review.id}`); // Review ID 확인
+    createCommentSection(review.id); // 댓글 컨테이너 초기화 호출
+  });
 
-    const likeText =  review.likesCount  >= 2  ? 'Likes' : 'Like';
-    // 스포일러 여부에 따른 클래스와 버튼 추가
-    const spoilerClass = review.isSpoilerActive ? 'blur-lg' : '';
-    const spoilerBtnDisabled = review.isSpoilerActive ? 'btn-disabled' : '';
-    let likeButtonClass = review.liked ? 'liked fill-current' : '';    console.log(review.liked);
+  setInitialRating();
+  setInitialLike();
+}
 
-    const spoilerButton = review.isSpoilerActive ?
-
-        ` <div class="spoiler-alert text-center p-4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-2xl" id="spoiler-alert-${review.id}">
-    <h2 class="text-xl font-semibold text-red-600">스포일러 주의!</h2>
-    <button class="btn mt-4 btn-sm btn-accent rounded-full bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300 transition ease-in-out duration-300" onclick="revealSpoiler(this, '${review.id}')">
+function createSpoilerButton(review) {
+  return review.isSpoilerActive ?
+      `<div class="spoiler-alert text-center p-4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-2xl" id="spoiler-alert-${review.id}">
+      <h2 class="text-xl font-semibold text-red-600">스포일러 주의!</h2>
+      <button class="btn mt-4 btn-sm btn-accent rounded-full bg-blue-500 text-white hover:bg-blue-600 focus:outline-none focus:ring focus:ring-blue-300 transition ease-in-out duration-300" onclick="revealSpoiler(this, '${review.id}')">
         리뷰 내용 보기
-    </button>
-</div>` : '';
-// review.bookShelfDTO.tag 값에 따라 한국어 설명을 할당합니다.
-    switch (review.bookShelfDTO.tag) {
-      case "READ":
-        tagDescription = "읽은 책";
-        break;
-      case "WANT_TO_READ":
-        tagDescription = "읽고 싶은 책";
-        break;
-      case "CURRENTLY_READING":
-        tagDescription = "읽고 있는 책";
-        break;
-    }
-    const reviewElement = document.createElement('div');
-    reviewElement.className = 'space-y-4 relative';
-    reviewElement.innerHTML = `
+      </button>
+    </div>` : '';
+}
+
+
+function createReviewElement(review) {
+  let tagDescription;
+  switch (review.bookShelfDTO.tag) {
+    case "READ":
+      tagDescription = "읽은 책";
+      break;
+    case "WANT_TO_READ":
+      tagDescription = "읽고 싶은 책";
+      break;
+    case "CURRENTLY_READING":
+      tagDescription = "읽고 있는 책";
+      break;
+  }
+
+  const spoilerClass = review.isSpoilerActive ? 'blur-lg' : '';
+  const spoilerBtnDisabled = review.isSpoilerActive ? 'btn-disabled' : '';
+  const likeButtonClass = review.liked ? 'liked fill-current' : '';
+  const likeText = review.likesCount >= 2 ? 'Likes' : 'Like';
+  const spoilerButton = createSpoilerButton(review); // Generate the spoiler button HTML
+
+  const reviewElement = document.createElement('div');
+  reviewElement.className = 'space-y-4 relative review';
+  reviewElement.innerHTML = `
               <div id="review-${review.id}" class="review bg-white shadow-lg rounded-lg overflow-hidden ${spoilerClass}">
            
 
@@ -93,35 +105,37 @@ function updateReviewSection(data) {
                     </button>
                   </div>
                   <div class="flex items-center">
-                    <label class="btn-comment btn btn-sm btn-outline btn-info ml-2 ${spoilerBtnDisabled}" onclick="toggleFill(this, 'fill-current')"> <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
-                    </svg>
-                    <span class="">Comment</span></label>
+                    <label class="btn-comment btn btn-sm btn-outline btn-info ml-2 ${spoilerBtnDisabled}" onclick="toggleComments(this, '${review.id}')">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 fill-none">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z" />
+                      </svg>
+                      <span class="">Comment</span>
+                    </label>
                   </div>
                 </div>
-                <div th:replace="~{review/comment :: comment}" />
+                <div id="comment-${review.id}"></div>
               </div>
             </div>
           </div>
           </div>
            ${spoilerButton}
     `;
-    reviewContainer.appendChild(reviewElement);
-  });
-  setInitialRating();
-  setInitialLike()
-
+  return reviewElement;
 
 }
 
-function updatePagination(currentPage, totalPages,query,sort) {
+setInitialRating();
+setInitialLike()
+
+
+function updatePagination(currentPage, totalPages, query, sort) {
   const paginationContainer = document.getElementById('pagination');
   paginationContainer.innerHTML = '';
 
   if (currentPage > 0) {
     const prevButton = document.createElement('button');
     prevButton.innerText = 'Previous';
-    prevButton.onclick = () => loadReviews(currentPage - 1,query,sort);
+    prevButton.onclick = () => loadReviews(currentPage - 1, query, sort);
     paginationContainer.appendChild(prevButton);
   }
 
@@ -129,48 +143,42 @@ function updatePagination(currentPage, totalPages,query,sort) {
     const pageButton = document.createElement('button');
     pageButton.innerText = i + 1;
     pageButton.className = currentPage === i ? 'btn btn-active' : 'btn';
-    pageButton.onclick = () => loadReviews(i,query,sort);
+    pageButton.onclick = () => loadReviews(i, query, sort);
     paginationContainer.appendChild(pageButton);
   }
 
   if (currentPage < totalPages - 1) {
     const nextButton = document.createElement('button');
     nextButton.innerText = 'Next';
-    nextButton.onclick = () => loadReviews(currentPage + 1,query,sort);
+    nextButton.onclick = () => loadReviews(currentPage + 1, query, sort);
     paginationContainer.appendChild(nextButton);
   }
 }
 
 
 function setInitialRating() {
-  const reviews = document.querySelectorAll('.review'); // 모든 리뷰 컨테이너 선택
-  reviews.forEach(review => {
-    const gradeInput = review.querySelector('.shelfGrade'); // 평점 입력 필드 선택
-    const gradeValue = parseFloat(gradeInput.value).toFixed(1);
-    console.log(gradeInput);
-    console.log(gradeValue);
-      const ratingInputs = review.querySelectorAll(`input[type="radio"][data-rating="${gradeValue}"]`); // 해당 평점과 일치하는 라디오 버튼 선택
-      if (ratingInputs.length > 0) {
-        ratingInputs[0].checked = true; // 해당 라디오 버튼을 체크 상태로 설정
-      }
-  });
-}
-
-
-function setInitialLike() {
-  const reviews = document.querySelectorAll('.review'); // 모든 리뷰 컨테이너 선택
-  reviews.forEach(review => {
-    const likeButton = review.querySelector('.btn-like'); // 해당 리뷰의 좋아요 버튼을 찾습니다.
-    if (likeButton.classList.contains('liked')) {
-      toggleFill(likeButton,'fill-current');
-    }else{
-      toggleFill(likeButton,'fill-none');
+  document.querySelectorAll('.review').forEach(review => {
+    const ratingValue = parseFloat(review.querySelector('.shelfGrade').value).toFixed(1);
+    const ratingInput = review.querySelector(`input[type="radio"][data-rating="${ratingValue}"]`);
+    if (ratingInput) {
+      ratingInput.checked = true;
     }
   });
 }
 
+function setInitialLike() {
+  document.querySelectorAll('.btn-like').forEach(button => {
+    if (button.classList.contains('liked')) {
+      toggleFill(button, 'fill-current');
+    } else {
+      toggleFill(button, 'fill-none');
+    }
+  });
+}
+
+
 document.addEventListener("DOMContentLoaded", function () {
-  loadReviews(0,"","최신순");
+  loadReviews(0, "", "최신순");
 });
 
 function toggleFill(element, fillClass) {
@@ -216,7 +224,7 @@ function clickLike(button, reviewId) {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer your-token-here'  // 토큰 교체
     },
-    body: JSON.stringify({ like: true })
+    body: JSON.stringify({like: true})
   })
       .then(response => {
         if (!response.ok) {
@@ -252,6 +260,98 @@ function clickLike(button, reviewId) {
 function searchReviews() {
   const query = document.getElementById('searchQuery').value;
   const sort = document.getElementById('review_sort').value; // 정렬 값 추출
-  loadReviews(0, query,sort);  // 페이지 로딩 함수에 검색어 파라미터 추가
+  loadReviews(0, query, sort);  // 페이지 로딩 함수에 검색어 파라미터 추가
 }
 
+function createCommentSection(reviewId) {
+  console.log(`Creating comment section for review ID: ${reviewId}`); // 함수 호출 확인
+  const reviewElement = document.getElementById(`review-${reviewId}`);
+  if (!reviewElement) {
+    console.error(`Review element with ID review-${reviewId} not found`);
+    return; // 리뷰 요소가 존재하지 않는 경우 함수 종료
+  }
+
+  // 댓글 컨테이너 전체 구조 생성
+  const commentContainer = document.createElement('div');
+  commentContainer.id = `comments-for-review-${reviewId}`;
+  commentContainer.className = "w-[720px] bg-white rounded-lg border p-1 md:p-3 m-10";
+  commentContainer.style.display = 'none'; // Start hidden
+
+
+  // 댓글 목록 부분
+  const commentsList = document.createElement('div');
+  commentsList.className = "flex flex-col gap-5 m-3";
+  commentContainer.appendChild(commentsList);
+
+  // 실제 댓글들을 동적으로 추가할 부분 (데이터 받아와서 처리)
+  // 예제 댓글 하나 추가
+  const commentElement = document.createElement('div');
+  commentElement.innerHTML = `
+    <div class="flex w-full justify-between border rounded-md">
+      <div class="p-3">
+        <div class="flex gap-3 items-center">
+          <img src="/images/default_profile.png"
+               class="object-cover w-10 h-10 rounded-full border-2 border-emerald-400 shadow-emerald-400">
+          <h3 class="font-bold">
+            User 1
+            <br>
+            <span class="text-sm text-gray-400 font-normal">Level 1</span>
+          </h3>
+        </div>
+        <p class="text-gray-600 mt-2">
+          샘플 코멘트
+        </p>        
+      </div>
+    </div>`;
+  commentsList.appendChild(commentElement);
+
+  // 댓글 입력 폼
+  const commentForm = document.createElement('div');
+  commentForm.className = "w-full px-3 mb-2 mt-6";
+  commentForm.innerHTML = `
+    <textarea
+      class="bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-400 focus:outline-none focus:bg-white"
+      name="body" placeholder="Comment" required></textarea>
+    <div class="w-full flex justify-end px-3 my-3">
+      <input type="submit" class="px-2.5 py-1.5 rounded-md text-white text-sm bg-indigo-500 text-lg"
+             value='Post Comment' onclick="submitComment(${reviewId})">
+    </div>`;
+  commentContainer.appendChild(commentForm);
+
+  // 댓글 컨테이너를 리뷰 요소에 추가
+  reviewElement.appendChild(commentContainer);
+}
+
+function toggleComments(button, reviewId) {
+  const commentsContainer = document.getElementById(`comments-for-review-${reviewId}`);
+  const svg = button.querySelector('svg');
+  if (commentsContainer.style.display === 'none' || !commentsContainer.style.display) {
+    commentsContainer.style.display = 'block'; // 댓글 컨테이너 표시
+    svg.classList.add('fill-current');
+    svg.classList.remove('fill-none');
+  } else {
+    commentsContainer.style.display = 'none'; // 댓글 컨테이너 숨김
+    svg.classList.remove('fill-current');
+    svg.classList.add('fill-none');
+  }
+}
+
+function submitComment(reviewId) {
+  const content = document.getElementById('comment-input').value; // 댓글 입력 필드의 ID
+  fetch('/comment/' + reviewId, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer your-token-here'  // 필요한 토큰 정보
+    },
+    body: JSON.stringify({ reviewId: reviewId, content: content })
+  })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        // 성공 시 댓글을 페이지에 동적으로 추가하는 로직
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+}
