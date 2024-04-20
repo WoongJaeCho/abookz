@@ -84,9 +84,10 @@ for (var i = 0; i < readChange.length; i++) {
             return;
         }
 
-        var x = event.pageX;
-        var y = event.pageY;
-        popup.style.position = 'absolute';
+        var x = event.clientX; // 클릭한 위치의 x 좌표
+        var y = event.clientY; // 클릭한 위치의 y 좌표
+
+        popup.style.position = 'fixed';
         popup.style.top = y + 'px';
         popup.style.left = x + 'px';
         popup.style.display = 'block';

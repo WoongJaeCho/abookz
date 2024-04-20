@@ -5,14 +5,9 @@
   <title>findIdresult</title>
 </head>
 <body>
-  <ul th:if="${logId != null}">
+  <ul>
     <li>회원님의 아이디는 : [[${logId}]]</li>
     <li><a href="/member/loginForm"><p>로그인페이지</p></a></li>
   </ul>
-  <ul th:unless="${logId != null}">
-    <li>조회된 아이디가 없습니다.</li>
-    <li><a href="/member/loginForm"><p>로그인페이지</p></a></li>
-  </ul>
-
 </body>
 </html>

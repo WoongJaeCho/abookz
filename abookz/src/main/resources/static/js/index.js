@@ -46,28 +46,9 @@ function fetchBooks(query, page, size) {
         if (bookContainer) {
           bookContainer.style.display = 'none';
         }
-        let bookWarpContainer = document.getElementById('bookWrap');
-        if(bookWarpContainer){
-          bookWarpContainer.style.display = 'none';
-        }
-        let controlsContainer =document.getElementById('controls_container');
-        if(controlsContainer){
-          controlsContainer.style.display = 'none';
-        }
-        let canvasDiv= document.getElementById('canvas');
-        if(canvasDiv){
-          canvasDiv.style.display='none';
-        }
-        let listWrapDiv = document.getElementById('listWrap');
-        if(listWrapDiv){
-          listWrapDiv.style.display= 'none';
-        }
-        let boardContainer = document.getElementById('boardContainer');
-          if(boardContainer){
-            boardContainer.style.display='none';
-          }
+
       } else {
-        resultsDiv.textContent = '검색 결과가 없습니다';
+        resultsDiv.textContent = 'No results found';
       }
     })
     .catch(error => {
@@ -185,7 +166,7 @@ function wantToRead(isbn) {
     })
     .catch(error => {
       console.error('There was a problem with the fetch operation:', error);
-      alert("로그인부터 해주세요");
+      alert("이미 등록 되어있습니다");
 
     });
 }

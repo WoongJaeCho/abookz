@@ -1,125 +1,97 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 <head th:replace="~{fragments/head :: head}">
-    <meta charset="UTF-8">
-    <title>Title</title>
+  <meta charset="UTF-8">
+  <title>Title</title>
 </head>
 <body>
-<div th:replace="~{fragments/header :: header}"/>
-<br>
+<div th:replace="~{fragments/header :: header}"/><br>
 <div class="container" id="boardContainer">
-    <div class="flex justify-start items-center mb-5 space-x-4" role="group">
-        <a class="inline-block rounded-lg border-2 border-blue-500 text-blue-500 hover:border-blue-600 hover:bg-blue-400 hover:bg-opacity-10 hover:text-blue-600 focus:border-blue-700 focus:text-blue-700 active:border-blue-800 active:text-blue-800 dark:border-blue-300 dark:text-blue-300 dark:hover:hover:bg-blue-300 px-6 pb-2 pt-2.5 text-sm font-medium uppercase leading-normal transition duration-150 ease-in-out focus:outline-none focus:ring-0"
-           role="button" th:href="@{/board/paging}" th:text="전체글"></a>
-        <a class="inline-block rounded-lg border-2 border-blue-500 text-blue-500 hover:border-blue-600 hover:bg-blue-400 hover:bg-opacity-10 hover:text-blue-600 focus:border-blue-700 focus:text-blue-700 active:border-blue-800 active:text-blue-800 dark:border-blue-300 dark:text-blue-300 dark:hover:hover:bg-blue-300 px-6 pb-2 pt-2.5 text-sm font-medium uppercase leading-normal transition duration-150 ease-in-out focus:outline-none focus:ring-0"
-           role="button" th:href="@{|/board/paging/${'NOTICE'}|}" th:text="공지사항"></a>
-        <a class="inline-block rounded-lg border-2 border-blue-500 text-blue-500 hover:border-blue-600 hover:bg-blue-400 hover:bg-opacity-10 hover:text-blue-600 focus:border-blue-700 focus:text-blue-700 active:border-blue-800 active:text-blue-800 dark:border-blue-300 dark:text-blue-300 dark:hover:hover:bg-blue-300 px-6 pb-2 pt-2.5 text-sm font-medium uppercase leading-normal transition duration-150 ease-in-out focus:outline-none focus:ring-0"
-           role="button" th:href="@{|/board/paging/${'EVENT'}|}" th:text="이벤트"></a>
-        <a class="inline-block rounded-lg border-2 border-blue-500 text-blue-500 hover:border-blue-600 hover:bg-blue-400 hover:bg-opacity-10 hover:text-blue-600 focus:border-blue-700 focus:text-blue-700 active:border-blue-800 active:text-blue-800 dark:border-blue-300 dark:text-blue-300 dark:hover:hover:bg-blue-300 px-6 pb-2 pt-2.5 text-sm font-medium uppercase leading-normal transition duration-150 ease-in-out focus:outline-none focus:ring-0"
-           role="button" th:href="@{|/board/paging/${'FREE'}|}" th:text="자유게시판"></a>
-        <a class="inline-block rounded-lg border-2 border-blue-500 text-blue-500 hover:border-blue-600 hover:bg-blue-400 hover:bg-opacity-10 hover:text-blue-600 focus:border-blue-700 focus:text-blue-700 active:border-blue-800 active:text-blue-800 dark:border-blue-300 dark:text-blue-300 dark:hover:hover:bg-blue-300 px-6 pb-2 pt-2.5 text-sm font-medium uppercase leading-normal transition duration-150 ease-in-out focus:outline-none focus:ring-0"
-           role="button" th:href="@{|/board/paging/${'QUESTION'}|}" th:text="질문게시판"></a>
-    </div>
-    <div class="overflow-x-auto bg-white dark:bg-neutral-700">
-        <table class="min-w-full text-left text-sm whitespace-nowrap" id="boardTable">
-            <thead class="uppercase tracking-wider border-b-2 dark:border-neutral-600 bg-neutral-50 dark:bg-neutral-800 border-t">
-            <tr>
-                <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">번호</th>
-                <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">카테고리</th>
-                <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">제목</th>
-                <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">작성자</th>
-                <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">조회수</th>
-                <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">작성날짜</th>
-            </tr>
-            </thead>
-            <tbody>
-            <tr th:if="${boardList.isEmpty()}">
-                <td colspan="6"><p class="text-center align-middle">검색결과가 없습니다.</p></td>
-            </tr>
-            <tr class="border-b dark:border-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-600"
-                th:each="board: ${boardList}">
-                <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" th:text="${board.id}"></td>
-                <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600"
-                    th:text="${board.category.getKorean()}"></td>
-                <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600"><a
-                        th:href="@{|/board/${board.id}|(page=${boardList.number + 1})}" th:text="${board.title}"
-                        id="boardTitle"></a></td>
-                <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" th:text="${board.writer}"></td>
-                <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" th:text="${board.hits}"></td>
-                <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" th:text="${board.createDate}"></td>
-            </tr>
-            </tbody>
-        </table>
-    </div>
-    <nav class="mt-5 flex items-center justify-center text-sm" aria-label="Page navigation example">
-        <th:block th:unless="${category}">
-            <ul class="list-style-none flex">
-                <li th:unless="${boardList.first}"
-                    class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white">
-                    <a th:href="@{/board/paging(page=1)}">First</a>
-                </li>
-                <li th:unless="${boardList.first}"
-                    class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white">
-                    <a th:href="@{/board/paging(page=${boardList.number})}">Prev</a>
-                </li>
-                <li aria-current="page" th:each="page : ${#numbers.sequence(startPage, endPage)}">
-                    <a class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
-                       th:if="${page != boardList.number + 1 && page != 0}" th:href="@{/board/paging(page=${page})}"
-                       th:text="${page}"></a>
-                    <a class="relative block rounded bg-blue-100 px-3 py-1.5 text-sm font-medium text-blue-700 transition-all duration-300"
-                       th:if="${page == boardList.number + 1}" th:text="${page}">
+<div class= "flex justify-start items-center mb-5 space-x-4" role="group">
+  <a class="inline-block rounded-lg border-2 border-blue-500 text-blue-500 hover:border-blue-600 hover:bg-blue-400 hover:bg-opacity-10 hover:text-blue-600 focus:border-blue-700 focus:text-blue-700 active:border-blue-800 active:text-blue-800 dark:border-blue-300 dark:text-blue-300 dark:hover:hover:bg-blue-300 px-6 pb-2 pt-2.5 text-sm font-medium uppercase leading-normal transition duration-150 ease-in-out focus:outline-none focus:ring-0" role="button" th:href="@{/board/paging}" th:text="전체글"></a>
+  <a class="inline-block rounded-lg border-2 border-blue-500 text-blue-500 hover:border-blue-600 hover:bg-blue-400 hover:bg-opacity-10 hover:text-blue-600 focus:border-blue-700 focus:text-blue-700 active:border-blue-800 active:text-blue-800 dark:border-blue-300 dark:text-blue-300 dark:hover:hover:bg-blue-300 px-6 pb-2 pt-2.5 text-sm font-medium uppercase leading-normal transition duration-150 ease-in-out focus:outline-none focus:ring-0" role="button" th:href="@{|/board/paging/${'NOTICE'}|}" th:text="공지사항"></a>
+  <a class="inline-block rounded-lg border-2 border-blue-500 text-blue-500 hover:border-blue-600 hover:bg-blue-400 hover:bg-opacity-10 hover:text-blue-600 focus:border-blue-700 focus:text-blue-700 active:border-blue-800 active:text-blue-800 dark:border-blue-300 dark:text-blue-300 dark:hover:hover:bg-blue-300 px-6 pb-2 pt-2.5 text-sm font-medium uppercase leading-normal transition duration-150 ease-in-out focus:outline-none focus:ring-0" role="button" th:href="@{|/board/paging/${'EVENT'}|}" th:text="이벤트"></a>
+  <a class="inline-block rounded-lg border-2 border-blue-500 text-blue-500 hover:border-blue-600 hover:bg-blue-400 hover:bg-opacity-10 hover:text-blue-600 focus:border-blue-700 focus:text-blue-700 active:border-blue-800 active:text-blue-800 dark:border-blue-300 dark:text-blue-300 dark:hover:hover:bg-blue-300 px-6 pb-2 pt-2.5 text-sm font-medium uppercase leading-normal transition duration-150 ease-in-out focus:outline-none focus:ring-0" role="button" th:href="@{|/board/paging/${'FREE'}|}" th:text="자유게시판"></a>
+  <a class="inline-block rounded-lg border-2 border-blue-500 text-blue-500 hover:border-blue-600 hover:bg-blue-400 hover:bg-opacity-10 hover:text-blue-600 focus:border-blue-700 focus:text-blue-700 active:border-blue-800 active:text-blue-800 dark:border-blue-300 dark:text-blue-300 dark:hover:hover:bg-blue-300 px-6 pb-2 pt-2.5 text-sm font-medium uppercase leading-normal transition duration-150 ease-in-out focus:outline-none focus:ring-0" role="button" th:href="@{|/board/paging/${'QUESTION'}|}" th:text="질문게시판"></a>
+</div>
+  <div class="overflow-x-auto bg-white dark:bg-neutral-700">
+    <table class="min-w-full text-left text-sm whitespace-nowrap" id="boardTable">
+      <thead class="uppercase tracking-wider border-b-2 dark:border-neutral-600 bg-neutral-50 dark:bg-neutral-800 border-t">
+        <tr>
+          <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">번호</th>
+          <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">카테고리</th>
+          <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">제목</th>
+          <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">작성자</th>
+          <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">조회수</th>
+          <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">작성날짜</th>
+        </tr>
+        </thead>
+      <tbody>
+      <tr th:if="${boardList.isEmpty()}">
+        <td colspan="6"><p class="text-center align-middle">검색결과가 없습니다.</p></td>
+      </tr>
+      <tr class="border-b dark:border-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-600" th:each="board: ${boardList}">
+        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" th:text="${board.id}"></td>
+        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" th:text="${board.category.getKorean()}"></td>
+        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600"><a th:href="@{|/board/${board.id}|(page=${boardList.number + 1})}" th:text="${board.title}" id="boardTitle"></a></td>
+        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" th:text="${board.writer}"></td>
+        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" th:text="${board.hits}"></td>
+        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" th:text="${board.createDate}"></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <nav class="mt-5 flex items-center justify-center text-sm" aria-label="Page navigation example">
+    <th:block th:unless="${category}">
+      <ul class="list-style-none flex">
+        <li th:unless="${boardList.first}" class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white">
+          <a th:href="@{/board/paging(page=1)}">First</a>
+        </li>
+        <li th:unless="${boardList.first}" class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white">
+          <a th:href="@{/board/paging(page=${boardList.number})}">Prev</a>
+        </li>
+        <li aria-current="page" th:each="page : ${#numbers.sequence(startPage, endPage)}">
+          <a class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white" th:if="${page != boardList.number + 1 && page != 0}" th:href="@{/board/paging(page=${page})}" th:text="${page}"></a>
+          <a class="relative block rounded bg-blue-100 px-3 py-1.5 text-sm font-medium text-blue-700 transition-all duration-300" th:if="${page == boardList.number + 1}" th:text="${page}">
             <span class="absolute -m-px h-px w-px overflow-hidden whitespace-nowrap border-0 p-0[clip:rect(0,0,0,0)]">
             </span>
-                    </a>
-                </li>
-                <li th:unless="${boardList.last}"
-                    class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white">
-                    <a th:href="@{/board/paging(page=${boardList.number + 2})}">Next</a>
-                </li>
-                <li th:unless="${boardList.last}"
-                    class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white">
-                    <a th:href="@{/board/paging(page=${boardList.totalPages})}">Last</a>
-                </li>
-            </ul>
-        </th:block>
-        <th:block th:if="${category}">
-            <ul class="list-style-none flex">
-                <li class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
-                    th:unless="${boardList.first}">
-                    <a th:href="@{|/board/paging/${category}|(page=1)}">First</a>
-                </li>
-                <li class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
-                    th:unless="${boardList.first}">
-                    <a th:href="@{|/board/paging/${category}|(page=${boardList.number})}">Prev</a>
-                </li>
-                <li aria-current="page" th:each="page : ${#numbers.sequence(startPage, endPage)}">
-                    <a class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white"
-                       th:if="${page != boardList.number + 1 && page != 0}"
-                       th:href="@{|/board/paging/${category}|(page=${page})}" th:text="${page}"></a>
-                    <a class="relative block rounded bg-blue-100 px-3 py-1.5 text-sm font-medium text-blue-700 transition-all duration-300"
-                       th:if="${page == boardList.number + 1}" th:text="${page}">
+          </a>
+        </li>
+        <li th:unless="${boardList.last}" class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white">
+          <a th:href="@{/board/paging(page=${boardList.number + 2})}">Next</a>
+        </li>
+        <li th:unless="${boardList.last}" class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white">
+          <a th:href="@{/board/paging(page=${boardList.totalPages})}">Last</a>
+        </li>
+      </ul>
+      </th:block>
+      <th:block th:if="${category}">
+        <ul class="list-style-none flex">
+          <li class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white" th:unless="${boardList.first}">
+            <a th:href="@{|/board/paging/${category}|(page=1)}">First</a>
+          </li>
+          <li class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white" th:unless="${boardList.first}">
+            <a th:href="@{|/board/paging/${category}|(page=${boardList.number})}">Prev</a>
+          </li>
+          <li aria-current="page" th:each="page : ${#numbers.sequence(startPage, endPage)}">
+            <a class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white" th:if="${page != boardList.number + 1 && page != 0}" th:href="@{|/board/paging/${category}|(page=${page})}" th:text="${page}"></a>
+            <a class="relative block rounded bg-blue-100 px-3 py-1.5 text-sm font-medium text-blue-700 transition-all duration-300" th:if="${page == boardList.number + 1}" th:text="${page}">
               <span class="absolute -m-px h-px w-px overflow-hidden whitespace-nowrap border-0 p-0 [clip:rect(0,0,0,0)]">
               </span>
-                    </a>
-                </li>
-                <li th:unless="${boardList.last}"
-                    class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white">
-                    <a th:href="@{|/board/paging/${category}|(page=${boardList.number + 2})}">Next</a>
-                </li>
-                <li th:unless="${boardList.last}"
-                    class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white">
-                    <a th:href="@{|/board/paging/${category}|(page=${boardList.totalPages})}">Last</a>
-                </li>
-            </ul>
-        </th:block>
-    </nav>
-    <div class="flex justify-end items-center">
-        <a th:href="@{/board/save}" role="button"
-           class="inline-block rounded-lg border-2 border-blue-500 text-blue-500 hover:border-blue-600 hover:bg-blue-400 hover:bg-opacity-10 hover:text-blue-600 focus:border-blue-700 focus:text-blue-700 active:border-blue-800 active:text-blue-800 dark:border-blue-300 dark:text-blue-300 dark:hover:hover:bg-blue-300 px-6 pb-2 pt-2.5 text-sm font-medium uppercase leading-normal transition duration-150 ease-in-out focus:outline-none focus:ring-0"
-           th:text="글작성">글작성</a>
-    </div>
+            </a>
+          </li>
+          <li th:unless="${boardList.last}" class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white">
+            <a th:href="@{|/board/paging/${category}|(page=${boardList.number + 2})}">Next</a>
+          </li>
+          <li th:unless="${boardList.last}" class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white">
+            <a th:href="@{|/board/paging/${category}|(page=${boardList.totalPages})}">Last</a>
+          </li>
+        </ul>
+      </th:block>
+  </nav>
+  <div class="flex justify-end items-center">
+    <a th:href="@{/board/save}" role="button" class="inline-block rounded-lg border-2 border-blue-500 text-blue-500 hover:border-blue-600 hover:bg-blue-400 hover:bg-opacity-10 hover:text-blue-600 focus:border-blue-700 focus:text-blue-700 active:border-blue-800 active:text-blue-800 dark:border-blue-300 dark:text-blue-300 dark:hover:hover:bg-blue-300 px-6 pb-2 pt-2.5 text-sm font-medium uppercase leading-normal transition duration-150 ease-in-out focus:outline-none focus:ring-0" th:text="글작성">글작성</a>
+  </div>
 </div>
-<div id="searchResults"></div>
-<script defer src="/js/index.js"></script>
 </body>
 </html>

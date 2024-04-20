@@ -75,13 +75,8 @@ public class SlideCardController {
         List<SlideCardDTO> slideCardDTOs = slideCardService.findAll();
         System.out.println("slideIds = " + Arrays.toString(slideIdsArray));
         int idx = 1;
-
         for(String slide : slideIdsArray){
-            for(SlideCardDTO slideCard : slideCardDTOs){
-                if(slideCard.getId() == Integer.parseInt(slide)){
-                    slideCard.setIdx(idx++);
-                }
-            }
+            slideCardDTOs.get(Integer.parseInt(slide)-1).setIdx(idx++);
         }
         for(SlideCardDTO slideCardDTO : slideCardDTOs){
             slideCardService.update(slideCardDTO);

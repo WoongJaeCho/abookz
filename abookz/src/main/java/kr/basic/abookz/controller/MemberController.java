@@ -143,9 +143,12 @@ public class MemberController {
   @PostMapping("/loginIdfind")
   public String Idfind(@ModelAttribute MemberDTO memberDTO, Model model) {
     String findloginID = memberService.findByEmail(memberDTO);
-    System.out.println(findloginID);
-    model.addAttribute("logId", findloginID);
-    return "member/loginIdfindresult";
+    if (findloginID != null) {
+      model.addAttribute("logId", findloginID);
+      return "member/loginIdfindresult";
+    } else {
+      return "member/loginForm";
+    }
   }
 
   @GetMapping("/loginPwfind")
@@ -158,10 +161,8 @@ public class MemberController {
     EmailDTO dto = memberService.createMailAndChangePassword(memberDTO.getEmail(), memberDTO.getLoginId());
     if (dto == null) {
       System.out.println("오류 발생!");
-
-      return "redirect:/member/loginPwfind";
-    }
-    else{
+      return "member/loginForm";
+    } else {
       memberService.mailSend(dto);
       return "member/loginPwfindResult";
     }

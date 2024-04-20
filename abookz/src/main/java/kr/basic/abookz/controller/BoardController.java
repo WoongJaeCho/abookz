@@ -3,7 +3,6 @@ package kr.basic.abookz.controller;
 import kr.basic.abookz.config.auth.PrincipalDetails;
 import kr.basic.abookz.dto.BoardDTO;
 import kr.basic.abookz.entity.board.Category;
-import kr.basic.abookz.entity.member.RoleEnum;
 import kr.basic.abookz.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -33,11 +32,9 @@ public class BoardController {
   @GetMapping("/save")
   public String saveForm(@AuthenticationPrincipal PrincipalDetails principalDetails, RedirectAttributes redirectAttributes, Model model){
     if(!logincheck(principalDetails)){
-      return "redirect:/member/loginForm";
+      return "member/loginForm";
     }
     model.addAttribute("writer", principalDetails.getMember().getName());
-    String roleValue = String.valueOf(principalDetails.getMember().getRole());
-    model.addAttribute("role" , roleValue);
     return "board/save";
   }
   @PostMapping("/save")
@@ -57,18 +54,12 @@ public class BoardController {
 //    return "board/list";
 //  }
   @GetMapping("/{id}")
-  public String findById(@PathVariable Long id, Model model, @PageableDefault(page = 1) Pageable pageable, @AuthenticationPrincipal PrincipalDetails principalDetails){
+  public String findById(@PathVariable Long id, Model model, @PageableDefault(page = 1) Pageable pageable){
     // 해당 게시글의 조회수를 하나 올리고 게시글 데이터 가져와서 detail.html에 출력
     boardService.updateHits(id);
     BoardDTO boardDTO = boardService.findById(id);
     model.addAttribute("board", boardDTO);
     model.addAttribute("page", pageable.getPageNumber());
-    if(principalDetails != null){
-      model.addAttribute("writer", principalDetails.getMember().getName());
-    }
-    else{
-      model.addAttribute("writer", null);
-    }
     return "board/detail";
   }
 
@@ -76,18 +67,16 @@ public class BoardController {
   @GetMapping("/update/{id}")
   public String updateForm(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long id, Model model){
     if(!logincheck(principalDetails)){
-      return "redirect:/member/loginForm";
+      return "member/loginForm";
     }
     BoardDTO boardDTO = boardService.findById(id);
     model.addAttribute("boardUpdate", boardDTO);
     return "board/update";
   }
   @PostMapping("/update")
-  public String update(@ModelAttribute BoardDTO boardDTO, Model model, @AuthenticationPrincipal PrincipalDetails principalDetails){
-    System.out.println(boardDTO);
+  public String update(@ModelAttribute BoardDTO boardDTO, Model model){
     BoardDTO board = boardService.update(boardDTO);
     model.addAttribute("board", board);
-    model.addAttribute("writer", principalDetails.getMember().getName());
     return "board/detail";
   }
 

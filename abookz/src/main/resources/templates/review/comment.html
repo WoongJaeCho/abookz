@@ -8,47 +8,40 @@
 </head>
 <body>
 
-<div id="comment-container" class="w-fullbg-white rounded-lg border p-1 md:p-3 m-10">
-  <div class="flex flex-col gap-5 m-3">
-    <!-- Comment Container -->
-    <div>
-      <div class="flex w-full justify-between border rounded-md">
+<div th:fragment="comment" class="container mx-auto mt-10">
+  <div class="comments">
 
-        <div class="p-3">
-          <div class="flex gap-3 items-center">
-            <img src="https://avatars.githubusercontent.com/u/22263436?v=4"
-                 class="object-cover w-10 h-10 rounded-full border-2 border-emerald-400  shadow-emerald-400">
-            <h3 class="font-bold">
-              User 1
-              <br>
-              <span class="text-sm text-gray-400 font-normal">Level 1</span>
-            </h3>
+    <!-- 댓글 리스트 -->
+    <div class="space-y-4">
+      <!-- 개별 댓글 -->
+      <div class="flex items-start space-x-4">
+        <div class="avatar">
+          <div class="w-12 rounded-full">
+<!--            <img src="avatar.jpg" alt="SH"/>-->
           </div>
-          <p class="text-gray-600 mt-2">
-            this is sample commnent
-          </p>
-          <button class="text-right text-blue-500">Reply</button>
         </div>
-
+        <div class="flex-1 p-4 bg-white shadow rounded-lg">
+          <p class="text-lg font-semibold">SeungHyun Choi</p>
+          <p class="text-sm">t</p>
+          <!-- 여기에 추가 댓글 내용이 들어갈 수 있습니다. -->
+        </div>
       </div>
-
-    </div>
-    <!-- END Comment Container  -->
-
-    <div class="w-full px-3 mb-2 mt-6">
-        <textarea
-            class="bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-400 focus:outline-none focus:bg-white"
-            name="body" placeholder="Comment" required></textarea>
+      <!-- 여기에 추가 댓글 항목들이 반복될 수 있습니다. -->
     </div>
 
-    <div class="w-full flex justify-end px-3 my-3">
-      <input type="submit" class="px-2.5 py-1.5 rounded-md text-white text-sm bg-indigo-500 text-lg"
-             value='Post Comment'>
+    <!-- 댓글 입력 필드 -->
+    <div class="mb-5">
+      <textarea class="textarea textarea-bordered w-full" placeholder="댓글을 입력하세요."></textarea>
     </div>
 
-
+    <!-- 댓글 작성 버튼 -->
+    <div class="text-right">
+      <button class="btn btn-primary">댓글 작성</button>
+    </div>
   </div>
 </div>
-
+<script>
+  // 필요한 JavaScript를 여기에 추가할 수 있습니다.
+</script>
 </body>
 </html>
