@@ -30,6 +30,8 @@ public class MemberEntity {
   @CreationTimestamp
   private LocalDate regDate;//가입일
 
+
+
   public MemberEntity(String loginId) {
     this.loginId = loginId;
 
