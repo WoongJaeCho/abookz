@@ -118,6 +118,13 @@ public class MemberController {
     return "redirect:/member/" + memberDTO.getId();
   }
 
+  @PostMapping("/changeRole")
+  public String changeRole(@ModelAttribute MemberDTO memberDTO){
+    System.out.println("memberDto = " + memberDTO);
+    memberService.updateRole(memberDTO);
+    return "confirm";
+  }
+
   // 삭제
   @GetMapping("/delete/{id}")
   public String deleteById(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long id) {

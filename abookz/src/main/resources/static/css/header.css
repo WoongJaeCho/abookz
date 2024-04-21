@@ -10,7 +10,9 @@ li{
     list-style: none;
     color: #333;
 }
-
+.colorRed{
+    color: red;
+}
 
 /* @@@@ header @@@@ */
 #header{
@@ -160,6 +162,57 @@ li{
     background-color: rgb(19, 168, 226);
 }
 
+.admin {
+    position: relative;
+}
+.admin > ul {
+    display: flex;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+.admin > ul > li > a {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: skyblue;
+    box-sizing: border-box;
+    transition: all 300ms;
+}
+.admin > ul > li > a:hover{
+    background-color: rgb(19, 168, 226);
+}
+.admin > ul > li > ul {
+    width: 100%;
+    position: absolute;
+    display: none;
+    background-color: #fff;
+    box-sizing: border-box;
+}
+.admin > ul > li > ul {
+    display: block;
+    height: 0;
+    overflow: hidden;
+    transition: all 600ms;
+}
+.admin > ul > li > ul > li {
+    position: relative;
+
+}
+.admin > ul > li > ul > li > a {
+    width: 100%;
+    display: block;
+    padding: 15px 10px;
+    box-sizing: border-box;
+    position: relative;
+    /* background-color: skyblue; */
+    top: 10px;
+    z-index: 3;
+    transition: all 300ms;
+    background-color: #fff;
+}
+.admin > ul > li > ul > li > a:hover{
+    background-color: rgb(19, 168, 226);
+}
 @media only screen and (max-width: 768px) {
     #header {
         flex-direction: column;
