@@ -184,7 +184,7 @@ function wantToRead(isbn) {
       alert(data);
     })
     .catch(error => {
-      updateFeedback("로그인부터 해주세요",false);
+      updateFeedback("로그인이 필요합니다", false);
 
     });
 

@@ -5,6 +5,7 @@ import kr.basic.abookz.dto.BookDTO;
 import kr.basic.abookz.dto.BookShelfDTO;
 import kr.basic.abookz.dto.RatingDTO;
 import kr.basic.abookz.dto.ReviewDTO;
+import kr.basic.abookz.dto.admin.SlideCardDTO;
 import kr.basic.abookz.entity.member.MemberEntity;
 import kr.basic.abookz.entity.review.ReviewEntity;
 import kr.basic.abookz.service.*;
@@ -23,10 +24,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 import java.awt.print.Book;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 
 @Controller
 @Slf4j
@@ -40,7 +38,7 @@ public class ReviewController {
   private final LikeService likeService;
 
   @GetMapping("{bookShelfId}/{bookId}")
-  private String writeReview(Model model, @PathVariable("bookShelfId") Long bookShelfId,
+  public String writeReview(Model model, @PathVariable("bookShelfId") Long bookShelfId,
                              @PathVariable("bookId") Long bookId,
                              @AuthenticationPrincipal PrincipalDetails principalDetails) {
     if (principalDetails == null) {
@@ -59,22 +57,31 @@ public class ReviewController {
   }
 
   @PostMapping("{bookShelfId}/{bookId}")
-  private String saveReview(ReviewDTO reviewDTO, BookShelfDTO bookShelfDTO, @PathVariable("bookShelfId") Long bookShelfId,
-                            @PathVariable("bookId") Long bookId,
-                            @AuthenticationPrincipal PrincipalDetails principalDetails) {
+  public ResponseEntity<?> saveReview(ReviewDTO reviewDTO, @PathVariable("bookShelfId") Long bookShelfId,
+                                      @PathVariable("bookId") Long bookId,
+                                      @AuthenticationPrincipal PrincipalDetails principalDetails) {
     if (principalDetails == null) {
-      return "member/loginForm";
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "로그인이 필요합니다."));
     }
-    System.out.println("reviewDTO = " + reviewDTO);
-    if (reviewService.findByBookShelfId(bookShelfId) == null) {
-      reviewDTO.setBookShelfDTO(shelfService.findById(bookShelfId));
-      reviewService.save(reviewDTO);
-    } else {
-      reviewService.Update(reviewDTO);
-    }
+    try {
+      if (reviewService.findByBookShelfId(bookShelfId) == null) {
 
-    return "redirect:/review/" + bookShelfId + "/" + bookId;
+        reviewService.save(reviewDTO);
+      } else {
+        reviewService.update(reviewDTO);
+      }
+      Map<String, Object> response = Map.of(
+          "message", "리뷰가 성공적으로 저장되었습니다.",
+          "bookShelfId", bookShelfId,
+          "bookId", bookId
+      );
+
+      return ResponseEntity.ok(response);
+    } catch (Exception e) {
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "리뷰 저장 중 오류가 발생했습니다."));
+    }
   }
+
 
   @PostMapping("/rating")
   @ResponseBody
@@ -209,6 +216,8 @@ public class ReviewController {
 
     return ResponseEntity.ok(response);
   }
+
+
 
   @PostMapping("/delete")
   public ResponseEntity<?> deleteSelectedReviews(@RequestBody List<String> reviewIds,

@@ -24,7 +24,7 @@ function deleteSelectedReviews() {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ reviews: selectedReviews })
+      body: JSON.stringify(selectedReviews)
     })
         .then(response => {
           if (!response.ok) {
