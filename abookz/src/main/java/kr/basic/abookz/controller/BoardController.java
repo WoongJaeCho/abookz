@@ -65,6 +65,7 @@ public class BoardController {
     model.addAttribute("page", pageable.getPageNumber());
     if(principalDetails != null){
       model.addAttribute("writer", principalDetails.getMember().getName());
+      model.addAttribute("role",principalDetails.getMember().getRole());
     }
     else{
       model.addAttribute("writer", null);

@@ -2,12 +2,13 @@
 const boardCommentContainer = document.getElementById('boardCommentContainer');
 const boardCommentWrite = document.getElementById('boardCommentWrite');
 const boardId = document.getElementById('boardCommentList').getAttribute('data-value');
+const boardCommentRole = document.getElementById('boardCommentRole').getAttribute('role-value');
 let currentPage = 0;
 const pageSize = 10;
 
+console.log(boardCommentRole);
 fetchComments(boardId, currentPage,pageSize);
 function fetchComments(boardId, page,size) {
-    console.log("값체크")
     fetch(`/board/comment?boardId=${boardId}&page=${page}&size=${size}`, {
         method: "GET",
         headers: {
@@ -16,7 +17,6 @@ function fetchComments(boardId, page,size) {
     })
         .then(response => response.json())
         .then(data => {
-            console.log("데이터값체크" + JSON.stringify(data));
             if (data.content && data.content.length > 0) {
                 currentPage = page;
                 displayComments(data);
@@ -46,7 +46,7 @@ function displayComments(data) {
         commentHeaderElement.appendChild(commentTitle);
         commentHeaderElement.appendChild(commentP);
         commentCardElement.appendChild(commentHeaderElement);
-        if (boardCommentId === comment.memberDTO.name) {
+        if (boardCommentId === comment.memberDTO.name || boardCommentRole === 'ROLE_ADMIN' || boardCommentRole === 'ROLE_MANAGER') {
             const flexDiv = document.createElement('div');
             flexDiv.className = 'flex flex-col justify-end';
             const deleteButton = document.createElement('button');
@@ -63,12 +63,17 @@ function displayComments(data) {
                 commentP.contentEditable = true;
                 commentP.className='bg-slate-200';
                 updateSubmit.addEventListener('click',()=>{
+                    const commentChange= commentP.textContent;
+                    if(commentChange.trim()<1){
+                        alert('공백 댓글을 수정하실 수 없습니다');
+                        return false;
+                    }
                     updateSubmit.style.display='none';
                     updateButton.style.display='block';
                     commentP.contentEditable = false;
                     commentP.className='';
                     const updateValueId = updateButton.value;
-                    const commentChange= commentP.textContent;
+
                     updateComment(updateValueId,commentChange);
                 })
             });
@@ -106,10 +111,11 @@ function createPagingBoardComment(totalPages, currentPage, boardId) {
 }
 
 function insertComment() {
+
     const commentInput = document.getElementById('commentInput').value;
     if(commentInput.trim()< 1){
         alert("공백 댓글을 작성하실수 없습니다");
-        return;
+        return false;
     }
     const data = {
         boardDTO: {
@@ -171,10 +177,6 @@ function deleteComment(commentId) {
         .catch(error => console.error('Error:', error));
 }
 function updateComment(commentId, commentChange) {
-    if(commentChange.trim()< 1){
-        alert('공백 댓글을 수정하실 수 없습니다');
-        return;
-    }
     const data = {
         boardDTO: {
             id: boardId

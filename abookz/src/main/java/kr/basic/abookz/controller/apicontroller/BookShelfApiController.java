@@ -47,9 +47,12 @@ public class BookShelfApiController {
     @RequestMapping(value = "/want", method = RequestMethod.POST)
     public String wantToRead(@RequestParam("book") String book, Authentication authentication,
                              @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
-        System.out.println("book = " + book);
-        Long id = principalDetails.getMember().getId();
         String data = null;
+        if( principalDetails ==null){
+            data ="로그인 후 서재등록이 가능합니다";
+            return  data;
+        }
+        Long id = principalDetails.getMember().getId();
         MemberDTO memberDTO = memberService.findById(id);
         BookDTO aladinGetBook = aladinService.getOneBookDTO(book);
         BookShelfDTO bookShelfDTO = BookShelfDTO.builder()
@@ -96,9 +99,7 @@ public class BookShelfApiController {
     @PostMapping("/deleteMyShelf")
     public ResponseEntity<Object> deleteMyShelf(@RequestBody BookShelfDTO jsonData, @AuthenticationPrincipal PrincipalDetails principalDetails) {
         Long memberId = principalDetails.getMember().getId();
-        System.out.println("memberId = " + memberId);
         Long id = jsonData.getId();
-        System.out.println("Checkid = " + id);
         if (id == null) {
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(URI.create("/myshelf"));
@@ -125,16 +126,12 @@ public class BookShelfApiController {
     public ResponseEntity<Slice<BookShelfDTO>> getMyShelf(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size
             , @RequestParam String tag
             , @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        System.out.println("tag = " + tag);
         Long memberId = principalDetails.getMember().getId();
         if (tag.equals("null")) {
-
             Slice<BookShelfDTO> bookShelfDTO = bookShelfService.SliceBookShelfDTO(memberId, page, size);
-            System.out.println("bookShelfDTO = " + bookShelfDTO);
             return ResponseEntity.ok(bookShelfDTO);
         }
         else if(tag.equals("ALL")){
-
             Slice<BookShelfDTO> bookShelfDTO = bookShelfService.SliceBookShelfDTO(memberId,page,size);
             return ResponseEntity.ok(bookShelfDTO);
         }

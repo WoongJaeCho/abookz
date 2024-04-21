@@ -50,6 +50,7 @@
   </div>
   <div id="boardCommentWrite">
     <input type="hidden" id="boardCommentId" th:attr="id-value=${writer}">
+    <input type="hidden" id="boardCommentRole" th:attr="role-value=${role}">
     <textarea id="commentInput" class="commentInput" rows="4" placeholder="댓글을 입력하세요.."></textarea>
     <button id="submitComment" onclick="insertComment()">댓글 작성</button>
   </div>
