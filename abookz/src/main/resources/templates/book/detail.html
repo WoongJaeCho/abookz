@@ -94,10 +94,11 @@
     <p class="py-4" >리뷰를 남기시겠습니까?</p>
     <div class="modal-action">
       <form method="dialog">
+        <input type="hidden" name="">
         <button
-            th:data-shelf="${shelf?.id}"
-            th:data-book="${book?.id}"
-            onclick="writeReview(this.getAttribute('data-shelf'), this.getAttribute('data-book'))"
+            th:data-shelf="${shelf?.id != null ? shelf.id : 0}"
+            th:data-book="${book?.id != null ? book.id : 0}"
+            onclick="findReview(this.getAttribute('data-shelf'), this.getAttribute('data-book'))"
             id="modal-review-btn"
             class="btn btn-success text-white">네</button>
         <button class="btn btn-error text-white">아니오</button>

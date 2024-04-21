@@ -99,10 +99,18 @@
                 </li>
             </ul>
         </div>
-
+        <div id="message-container" class="absolute inset-x-0 mx-auto transform -translate-y-1/2 mt-[100px]">
+            <!-- Message Container의 내용 -->
+        </div>
     </header>
-    <div id="message-container" class="mt-5 mx-auto">
-    </div>
+
+    <script>
+        window.addEventListener('scroll', function() {
+            var messageContainer = document.getElementById('message-container');
+            var yOffset = window.pageYOffset ; // 현재 스크롤 위치에서 200px 아래에 요소를 위치시킵니다.
+            messageContainer.style.top = yOffset + 'px';
+        });
+    </script>
     <div id="searchResults"></div>
 </body>
 </html>

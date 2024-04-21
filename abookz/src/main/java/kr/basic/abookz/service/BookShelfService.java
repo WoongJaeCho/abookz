@@ -26,6 +26,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
+import static kr.basic.abookz.entity.book.TagEnum.READ;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -105,7 +107,7 @@ public class BookShelfService {
     TagEnum tagEnum = bookShelfDTO.getTag();
     System.out.println("tagEnum = " + tagEnum);
 
-    if (tagEnum == TagEnum.READ) {
+    if (tagEnum == READ) {
       if (bookShelf.getStartDate() == null) {
         bookShelf.setStartDate(now);
       }
@@ -145,7 +147,7 @@ public class BookShelfService {
       if (bookShelf.getStartDate() == null) {
         bookShelf.setStartDate(now);
       }
-      bookShelf.setTag(TagEnum.READ);
+      bookShelf.setTag(READ);
       bookShelf.setEndDate(now);
       return "성공";
     }
@@ -258,5 +260,10 @@ public class BookShelfService {
     return bookShelfRepository.findByMember_IdAndBook_ISBN13(id, Long.valueOf(isbn13))
         .map(this::mapEntityToDTO)
         .orElseThrow(() -> new RuntimeException("책꽂이나 ISBN에 해당하는 데이터가 없습니다."));
+  }
+
+  public double averageWeightOfReadBooksExcludingCurrent(Long id) {
+    Double averageWeight = bookShelfRepository.findAverageWeightExcludingMember(id, READ);
+    return averageWeight != null ? averageWeight : 0.0;
   }
 }

@@ -45,29 +45,39 @@ public class BookShelfApiController {
     private final AladinService aladinService;
 
     @RequestMapping(value = "/want", method = RequestMethod.POST)
-    public String wantToRead(@RequestParam("book") String book, Authentication authentication,
-                             @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
+    public ResponseEntity<Map<String, Object>> wantToRead(@RequestParam("book") String book, Authentication authentication,
+                                                          @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
         System.out.println("book = " + book);
         Long id = principalDetails.getMember().getId();
-        String data = null;
         MemberDTO memberDTO = memberService.findById(id);
         BookDTO aladinGetBook = aladinService.getOneBookDTO(book);
         BookShelfDTO bookShelfDTO = BookShelfDTO.builder()
-                .memberDTO(memberDTO)
-                .bookDTO(aladinGetBook)
-                .build();
+            .memberDTO(memberDTO)
+            .bookDTO(aladinGetBook)
+            .build();
         String getValue = bookShelfService.insertBookAndBookShelf(aladinGetBook, bookShelfDTO);
+        BookDTO findBook = bookService.findByDTOISBN13(Long.valueOf(aladinGetBook.getISBN13()));
+        Long bookId = findBook.getId();
+        BookShelfDTO findShelf = bookShelfService.findByMember_IdAndBook_ISBN13(id, aladinGetBook.getISBN13());
+        Long shelfId = findShelf.getId();
         System.out.println(getValue);
-        if (getValue.equals("저장")) {
-            data = aladinGetBook.getTitle() + "내 서재에 등록이 완료되었습니다";
-            return data;
-        }
-        data = "이미 등록되어있습니다";
-        return data;
 
+        Map<String, Object> response = new HashMap<>();
+        if (getValue.equals("저장")) {
+            response.put("message", aladinGetBook.getTitle() + " 내 서재에 등록이 완료되었습니다");
+            response.put("bookId", bookId);
+            response.put("shelfId",  shelfId);
+            return ResponseEntity.ok(response);
+        }
+        response.put("message", "이미 등록되어있습니다");
+        response.put("bookId", bookId);
+        response.put("shelfId", shelfId);
+        return ResponseEntity.ok(response);
     }
 
+
     @PostMapping("/readingUpdate")
+
     public ResponseEntity<Object> readingUpdate(@RequestBody BookShelfDTO jsonData) {
         System.out.println("jsonData.toString() = " + jsonData.toString());
         if (jsonData.getTag() != null && jsonData.getTag().toString() != null) {

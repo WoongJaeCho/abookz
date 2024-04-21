@@ -62,32 +62,36 @@ function submitRating(ratingValue) {
 
 
 // 저장 버튼 클릭 시
-document.querySelector('form').addEventListener('submit', function(event) {
-  event.preventDefault(); // 기본 제출 이벤트 방지
+function saveReview() {
+  var content = document.getElementsByName('content')[0].value;
+  var isSpoilerActive = document.getElementById('spoilerCheckbox').checked;
 
-  const formData = new FormData(this);
-  const spoilerCheckbox = document.getElementById('spoilerCheckbox');
+  const path = window.location.pathname;
+  const segments = path.split('/');
+  const bookShelfId = segments[2];
+  const bookId = segments[3];
 
-  // 스포일러 체크박스의 상태를 확인하여, 선택되지 않았다면 false 값을 명시적으로 설정
-  formData.set('isSpoilerActive', spoilerCheckbox.checked ? 'true' : 'false');
-
-  // AJAX 요청을 통해 폼 데이터를 서버에 전송
-  fetch(this.getAttribute('action'), {
+  fetch(`/review/${bookShelfId}/${bookId}`, {
     method: 'POST',
-    body: formData
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      content: content,
+      isSpoilerActive: isSpoilerActive
+    })
   })
-      .then(response => response.json())  // JSON 응답 파싱
-      .then(data => {
-
-          alert(data.message);  // 성공 메시지를 표시
-          window.location.href = '/review/reviewList'; // 성공 시 리뷰 목록 페이지로 리다이렉션
-
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
       })
-      .catch(error => {
-        console.error('Error:', error);
-        updateFeedback(error.toString(), false);
-      });
-});
+      .then(data => {
+        window.location.href = '/review/reviewList';
+      })
+      .catch(error => updateFeedback(error.message, false));
+}
 
 // 피드백 메시지 업데이트
 function updateFeedback(message, isSuccess ) {

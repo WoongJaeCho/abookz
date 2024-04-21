@@ -42,9 +42,9 @@ public class MemberEntity {
   private String providerId;
 
   //  private int challenge;//습관형성 챌린지
-//  @OneToMany(mappedBy = "member, cascade = CascadeType.ALL)
+//  @OneToMany(mappedBy = "member, , orphanRemoval = true)
 //  private List<ReviewEntity> reviewList = new ArrayList<>(); //회원이 작성한 리뷰 리스트
-//@OneToMany(mappedBy = "member" ,cascade = CascadeType.ALL)
+//@OneToMany(mappedBy = "member" ,, orphanRemoval = true)
 //  private List<MemoEntity> memoList = new ArrayList<>(); //회원이 작성한 메모 리스트
 
   public static MemberEntity toMemberEntity(MemberDTO memberDTO) {

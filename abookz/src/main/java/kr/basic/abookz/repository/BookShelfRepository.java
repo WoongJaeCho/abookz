@@ -35,5 +35,7 @@ public interface BookShelfRepository extends JpaRepository<BookShelfEntity,Long>
     @Query("SELECT b.member.id, SUM(b.book.weight) FROM BookShelfEntity b WHERE b.tag = 'READ' GROUP BY b.member.id")
     List<Object[]> findTotalWeightByMemberForReadBooks();
     Slice<BookShelfEntity> findAllByMemberIdAndTagOrderByIdDesc(Long memberId,TagEnum tagEnum,Pageable pageable);
+    @Query("SELECT AVG(b.book.weight) FROM BookShelfEntity b WHERE b.member.id != :memberId AND b.tag = :tag")
+    Double findAverageWeightExcludingMember(@Param("memberId") Long memberId, @Param("tag") TagEnum tag);
 }
 
