@@ -15,6 +15,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -66,7 +67,7 @@ public class ReviewService {
     return mapEntityToDTO(reviewRepository.findById(id).get());
   }
 
-  public ReviewEntity Update(ReviewDTO reviewDTO) {
+  public ReviewEntity update(ReviewDTO reviewDTO) {
     ReviewEntity reviewEntity = reviewRepository.findById(reviewDTO.getId())
         .orElseThrow(() -> new EntityNotFoundException("Review not found with id: " + reviewDTO.getId()));
 
@@ -103,10 +104,10 @@ public class ReviewService {
   }
 
   public void deleteReviews(List<String> reviewIds) {
-
     List<Long> parsedIds = reviewIds.stream()
         .map(Long::parseLong)
         .collect(Collectors.toList());
+
     reviewRepository.deleteAllById(parsedIds);
   }
 }

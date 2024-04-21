@@ -392,28 +392,31 @@ function updateLikeCount(reviewData) {
 connect();
 
 
-function writeReview(shelfId,bookId) {
-  if (shelfId == null) {
-    updateFeedback("책을 먼저 책장에 저장해주세요.", false);
-    return;
-  }
-
-  fetch(`/review/${shelfId}/${bookId}`)
+function writeReview(shelfId, bookId) {
+  fetch(`/review/${shelfId}/${bookId}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ shelfId, bookId })
+  })
       .then(response => {
         if (!response.ok) {
-          throw new Error("서버에서 응답이 올바르지 않습니다.");
+          return response.json().then(err => {
+            throw new Error(err.message);  // 서버로부터 받은 메시지를 예외로 던짐
+          });
         }
-        return response.json();
+        return response.json();  // 정상 응답을 JSON으로 파싱
       })
       .then(data => {
         console.log('Success:', data);
-        document.getElementById('modal-review-btn').setAttribute('data-shelf',shelfId);
-        document.getElementById('modal-review-btn').setAttribute('data-book',bookId);
-        window.location.href = `/review/${shelfId}/${bookId}`; // 리뷰 페이지로 리다이렉트
+        window.location.href = `/review/${data.bookShelfId}/${data.bookId}`;  // 성공적으로 리뷰 저장 후 리다이렉트
       })
-      .catch(error => updateFeedback(error.message, false));
+      .catch(error => {
+        console.error('Error:', error);
+        updateFeedback(error.message, false);  // 에러 메시지를 updateFeedback 함수를 사용해 업데이트
+      });
 }
-
 // 피드백 메시지 업데이트
 function updateFeedback(message, isSuccess ) {
   var headerElement = document.getElementById('message-container');

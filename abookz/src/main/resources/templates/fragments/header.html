@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.w3.org/1999/xhtml">
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -83,7 +83,8 @@
             </div>
         </div>
         <a class="login" sec:authorize="isAuthenticated()" href="javascript:void(0)" onclick="Logout();"><p>로그아웃</p></a>
-        <a class="join" sec:authorize="isAuthenticated()" href="/member/update"><p>정보수정</p></a>
+        <a class="join" sec:authorize="isAuthenticated()" href="/member/update"> <p th:text="${#authentication.principal.name}">사용자 이름</p></a>
+
     </header>
     <div id="message-container" class="mt-5 mx-auto">
     </div>

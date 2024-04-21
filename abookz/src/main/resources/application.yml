@@ -59,12 +59,3 @@ spring:
       hibernate:
         jdbc:
           time_zone: Asia/Seoul
-
-  mail:
-    host: smtp.naver.com
-    port: 465
-    username: dbalstjr97@naver.com
-    password: youminseuk97
-    properties:
-      mail.smtp.auth: true
-      mail.smtp.ssl.enable: true

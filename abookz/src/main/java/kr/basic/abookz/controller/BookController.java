@@ -54,6 +54,7 @@ public class BookController {
       try {
         BookShelfDTO findShelf = shelfService.findByMember_IdAndBook_ISBN13(member.getId(), book.getISBN13());
         model.addAttribute("shelf",findShelf);
+        book.setId(findShelf.getId());
       }catch (RuntimeException e){
         log.error("책꽂이나 ISBN에 해당하는 데이터가 없습니다." );
       }
@@ -61,6 +62,8 @@ public class BookController {
     }
 //    book.setId(bookService.findByDTOISBN13(Long.valueOf(isbn13)).getId());
     model.addAttribute("book", book);
+
+
     System.out.println("book = " + book);
 
     return "book/detail";
