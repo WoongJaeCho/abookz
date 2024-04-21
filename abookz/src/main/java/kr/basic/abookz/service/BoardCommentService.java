@@ -85,9 +85,10 @@ public class BoardCommentService {
      }
     public String updateBoardComment(BoardCommentDTO boardCommentDTO){
      BoardCommentEntity boardCommentEntity  =  commentRepository.findByIdAndMemberId(boardCommentDTO.getId(),boardCommentDTO.getMemberDTO().getId());
-        System.out.println("boardCommentEntity = " + boardCommentEntity);
+    if(boardCommentEntity == null){
+        return "실패";
+    }
     BoardCommentEntity boardCommentChange = mapDTOToEntity(boardCommentDTO);
-        System.out.println("boardCommentChange = " + boardCommentChange);
         boardCommentEntity.setComment(boardCommentChange.getComment());
     return  "체크";
     }

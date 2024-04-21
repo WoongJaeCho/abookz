@@ -71,14 +71,12 @@ public class BoardCommentApiController {
         }
         Long id   = principalDetails.getMember().getId();
         MemberDTO memberDTO = memberService.findById(id);
-        System.out.println("memberDTO = " + memberDTO);
        BoardCommentDTO getBoardDTO = BoardCommentDTO.builder()
                 .memberDTO(memberDTO)
                 .id(boardCommentDTO.getId())
                 .boardDTO(boardCommentDTO.getBoardDTO())
                 .Comment(boardCommentDTO.getComment())
                 .build();
-        System.out.println("getBoardDTO빌더값 = " + getBoardDTO);
                 boardCommentService.updateBoardComment(getBoardDTO);
         String redirectUrl = "/board/" + boardCommentDTO.getBoardDTO().getId();
         return new RedirectView(redirectUrl);

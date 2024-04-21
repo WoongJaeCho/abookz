@@ -101,75 +101,75 @@ function openModal(modal, popup) {
             const progressBar = document.getElementById('progress-bar').firstElementChild;
             const maxPage = data.bookDTO.itemPage;
             const currentPageInput = document.getElementById('currentPageInput');
-            let currentPage = parseInt(currentPageInput.value, 10);
-            const progressPercentage = (currentPage / maxPage) * 100;
+            let currentPage = parseInt(currentPageInput.value, 10) || 0;
             const handle = document.getElementById('modal-handle');
-            const initialProgressPercent = (currentPage / maxPage) * 100;
-            updateHandlePosition(initialProgressPercent);
-            progressBar.style.backgroundColor = 'pink';
-            progressBar.style.width = progressPercentage + '%';
-
+            const progress = document.getElementById('progress-bar');
             let isDragging = false;
-
-            handle.addEventListener('mousedown', function(event) {
-                isDragging = true;
-                document.addEventListener('mousemove', mouseMoveHandler);
-            });
-
-            document.addEventListener('mouseup', function() {
-                if (isDragging) {
-                    document.removeEventListener('mousemove', mouseMoveHandler);
-                    isDragging = false;
-                }
-            });
-
-            function updateHandlePosition(progressPercent) {
-                const handleWidth = handle.offsetWidth;
-                const progressBarWidth = progressBar.offsetWidth;
-                const newLeft = Math.max(0, Math.min((progressPercent / 100) * (progressBarWidth - handleWidth), progressBarWidth - handleWidth));
-                handle.style.left = `${newLeft}px`;
-
-                progressBar.style.width = `${progressPercent}%`;
-            }
-
-            function mouseMoveHandler(event) {
-                const progressBarRect = progressBar.getBoundingClientRect();
-                const newX = Math.max(0, Math.min(event.clientX - progressBarRect.left, progressBar.offsetWidth - handle.offsetWidth));
-                const rightLimit = progressBar.offsetWidth - handle.offsetWidth;
-
-                let newPosition = Math.max(0, Math.min(newX, rightLimit));
-                handle.style.left = `${newPosition}px`;
-
-                const progressPercentage = (newPosition / (progressBar.offsetWidth - handle.offsetWidth)) * 100;
-
+                let initialClickOffsetX = 0;
+                const progressPercentage = (currentPage / maxPage) * 100;
+                const maxProgressWidth = progress.offsetWidth;
+                const xPosition = (progressPercentage / 100) * maxProgressWidth;
                 progressBar.style.width = `${progressPercentage}%`;
+                progressBar.style.backgroundColor = getColorBasedOnProgress(progressPercentage);
+                handle.style.left = `${xPosition}px`;
+                handle.addEventListener('mousedown', function(event) {
+                    isDragging = true;
+                    const handleCurrentLeft = parseInt(handle.style.left, 10) || 0;
+                    initialClickOffsetX = event.clientX - handleCurrentLeft;
+                    event.preventDefault();
+                    updateProgress(handleCurrentLeft);
+                    document.addEventListener('mousemove', mouseMoveHandler);
+                    document.addEventListener('mouseup', stopDragging);
+                });
 
-                if (newPosition > 0) {
-                    progressBar.style.backgroundColor = 'pink';
-                } else {
-                    progressBar.style.backgroundColor = 'lightgray';
+                function stopDragging() {
+                    isDragging = false;
+                    document.removeEventListener('mousemove', mouseMoveHandler);
+                    document.removeEventListener('mouseup', stopDragging);
                 }
-
-                const newPage = Math.round((progressPercentage / 100) * maxPage);
-                console.log(newPage);
+            function mouseMoveHandler(event) {
+                if (!isDragging) return;
+                const xPosition = event.clientX - initialClickOffsetX;
+                updateProgress(xPosition);
             }
-            modalPage.addEventListener('input', function(event) {
-                const input = event.target;
-                currentPage = parseInt(input.value, 10) || 0;
+            function updateProgress(xPosition) {
+                const maxProgressWidth = progress.offsetWidth;
+                const newLeft = Math.min(Math.max(xPosition, 0), maxProgressWidth);
+                const progressPercentage = (newLeft / maxProgressWidth) * 100;
+                progressBar.style.width = `${progressPercentage}%`;
+                progressBar.style.backgroundColor = getColorBasedOnProgress(progressPercentage);
+                handle.style.left = `${newLeft}px`;
+                updateCurrentPage(progressPercentage);
+            }
+            function getColorBasedOnProgress(progress) {
+                if (progress < 25) {
+                    return 'red';
+                } else if (progress < 50) {
+                    return 'orange';
+                } else if (progress < 75) {
+                    return 'yellow';
+                } else {
+                    return 'pink';
+                }
+            }
 
-                if (currentPage > maxPage) {
-                    input.value = maxPage;
-                    currentPage = maxPage;
-                } else if (currentPage < 0) {
-                    input.value = 0;
+            function updateCurrentPage(progressPercentage) {
+                const newPage = Math.round((progressPercentage / 100) * maxPage);
+                currentPageInput.value = newPage;
+                currentPage = newPage;
+            }
+
+            modalPage.addEventListener('input', function(event) {
+                currentPage = parseInt(event.target.value, 10) || 0;
+                if(currentPage > maxPage){
+                    currentPage=maxPage;
+                }else if(currentPage < 0){
                     currentPage = 0;
                 }
                 const progressPercentage = (currentPage / maxPage) * 100;
-                progressBar.style.backgroundColor = 'pink';
-             /*   progressBar.style.width = progressPercentage + '%';*/
-                updateHandlePosition(progressPercentage);
+                progressBar.style.width = `${progressPercentage}%`;
+                progressBar.style.backgroundColor = getColorBasedOnProgress(progressPercentage);
             });
-
             const submitModal = document.getElementById('modal_submit');
             submitModal.addEventListener('click', () => {
                 changeDateModal(value,modalStartDate,modalAddDate,modalEndDate,modalTargetDate,currentPage);

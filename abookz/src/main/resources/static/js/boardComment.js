@@ -109,6 +109,7 @@ function insertComment() {
     const commentInput = document.getElementById('commentInput').value;
     if(commentInput.trim()< 1){
         alert("공백 댓글을 작성하실수 없습니다");
+        return;
     }
     const data = {
         boardDTO: {
@@ -172,6 +173,7 @@ function deleteComment(commentId) {
 function updateComment(commentId, commentChange) {
     if(commentChange.trim()< 1){
         alert('공백 댓글을 수정하실 수 없습니다');
+        return;
     }
     const data = {
         boardDTO: {
