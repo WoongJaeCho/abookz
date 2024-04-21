@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -36,10 +39,15 @@ public class MemberController {
 
   // 조회
   @GetMapping("/list")
-  public String findAll(Model model) {
-    List<MemberDTO> list = memberService.findAll();
+  public String findAll(@PageableDefault(page = 1) Pageable pageable, Model model) {
+    Page<MemberDTO> memberList = memberService.paging(pageable);
+    int blockLimit = 5;
+    int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 4 7 10 ~~
+    int endPage = ((startPage + blockLimit - 1) < memberList.getTotalPages()) ? startPage + blockLimit - 1 : memberList.getTotalPages();
 
-    model.addAttribute("memberList", list);
+    model.addAttribute("memberList", memberList);
+    model.addAttribute("startPage", startPage);
+    model.addAttribute("endPage", endPage);
     return "member/list";
   }
 
@@ -118,7 +126,7 @@ public class MemberController {
 
   @PostMapping("/changeRole")
   @ResponseBody
-  public String changeRole(@ModelAttribute MemberDTO memberDTO){
+  public String changeRole(@RequestBody MemberDTO memberDTO){
     System.out.println("memberDto = " + memberDTO);
     Long getId = memberDTO.getId();
     memberService.updateRole(memberDTO, getId);
@@ -127,11 +135,12 @@ public class MemberController {
 
   // 삭제
   @GetMapping("/delete/{id}")
-  public String deleteById(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long id) {
+  public String deleteById(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long id, HttpSession session) {
     if(!logincheck(principalDetails)){
       return "member/loginForm";
     }
     memberService.deleteById(id);
+    session.invalidate();
     return "redirect:/member/list";
   }
 

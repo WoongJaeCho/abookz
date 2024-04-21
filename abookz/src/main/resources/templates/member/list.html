@@ -6,46 +6,71 @@
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"/><br>
-<div class="container flex justify-center items-center" id="CreateContainer">
-<div class="overflow-x-auto bg-white dark:bg-neutral-700">
-  <table class="min-w-full text-center text-sm whitespace-nowrap" id="boardTable">
-    <thead class="uppercase tracking-wider border-b-2 dark:border-neutral-600 bg-neutral-50 dark:bg-neutral-800 border-t">
-    <tr>
-      <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">번호</th>
-      <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">Id</th>
-      <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">Password</th>
-      <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">Email</th>
-      <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">Nickname</th>
-      <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">Role</th>
-      <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">Profile</th>
-      <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">RegDate</th>
-      <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">삭제</th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr th:if="${memberList.isEmpty()}">
-      <td colspan="9"><p class="text-center align-middle">조회된 회원이 없습니다.</p></td>
-    </tr>
-    <tr class="border-b dark:border-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-600" th:each="member: ${memberList}">
-      <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="number" th:text="${member.id}"></td>
-      <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="loginId"><a th:href="@{|/member/${member.id}|}" th:text="${member.loginId}"></a></td>
-      <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="password" th:text="${member.password}"></td>
-      <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="email" th:text="${member.email}"></td>
-      <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="name" th:text="${member.name}"></td>
-      <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600">
-        <select id="changeRole" name="role" onchange="changeRole()">
-          <option value="ROLE_ADMIN">ADMIN</option>
-          <option value="ROLE_MANAGER">MANAGER</option>
-          <option value="ROLE_USER">USER</option>
-        </select>
-      </td>
-      <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="profile" th:text="${member.profile}"></td>
-      <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="regDate" th:text="${member.regDate}"></td>
-      <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600"><button class="btn btn-outline btn-error" th:onclick="|location.href='@{|/member/delete/${member.id}|}'|">삭제</button></td>
-    </tr>
-    </tbody>
-  </table>
+<div class="container" id="CreateContainer">
+  <div class="overflow-x-auto bg-white dark:bg-neutral-700">
+    <table class="min-w-full text-center text-sm whitespace-nowrap" id="boardTable">
+      <thead class="uppercase tracking-wider border-b-2 dark:border-neutral-600 bg-neutral-50 dark:bg-neutral-800 border-t">
+      <tr>
+        <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">번호</th>
+        <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">Id</th>
+        <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">Email</th>
+        <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">Nickname</th>
+        <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">Role</th>
+        <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">Profile</th>
+        <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">RegDate</th>
+        <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">삭제</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr th:if="${memberList.isEmpty()}">
+        <td colspan="9"><p class="text-center align-middle">조회된 회원이 없습니다.</p></td>
+      </tr>
+      <tr class="border-b dark:border-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-600" th:each="member: ${memberList}">
+        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="number" th:text="${member.id}"></td>
+        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="loginId"><a th:href="@{|/member/${member.id}|}" th:text="${member.loginId}"></a></td>
+        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" style="display: none;" id="password" th:text="${member.password}"></td>
+        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="email" th:text="${member.email}"></td>
+        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="name" th:text="${member.name}"></td>
+        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600">
+          <select class="select select-bordered select-sm w-full max-w-xs" id="changeRole" name="role" onchange="changeRole()">
+            <option hidden th:text="${member.role}" selected></option>
+            <option value="ROLE_ADMIN">ADMIN</option>
+            <option value="ROLE_MANAGER">MANAGER</option>
+            <option value="ROLE_USER">USER</option>
+          </select>
+        </td>
+        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="profile" th:text="${member.profile}"></td>
+        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="regDate" th:text="${member.regDate}"></td>
+        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600"><button class="btn btn-outline btn-error" th:onclick="|location.href='@{|/member/delete/${member.id}|}'|">삭제</button></td>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+  <nav class="mt-5 flex items-center justify-center text-sm" aria-label="Page navigation example">
+    <ul class="list-style-none flex">
+      <li th:unless="${memberList.first}" class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white">
+        <a th:href="@{/member/list(page=1)}">First</a>
+      </li>
+      <li th:unless="${memberList.first}" class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white">
+        <a th:href="@{/member/list(page=${memberList.number})}">Prev</a>
+      </li>
+      <li aria-current="page" th:each="page : ${#numbers.sequence(startPage, endPage)}">
+        <a class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white" th:if="${page != memberList.number + 1 && page != 0}" th:href="@{/member/list(page=${page})}" th:text="${page}"></a>
+          <a class="relative block rounded bg-blue-100 px-3 py-1.5 text-sm font-medium text-blue-700 transition-all duration-300" th:if="${page == memberList.number + 1}" th:text="${page}">
+            <span class="absolute -m-px h-px w-px overflow-hidden whitespace-nowrap border-0 p-0[clip:rect(0,0,0,0)]">
+            </span>
+          </a>
+        </li>
+        <li th:unless="${memberList.last}" class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white">
+          <a th:href="@{/member/list(page=${memberList.number + 2})}">Next</a>
+        </li>
+        <li th:unless="${memberList.last}"
+            class="relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-600 transition-all duration-300 hover:bg-neutral-100 dark:text-white dark:hover:bg-neutral-700 dark:hover:text-white">
+          <a th:href="@{/member/list(page=${memberList.totalPages})}">Last</a>
+        </li>
+      </ul>
+  </nav>
 </div>
-</div>
+<script src="/js/Member/MemberRoleChange.js" type="text/javascript" defer></script>
 </body>
 </html>

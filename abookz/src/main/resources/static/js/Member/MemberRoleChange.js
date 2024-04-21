@@ -32,12 +32,10 @@ function changeRole(){
         .then(response => response.text())
         .then(data=> {
             if(data === "confirm"){
-                alert("성공!")
-                location.href = "member/list"
+                location.href = "/member/list"
             }
             else{
-                alert("오류 발생!")
-                location.href = "member/list"
+                location.href = "/member/list"
             }
         })
 }

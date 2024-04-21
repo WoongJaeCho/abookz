@@ -26,6 +26,17 @@ public class MemberDTO {
   private String profile; // 프로필이미지
   private LocalDate regDate; // 가입일
 
+  public MemberDTO(Long id, String loginId, String password, String email, String name, RoleEnum role, LocalDate regDate, String profile) {
+    this.id = id;
+    this.loginId = loginId;
+    this.password = password;
+    this.email = email;
+    this.name = name;
+    this.role = role;
+    this.regDate = regDate;
+    this.profile = profile;
+  }
+
 
   public static MemberDTO loginMemberDTO(MemberEntity memberEntity){
     MemberDTO memberDTO = new MemberDTO();

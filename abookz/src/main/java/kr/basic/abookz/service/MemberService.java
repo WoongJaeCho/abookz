@@ -8,6 +8,10 @@ import kr.basic.abookz.entity.member.MemberEntity;
 import kr.basic.abookz.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -113,29 +117,30 @@ public class MemberService {
   }
 
   public void update(MemberDTO memberDTO, MultipartFile file) {
-    try{
-      if(file != null && !file.isEmpty()){
-        String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-        memberDTO.setProfile(fileName);
+    Optional<MemberEntity> byId = memberRepository.findById(memberDTO.getId());
+    if(byId.isPresent()){
+      try{
+        if(file != null && !file.isEmpty()){
+          String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+          memberDTO.setProfile(fileName);
 
-        Path upload = Paths.get(uploadPath);
-        if(!Files.exists(upload)){
-          Files.createDirectories(upload);
+          Path upload = Paths.get(uploadPath);
+          if(!Files.exists(upload)){
+            Files.createDirectories(upload);
+          }
+          Path filePath = upload.resolve(fileName);
+          Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
         }
-        Path filePath = upload.resolve(fileName);
-        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+        else {
+          memberDTO.setProfile(byId.get().getProfile());
+        }
+        // 비밀번호 수정 시 다시 암호화하여 변경
+        String encodePw = bCryptPasswordEncoder.encode(memberDTO.getPassword());
+        memberDTO.setPassword(encodePw);
+      }catch (Exception e){
+        e.printStackTrace();
       }
-      else {
-        memberDTO.setProfile(memberDTO.getProfile());
-      }
-      // 비밀번호 수정 시 다시 암호화하여 변경
-      String encodePw = bCryptPasswordEncoder.encode(memberDTO.getPassword());
-      memberDTO.setPassword(encodePw);
-    }catch (Exception e){
-      e.printStackTrace();
     }
-
-//    MemberEntity.toupdateMemberEntity(memberDTO);
     memberRepository.save(MemberEntity.toupdateMemberEntity(memberDTO));
   }
 
@@ -147,7 +152,6 @@ public class MemberService {
     }
   }
   // 회원삭제
-
   public void deleteById(Long id) {
     memberRepository.deleteById(id);
   }
@@ -223,4 +227,10 @@ public class MemberService {
     javaMailSender.send(message);
   }
 
+  public Page<MemberDTO> paging(Pageable pageable) {
+    int page = pageable.getPageNumber() - 1;
+    int pageLimit = 5; // 한 페이지에 보여줄 글 갯수
+    Page<MemberEntity> memberEntities = memberRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+    return memberEntities.map(member -> new MemberDTO(member.getId(), member.getLoginId(), member.getPassword(), member.getEmail(), member.getName(), member.getRole(), member.getRegDate(), member.getProfile()));
+  }
 }
