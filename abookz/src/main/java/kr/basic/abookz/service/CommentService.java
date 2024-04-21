@@ -71,7 +71,7 @@ public class CommentService {
         .map(this::mapEntityToDTO);
   }
 
-  public CommentDTO save(CommentEntity comment) {
-     return mapEntityToDTO(commentRepository.save(comment));
+  public CommentDTO save(CommentDTO comment) {
+     return mapEntityToDTO(commentRepository.save(mapDTOToEntity(comment)));
   }
 }

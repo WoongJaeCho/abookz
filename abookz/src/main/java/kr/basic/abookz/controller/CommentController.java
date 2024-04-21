@@ -77,10 +77,10 @@ public class CommentController {
                               @RequestBody CommentDTO commentDTO) {
 
     try {
-      CommentEntity comment = new CommentEntity();
+      CommentDTO comment = new CommentDTO();
       comment.setComment(commentDTO.getComment());
-      comment.setReview(reviewService.findById(commentDTO.getReview().getId()).get());
-      comment.setMember(principalDetails.getMember());
+      comment.setReview(reviewService.findById(commentDTO.getReview().getId()));
+      comment.setMember(memberService.findById(principalDetails.getMember().getId()));
       comment.setCreatedDate(LocalDateTime.now());
       commentService.save(comment);
       return new ResponseEntity<>("Comment added successfully", HttpStatus.CREATED);

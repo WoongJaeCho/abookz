@@ -1,6 +1,5 @@
 package kr.basic.abookz.repository;
 
-import kr.basic.abookz.entity.review.CommentEntity;
 import kr.basic.abookz.entity.review.ReviewEntity;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -27,6 +26,11 @@ public interface ReviewRepository extends JpaRepository<ReviewEntity,Long> {
       "ORDER BY likes.likeCount DESC", nativeQuery = true)
   Page<ReviewEntity> findByBookISBN13AndContentSortedByLikes(@Param("ISBN13") String ISBN13, @Param("content") String content, Pageable pageable);
 
+  @Query("SELECT r FROM ReviewEntity r WHERE r.bookShelf.member.id = :memberId ORDER BY size(r.likeList) DESC")
+  Page<ReviewEntity> findByBookShelfMemberIdOrderedByLikesDesc(Long memberId, Pageable pageable);
+
+  @Query("SELECT r FROM ReviewEntity r WHERE r.bookShelf.member.id = :memberId")
+  Page<ReviewEntity> findByBookShelf_Member_Id(Long memberId, Pageable pageable);
 }
 
 

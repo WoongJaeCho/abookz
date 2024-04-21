@@ -83,8 +83,7 @@ margin: 0 auto;
 
 
 /* 모달창 */
-.modal {
-
+#myModal {
     display: none; /* 초기에는 보이지 않도록 설정 */
     position: fixed; /* 위치 설정 */
     z-index: 9999; /* 다른 요소 위에 표시되도록 설정 */

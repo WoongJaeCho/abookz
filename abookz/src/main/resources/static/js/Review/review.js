@@ -62,13 +62,39 @@ function submitRating(ratingValue) {
 
 // 피드백 메시지 업데이트
 function updateFeedback(message, isSuccess ) {
-  console.log("updatefeedback");
+  var headerElement = document.getElementById('message-container');
   let feedbackElement = document.getElementById('rating-feedback');
   if (!feedbackElement) {
     feedbackElement = document.createElement('div');
     feedbackElement.id = 'rating-feedback';
-    document.body.appendChild(feedbackElement);
+    headerElement.appendChild(feedbackElement); // 수정된 부분
   }
+
+  // 저장 버튼 클릭 시
+  document.querySelector('form').addEventListener('submit', function(event) {
+    event.preventDefault(); // 기본 제출 이벤트 방지
+
+    // 폼 데이터 가져오기
+    const formData = new FormData(this);
+
+    // Ajax를 사용하여 폼 데이터를 서버에 전송
+    fetch(this.getAttribute('action'), {
+      method: 'POST',
+      body: formData
+    })
+        .then(response => {
+          if (response.ok) {
+            // 저장이 성공했을 경우, 리뷰 목록 페이지로 이동
+            window.location.href = '/review/reviewList';
+          } else {
+            // 저장에 실패했을 경우, 오류 메시지를 처리
+            console.error('Failed to save the review.');
+          }
+        })
+        .catch(error => {
+          console.error('Error occurred while saving the review:', error);
+        });
+  });
 
   if (isSuccess) {
     // 성공 메시지 스타일

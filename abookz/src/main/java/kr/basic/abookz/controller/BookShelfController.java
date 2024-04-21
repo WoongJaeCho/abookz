@@ -7,9 +7,12 @@ import kr.basic.abookz.dto.BookShelfDTO;
 import kr.basic.abookz.entity.book.TagEnum;
 import kr.basic.abookz.service.BookService;
 import kr.basic.abookz.service.BookShelfService;
+import kr.basic.abookz.service.ReviewService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Slice;
+import org.springframework.data.domain.Sort;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Controller;
@@ -28,6 +31,7 @@ public class BookShelfController {
 
     private final BookShelfService shelfService;
     private final BookService bookService;
+    private final ReviewService reviewService;
     //   내 서재로 가기
     @GetMapping("/myshelf")
     public String getMyShelf(RedirectAttributes redirectAttributes, Model model
@@ -54,6 +58,8 @@ public class BookShelfController {
                 .flatMap(book -> bookService.findAllByIdOrderByIdDesc(book.getId()).stream())
                 .toList();
         System.out.println("books = " + books);
+        PageRequest pageRequest = PageRequest.of(0,5, Sort.by(Sort.Direction.DESC, "createdDate"));
+        long reviewCounts = reviewService.findMyReviews(id, pageRequest).getTotalElements();
         //숫자 카운터 보내기용
         model.addAttribute("read", read);
         model.addAttribute("want", want);
@@ -64,6 +70,7 @@ public class BookShelfController {
         model.addAttribute("isLastPage", myShelfSlice.isLast());
         model.addAttribute("shelfSlice",myShelfSlice);
         model.addAttribute("books",books);
+        model.addAttribute("reviewCounts",reviewCounts);
         return "book/myShelf";
     }
     @GetMapping("/myshelf/tag/{tag}")

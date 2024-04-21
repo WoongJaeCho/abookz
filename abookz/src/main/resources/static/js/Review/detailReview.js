@@ -1,6 +1,16 @@
-function loadReviews(pageNumber, query, sort) {
-  const ISBN13 = document.getElementById('ISBN13').value;
+document.addEventListener('DOMContentLoaded', function () {
+  var checkbox = document.getElementById('collapse-check');
 
+  checkbox.addEventListener('click', function() {
+    loadReviews(0, "", "최신순");
+  });
+});
+
+function loadReviews(pageNumber, query, sort) {
+
+  const collapseDiv = document.querySelector('.collapse'); // 타겟이 되는 div 요소 선택
+
+  const ISBN13 = document.getElementById('ISBN13').value;
   fetch(`/review/reviews?pageNumber=${pageNumber}&ISBN13=${ISBN13}&query=${encodeURIComponent(query)}&sort=${encodeURIComponent(sort)}`, {
     method: 'GET',
     headers: {
@@ -9,27 +19,33 @@ function loadReviews(pageNumber, query, sort) {
   })
       .then(response => response.json())
       .then(data => {
-        updateReviewSection(data.reviews);  // 리뷰 섹션 업데이트
-        updatePagination(data.currentPage, data.totalPages, query, sort);  // 페이징 정보 업데이트
+        if ( data.reviews.length === 0) {
+          const modal = document.getElementById('review-modal');
+          modal.showModal();
+        } else {
+          collapseDiv.classList.add('collapse-open');
+          updateReviewSection(data.reviews);  // 리뷰 섹션 업데이트
+          updatePagination(data.currentPage, data.totalPages, query, sort);  // 페이징 정보 업데이트
+        }
       })
       .catch(error => console.error('Error loading the reviews:', error));
-}
 
+}
 function updateReviewSection(data) {
   const reviewContainer = document.getElementById('review_detail_content');
-  reviewContainer.innerHTML = '';
 
+  reviewContainer.innerHTML = '';
   data.forEach(review => {
     const reviewElement = createReviewElement(review);
     reviewContainer.appendChild(reviewElement);
     console.log(`Review ID for comment section: ${review.id}`); // Review ID 확인
     createCommentSection(review.id); // 댓글 컨테이너 초기화 호출
-  });
 
+  });
   setInitialRating();
   setInitialLike();
-}
 
+}
 function createSpoilerButton(review) {
   return review.isSpoilerActive ?
       `<div class="spoiler-alert text-center p-4 absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white rounded-lg shadow-2xl" id="spoiler-alert-${review.id}">
@@ -38,11 +54,12 @@ function createSpoilerButton(review) {
         리뷰 내용 보기
       </button>
     </div>` : '';
+
+
 }
-
-
 function createReviewElement(review) {
   let tagDescription;
+
   switch (review.bookShelfDTO.tag) {
     case "READ":
       tagDescription = "읽은 책";
@@ -54,11 +71,11 @@ function createReviewElement(review) {
       tagDescription = "읽고 있는 책";
       break;
   }
-
   const spoilerClass = review.isSpoilerActive ? 'blur-lg' : '';
   const spoilerBtnDisabled = review.isSpoilerActive ? 'btn-disabled' : '';
   const likeButtonClass = review.liked ? 'liked fill-current' : '';
   const likeText = review.likesCount >= 2 ? 'Likes' : 'Like';
+
   const spoilerButton = createSpoilerButton(review); // Generate the spoiler button HTML
 
   const reviewElement = document.createElement('div');
@@ -101,7 +118,7 @@ function createReviewElement(review) {
                     <button class="btn-like btn btn-sm btn-outline btn-accent ${likeButtonClass} ${spoilerBtnDisabled}" onclick="clickLike(this,${review.id})"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                       <path stroke-linecap="round" stroke-linejoin="round" d="M6.633 10.25c.806 0 1.533-.446 2.031-1.08a9.041 9.041 0 0 1 2.861-2.4c.723-.384 1.35-.956 1.653-1.715a4.498 4.498 0 0 0 .322-1.672V2.75a.75.75 0 0 1 .75-.75 2.25 2.25 0 0 1 2.25 2.25c0 1.152-.26 2.243-.723 3.218-.266.558.107 1.282.725 1.282m0 0h3.126c1.026 0 1.945.694 2.054 1.715.045.422.068.85.068 1.285a11.95 11.95 0 0 1-2.649 7.521c-.388.482-.987.729-1.605.729H13.48c-.483 0-.964-.078-1.423-.23l-3.114-1.04a4.501 4.501 0 0 0-1.423-.23H5.904m10.598-9.75H14.25M5.904 18.5c.083.205.173.405.27.602.197.4-.078.898-.523.898h-.908c-.889 0-1.713-.518-1.972-1.368a12 12 0 0 1-.521-3.507c0-1.553.295-3.036.831-4.398C3.387 9.953 4.167 9.5 5 9.5h1.053c.472 0 .745.556.5.96a8.958 8.958 0 0 0-1.302 4.665c0 1.194.232 2.333.654 3.375Z" />
                       </svg>
-                      <span class="">${review.likesCount} ${likeText}</spanc>
+                      <span class="like-${review.id}">${review.likesCount} ${likeText}</spanc>
                     </button>
                   </div>
                   <div class="flex items-center">
@@ -120,42 +137,42 @@ function createReviewElement(review) {
           </div>
            ${spoilerButton}
     `;
+
   return reviewElement;
 
 }
-
 setInitialRating();
+
+
 setInitialLike()
-
-
 function updatePagination(currentPage, totalPages, query, sort) {
   const paginationContainer = document.getElementById('pagination');
-  paginationContainer.innerHTML = '';
 
+  paginationContainer.innerHTML = '';
   if (currentPage > 0) {
     const prevButton = document.createElement('button');
     prevButton.innerText = 'Previous';
     prevButton.onclick = () => loadReviews(currentPage - 1, query, sort);
     paginationContainer.appendChild(prevButton);
-  }
 
+  }
   for (let i = 0; i < totalPages; i++) {
     const pageButton = document.createElement('button');
     pageButton.innerText = i + 1;
     pageButton.className = currentPage === i ? 'btn btn-active' : 'btn';
     pageButton.onclick = () => loadReviews(i, query, sort);
     paginationContainer.appendChild(pageButton);
-  }
 
+  }
   if (currentPage < totalPages - 1) {
     const nextButton = document.createElement('button');
     nextButton.innerText = 'Next';
     nextButton.onclick = () => loadReviews(currentPage + 1, query, sort);
     paginationContainer.appendChild(nextButton);
   }
+
+
 }
-
-
 function setInitialRating() {
   document.querySelectorAll('.review').forEach(review => {
     const ratingValue = parseFloat(review.querySelector('.shelfGrade').value).toFixed(1);
@@ -164,8 +181,8 @@ function setInitialRating() {
       ratingInput.checked = true;
     }
   });
-}
 
+}
 function setInitialLike() {
   document.querySelectorAll('.btn-like').forEach(button => {
     if (button.classList.contains('liked')) {
@@ -174,12 +191,10 @@ function setInitialLike() {
       toggleFill(button, 'fill-none');
     }
   });
+
 }
 
 
-document.addEventListener("DOMContentLoaded", function () {
-  loadReviews(0, "", "최신순");
-});
 
 function toggleFill(element, fillClass) {
   const svg = element.querySelector('svg');
@@ -222,21 +237,17 @@ function clickLike(button, reviewId) {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      'Authorization': 'Bearer your-token-here'  // 토큰 교체
     },
-    body: JSON.stringify({like: true})
+    body: JSON
   })
       .then(response => {
         if (!response.ok) {
           if (response.status === 401) {
-            // 권한 없음 오류 처리
             throw new Error('로그인이 필요합니다.');
           } else {
-            // 기타 네트워크 오류 처리
             throw new Error('Network response was not ok');
           }
         }
-
         return response.json();
       })
       .then(data => {
@@ -344,7 +355,7 @@ function submitComment(reviewId) {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer your-token-here'  // 필요한 토큰 정보
     },
-    body: JSON.stringify({ reviewId: reviewId, content: content })
+    body: JSON.stringify({reviewId: reviewId, content: content})
   })
       .then(response => response.json())
       .then(data => {
@@ -354,4 +365,84 @@ function submitComment(reviewId) {
       .catch((error) => {
         console.error('Error:', error);
       });
+}
+
+var stompClient = null;
+
+function connect() {
+  var socket = new SockJS('/ws');
+  stompClient = Stomp.over(socket);
+  stompClient.connect({}, function (frame) {
+    console.log('Connected: ' + frame);
+    stompClient.subscribe('/topic/likeUpdate', function (reviewUpdate) {
+      updateLikeCount(JSON.parse(reviewUpdate.body));
+    });
+  });
+}
+
+function updateLikeCount(reviewData) {
+  const likeElement = document.querySelector(`.like-${reviewData.id}`);
+  let isMany = " Like";
+  if (reviewData.likesCount >= 2) {
+    isMany = " Likes";
+  }
+  likeElement.textContent = reviewData.likesCount + isMany;
+}
+
+connect();
+
+
+function writeReview(shelfId,bookId) {
+  if (shelfId == null) {
+    updateFeedback("책을 먼저 책장에 저장해주세요.", false);
+    return;
+  }
+
+  fetch(`/review/${shelfId}/${bookId}`)
+      .then(response => {
+        if (!response.ok) {
+          throw new Error("서버에서 응답이 올바르지 않습니다.");
+        }
+        return response.json();
+      })
+      .then(data => {
+        console.log('Success:', data);
+        document.getElementById('modal-review-btn').setAttribute('data-shelf',shelfId);
+        document.getElementById('modal-review-btn').setAttribute('data-book',bookId);
+        window.location.href = `/review/${shelfId}/${bookId}`; // 리뷰 페이지로 리다이렉트
+      })
+      .catch(error => updateFeedback(error.message, false));
+}
+
+// 피드백 메시지 업데이트
+function updateFeedback(message, isSuccess ) {
+  var headerElement = document.getElementById('message-container');
+  let feedbackElement = document.getElementById('rating-feedback');
+  if (!feedbackElement) {
+    feedbackElement = document.createElement('div');
+    feedbackElement.id = 'rating-feedback';
+    headerElement.appendChild(feedbackElement); // 수정된 부분
+  }
+
+  if (isSuccess) {
+    // 성공 메시지 스타일
+    feedbackElement.innerHTML = `
+      <div role="alert" class="alert alert-success">
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        <span>${message}</span>
+      </div>
+    `;
+  } else {
+    // 실패 메시지 스타일
+    feedbackElement.innerHTML = `
+      <div role="alert" class="alert alert-error">
+        <svg xmlns="http://www.w3.org/2000/svg" class="stroke-current shrink-0 h-6 w-6" fill="none" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+        <span>${message}</span>
+      </div>
+    `;
+  }
+  // 몇 초 후 메시지 숨기기
+  setTimeout(() => {
+    feedbackElement.innerHTML = ''; // 메시지 숨김
+  }, 3000); // 3초 후 메시지 숨김
 }
