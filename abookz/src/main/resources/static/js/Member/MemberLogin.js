@@ -1,31 +1,27 @@
-// function checkLogin(form){
-//     let id = form.loginId.value.trim();
-//     let pw = form.password.value.trim();
+// function login() {
+//   const username = document.getElementById('Id').value;
+//   const password = document.getElementById('password').value;
 //
-//     if(id.length === 0 || pw.length === 0){
-//         alert("값을 다 넣어주세요");
-//         return;
-//     }
+//   const headers = new Headers({
+//     'Content-Type': 'application/json',
+//   });
 //
-//     fetch("/member/login", {
-//         method: "POST",
-//         headers: {
-//             "Content-Type": "application/x-www-form-urlencoded; charset=UTF-8",
-//         },
-//         body: "id=" + id + "&pw=" + pw
-//     })
-//         .then(response => response.text())
-//         .then(data => {
-//             if(data === "null"){
-//                 alert("로그인 실패");
-//                 location.href = "/member/login";
-//             }
-//             else{
-//                 alert("로그인 성공")
-//                 location.href = "/";
-//             }
-//         })
-//         .catch(error => alert("error"))
-//         form.id.value = "";
-//         form.password.value = "";
+//   fetch('/login', {
+//     method: 'POST',
+//     headers: headers,
+//     body: JSON.stringify({ username: username, password: password })
+//   })
+//       .then(response => response.json())
+//       .then(data => {
+//         if (data.success) {
+//           console.log('Login Success:', data);
+//           updateFeedback(data.message || '로그인에 성공하였습니다.', true);
+//         } else {
+//           throw new Error(data.message || '로그인에 실패하였습니다.');
+//         }
+//       })
+//       .catch(error => {
+//         console.error('Login Error:', error);
+//         updateFeedback(error.message, false);
+//       });
 // }

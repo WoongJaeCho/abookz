@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>My Reviews</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.9.0/dist/full.min.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+
+<div class="container mx-auto px-4 py-12">
+    <div role="tablist" class="tabs tabs-lifted">
+      <!-- Sort Tabs -->
+      <input type="radio" name="sort" value="최신순" role="tab" class="tab" aria-label="최신순" onchange="loadReviews('최신순')" checked/>
+      <div role="tabpanel" id="tab-최신순" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+
+        <div class="overflow-x-auto mt-4">
+          <table class="table w-full text-gray-700">
+            <!-- Table Head -->
+            <thead>
+            <tr class="text-xs font-semibold uppercase text-gray-600 bg-gray-100">
+              <th>
+                <label>
+                  <input id="all-check" type="checkbox" class="checkbox checkbox-primary" onchange="toggleCheckboxes(this)"/>
+                </label>
+              </th>
+              <th>No.</th>
+              <th>사진</th>
+              <th>제목</th>
+              <th>내용</th>
+              <th>날짜</th>
+              <th>스포일러</th>
+              <th>좋아요</th>
+              <th>수정하기</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!-- Table Rows -->
+            <tr th:each="review : ${reviews}" class="bg-white border-b hover:bg-gray-50">
+              <th>
+                <label>
+                  <input type="checkbox" name="selectedReviews" class="checkbox checkbox-secondary" th:value="${review.id}"/>
+                </label>
+              </th>
+              <td th:text="${review.id}">1</td>
+              <td>
+                <img th:src="@{${review.bookShelfDTO.bookDTO.cover}}" class="h-20 w-20 object-cover mask mask-squircle shadow"
+                     alt="Book Image"/>
+              </td>
+              <td th:text="${review.bookShelfDTO.bookDTO.title}">Book Title</td>
+              <td th:text="${review.content}">Content here</td>
+              <td th:text="${#temporals.format(review.createdDate, 'yyyy-MM-dd')}">Date</td>
+              <td th:text="${review.isSpoilerActive ? 'Yes' : 'No'}">Spoiler</td>
+              <td th:text="${review.likesCount}">0</td>
+              <td>
+                <a th:href="@{'/review/' + ${review.bookShelfDTO.id} + '/' + ${review.bookShelfDTO.bookDTO.id}}" class="btn btn-outline btn-primary btn-sm">수정</a>
+              </td>
+            </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+
+
+      <input type="radio" name="sort" value="오래된순" role="tab" class="tab" aria-label="오래된순" onchange="loadReviews('오래된순', this)"/>
+      <div role="tabpanel" id="tab-오래된순" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+
+      </div>
+
+        <input type="radio" name="sort" value="인기순" role="tab" class="tab" aria-label="인기순" onchange="loadReviews('인기순', this)"/>
+      <div role="tabpanel" id="tab-인기순" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+
+      </div>
+
+    </div>
+</div>
+
+<script src="/js/Review/reviewList.js"></script>
+
+</body>
+</html>

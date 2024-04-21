@@ -2,7 +2,6 @@ package kr.basic.abookz.service;
 
 
 
-//import kr.basic.abookz.dto.MailDTO;
 import kr.basic.abookz.dto.EmailDTO;
 import kr.basic.abookz.dto.MemberDTO;
 import kr.basic.abookz.entity.member.MemberEntity;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -39,6 +37,7 @@ public class MemberService {
 
   @Value("${spring.mail.username}")
   private String username;
+
 
   // 회원가입
   public void save(MemberDTO memberDTO){
@@ -138,12 +137,16 @@ public class MemberService {
     memberRepository.save(MemberEntity.toupdateMemberEntity(memberDTO));
   }
 
+  public void updateRole(MemberDTO memberDTO) {
+    memberRepository.save(MemberEntity.toupdateMemberEntity(memberDTO));
+  }
   // 회원삭제
+
   public void deleteById(Long id) {
     memberRepository.deleteById(id);
   }
-
   // 아이디 찾기
+
   public String findByEmail(MemberDTO memberDTO) {
     Optional<MemberEntity> byEmail = memberRepository.findByEmail(memberDTO.getEmail());
     if(byEmail.isPresent()){
@@ -154,7 +157,6 @@ public class MemberService {
       return null;
     }
   }
-
   // 임시 비밀번호 발급 및 변경
   public EmailDTO createMailAndChangePassword(String email, String loginId) {
     Optional<MemberEntity> memberLoginId = memberRepository.findByLoginIdAndEmail(loginId, email);
@@ -202,6 +204,7 @@ public class MemberService {
     return str;
   }
   // 임시 비밀번호 이메일 발송
+
   public void mailSend(EmailDTO emailDTO){
     System.out.println("전송 완료!");
     SimpleMailMessage message = new SimpleMailMessage();
@@ -213,6 +216,5 @@ public class MemberService {
     System.out.println("message"+message);
     javaMailSender.send(message);
   }
-
 
 }

@@ -26,7 +26,7 @@
     <a href="/myshelf/tag/CURRENTLY_READING" class="myShelf_" th:text="'읽고있는 책(' + ${current} + ')'">1</a>
     <hr class="shelf_left_center">
     <p class="bookShelves">읽기 활동</p>
-    <a href="#" class="myShelf_" th:text="'나의 리뷰(' + ${books.size()} + ')'">1</a>
+    <a href="/review/reviewList" class="myShelf_" th:text="'나의 리뷰(' + ${reviewCounts} + ')'">1</a>
     <br>
     <a href="/memo/all" class="myShelf_" th:text="'나의 메모(' + ${books.size()} + ')'">1</a>
     <br>

@@ -8,8 +8,8 @@
 <body>
 
 <div th:fragment="detailReview" id="detailReview_container" class="bg-gray-101">
-  <div class="collapse collapse-arrow bg-base-200 rounded-box border border-gray-200 shadow-md p-4 m-4">
-    <input type="checkbox"/>
+  <div class="collapse collapse-close collapse-arrow bg-base-200 rounded-box border border-gray-200 shadow-md p-4 m-4 hover:bg-base-300">
+    <input id="collapse-check" type="checkbox"/>
     <div class="collapse-title text-xl font-medium">
       리뷰 보기
     </div>
@@ -29,20 +29,7 @@
 
 
         <div id="review_detail_content" class="space-y-4">
-          <div>
-            Displaying 1 of 1 review
-          </div>
-          <div class="review bg-white shadow-lg rounded-lg overflow-hidden">
-            <input type="hidden" class="shelfGrade"/>
-            <div class="flex w-full">
-              <div class="w-1/4 p-4">
-                <img class="profile_img w-24 h-24 object-cover rounded-full mx-auto"
-                     alt="프로필이미지">
-                <div class="text-center mt-2">Member Name</div>
-              </div>
 
-            </div>
-          </div>
         </div>
 
         <div id="pagination" class="pagination flex justify-center items-center space-x-2 my-4">
@@ -54,5 +41,6 @@
     </div>
   </div>
 </div>
+
 </body>
 </html>

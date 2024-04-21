@@ -18,6 +18,7 @@ public class CustomAuthFailureHandler extends SimpleUrlAuthenticationFailureHand
     public CustomAuthFailureHandler() {
     }
 
+    @Override
     public void onAuthenticationFailure(HttpServletRequest request, HttpServletResponse response, AuthenticationException exception) throws IOException, ServletException {
         String errorMessage;
         if (exception instanceof BadCredentialsException) {
@@ -34,7 +35,9 @@ public class CustomAuthFailureHandler extends SimpleUrlAuthenticationFailureHand
         }
 
         errorMessage = URLEncoder.encode(errorMessage, "UTF-8");
-        this.setDefaultFailureUrl("/auth/login?error=true&exception=" + errorMessage);
+        this.setDefaultFailureUrl("/member/auth/login?error=true&exception=" + errorMessage);
         super.onAuthenticationFailure(request, response, exception);
+
+
     }
 }

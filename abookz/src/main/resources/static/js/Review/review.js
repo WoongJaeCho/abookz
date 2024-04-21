@@ -51,24 +51,54 @@ function submitRating(ratingValue) {
       .then(response => response.json())
       .then(data => {
         console.log('Success:', data.message);
-        updateRatingFeedback(data.message, true);
+        updateFeedback(data.message, true);
         // updateRatingFeedback('별점 저장에 실패하였습니다. 다시 시도해주세요.', false);//실패 테스트용
       })
       .catch(error => {
         console.error('Error:', error);
-        updateRatingFeedback('별점 저장에 실패하였습니다. 다시 시도해주세요.', false);
+        updateFeedback('별점 저장에 실패하였습니다. 다시 시도해주세요.', false);
       });
 }
 
+
+// 저장 버튼 클릭 시
+document.querySelector('form').addEventListener('submit', function(event) {
+  event.preventDefault(); // 기본 제출 이벤트 방지
+
+  const formData = new FormData(this);
+  const spoilerCheckbox = document.getElementById('spoilerCheckbox');
+
+  // 스포일러 체크박스의 상태를 확인하여, 선택되지 않았다면 false 값을 명시적으로 설정
+  formData.set('isSpoilerActive', spoilerCheckbox.checked ? 'true' : 'false');
+
+  // AJAX 요청을 통해 폼 데이터를 서버에 전송
+  fetch(this.getAttribute('action'), {
+    method: 'POST',
+    body: formData
+  })
+      .then(response => response.json())  // JSON 응답 파싱
+      .then(data => {
+
+          alert(data.message);  // 성공 메시지를 표시
+          window.location.href = '/review/reviewList'; // 성공 시 리뷰 목록 페이지로 리다이렉션
+
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        updateFeedback(error.toString(), false);
+      });
+});
+
 // 피드백 메시지 업데이트
-function updateRatingFeedback(message, isSuccess ) {
-  console.log("updatefeedback");
+function updateFeedback(message, isSuccess ) {
+  var headerElement = document.getElementById('message-container');
   let feedbackElement = document.getElementById('rating-feedback');
   if (!feedbackElement) {
     feedbackElement = document.createElement('div');
     feedbackElement.id = 'rating-feedback';
-    document.body.appendChild(feedbackElement);
+    headerElement.appendChild(feedbackElement); // 수정된 부분
   }
+
 
   if (isSuccess) {
     // 성공 메시지 스타일

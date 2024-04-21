@@ -99,7 +99,7 @@ public class BoardController {
       return "member/loginForm";
     }
     boardService.delete(id);
-    return "redirect:/board/list";
+    return "redirect:/board/paging";
   }
 
   // 페이징

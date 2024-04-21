@@ -46,8 +46,8 @@
 
                         <div class="form-control mt-4">
                             <label class="cursor-pointer">
-                                <input type="checkbox" name="isSpoilerActive"  class="checkbox mr-2"
-                                       th:checked="${review?.isSpoilerActive}" />
+                                <input type="checkbox" id="spoilerCheckbox" name="isSpoilerActive" class="toggle toggle-success mr-2" th:checked="${review?.isSpoilerActive}" />
+
                                 <span class="label-text">스포일러 방지를 하시겠습니까?</span>
                             </label>
                         </div>

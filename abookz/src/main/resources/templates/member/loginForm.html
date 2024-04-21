@@ -5,39 +5,41 @@
   <title>login</title>
 </head>
 <body>
-<div th:replace="~{fragments/header :: header}"/><br>
-  <div class="container flex justify-center items-center" id="LoginContainer">
-    <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
-      <div class="sm:mx-auto sm:w-full sm:max-w-sm">
-        <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign in to your account</h2>
-      </div>
+<div th:replace="~{fragments/header :: header}"/>
+<br>
+<div class="container flex justify-center items-center" id="LoginContainer">
+  <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+      <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Sign in to your
+        account</h2>
+    </div>
 
-      <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
-        <form class="space-y-6" action="/login" method="POST">
-          <div>
-            <div class="flex items-center justify-between">
-              <label for="Id" class="block text-sm font-medium leading-6 text-gray-900">Id</label>
-              <div class="text-sm">
-                <a href="/member/loginIdfind" class="font-semibold text-indigo-600 hover:text-indigo-500">아이디를 잊으셨나요?</a>
-              </div>
-            </div>
-            <div class="mt-2">
-              <input id="Id" name="username" type="text" autocomplete="text" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:indent-2">
+    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+      <form class="space-y-6" action="/login" method="post">
+        <div>
+          <div class="flex items-center justify-between">
+            <label for="Id" class="block text-sm font-medium leading-6 text-gray-900">Id</label>
+            <div class="text-sm">
+              <a href="/member/loginIdfind" class="font-semibold text-indigo-600 hover:text-indigo-500">아이디를 잊으셨나요?</a>
             </div>
           </div>
+          <div class="mt-2">
+            <input id="Id" name="username" type="text" autocomplete="text" required
+                   class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:indent-2">
+          </div>
+        </div>
 
-          <div>
-            <div class="flex items-center justify-between">
-              <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
-              <div class="text-sm">
-                <a href="/member/loginPwfind" class="font-semibold text-indigo-600 hover:text-indigo-500">비밀번호를 잊으셨나요?</a>
-              </div>
-            </div>
-            <div class="mt-2">
-              <input id="password" name="password" type="password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:indent-2">
+        <div>
+          <div class="flex items-center justify-between">
+            <label for="password" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
+            <div class="text-sm">
+              <a href="/member/loginPwfind" class="font-semibold text-indigo-600 hover:text-indigo-500">비밀번호를 잊으셨나요?</a>
             </div>
           </div>
-
+          <div class="mt-2">
+            <input id="password" name="password" type="password" autocomplete="current-password" required
+                   class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:indent-2">
+          </div>
           <div>
             <button type="submit" class="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Sign in</button>
           </div>
@@ -47,12 +49,14 @@
           <a th:href="@{/member/save}" class="font-semibold leading-6 text-indigo-600 hover:text-indigo-500">abookz 회원이 되어보세요!</a>
         </p>
       </div>
+      <div class="divider font-semibold">OR</div>
+      <div id="buttongroup">
+        <button onclick='location.href="/oauth2/authorization/google"' id="googlebtn"><i class="xi-google xi-2x"></i></button>
+        <button onclick='location.href="/oauth2/authorization/naver"' id="naverbtn"><i class="xi-naver-square xi-2x"></i></button>
+        <button onclick='location.href="/oauth2/authorization/kakao"' id="kakaobtn"><i class="xi-kakaotalk xi-2x"></i></button>
+      </div>
+
     </div>
   </div>
-<div id="buttongroup">
-  <button onclick='location.href="/oauth2/authorization/google"' id="googlebtn"><i class="xi-google xi-2x"></i></button>
-  <button onclick='location.href="/oauth2/authorization/naver"' id="naverbtn"><i class="xi-naver-square xi-2x"></i></button>
-  <button onclick='location.href="/oauth2/authorization/kakao"' id="kakaobtn"><i class="xi-kakaotalk xi-2x"></i></button>
-</div>
 </body>
 </html>

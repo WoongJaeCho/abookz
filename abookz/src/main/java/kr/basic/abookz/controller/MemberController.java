@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.util.List;
 
@@ -27,7 +28,8 @@ public class MemberController {
   // 생성자 주입
   private final MemberService memberService;
 
-  public boolean logincheck(@AuthenticationPrincipal PrincipalDetails principalDetails){
+
+  private boolean logincheck(@AuthenticationPrincipal PrincipalDetails principalDetails){
     if(principalDetails == null){
       return false;
     }
@@ -38,6 +40,7 @@ public class MemberController {
   @GetMapping("/list")
   public String findAll(Model model) {
     List<MemberDTO> list = memberService.findAll();
+
     model.addAttribute("memberList", list);
     return "member/list";
   }
@@ -96,7 +99,7 @@ public class MemberController {
   // 수정
   @GetMapping("/update")
   public String updateForm(Model model, @AuthenticationPrincipal PrincipalDetails principalDetails) {
-    if(!logincheck(principalDetails)){
+    if (!logincheck(principalDetails)) {
       return "member/loginForm";
     }
     Long getId = principalDetails.getMember().getId();
@@ -115,10 +118,17 @@ public class MemberController {
     return "redirect:/member/" + memberDTO.getId();
   }
 
+  @PostMapping("/changeRole")
+  public String changeRole(@ModelAttribute MemberDTO memberDTO){
+    System.out.println("memberDto = " + memberDTO);
+    memberService.updateRole(memberDTO);
+    return "confirm";
+  }
+
   // 삭제
   @GetMapping("/delete/{id}")
   public String deleteById(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long id) {
-    if(!logincheck(principalDetails)){
+    if (!logincheck(principalDetails)) {
       return "member/loginForm";
     }
     memberService.deleteById(id);
@@ -153,10 +163,11 @@ public class MemberController {
   }
 
   @PostMapping("/loginPWfind")
-  public String Pwfind(@ModelAttribute MemberDTO memberDTO){
+  public String Pwfind(@ModelAttribute MemberDTO memberDTO) {
     EmailDTO dto = memberService.createMailAndChangePassword(memberDTO.getEmail(), memberDTO.getLoginId());
-    if(dto == null){
+    if (dto == null) {
       System.out.println("오류 발생!");
+
       return "redirect:/member/loginPwfind";
     }
     else{
@@ -175,10 +186,11 @@ public class MemberController {
     return principalDetails;
   }
 
+
   @GetMapping("/auth/login")
-  public @ResponseBody String login(String error, String exception){
-    log.error("error ={} , excepiton={}", error, exception);
-    return exception.toString();
+  public String login(@RequestParam(required = false) String error, @RequestParam(required = false) String exception, Model model) {
+      model.addAttribute("errorMessage", "로그인 중 문제가 발생했습니다: " + exception);
+    return "member/loginForm";
   }
 
 }

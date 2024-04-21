@@ -6,9 +6,16 @@
     width: 1280px;
     height: 100%;
 }
+
+#loginId:hover{
+    text-decoration: underline;
+    color: #2e9cdf;
+}
+
 #buttongroup{
     display: flex;
     justify-content: center;
+    align-items: center;
 }
 #buttongroup button{
     margin: 0 10px;

@@ -43,12 +43,27 @@ public class BookController {
 
   @GetMapping("/content/{isbn13}")
   public String getOneDetail(@PathVariable("isbn13") String isbn13, Model model,
-      @RequestParam(defaultValue = "0") int pageNumber,
-      @RequestParam(defaultValue = "5") int pageSize,
-      @RequestParam(defaultValue = "최신순") String sort) throws Exception {
+                             @RequestParam(defaultValue = "0") int pageNumber,
+                             @RequestParam(defaultValue = "5") int pageSize,
+                             @RequestParam(defaultValue = "최신순") String sort,
+                             @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
     BookDTO book = aladinService.searchGetOneItem(isbn13);
-/*    book.setId(bookService.findByDTOISBN13(Long.valueOf(isbn13)).getId());*/
+    MemberEntity member;
+    if (principalDetails!=null) {
+      member = principalDetails.getMember();
+      try {
+        BookShelfDTO findShelf = shelfService.findByMember_IdAndBook_ISBN13(member.getId(), book.getISBN13());
+        model.addAttribute("shelf",findShelf);
+        book.setId(findShelf.getId());
+      }catch (RuntimeException e){
+        log.error("책꽂이나 ISBN에 해당하는 데이터가 없습니다." );
+      }
+
+    }
+//    book.setId(bookService.findByDTOISBN13(Long.valueOf(isbn13)).getId());
     model.addAttribute("book", book);
+
+
     System.out.println("book = " + book);
 
     return "book/detail";
@@ -56,7 +71,7 @@ public class BookController {
 
   @GetMapping("/category/{category}")
   public String choiceCategory(@PathVariable("category") String category, @RequestParam(defaultValue = "0") int page,
-      @RequestParam(defaultValue = "10") int size, Model model) throws Exception {
+                               @RequestParam(defaultValue = "10") int size, Model model) throws Exception {
     Pageable pageable = PageRequest.of(page, size);
     Page<BookDTO> bookPage = aladinService.choiceGetCategoryList(category, pageable);
     System.out.println("bookPage = " + bookPage);
@@ -71,7 +86,7 @@ public class BookController {
   /* 베스트 셀러나 신간 리스트 가져오기 */
   @GetMapping("/bestSeller/{type}")
   public String choiceQueryType(@PathVariable("type") String type,
-      @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Model model)
+                                @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size, Model model)
       throws Exception {
     Pageable pageable = PageRequest.of(page, size);
     Page<BookDTO> bookPage = aladinService.getQueryPagingList(type, pageable);

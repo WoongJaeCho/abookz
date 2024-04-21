@@ -1,49 +1,51 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="~{fragments/head :: head}">
   <meta charset="UTF-8">
   <title>list</title>
 </head>
 <body>
-  <div id="header">
-    <div id="title">
-      <h2>회원목록</h2>
-    </div>
-  </div>
-  <div id="list_table">
-    <table id="member_table" border="1">
-      <tr>
-        <th>id</th>
-        <th>LoginId</th>
-        <th>Password</th>
-        <th>Email</th>
-        <th>Nickname</th>
-        <th>Role</th>
-        <th>Profile</th>
-        <th>RegDate</th>
-        <th>조회</th>
-        <th>삭제</th>
-      </tr>
-      <tr th:each="member: ${memberList}">
-        <td th:text="${member.id}"></td>
-        <td th:text="${member.loginId}"></td>
-        <td th:text="${member.password}"></td>
-        <td th:text="${member.email}"></td>
-        <td th:text="${member.name}"></td>
-        <td th:text="${member.role}"></td>
-        <td th:text="${member.profile}"></td>
-        <td th:text="${member.regDate}"></td>
-        <td>
-          <a th:href="@{|/member/${member.id}|}">조회</a>
-        </td>
-        <td>
-          <a th:href="@{|/member/delete/${member.id}|}">삭제</a>
-        </td>
-      </tr>
-    </table>
-  </div>
-  <div id="footer">
-    <a th:href="@{/}">메인</a>
-  </div>
+<div th:replace="~{fragments/header :: header}"/><br>
+<div class="container flex justify-center items-center" id="CreateContainer">
+<div class="overflow-x-auto bg-white dark:bg-neutral-700">
+  <table class="min-w-full text-center text-sm whitespace-nowrap" id="boardTable">
+    <thead class="uppercase tracking-wider border-b-2 dark:border-neutral-600 bg-neutral-50 dark:bg-neutral-800 border-t">
+    <tr>
+      <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">번호</th>
+      <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">Id</th>
+      <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">Password</th>
+      <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">Email</th>
+      <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">Nickname</th>
+      <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">Role</th>
+      <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">Profile</th>
+      <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">RegDate</th>
+      <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">삭제</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${memberList.isEmpty()}">
+      <td colspan="9"><p class="text-center align-middle">조회된 회원이 없습니다.</p></td>
+    </tr>
+    <tr class="border-b dark:border-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-600" th:each="member: ${memberList}">
+      <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="number" th:text="${member.id}"></td>
+      <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="loginId" ><a th:href="@{|/member/${member.id}|}" th:text="${member.loginId}"></a></td>
+      <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="password" th:text="${member.password}"></td>
+      <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="email" th:text="${member.email}"></td>
+      <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="name" th:text="${member.name}"></td>
+      <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600">
+        <select id="changeRole" name="role" onchange="changeRole()">
+          <option value="ROLE_ADMIN">ADMIN</option>
+          <option value="ROLE_MANAGER">MANAGER</option>
+          <option value="ROLE_USER">USER</option>
+        </select>
+      </td>
+      <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="profile" th:text="${member.profile}"></td>
+      <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="regDate" th:text="${member.regDate}"></td>
+      <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600"><button class="btn btn-outline btn-error" th:onclick="|location.href='@{|/member/delete/${member.id}|}'|">삭제</button></td>
+    </tr>
+    </tbody>
+  </table>
+</div>
+</div>
 </body>
 </html>

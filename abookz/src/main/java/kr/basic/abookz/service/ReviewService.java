@@ -15,8 +15,10 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -61,11 +63,11 @@ public class ReviewService {
     return reviewEntity;
   }
 
-  public Optional<ReviewEntity> findById(Long id) {
-    return reviewRepository.findById(id);
+  public ReviewDTO findById(Long id) {
+    return mapEntityToDTO(reviewRepository.findById(id).get());
   }
 
-  public ReviewEntity Update(ReviewDTO reviewDTO) {
+  public ReviewEntity update(ReviewDTO reviewDTO) {
     ReviewEntity reviewEntity = reviewRepository.findById(reviewDTO.getId())
         .orElseThrow(() -> new EntityNotFoundException("Review not found with id: " + reviewDTO.getId()));
 
@@ -89,5 +91,23 @@ public class ReviewService {
 
   public Page<ReviewEntity> findReviewsByLikes(String ISBN13, String query, Pageable pageable) {
     return reviewRepository.findByBookISBN13AndContentSortedByLikes(ISBN13, query, pageable);
+  }
+
+  public Page<ReviewEntity> findMyReviewsByLikes(Long memberId,  Pageable pageable) {
+
+    return reviewRepository.findByBookShelfMemberIdOrderedByLikesDesc(memberId,  pageable);
+  }
+
+  public Page<ReviewEntity> findMyReviews(Long memberId,  Pageable pageable) {
+    return reviewRepository.findByBookShelf_Member_Id(memberId,  pageable);
+
+  }
+
+  public void deleteReviews(List<String> reviewIds) {
+    List<Long> parsedIds = reviewIds.stream()
+        .map(Long::parseLong)
+        .collect(Collectors.toList());
+
+    reviewRepository.deleteAllById(parsedIds);
   }
 }
