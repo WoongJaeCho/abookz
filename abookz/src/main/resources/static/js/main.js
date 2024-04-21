@@ -1,6 +1,6 @@
 // header
 let nav = document.querySelectorAll(".nav > ul > li");
-
+let admin = document.querySelectorAll('.admin > ul > li');
 
 nav.forEach((navItem, index) => {
     if (index !== 0) { // 첫 번째 요소를 제외
@@ -12,6 +12,16 @@ nav.forEach((navItem, index) => {
         });
     }
 });
+
+admin.forEach(item=>{
+    item.addEventListener("mouseover", function (){
+        this.querySelector('.submenu').style.height = "120px";
+    })
+    item.addEventListener("mouseout", function (){
+        this.querySelector('.submenu').style.height = "0px";
+    })
+
+})
 
 // main
 // slide
