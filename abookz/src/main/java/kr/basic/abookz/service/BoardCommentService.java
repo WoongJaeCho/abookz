@@ -83,11 +83,13 @@ public class BoardCommentService {
 
          return "성공";
      }
-    public BoardCommentDTO updateBoardComment(BoardCommentDTO boardCommentDTO){
+    public String updateBoardComment(BoardCommentDTO boardCommentDTO){
      BoardCommentEntity boardCommentEntity  =  commentRepository.findByIdAndMemberId(boardCommentDTO.getId(),boardCommentDTO.getMemberDTO().getId());
-    boardCommentEntity.setComment(boardCommentDTO.getComment());
-    BoardCommentDTO boardComment = mapEntityToDTO(boardCommentEntity);
-    return  boardComment;
+        System.out.println("boardCommentEntity = " + boardCommentEntity);
+    BoardCommentEntity boardCommentChange = mapDTOToEntity(boardCommentDTO);
+        System.out.println("boardCommentChange = " + boardCommentChange);
+        boardCommentEntity.setComment(boardCommentChange.getComment());
+    return  "체크";
     }
 
 

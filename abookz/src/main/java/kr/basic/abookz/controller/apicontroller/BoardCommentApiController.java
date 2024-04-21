@@ -35,11 +35,10 @@ public class BoardCommentApiController {
         @RequestMapping(value = "/board/comment/delete", method = RequestMethod.POST)
         public RedirectView  getOneDeleteComment(@RequestBody BoardCommentDTO boardCommentDTO
                                                                         ,@AuthenticationPrincipal PrincipalDetails principalDetails){
-            System.out.println("boardCommentDTO삭제체크 = " + boardCommentDTO);            
+
             Long memberId = principalDetails.getMember().getId();
-            System.out.println("memberId = " + memberId);
-                String boardComment =  boardCommentService.getOneDelete(boardCommentDTO.getId(),memberId);
-            System.out.println("boardComment = " + boardComment);
+
+            String boardComment =  boardCommentService.getOneDelete(boardCommentDTO.getId(),memberId);
             String redirectUrl = "/board/" + boardCommentDTO.getBoardDTO().getId();
             return new RedirectView(redirectUrl);
         }
@@ -63,5 +62,26 @@ public class BoardCommentApiController {
                 String redirectUrl = "/board/" + boardCommentDTO.getBoardDTO().getId();
                 return new RedirectView(redirectUrl);
         }
+    @RequestMapping(value = "/board/comment/update" ,method = RequestMethod.POST)
+    public RedirectView getOneCommentUpdate(@RequestBody BoardCommentDTO boardCommentDTO
+                                ,@AuthenticationPrincipal PrincipalDetails principalDetails){
+        if(principalDetails == null){
+
+            return  new RedirectView("/member/loginForm");
+        }
+        Long id   = principalDetails.getMember().getId();
+        MemberDTO memberDTO = memberService.findById(id);
+        System.out.println("memberDTO = " + memberDTO);
+       BoardCommentDTO getBoardDTO = BoardCommentDTO.builder()
+                .memberDTO(memberDTO)
+                .id(boardCommentDTO.getId())
+                .boardDTO(boardCommentDTO.getBoardDTO())
+                .Comment(boardCommentDTO.getComment())
+                .build();
+        System.out.println("getBoardDTO빌더값 = " + getBoardDTO);
+                boardCommentService.updateBoardComment(getBoardDTO);
+        String redirectUrl = "/board/" + boardCommentDTO.getBoardDTO().getId();
+        return new RedirectView(redirectUrl);
+    }
 
 }
