@@ -1,80 +1,100 @@
-body{
-margin: 0 auto;
+body {
+    margin: 0 auto;
 }
+
 .shelf_container {
     width: 1280px;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
 }
-.shelf_myShelf_start{
+
+.shelf_myShelf_start {
     width: 100px;
 
 }
-.shelf_myShelf_add{
+
+.shelf_myShelf_add {
     width: 100px;
 
 }
-#shelf_left{
+
+#shelf_left {
     flex: 1;
     text-align: center;
     align-items: center;
 }
-#shelf_center{
+
+#shelf_center {
     margin-left: 20px;
     text-align: center;
     align-items: center;
     flex: 9;
 }
-.myShelf_hr hr{
+
+.myShelf_hr hr {
     border: 1px;
     width: 80%;
 }
-.shelfLeft_hr{
-    border:  1px solid grey;
+
+.shelfLeft_hr {
+    border: 1px solid grey;
     width: 1px;
     height: 100%;
     float: right;
 }
-.myShelf_tr td{
+
+.myShelf_tr td {
     padding-bottom: 20px;
 }
-.shelf_th, .shelf_tdimg, .shelf_title, .shelf_author, .shelf_page {
+
+.shelf_th,
+.shelf_tdimg,
+.shelf_title,
+.shelf_author,
+.shelf_page {
     padding-left: 10px;
     padding-right: 10px;
 }
-.shelf_myShelf_endDate{
+
+.shelf_myShelf_endDate {
     width: 110px;
 }
-.shelf_tdimg img{
+
+.shelf_tdimg img {
     width: 30px;
     height: 30px;
 }
-.bookShelves{
+
+.bookShelves {
     font-size: 20px;
     font-weight: bold;
-        color: grey;
+    color: grey;
 }
+
 .shelf_myShelf_read {
     text-decoration: underline;
 }
 
-    .popup {
-        background-color: #fff;
-        border: 1px solid #ccc;
-        padding: 20px;
-        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-        z-index: 1000;
-        display: none; /* 초기에는 보이지 않도록 설정 */
-    }
-.btn.btn-primary.btn-detail{
+.popup {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    display: none;
+    /* 초기에는 보이지 않도록 설정 */
+}
+
+.btn.btn-primary.btn-detail {
     background-color: skyblue;
     border: skyblue;
     color: black;
     width: 90px;
     height: 20px;
 }
-.btn.btn-primary.btn-jittery{
+
+.btn.btn-primary.btn-jittery {
 
     width: 90px;
     height: 20px;
@@ -84,41 +104,59 @@ margin: 0 auto;
 
 /* 모달창 */
 #myModal {
-    display: none; /* 초기에는 보이지 않도록 설정 */
-    position: fixed; /* 위치 설정 */
-    z-index: 9999; /* 다른 요소 위에 표시되도록 설정 */
+
+    display: none;
+    /* 초기에는 보이지 않도록 설정 */
+    position: fixed;
+    /* 위치 설정 */
+    z-index: 9999;
+    /* 다른 요소 위에 표시되도록 설정 */
     left: 0;
     top: 0;
     justify-content: center;
-    width: 100%; /* 화면 전체 너비로 설정 */
-    height: 100%; /* 화면 전체 높이로 설정 */
-    background-color: rgba(0, 0, 0, 0.4); /* 반투명한 배경 설정 */
+    width: 100%;
+    /* 화면 전체 너비로 설정 */
+    height: 100%;
+    /* 화면 전체 높이로 설정 */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* 반투명한 배경 설정 */
 }
+
 #modal_content {
-    background-color: white; /* 모달 내용의 배경색 설정 */
-    position: fixed; /* 위치 설정 */
-    top: 50%; /* 화면 상단에서 절반 떨어진 위치부터 시작 */
-    left: 50%; /* 화면 왼쪽에서 절반 떨어진 위치부터 시작 */
-    transform: translate(-50%, -50%); /* 수직 및 수평 가운데 정렬 */
-    margin: 0 auto; /* 수평 가운데 정렬을 위해 */
+    background-color: white;
+    /* 모달 내용의 배경색 설정 */
+    position: fixed;
+    /* 위치 설정 */
+    top: 50%;
+    /* 화면 상단에서 절반 떨어진 위치부터 시작 */
+    left: 50%;
+    /* 화면 왼쪽에서 절반 떨어진 위치부터 시작 */
+    transform: translate(-50%, -50%);
+    /* 수직 및 수평 가운데 정렬 */
+    margin: 0 auto;
+    /* 수평 가운데 정렬을 위해 */
     padding: 20px;
     border: 1px solid #888;
-    width: 600px; /* 모달 너비 설정 */
-    height: 600px; /* 모달 높이 설정 */
+    width: 600px;
+    /* 모달 너비 설정 */
+    height: 600px;
+    /* 모달 높이 설정 */
     box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
     animation-duration: 0.4s;
     z-index: 9999;
 }
 
-.modal_title{
+.modal_title {
     font-size: 14px;
     font-weight: bold;
 }
+
 .modal-table {
     margin: 0 auto;
     width: 100%;
     border-collapse: collapse;
 }
+
 #modal_page {
     position: relative;
     text-align: center;
@@ -128,15 +166,35 @@ margin: 0 auto;
 #progress-bar {
     height: 20px;
     position: relative;
-    background-color: white;
+    background-color: lightgray;
     border-radius: 10px;
 }
+
+#progress {
+
+    height: 100%;
+    border-radius: 10px;
+}
+
+#modal-handle {
+    border-radius: 50%;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height: 100%;
+    width: 20px;
+    background-color: skyblue;
+    cursor: pointer;
+}
+
 .progressWrap-bar {
     height: 20px;
     position: relative;
     background-color: lightgray;
     border-radius: 10px;
 }
+
 .progressWrap {
     height: 100%;
     background-color: green;
@@ -163,6 +221,7 @@ margin: 0 auto;
     background-color: green;
     width: 0;
 }
+
 #modal_submit {
     position: absolute;
     bottom: 10px;
@@ -170,6 +229,7 @@ margin: 0 auto;
     transform: translateX(-50%);
     width: auto;
 }
+
 .submit-modal {
     margin: auto;
     padding: 10px 20px;
