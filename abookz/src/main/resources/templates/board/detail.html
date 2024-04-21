@@ -35,7 +35,7 @@
         </tr>
       </tbody>
     </table>
-    <div class="text-center flex justify-end items-center space-x-4">
+    <div class="text-center flex justify-end items-center space-x-3">
       <button class="btn btn-outline btn-info" th:onclick="|location.href='@{/board/paging(page=${page})}'|">목록</button>
       <button class="btn btn-outline btn-success" th:if="${writer == board.writer}" th:onclick="|location.href='@{|/board/update/${board.id}|}'|">수정</button>
       <button class="btn btn-outline btn-error" th:if="${writer == board.writer}" th:onclick="|location.href='@{|/board/delete/${board.id}|}'|">삭제</button>
