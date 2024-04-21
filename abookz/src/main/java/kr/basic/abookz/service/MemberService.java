@@ -43,13 +43,15 @@ public class MemberService {
   public void save(MemberDTO memberDTO){
     // 1. dto -> entity 변환
     // 2. repository의 save메서드 호출
-
-    // 비밀번호 암호화처리
-    String initPassword = memberDTO.getPassword();
-    String enPassword = bCryptPasswordEncoder.encode(initPassword);
-    memberDTO.setPassword(enPassword);
-    MemberEntity memberEntity = MemberEntity.toMemberEntity(memberDTO);
-    memberRepository.save(memberEntity);
+    Optional<MemberEntity> byloginId = memberRepository.findByLoginId(memberDTO.getLoginId());
+    if(byloginId.isEmpty()){
+      // 비밀번호 암호화처리
+      String initPassword = memberDTO.getPassword();
+      String enPassword = bCryptPasswordEncoder.encode(initPassword);
+      memberDTO.setPassword(enPassword);
+      MemberEntity memberEntity = MemberEntity.toMemberEntity(memberDTO);
+      memberRepository.save(memberEntity);
+    }
   }
   public boolean validById(String id) {
     return memberRepository.existsByLoginId(id);
@@ -137,8 +139,12 @@ public class MemberService {
     memberRepository.save(MemberEntity.toupdateMemberEntity(memberDTO));
   }
 
-  public void updateRole(MemberDTO memberDTO) {
-    memberRepository.save(MemberEntity.toupdateMemberEntity(memberDTO));
+  public void updateRole(MemberDTO memberDTO, Long Id) {
+    Optional<MemberEntity> byId = memberRepository.findById(Id);
+    if(byId.isPresent()){
+      MemberEntity entity = byId.get();
+      memberRepository.save(entity.toupdateMemberEntity(memberDTO));
+    }
   }
   // 회원삭제
 

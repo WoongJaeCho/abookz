@@ -66,7 +66,7 @@ public class MemberController {
   @PostMapping("/validId")
   @ResponseBody
   public String validId(@RequestParam("id") String id) {
-    System.out.println("id = " + id);
+    System.out.println("id체크 = " + id);
     return memberService.validById(id) ? "notValid" : "valid";
   }
 
@@ -117,9 +117,11 @@ public class MemberController {
   }
 
   @PostMapping("/changeRole")
+  @ResponseBody
   public String changeRole(@ModelAttribute MemberDTO memberDTO){
     System.out.println("memberDto = " + memberDTO);
-    memberService.updateRole(memberDTO);
+    Long getId = memberDTO.getId();
+    memberService.updateRole(memberDTO, getId);
     return "confirm";
   }
 

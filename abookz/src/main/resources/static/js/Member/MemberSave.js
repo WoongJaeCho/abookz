@@ -32,10 +32,15 @@ function validcheck(form){
     }
     else if(check === -1){
         alert("Id 중복체크 다시하세요");
-        return false
+        return false;
     }
 
-    form.submit();
+    if(check === 1) {
+        form.submit();
+    }
+    else{
+        return false;
+    }
 }
 
 document.getElementById("checkId").addEventListener("click", () => {
@@ -56,7 +61,9 @@ document.getElementById("checkId").addEventListener("click", () => {
         body:"id=" + id,
     })
         .then(response => response.text())
-        .then(getResult)
+        .then(data => {
+            getResult(data);
+        })
         .catch(() => alert("error"))
 })
 

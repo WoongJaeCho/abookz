@@ -1,25 +1,26 @@
 function changeRole(){
     let selectedRole = document.getElementById("changeRole");
-    let changedRole = selectedRole.options[selectedRole.selectedIndex].value;
+    let changedRole = selectedRole.options[selectedRole.selectedIndex].value.trim();
     console.log(changedRole);
-    let id = document.getElementById("number");
-    let loginId = document.getElementById("loginId");
-    let password= document.getElementById("password");
-    let email = document.getElementById("email");
-    let name = document.getElementById("name");
-    let profile = document.getElementById("profile");
-    let regDate = document.getElementById("regDate");
+    let id = document.getElementById("number").innerText;
+    let loginId = document.getElementById("loginId").innerText;
+    let password= document.getElementById("password").innerText;
+    let email = document.getElementById("email").innerText;
+    let name = document.getElementById("name").innerText;
+    let profile = document.getElementById("profile").innerText;
+    let regDate = document.getElementById("regDate").innerText;
 
     let list = {
-        id: id.value(),
-        loginId: loginId.value(),
-        password: password.value(),
-        email: email.value(),
-        name: name.value(),
+        id: id,
+        loginId: loginId,
+        password: password,
+        email: email,
+        name: name,
         role: changedRole,
-        profile: profile.value(),
-        regDate: regDate.value()
+        profile: profile,
+        regDate: regDate
     }
+    console.log(list);
 
     fetch("/member/changeRole", {
         method: "POST",
