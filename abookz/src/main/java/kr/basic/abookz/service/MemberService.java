@@ -2,7 +2,6 @@ package kr.basic.abookz.service;
 
 
 
-//import kr.basic.abookz.dto.MailDTO;
 import kr.basic.abookz.dto.EmailDTO;
 import kr.basic.abookz.dto.MemberDTO;
 import kr.basic.abookz.entity.member.MemberEntity;
@@ -12,7 +11,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
@@ -39,6 +37,7 @@ public class MemberService {
 
   @Value("${spring.mail.username}")
   private String username;
+
 
   // 회원가입
   public void save(MemberDTO memberDTO){

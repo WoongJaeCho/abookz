@@ -1,18 +1,32 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="~{fragments/head :: head}">
   <meta charset="UTF-8">
   <title>findIdresult</title>
 </head>
 <body>
-  <ul th:if="${logId != null}">
-    <li>회원님의 아이디는 : [[${logId}]]</li>
-    <li><a href="/member/loginForm"><p>로그인페이지</p></a></li>
-  </ul>
-  <ul th:unless="${logId != null}">
-    <li>조회된 아이디가 없습니다.</li>
-    <li><a href="/member/loginForm"><p>로그인페이지</p></a></li>
-  </ul>
+<div th:replace="~{fragments/header :: header}"/><br>
+<div class="container flex justify-center items-center" id="CreateContainer">
+  <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+      <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Id Finder</h2>
+    </div>
 
+    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm space-y-6">
+      <div th:if="${logId != null}">
+        <label for="logId" class="block text-sm font-medium leading-6 text-gray-900">당신의 Id는..</label>
+        <div class="mt-2">
+          <input id="logId" name="loginId" type="text" autocomplete="text" th:value="${logId}" readonly class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:indent-2">
+        </div>
+      </div>
+      <div th:unless="${logId != null}">
+        <h2 class="mt-10 text-center text-2xl font-semibold leading-9 tracking-tight text-gray-900">조회된 결과가 없습니다.</h2>
+      </div>
+      <div class="flex justify-center items-center">
+        <button class="btn btn-outline btn-info" th:onclick="|location.href='@{/member/login}'|">로그인페이지</button>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

@@ -1,14 +1,26 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head>
+<head th:replace="~{fragments/head :: head}">
   <meta charset="UTF-8">
   <title>Title</title>
 </head>
 <body>
-<ul>
-  <li>보내주신 이메일로 임시 비밀번호가 발송되었습니다</li>
-  <li>메일함을 확인해주세요</li>
-  <li><a href="/member/loginForm"><p>로그인페이지</p></a></li>
-</ul>
+<div th:replace="~{fragments/header :: header}"/><br>
+<div class="container flex justify-center items-center" id="CreateContainer">
+  <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
+    <div class="sm:mx-auto sm:w-full sm:max-w-sm">
+      <h2 class="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">Pw Finder</h2>
+    </div>
+
+    <div class="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
+      <div class="space-y-6">
+        <h2 class="mt-10 text-center text-2xl font-semibold leading-9 tracking-tight text-gray-900">임시 비밀번호 발송완료</h2>
+        <div class="flex justify-center items-center">
+          <button class="btn btn-outline btn-info" th:onclick="|location.href='@{/member/login}'|">로그인페이지</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </body>
 </html>

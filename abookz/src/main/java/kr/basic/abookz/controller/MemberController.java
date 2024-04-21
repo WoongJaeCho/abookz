@@ -28,8 +28,9 @@ public class MemberController {
   // 생성자 주입
   private final MemberService memberService;
 
-  public boolean logincheck(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-    if (principalDetails == null) {
+
+  private boolean logincheck(@AuthenticationPrincipal PrincipalDetails principalDetails){
+    if(principalDetails == null){
       return false;
     }
     return true;
@@ -39,6 +40,7 @@ public class MemberController {
   @GetMapping("/list")
   public String findAll(Model model) {
     List<MemberDTO> list = memberService.findAll();
+
     model.addAttribute("memberList", list);
     return "member/list";
   }
