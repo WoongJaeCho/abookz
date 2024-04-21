@@ -148,7 +148,7 @@ public class AladinService {
 
             } else {
                 selectedCategory = categories[1].trim().toLowerCase();
-                System.out.println("selectedCategory = " + selectedCategory);
+
                 for (CategoryEnum category : CategoryEnum.values()) {
                     if (category.getCategoryName().equals(selectedCategory)) {
                         cate = category;
@@ -159,11 +159,9 @@ public class AladinService {
             String cover = itemObject.getString("cover");
             String description = itemObject.getString("description");
             String link = itemObject.getString("link");
-            String isbngetCheck = itemObject.getString("isbn13");
-            if (isbngetCheck.length()>=3) {
-
-                String isIsbn13BookCheck = isbngetCheck.substring(0, 3);
-
+            String isbnGetCheck = itemObject.getString("isbn13");
+            if (isbnGetCheck.length()>=3) {
+                String isIsbn13BookCheck = isbnGetCheck.substring(0, 3);
                 //979 978
                 if (isIsbn13BookCheck.equals("978") || isIsbn13BookCheck.equals("979")) {
                     String isbn = itemObject.getString("isbn");
@@ -199,9 +197,7 @@ public class AladinService {
         JSONObject itemObject = jsonArray.getJSONObject(0);
         JSONObject subInfoObject = itemObject.getJSONObject("subInfo");
         JSONObject ratingInfo = subInfoObject.getJSONObject("ratingInfo");
-        System.out.println("ratingInfo = " + ratingInfo);
         Long aladinGrade = ratingInfo.getLong("ratingScore");
-        System.out.println("aladinGrade = " + aladinGrade);
         JSONObject packingInfo = subInfoObject.getJSONObject("packing");
         int weight = packingInfo.getInt("weight");
         int sizeDepth = packingInfo.getInt("sizeDepth");
@@ -278,7 +274,7 @@ public class AladinService {
                 .weight(weight)
                 .sizeDepth(sizeDepth)
                 .build();
-        System.out.println("item = " + item);
+
 
         return item;
     }

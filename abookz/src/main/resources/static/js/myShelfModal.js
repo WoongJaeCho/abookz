@@ -5,7 +5,7 @@ let modalEndDate = null;
 let modalStartDate = null;
 let modalTargetDate = null;
 function closeModal(modal) {
-    console.log("갑체크")
+
     modal.style.display = "none";
     modal.style.opacity = "0";
     enableClickOutside();
@@ -13,7 +13,7 @@ function closeModal(modal) {
 // 모달창
 function openModal(modal, popup) {
     let value = popup.getAttribute('data-value');
-    console.log( "value"+value);
+
     modal.style.display = "block";
     modal.style.opacity = "1";
     disableClickOutside();
@@ -26,7 +26,6 @@ function openModal(modal, popup) {
     })
         .then(response => response.json())
         .then(data => {
-            console.log("data" + data.toString() )
 
             let table = document.createElement('table');
             table.className = 'modal-table';
@@ -74,7 +73,8 @@ function openModal(modal, popup) {
             progressCell.colSpan = "5";
             progressCell.id = "modal_page";
             progressCell.innerHTML =
-                '<div id="progress-bar"><div class="progress"></div></div>' +
+                '<div id="progress-bar"><div id="progress">' +
+                '<div id="modal-handle"></div></div></div>' +
                 '<label class="startPage">읽은 페이지: <input type="number" id="currentPageInput" value="' + data.bookShelfDTO.currentPage + '" min="0" max="' + data.bookDTO.itemPage + '"></label>' +
                 '<div class="endPage">마지막 페이지: ' + data.bookDTO.itemPage + '</div>';
             progressRow.appendChild(progressCell);
@@ -100,12 +100,59 @@ function openModal(modal, popup) {
             const modalPage = document.getElementById('modal_page');
             const progressBar = document.getElementById('progress-bar').firstElementChild;
             const maxPage = data.bookDTO.itemPage;
-            const  currentPageInput = document.getElementById('currentPageInput');
-            let currentPage = currentPageInput.value;
+            const currentPageInput = document.getElementById('currentPageInput');
+            let currentPage = parseInt(currentPageInput.value, 10);
             const progressPercentage = (currentPage / maxPage) * 100;
-            progressBar.style.width = progressPercentage + '%';
+            const handle = document.getElementById('modal-handle');
+            const initialProgressPercent = (currentPage / maxPage) * 100;
+            updateHandlePosition(initialProgressPercent);
             progressBar.style.backgroundColor = 'pink';
+            progressBar.style.width = progressPercentage + '%';
 
+            let isDragging = false;
+
+            handle.addEventListener('mousedown', function(event) {
+                isDragging = true;
+                document.addEventListener('mousemove', mouseMoveHandler);
+            });
+
+            document.addEventListener('mouseup', function() {
+                if (isDragging) {
+                    document.removeEventListener('mousemove', mouseMoveHandler);
+                    isDragging = false;
+                }
+            });
+
+            function updateHandlePosition(progressPercent) {
+                const handleWidth = handle.offsetWidth;
+                const progressBarWidth = progressBar.offsetWidth;
+                const newLeft = Math.max(0, Math.min((progressPercent / 100) * (progressBarWidth - handleWidth), progressBarWidth - handleWidth));
+                handle.style.left = `${newLeft}px`;
+
+                progressBar.style.width = `${progressPercent}%`;
+            }
+
+            function mouseMoveHandler(event) {
+                const progressBarRect = progressBar.getBoundingClientRect();
+                const newX = Math.max(0, Math.min(event.clientX - progressBarRect.left, progressBar.offsetWidth - handle.offsetWidth));
+                const rightLimit = progressBar.offsetWidth - handle.offsetWidth;
+
+                let newPosition = Math.max(0, Math.min(newX, rightLimit));
+                handle.style.left = `${newPosition}px`;
+
+                const progressPercentage = (newPosition / (progressBar.offsetWidth - handle.offsetWidth)) * 100;
+
+                progressBar.style.width = `${progressPercentage}%`;
+
+                if (newPosition > 0) {
+                    progressBar.style.backgroundColor = 'pink';
+                } else {
+                    progressBar.style.backgroundColor = 'lightgray';
+                }
+
+                const newPage = Math.round((progressPercentage / 100) * maxPage);
+                console.log(newPage);
+            }
             modalPage.addEventListener('input', function(event) {
                 const input = event.target;
                 currentPage = parseInt(input.value, 10) || 0;
@@ -113,15 +160,16 @@ function openModal(modal, popup) {
                 if (currentPage > maxPage) {
                     input.value = maxPage;
                     currentPage = maxPage;
-                }else if(currentPage < 0){
+                } else if (currentPage < 0) {
                     input.value = 0;
                     currentPage = 0;
                 }
-
                 const progressPercentage = (currentPage / maxPage) * 100;
-                progressBar.style.width = progressPercentage + '%';
                 progressBar.style.backgroundColor = 'pink';
+             /*   progressBar.style.width = progressPercentage + '%';*/
+                updateHandlePosition(progressPercentage);
             });
+
             const submitModal = document.getElementById('modal_submit');
             submitModal.addEventListener('click', () => {
                 changeDateModal(value,modalStartDate,modalAddDate,modalEndDate,modalTargetDate,currentPage);
@@ -136,8 +184,7 @@ function createDataRow(id, label, value) {
     var labelTd = document.createElement('td');
     labelTd.textContent = label;
     var valueTd = document.createElement('td');
-    console.log("id chec ="+id)
-    console.log("value chec ="+value)
+
     if( id ===  'modal_addDate'){
         var inputAddDate = document.createElement('input');
         inputAddDate.type = 'text';
@@ -147,8 +194,9 @@ function createDataRow(id, label, value) {
         flatpickr(inputAddDate, {
             enableTime: false,
             dateFormat: "Y-m-d",
+            minDate : 'today',
             onChange: function(selectedDates, dateStr, instance) {
-                console.log("Selected date: ", dateStr);
+
                 modalAddDate = dateStr;
             }
         });
@@ -165,6 +213,7 @@ function createDataRow(id, label, value) {
         flatpickr(inputStartDate, {
             enableTime: false,
             dateFormat: "Y-m-d",
+            minDate : 'today',
             onChange: function(selectedDates, dateStr, instance) {
                 console.log("Selected date: ", dateStr);
                 modalStartDate =dateStr;
@@ -181,6 +230,7 @@ function createDataRow(id, label, value) {
         flatpickr(inputTargetDate, {
             enableTime: false,
             dateFormat: "Y-m-d",
+            minDate : 'today',
             onChange: function(selectedDates, dateStr, instance) {
                 console.log("Selected date: ", dateStr);
                 modalTargetDate = dateStr;
@@ -198,6 +248,7 @@ function createDataRow(id, label, value) {
         flatpickr(inputEndDate, {
             enableTime: false,
             dateFormat: "Y-m-d",
+            minDate : 'today',
             onChange: function(selectedDates, dateStr, instance) {
                 console.log("Selected date: ", dateStr);
                 modalEndDate = dateStr;

@@ -129,8 +129,24 @@ margin: 0 auto;
 #progress-bar {
     height: 20px;
     position: relative;
-    background-color: white;
+    background-color: lightgray;
     border-radius: 10px;
+}
+#progress{
+
+    height: 100%;
+    border-radius: 10px;
+}
+#modal-handle {
+    border-radius: 50%;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    height:  100%;
+    width: 20px;
+    background-color: skyblue;
+    cursor: pointer;
 }
 .progressWrap-bar {
     height: 20px;

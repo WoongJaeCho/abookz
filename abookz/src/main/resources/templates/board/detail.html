@@ -1,10 +1,14 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
-<head>
+<head th:replace="~{fragments/head :: head}">
   <meta charset="UTF-8">
-  <title>detail</title>
+  <title>Title</title>
+
 </head>
 <body>
+<div th:replace="~{fragments/header :: header}"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+<br>
   <table border="1">
     <tr>
       <th>글번호</th>
@@ -40,6 +44,19 @@
       </td>
     </tr>
   </table>
+  <div id="boardCommentContainer" class="mx-auto">
+    <div id="boardCommentList" th:attr="data-value=${board.id}"></div>
+
+  </div>
+  <div id="boardCommentWrite">
+    <input type="hidden" id="boardCommentId" th:attr="id-value=${writer}">
+    <textarea id="commentInput" rows="4" placeholder="댓글을 입력하세요.."></textarea>
+    <button id="submitComment" onclick="insertComment()">댓글 작성</button>
+  </div>
+
+<div id ="pagingComment" class="pagingQueryDiv flex justify-center">
+</div>
+  <script src="/js/boardComment.js"></script>
   <div id="searchResults"></div>
   <script defer src="/js/index.js"></script>
 </body>
