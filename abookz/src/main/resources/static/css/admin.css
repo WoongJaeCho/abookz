@@ -11,21 +11,23 @@
     text-align: center;
 }
 
-#slideCard table {
+#slideCard .table {
     text-align: center;
     justify-content: center;
     /*border: 1px solid black;*/
     margin: 10px auto;
     border: 1px solid white;
 }
-#slideCard table th{
+#slideCard .table th{
     background-color: #a17883;
 }
-
-#slideCard table tr, 
-#slideCard table td{
-    /*border: 1px solid black;*/
+#slideCard .table tr{
+    border: 2px solid white;
+}
+#slideCard .table tr,
+#slideCard .table td{
     background-color: #EEE;
+
 }
 #slideCard table td img{
     width: 100%;

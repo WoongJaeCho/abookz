@@ -43,9 +43,18 @@ public class HomeController {
 
         // @@ slide
         List<SlideCardDTO> slideCard = adminService.findAllOrderByIdx();
+        List<SlideCardDTO> slidable = new ArrayList<>();
 
-        if( slideCard.size() != 0) {
-            model.addAttribute("slideCard", slideCard);
+        for (SlideCardDTO slide : slideCard) {
+            String isbn13 = slide.getISBN13()+"";
+            BookDTO book = aladinService.searchGetOneItem(isbn13);
+            if(book != null){
+                slidable.add(slide);
+            }
+        }
+
+        if( slidable.size() != 0) {
+            model.addAttribute("slideCard", slidable);
         }
 
 

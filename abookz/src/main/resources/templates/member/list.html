@@ -8,7 +8,7 @@
 <div th:replace="~{fragments/header :: header}"/><br>
 <div class="container" id="CreateContainer">
   <div class="overflow-x-auto bg-white dark:bg-neutral-700">
-    <table class="min-w-full text-center text-sm whitespace-nowrap" id="boardTable">
+    <table class="min-w-full text-center text-sm break-words" id="boardTable">
       <thead class="uppercase tracking-wider border-b-2 dark:border-neutral-600 bg-neutral-50 dark:bg-neutral-800 border-t">
       <tr>
         <th scope="col" class="px-6 py-4 border-x dark:border-neutral-600">번호</th>
@@ -31,7 +31,7 @@
         <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="password"  style="display: none;" th:text="${member.password}"></td>
         <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="email"  th:text="${member.email}"></td>
         <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="name"  th:text="${member.name}"></td>
-        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600">
+        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="role">
           <select class="changeRole select select-bordered select-sm w-full max-w-xs" name="role" onchange="changeRole()">
             <option hidden  th:text="${member.role.getRole()}" selected></option>
             <option value="ROLE_ADMIN" >ADMIN</option>
