@@ -80,6 +80,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
 
         HttpSession session = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest().getSession();
         session.setAttribute("profileImage", member.getProfile());
+        session.setAttribute("memberId", member.getId());
 
         return new PrincipalDetails(member, oAuth2User.getAttributes());
     }

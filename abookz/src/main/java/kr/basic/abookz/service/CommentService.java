@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -84,10 +85,19 @@ public class CommentService {
     commentRepository.deleteById(id);
   }
 
-  public Long getOwnerIdById(Long id) {
+  public MemberEntity getOwnerIdById(Long id) {
     return commentRepository.findById(id)
-        .map(CommentEntity::getId)
+        .map(CommentEntity::getMember)
         .orElseThrow(() -> new NoSuchElementException("댓글을 찾을 수 없습니다."));
+  }
+
+  public CommentDTO findById(Long id) {
+    return mapEntityToDTO(commentRepository.findById(id).get());
+  }
+
+  public void update(CommentDTO comment, String text) {
+    Optional<CommentEntity> findComment = commentRepository.findById(comment.getId());
+    findComment.get().setComment(text);
   }
 }
 

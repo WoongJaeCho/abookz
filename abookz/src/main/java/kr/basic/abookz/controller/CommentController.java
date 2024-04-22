@@ -22,6 +22,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static kr.basic.abookz.entity.member.RoleEnum.ROLE_ADMIN;
+
 @Controller
 @Slf4j
 @RequiredArgsConstructor
@@ -74,12 +76,11 @@ public class CommentController {
     }
   }
 
-  @PostMapping("/delete/{id}")
+  @DeleteMapping("/delete/{id}")
   public ResponseEntity<?> deleteComment(@PathVariable Long id, @AuthenticationPrincipal PrincipalDetails principalDetails) {
     try {
       // 현재 인증된 사용자의 권한을 확인합니다.
-      boolean isAdmin = principalDetails.getAuthorities().stream()
-          .anyMatch(authority -> authority.getAuthority().equals("ROLE_ADMIN"));
+      boolean isAdmin = principalDetails.getMember().getRole().equals(ROLE_ADMIN);
 
       // ADMIN 역할이면 바로 삭제합니다.
       if (isAdmin) {
@@ -88,8 +89,10 @@ public class CommentController {
       }
 
       // 일반 사용자의 경우 소유자인지 확인합니다.
-      Long currentUserId = Long.valueOf(principalDetails.getUsername());
-      Long ownerId = Long.valueOf(commentService.getOwnerIdById(id));
+      Long currentUserId = principalDetails.getMember().getId();
+      System.out.println("currentUserId = " + currentUserId);
+      Long ownerId = commentService.getOwnerIdById(id).getId();
+      System.out.println("ownerId = " + ownerId);
 
       if (currentUserId != ownerId) {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body("본인의 댓글만 삭제할 수 있습니다.");
@@ -99,6 +102,34 @@ public class CommentController {
       return ResponseEntity.ok().build();
     } catch (Exception e) {
       return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("댓글 삭제 에러");
+    }
+  }
+
+  @PutMapping("/update/{id}")
+  public ResponseEntity<?> updateComment(@PathVariable("id") Long id,
+                                         @AuthenticationPrincipal PrincipalDetails principalDetails,
+                                         @RequestBody String text) {
+    try {
+      // 댓글 소유자 확인
+      Long ownerId = commentService.getOwnerIdById(id).getId();
+      Long currentUserId = principalDetails.getMember().getId();
+
+      // ADMIN 또는 댓글 작성자만 수정 가능
+      boolean isAdmin = principalDetails.getAuthorities().stream()
+          .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
+      if (!isAdmin && !currentUserId.equals(ownerId)) {
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("본인의 댓글만 수정할 수 있습니다.");
+      }
+
+      // 댓글 업데이트 로직
+      CommentDTO comment = commentService.findById(id);
+      commentService.update(comment,text);
+      comment.setComment(text);
+
+      return ResponseEntity.ok(Map.of("success", true, "message", "댓글이 수정되었습니다.","comment",comment));
+    } catch (Exception e) {
+      log.error("Error updating comment: {}", e.getMessage());
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("댓글 수정 에러");
     }
   }
 
