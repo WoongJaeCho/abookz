@@ -50,7 +50,6 @@
         </div>
         <div class="recommend" th:if="${aladinBooks.size() != 0}"> 알라딘 베스트 셀러
             <div th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? true : false}">
-                <a href="/slide">admin</a>
             </div>
             <div class="rec_book">
                 <ul th:each="book : ${aladinBooks}">

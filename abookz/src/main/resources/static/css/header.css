@@ -28,7 +28,7 @@ li{
     height: 100%;
 }
 .nav{
-    width: 30%;
+    width: 27%;
     height: 100%;
     position: relative;
 }
@@ -115,6 +115,7 @@ li{
     position: absolute;
     bottom: 0;
     left: 0;
+    margin-right: 5px;
 }
 
 .search input{
@@ -130,6 +131,7 @@ li{
     right: 0;
 }
 .login{
+    margin-left: 20px;
     width: 10%;
     height: 100%;
     position: relative;
@@ -161,7 +163,26 @@ li{
 .join > p:hover ,.login > p:hover {
     background-color: rgb(19, 168, 226);
 }
+.h_mem{
+    margin-left: 20px;
+    width: 10%;
+    height: 100%;
+    position: relative;
+}
+.h_mem .avatar{
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+}
+.h_mem p{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+.h_mem:hover{
 
+    text-decoration: underline;
+}
 .admin {
     position: relative;
 }

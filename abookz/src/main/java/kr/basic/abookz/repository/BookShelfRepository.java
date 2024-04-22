@@ -34,6 +34,13 @@ public interface BookShelfRepository extends JpaRepository<BookShelfEntity,Long>
 
     @Query("SELECT b.member.id, SUM(b.book.weight) FROM BookShelfEntity b WHERE b.tag = 'READ' GROUP BY b.member.id")
     List<Object[]> findTotalWeightByMemberForReadBooks();
+
+    @Query("SELECT b.member.id, SUM(b.book.sizeDepth) FROM BookShelfEntity b WHERE b.tag = 'READ' GROUP BY b.member.id")
+    List<Object[]> findTotalHeightByMemberForReadBooks();
+    @Query("SELECT b.member.id, count(b.book) FROM BookShelfEntity b WHERE b.tag = 'READ' GROUP BY b.member.id")
+    List<Object[]> findTotalBooksByMemberForReadBooks();
+
+
     Slice<BookShelfEntity> findAllByMemberIdAndTagOrderByIdDesc(Long memberId,TagEnum tagEnum,Pageable pageable);
 }
 

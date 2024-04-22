@@ -52,6 +52,7 @@
                         </li>
                         <li><a href="/bestSeller/bestSeller">베스트셀러</a></li>
                         <li><a href="/bestSeller/ItemNewAll">신간</a></li>
+                        <li><a href="/board/paging">게시판</a></li>
                     </ul>
                 </li>
                 <li><a href="#">챌린지</a>
@@ -87,16 +88,24 @@
         <a class="join" sec:authorize="!isAuthenticated()" href="/member/save">
             <p>회원가입</p>
         </a>
-        <div class="avatar placeholder" sec:authorize="isAuthenticated()">
-            <div class="bg-neutral text-neutral-content rounded-full w-24">
-                <span class="text-3xl">D</span>
+        <!-- 로그인 후-->
+<!--        <div class="avatar placeholder" sec:authorize="isAuthenticated()">-->
+<!--            <div class="bg-neutral text-neutral-content rounded-full w-24">-->
+<!--                <span class="text-l">D</span>-->
+<!--            </div>-->
+<!--        </div>-->
+        <a class="h_mem" sec:authorize="isAuthenticated()" href="/member/update">
+            <div class="avatar" sec:authorize="isAuthenticated()">
+                <div class="w-12 h-12 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+<!--                    <img th:src="${#authentication.principal.profile == '/images/default_profile.png' ? '/images/default_profile.png' : #authentication.principal.profile}" />-->
+                    <img src=images/default_profile.png" alt="기본">
+                </div>
             </div>
-        </div>
+            <p th:text="|${#authentication.principal.name}님|">사용자 이름</p>
+<!--            <p th:text="${#authentication.principal.name></p>-->
+        </a>
         <a class="login" sec:authorize="isAuthenticated()" href="javascript:void(0)" onclick="Logout();">
             <p>로그아웃</p>
-        </a>
-        <a class="join" sec:authorize="isAuthenticated()" href="/member/update">
-            <p th:text="${#authentication.principal.name}">사용자 이름</p>
         </a>
         <!-- <a class="join" sec:authorize="isAuthenticated()" href="/member/update"><p>정보수정</p></a> -->
         <!--        admin-->
@@ -110,10 +119,8 @@
                 </li>
             </ul>
         </div>
-
     </header>
-    <div id="message-container" class="mt-5 mx-auto">
-    </div>
+    <div id="message-container" class="mt-5 mx-auto"></div>
     <div id="searchResults"></div>
 </body>
 
