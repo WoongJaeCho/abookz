@@ -16,6 +16,7 @@
     justify-content: center;
     /*border: 1px solid black;*/
     margin: 10px auto;
+    border: 1px solid white;
 }
 #slideCard table th{
     background-color: #a17883;
@@ -36,7 +37,7 @@
 #slideCard #slideForm{
     margin-top: 20px;
     /*display: flex;*/
-    margin-left: 200px;
+    margin-left: 100px;
 }
 #slideCard #slideForm #ISBN13{
     margin-bottom: 10px;

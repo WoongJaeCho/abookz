@@ -57,31 +57,25 @@
                         </tr>
                     </thead>
                     <tbody th:each="memo ,index : ${memos}">
-                        <tr class="hover">
-                            <form>
-                                <th th:text="${index.index + 1}">1</th>
-                                <td th:text="${memo.page == null ? '-' : 'p.'+ memo.page}"></td>
-                                <td
-                                    th:text="${memo.createdDate == null ? '-' : #temporals.format(memo.createdDate,('yyyy-MM-dd HH:mm'))}">
-                                </td>
-                                <td th:text="${memo.quotes == null ? '-' : memo.quotes}"></td>
-                                <td th:text="${memo.note == null ? '-' : memo.note}"></td>
-                                <td>
-                                    <input type="button" value="수정" class="btn btn-detail btn-sm" th:onclick="" />
-                                </td>
-                                <td>
-                                    <input type="button" value="삭제" class="btn btn-detail btn-sm"
-                                        th:onclick="|location.href='/memo/' + @{${bookshelfId}} + '/' + @{${memo.id}}|" />
-                                </td>
-                            </form>
-                        </tr>
+                    <tr class="hover">
+                        <th th:text="${index.index + 1}">1</th>
+                        <td th:text="${memo.page == null ? '-' : 'p.'+ memo.page}"></td>
+                        <td th:text="${memo.createdDate == null ? '-' : #temporals.format(memo.createdDate,('yyyy-MM-dd HH:mm'))}"></td>
+                        <td class="memo-quotes"  th:text="${memo.quotes == null ? '-' : memo.quotes}"></td>
+                        <td class="memo-note" th:text="${memo.note == null ? '-' : memo.note}"></td>
+                        <td>
+                            <input  th:attr="memo-value=${memo.id}" type="button" value="수정" class="edit-btn btn btn-detail btn-sm"/>
+                            <input  type="button" value="완료" class="submit-btn btn btn-detail btn-sm hidden"/>
+                        </td>
+                        <td>
+                            <input type="button" value="삭제" class="btn btn-detail btn-sm" th:onclick="|location.href='/memo/' + @{${bookshelfId}} + '/' + @{${memo.id}}|"/>
+                        </td>
+                    </tr>
                     </tbody>
                 </table>
             </div>
-
         </div>
-    </div>
-    <script src="/js/memoList.js"></script>
+        <script src="/js/memoList.js"></script>
 </body>
 
 </html>
