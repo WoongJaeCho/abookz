@@ -166,26 +166,28 @@ function createBookElement(book, resultsDiv) {
 function wantToRead(isbn) {
   var isbn13 = isbn;
   fetch('/want?book=' + isbn13, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        isbn13: isbn13
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({isbn13: isbn13})
+  })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
       })
-    })
-    .then(response => {
-      if (!response.ok) {
-        throw new Error('Network response was not ok');
-      }
-      return response.text();
-    })
-    .then(data => {
-      alert(data);
-    })
-    .catch(error => {
-      console.error('There was a problem with the fetch operation:', error);
-      alert("로그인부터 해주세요");
-
-    });
+      .then(data => {
+        updateFeedback(data.message, true )
+        const reviewButton = document.getElementById('modal-review-btn');
+        reviewButton.setAttribute('data-shelf', data.shelfId);
+        reviewButton.setAttribute('data-book', data.bookId);
+        reviewButton.onclick = function() {
+          window.location.href = '/review/' +data.shelfId + '/' +  data.bookId;
+        };
+      })
+      .catch(error => {
+        updateFeedback("로그인이 필요합니다.", false )
+      });
 }

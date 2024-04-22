@@ -33,7 +33,7 @@ public class BoardController {
   @GetMapping("/save")
   public String saveForm(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model){
     if(!logincheck(principalDetails)){
-      return "redirect:/member/loginForm";
+        return "redirect:/member/loginForm";
     }
     model.addAttribute("writer", principalDetails.getMember().getName());
     String roleValue = String.valueOf(principalDetails.getMember().getRole());

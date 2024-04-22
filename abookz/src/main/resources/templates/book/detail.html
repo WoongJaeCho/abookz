@@ -82,15 +82,36 @@
 <!--    <hr class="reviewLine">    &lt;!&ndash;아래는 아직 미구현&ndash;&gt;-->
     <div th:replace="~{review/detailReview :: detailReview}" /><br>
 
+
 <!--    <div class="review">-->
 <!--        <label for="reviewtext"></label><textarea id="reviewtext" name="review" rows="6"></textarea>-->
 <!--        <button type="button" class="btn-register"  onclick="formCheckReply()">댓글등록</button>-->
 <!--    </div>-->
 </div>
-
+<dialog id="review-modal" class="modal modal-middle">
+  <div class="modal-box">
+    <h3 class="font-bold text-lg" th:text="|${book.title}의 리뷰가 없습니다|"></h3>
+    <p class="py-4" >리뷰를 남기시겠습니까?</p>
+    <div class="modal-action">
+      <form method="dialog">
+        <input type="hidden" name="">
+        <button
+            th:data-shelf="${shelf?.id != null ? shelf.id : 0}"
+            th:data-book="${book?.id != null ? book.id : 0}"
+            onclick="findReview(this.getAttribute('data-shelf'), this.getAttribute('data-book'))"
+            id="modal-review-btn"
+            class="btn btn-success text-white">네</button>
+        <button class="btn btn-error text-white">아니오</button>
+      </form>
+    </div>
+  </div>
+</dialog>
 <div id="searchResults"></div>
 <script src="/js/detail.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.4.0/sockjs.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 <script defer src="/js/Review/detailReview.js"></script>
+
 </body>
 </html>
 <script defer src="/js/index.js"></script>

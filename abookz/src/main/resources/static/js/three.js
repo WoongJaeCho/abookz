@@ -1,83 +1,46 @@
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js'
-import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js'
-
+import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import printBalanceScale from "../mesh/scale.js";
 
-const $canvas = document.getElementById('canvas')
-document.addEventListener('DOMContentLoaded', () => {
-  const addWeightButton = document.getElementById('addWeightButton');
-  addWeightButton.addEventListener('click', addWeight);
-});
-
-// 장면구조
-//1 씬
+const $canvas = document.getElementById('canvas');
 const scene = new THREE.Scene();
-scene.background = new THREE.Color(0x7ccad5)
-// scene.background = new THREE.Color(0xFFFFFF)
+scene.background = new THREE.Color(0x7ccad5);
 
-//2카메라
-// const camera = new THREE.PerspectiveCamera(50, window.innerWidth / window.innerHeight, 0.1, 1000);
 const camera = new THREE.PerspectiveCamera(50, $canvas.clientWidth / $canvas.clientHeight, 0.1, 1000);
-camera.position.set(0, 0, 15);
-// camera.lookAt(0,10,0);
+camera.position.set(0, 0, 20);
+// camera.lookAt(0, 20, 0);
 
-//3렌더러
-const renderer = new THREE.WebGLRenderer({ canvas: $canvas })
+const renderer = new THREE.WebGLRenderer({ canvas: $canvas });
 renderer.setSize($canvas.clientWidth, $canvas.clientHeight);
-// const renderer = new THREE.WebGLRenderer();
-// renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.shadowMap.enabled = true;
 document.body.appendChild(renderer.domElement);
-renderer.shadowMap.enabled = true
-
-// // AxesHelper 생성 (인자는 축의 길이입니다. 이 값을 조정하여 축의 크기를 결정합니다.)
-// const axesHelper = new THREE.AxesHelper(5);
-// axesHelper.scale.set(2, 2, 2);
-// // 씬에 AxesHelper 추가
-// scene.add(axesHelper);
 
 const scale = printBalanceScale();
-if (scale) {
-  const position = scale.position; // position 속성 접근
-  position.y
-  console.log(`Scale의 위치: x=${position.x}, y=${position.y}, z=${position.z}`);
-} else {
-  console.log('Scale 객체를 찾을 수 없습니다.');
-}
-scale.position.y -= 5;
-
+scale.position.y = -6;
 scene.add(scale);
 
-//책들추가
 const modelLoader = new GLTFLoader();
 let leftBookModel, rightBookModel;
 
-modelLoader.load('../models/memberBook.glb', (gltf) => {
-  leftBookModel = gltf.scene;
-  leftBookModel.scale.set(0.2, 0.2, 0.2);
-  leftBookModel.rotation.x = Math.PI / 2;
-  for (const mesh of leftBookModel.children) {
-    mesh.castShadow = true;
-  }
+Promise.all([
+  new Promise((resolve, reject) => modelLoader.load('../models/memberBook.glb', gltf => resolve(gltf), undefined, error => reject(error))),
+  new Promise((resolve, reject) => modelLoader.load('../models/averageBook.glb', gltf => resolve(gltf), undefined, error => reject(error)))
+]).then(([leftGltf, rightGltf]) => {
+  leftBookModel = leftGltf.scene;
+  rightBookModel = rightGltf.scene;
+  setInitialWeights(leftWeight, rightWeight);
+}).catch(error => {
+  console.error('Model loading failed:', error);
 });
 
-modelLoader.load('../models/averageBook.glb', (gltf) => {
-  rightBookModel = gltf.scene;
-  rightBookModel.scale.set(4, 4, 4);
-  for (const mesh of rightBookModel.children) {
-    mesh.castShadow = true;
-  }
-})
-
-
-// 빛
 const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
 scene.add(ambientLight);
 
 const directionLight = new THREE.DirectionalLight(0xffffff, 1);
 directionLight.position.set(-10, 10, 10);
+directionLight.castShadow = true;
 scene.add(directionLight);
-directionLight.castShadow = true
 
 const pl1 = new THREE.PointLight(0xff8c00, 1.5);
 pl1.position.set(5, 0, 0);
@@ -87,55 +50,59 @@ const pl2 = new THREE.PointLight(0xffe287, 2);
 pl2.position.set(-3, 2, 0);
 scene.add(pl2);
 
-// OrbitControls
 const control = new OrbitControls(camera, renderer.domElement);
-const balanceArm = scene.getObjectByName('balanceArm');  // 'balanceArm' 이름으로 객체 찾기
-const leftPan = scene.getObjectByName('leftPan');  // 'balanceArm' 이름으로 객체 찾기
-const rightPan = scene.getObjectByName('rightPan');  // 'balanceArm' 이름으로 객체 찾기
+const balanceArm = scene.getObjectByName('balanceArm');
+const leftPan = scene.getObjectByName('leftPan');
+const rightPan = scene.getObjectByName('rightPan');
 
+let leftWeight = parseFloat(document.getElementById('memberSum').value);
+let memberName = document.getElementById('memberName').value;
+let rightWeight = parseFloat(document.getElementById('sumAverage').value);
 
+let leftSprite, rightSprite;
 
-let leftWeight = 0;
-let rightWeight = 0;
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('Document fully loaded and parsed');
+  setInitialWeights(leftWeight, rightWeight);
+});
 
-function addWeight() {
-  const weight = parseFloat(document.getElementById('weight').value);
-  const pan = document.getElementById('panSelection').value;
-
-  // 무게에 따라 책의 크기를 조정하는 계수
-  const additionalScale = Math.min(Math.max(0.1, weight / 20), 0.5);
-
-  if (pan === 'left' && leftBookModel) {
-    const bookClone = leftBookModel.clone();
-    const currentScale = 0.2;
-    bookClone.position.set(0.3, -0.9, -1.7); // 좌표 조정
-    // bookClone.scale.set(currentScale + additionalScale, currentScale + additionalScale, currentScale + additionalScale);
-    leftPan.add(bookClone); // 왼쪽 팬의 자식으로 책 추가
-    leftWeight += weight;
-  } else if (pan === 'right' && rightBookModel) {
-    const bookClone = rightBookModel.clone();
-    const currentScale = 4;
-    bookClone.position.set(-1.2, -0.5, 0); // 좌표 조정
-    // bookClone.scale.set(currentScale + additionalScale, currentScale + additionalScale, currentScale + additionalScale);
-    rightPan.add(bookClone); // 오른쪽 팬의 자식으로 책 추가
-    rightWeight += weight;
+function setInitialWeights(memberWeight, averageWeight) {
+  if (!leftBookModel || !rightBookModel) {
+    console.error('Model not loaded, cannot set weights');
+    return;
   }
+  updateTextOnScale();
 
-  updateBalance(pan, weight);
+  const leftScaleAdjustment = Math.min(Math.max(0.01, memberWeight / 50), 0.03);
+  const rightScaleAdjustment = Math.min(Math.max(0.1, averageWeight / 50), 0.3);
+
+  const leftBookClone = leftBookModel.clone();
+  leftBookClone.scale.set(0.2 + leftScaleAdjustment, 0.2 + leftScaleAdjustment, 0.2 + leftScaleAdjustment);
+  leftBookClone.rotation.x = Math.PI / 2;
+  leftBookClone.position.set(0.3, -0.9, -1.7);
+  leftPan.add(leftBookClone);
+  leftWeight = memberWeight;
+
+  const rightBookClone = rightBookModel.clone();
+  rightBookClone.scale.set(4 + rightScaleAdjustment, 4 + rightScaleAdjustment, 4 + rightScaleAdjustment);
+  rightBookClone.position.set(-1.2, -0.5, 0);
+  rightPan.add(rightBookClone);
+  rightWeight = averageWeight;
+
+  updateBalance();
 }
-
 
 function updateBalance() {
+  console.log('updateBalance function called');
   if (!balanceArm) {
     console.error('Balance arm not found');
-    return;  // 객체를 찾지 못하면 여기서 함수 종료
+    return;
   }
-  const angle = (leftWeight - rightWeight) / 100;
-  balanceArm.rotation.z = angle;  // 팔만 회전
-  console.log(`Balance arm angle updated to: ${angle}`); // 각도 업데이트 로그
+  const angle = (leftWeight - rightWeight) / 50;
+  balanceArm.rotation.z = angle;
+  updateTextOnScale();  // 새로운 무게로 텍스트 업데이트
+  console.log(`Balance arm angle updated to: ${angle}`);
 }
-
-
 
 function animate() {
   control.update();
@@ -143,8 +110,8 @@ function animate() {
   requestAnimationFrame(animate);
 }
 
-
 animate();
+
 window.addEventListener('resize', () => {
   const width = $canvas.clientWidth;
   const height = $canvas.clientHeight;
@@ -155,8 +122,54 @@ window.addEventListener('resize', () => {
   renderer.setSize(width, height);
 });
 
-// window.addEventListener('resize', () => {
-//   camera.aspect = window.innerWidth / window.innerHeight;
-//   camera.updateProjectionMatrix();
-//   renderer.setSize(window.innerWidth, window.innerHeight);
-// })
+function createTextTexture(text, fontSize = 32, textColor = '#FFF', bgColor = '#000') {
+  const canvas = document.createElement('canvas');
+  const context = canvas.getContext('2d');
+
+  canvas.width = 350;
+  canvas.height = 128;
+  context.fillStyle = bgColor;
+  context.fillRect(0, 0, canvas.width, canvas.height);
+
+  context.font = `${fontSize}px Arial`;
+  context.fillStyle = textColor;
+  context.textAlign = 'center';
+  context.textBaseline = 'middle';
+  context.fillText(text, canvas.width / 2, canvas.height / 2);
+
+  const texture = new THREE.Texture(canvas);
+  texture.needsUpdate = true;
+
+  return texture;
+}
+
+function createTextSprite(text) {
+  const texture = createTextTexture(text);
+  const material = new THREE.SpriteMaterial({ map: texture });
+  const sprite = new THREE.Sprite(material);
+  sprite.scale.set(5, 2.5, 1);  // 적당한 크기 조절
+  return sprite;
+}
+
+function updateTextOnScale() {
+  const leftText = `${memberName}평균 : ${leftWeight.toFixed(2)}Kg`;
+  const rightText = `전체회원평균 : ${rightWeight.toFixed(2)}Kg`;
+
+  if (!leftSprite) {
+    leftSprite = createTextSprite(leftText);
+    leftSprite.position.set(-4, 4, 0);
+    scene.add(leftSprite);
+  } else {
+    leftSprite.material.map = createTextTexture(leftText);
+    leftSprite.material.map.needsUpdate = true;
+  }
+
+  if (!rightSprite) {
+    rightSprite = createTextSprite(rightText);
+    rightSprite.position.set(4, 4, 0);
+    scene.add(rightSprite);
+  } else {
+    rightSprite.material.map = createTextTexture(rightText);
+    rightSprite.material.map.needsUpdate = true;
+  }
+}

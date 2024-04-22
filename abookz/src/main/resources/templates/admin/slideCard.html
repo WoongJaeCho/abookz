@@ -43,8 +43,9 @@
 
         <form id="slideForm" action="/slide" method="post" enctype="multipart/form-data">
             <span> ISBN13 입력 : </span>
-            <input type="number" name="ISBN13" id="ISBN13" placeholder="13자리를 입력해 주세요."/> <br>
-            <span> 슬라이드 파일 (파일 형식 JPG 또는 PNG / 파일 사이즈 1280 x 400 px) : </span><br>
+            <input type="number" name="ISBN13" id="ISBN13" placeholder="13자리를 입력해 주세요." onchange="ISBNCheck"/>
+            <span class="colorRed" id="ISBN13_value"></span> <br>
+            <span> 슬라이드 파일 (파일 형식 <span class="colorRed">JPG</span> 또는 <span class="colorRed">PNG</span> / 파일 사이즈 <span class="colorRed">1280 x 400 px</span>) : </span><br>
             <input type="file" name="file" id="file"/>
             <input type="hidden" name="idx" th:value="${slideCard.size()+1}">
             <input type="button" onclick="fileUpload(form)" value="업로드">
@@ -56,7 +57,22 @@
 <script>
     let slideTable = document.querySelector('#slideTable');
     let slides = [...document.querySelectorAll('#slide')];
+    let ISBN13 = document.querySelector('#ISBN13');
+    let ISBN_value = document.querySelector('#ISBN13_value');
 
+    function ISBNCheck() {
+        let isbnInput = ISBN13.value.trim();
+
+        if (!/^978|^979/.test(isbnInput.substring(0, 3))) {
+            ISBN_value.textContent = "ISBN13은 978 또는 979로 시작해야 합니다.";
+        } else if (isbnInput.length !== 13) {
+            ISBN_value.textContent = "ISBN13은 13자리를 입력해주세요.";
+        } else {
+            ISBN_value.textContent = '';
+        }
+    }
+
+    ISBN13.addEventListener("input", ISBNCheck); // input 이벤트로 ISBNCheck 함수를 호출
 
     slides.forEach(slide =>{
         slide.addEventListener("dragstart", ()=>{
@@ -122,6 +138,9 @@
             body: JSON.stringify({ slideIds: slideIds })
         })
             .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                }
                 if (!response.ok) {
                     throw new Error('Failed to save slide order');
                 }

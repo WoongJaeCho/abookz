@@ -18,6 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.security.Principal;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -126,6 +127,12 @@ public class HomeController {
         }
 
         return "index";
+    }
+
+    @GetMapping("/test")
+    public String testPrincipal(Principal principal) {
+        System.out.println(principal.getClass().getName()); // 클래스 타입 로그 출력
+        return "testPage";
     }
 
 }

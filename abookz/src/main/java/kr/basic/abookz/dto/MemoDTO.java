@@ -7,6 +7,8 @@ import jakarta.persistence.ManyToOne;
 import kr.basic.abookz.entity.book.BookShelfEntity;
 import kr.basic.abookz.entity.review.MemoEntity;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 @Getter
@@ -34,6 +36,7 @@ public class MemoDTO {
     }
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "BOOKSHELF_ID",foreignKey = @ForeignKey(name = "MEMODTO_IBFK_1"))
     private BookShelfEntity bookShelf;
 

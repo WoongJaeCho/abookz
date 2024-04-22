@@ -68,6 +68,16 @@
     border: 2px solid black;
     display: flex;
 }
+#bookWrap #avgBooks {
+    position: absolute;
+    border: 3px solid black;
+    font-size: 1.5em;
+    border-radius: 5px;
+    top: 20px;
+    padding: 15px;
+    left: 50%;
+    transform: translateX(-50%);
+}
 
 
 #listWrap{

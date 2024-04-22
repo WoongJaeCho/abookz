@@ -3,11 +3,16 @@ package kr.basic.abookz.entity.board;
 import jakarta.persistence.*;
 import kr.basic.abookz.dto.BoardDTO;
 import kr.basic.abookz.entity.member.MemberEntity;
+import kr.basic.abookz.entity.review.MemoEntity;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 
 @Entity
@@ -35,8 +40,12 @@ public class BoardEntity extends BaseEntity {
   private LocalDate updateDate; // 수정날짜
 
   @ManyToOne(fetch = FetchType.LAZY)
+  @OnDelete(action = OnDeleteAction.CASCADE)
   @JoinColumn(name = "MEM_ID", foreignKey = @ForeignKey(name = "BOARD_IBFK_1"))
   private MemberEntity member; // 리뷰 작성 회원
+
+  @OneToMany(mappedBy = "board", orphanRemoval = true)
+  private List<BoardCommentEntity> childListBoard = new ArrayList<>();
 
   public static BoardEntity toSaveEntity(BoardDTO boardDTO){
     BoardEntity boardEntity = new BoardEntity();
