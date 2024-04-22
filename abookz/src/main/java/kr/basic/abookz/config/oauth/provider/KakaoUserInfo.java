@@ -33,4 +33,12 @@ public class KakaoUserInfo implements OAuth2UserInfo{
         }
         return null;
     }
-}
+
+    @Override
+    public String getProfile() {
+        Map<String, Object> properties = (Map<String, Object>) attributes.get("properties");
+        if (properties != null) {
+            return (String) properties.get("profile_image");
+        }
+        return null; // 프로필 이미지가 없는 경우를 처리
+    }}

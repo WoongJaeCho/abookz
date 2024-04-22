@@ -118,7 +118,7 @@ function updateTable(reviews, tabPanelId) {
   wrap.appendChild(table); // 테이블을 탭 패널에 추가
   var newButton = document.createElement("button");
   newButton.setAttribute("type", "submit");
-  newButton.setAttribute("className", "btn btn-error mt-4");
+  newButton.setAttribute("class", "btn btn-error mt-4");
   newButton.setAttribute("onClick", "deleteSelectedReviews()");
   newButton.textContent = "삭제하기";
 

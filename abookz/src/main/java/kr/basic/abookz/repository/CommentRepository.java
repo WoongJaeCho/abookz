@@ -11,4 +11,8 @@ public interface CommentRepository extends JpaRepository<CommentEntity,Long> {
   List<CommentEntity> findAllByReview_IdAndMember_Id(Long ReviewId,Long MemberId);
 
   Slice<CommentEntity> findAllByReview_Id(Long reviewId, Pageable pageable);
+
+  List<CommentEntity> findByReview_Id(Long id);
+
+  void deleteById(Long id);
 }

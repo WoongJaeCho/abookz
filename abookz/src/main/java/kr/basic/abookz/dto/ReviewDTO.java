@@ -23,6 +23,7 @@ public class ReviewDTO {
   private Boolean isSpoilerActive;//스포일러 방지기능
   private boolean liked;
   private int likesCount;
+  private int commentsCount;
   private BookShelfDTO bookShelfDTO;
 
 }

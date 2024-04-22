@@ -67,9 +67,9 @@ public class ReviewService {
     return mapEntityToDTO(reviewRepository.findById(id).get());
   }
 
-  public ReviewEntity update(ReviewDTO reviewDTO) {
-    ReviewEntity reviewEntity = reviewRepository.findById(reviewDTO.getId())
-        .orElseThrow(() -> new EntityNotFoundException("Review not found with id: " + reviewDTO.getId()));
+  public ReviewEntity update(ReviewDTO reviewDTO, ReviewDTO existingDTO) {
+    ReviewEntity reviewEntity = reviewRepository.findById(existingDTO.getId())
+        .orElseThrow(() -> new EntityNotFoundException("Review not found with id: " +  existingDTO.getId()));
 
     reviewEntity.setContent(reviewDTO.getContent());
     reviewEntity.setIsSpoilerActive(reviewDTO.getIsSpoilerActive());

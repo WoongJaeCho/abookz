@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import kr.basic.abookz.dto.MemberDTO;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.context.annotation.Profile;
 
 import java.time.LocalDate;
 
@@ -30,8 +31,6 @@ public class MemberEntity {
   @CreationTimestamp
   private LocalDate regDate;//가입일
 
-
-
   public MemberEntity(String loginId) {
     this.loginId = loginId;
 
@@ -42,9 +41,9 @@ public class MemberEntity {
   private String providerId;
 
   //  private int challenge;//습관형성 챌린지
-//  @OneToMany(mappedBy = "member, cascade = CascadeType.ALL)
+//  @OneToMany(mappedBy = "member, , orphanRemoval = true)
 //  private List<ReviewEntity> reviewList = new ArrayList<>(); //회원이 작성한 리뷰 리스트
-//@OneToMany(mappedBy = "member" ,cascade = CascadeType.ALL)
+//@OneToMany(mappedBy = "member" ,, orphanRemoval = true)
 //  private List<MemoEntity> memoList = new ArrayList<>(); //회원이 작성한 메모 리스트
 
   public static MemberEntity toMemberEntity(MemberDTO memberDTO) {
@@ -72,10 +71,11 @@ public class MemberEntity {
   }
 
   @Builder
-  public MemberEntity(String loginId, String password, String email, String provider, String providerId, String name) {
+  public MemberEntity(String loginId, String password, String email,String profile ,String provider, String providerId, String name) {
     this.loginId = loginId;
     this.password = password;
     this.email = email;
+    this.profile = profile;
     this.provider = provider;
     this.providerId = providerId;
     this.role = ROLE_USER;
@@ -88,10 +88,10 @@ public class MemberEntity {
       this.profile = "/images/default_profile.png"; // 기본 프로필 이미지 경로 설정
     }
   }
-  @PreUpdate
-  protected void onUpdate(){
-    if(this.profile == null || this.profile.trim().isEmpty()){
-      this.profile = "/images/default_profile.png"; // 기본 프로필 이미지 경로 설정
-    }
-  }
+//  @PreUpdate
+//  protected void onUpdate(){
+//    if(this.profile == null && this.profile.trim().isEmpty()){
+//      this.profile = "/images/default_profile.png"; // 기본 프로필 이미지 경로 설정
+//    }
+//  }
 }

@@ -13,11 +13,12 @@
 <script type="text/javascript" src="/lib/jquery-3.7.1.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
-<div class="shelf_container" id="shelf_container">
+<div id="shelf_container" class="shelf_container">
     <div id="shelf_left">
         <hr class="shelfLeft_hr">
         <p class="bookShelves">내 서재들</p>
-        <a href="/myshelf/tag/ALL" class="myShelf_" th:text="'전체(' + ${books.size()} + ')'">1</a>
+        <a th:if="${tagValue}" href="/myshelf/tag/ALL" class="myShelf_" th:text="'전체(' + ${read+want+current} + ')'">1</a>
+        <a th:unless="${tagValue}" href="/myshelf/tag/ALL" class="myShelf_" th:text="'전체(' + ${books.size()} + ')'">1</a>
         <br>
         <a href="/myshelf/tag/READ" class="myShelf_" th:text="'읽은 책(' + ${read} + ')'">1</a>
         <br>
@@ -26,9 +27,9 @@
         <a href="/myshelf/tag/CURRENTLY_READING" class="myShelf_" th:text="'읽고있는 책(' + ${current} + ')'">1</a>
         <hr class="shelf_left_center">
         <p class="bookShelves">읽기 활동</p>
-        <a href="#" class="myShelf_" th:text="'나의 리뷰(' + ${books.size()} + ')'">1</a>
+        <a href="/review/reviewList" class="myShelf_" th:text="'나의 리뷰(' + ${reviewCounts} + ')'">1</a>
         <br>
-        <a href="/memo/all" class="myShelf_" th:text="'나의 메모(' + ${books.size()} + ')'">1</a>
+        <a href="/memo/all" class="myShelf_" th:text="'나의 메모(' + ${memos.size()} + ')'">1</a>
         <br>
         <a href="#" class="myShelf_" th:text="'나의 챌린지(' + ${books.size()} + ')'">1</a>
         <br>
@@ -38,17 +39,17 @@
         <hr class="myShelf_hr">
         <br>
         <div class="overflow-x-auto" id="myShelfDiv">
-            <table class="shelf_table">
+            <table class="table">
                 <thead>
                 <tr class="shelf_tr">
                     <th class="shelf_th text-center"> # </th>
-                    <th class="shelf_th text-center">이미지</th>
-                    <th class="shelf_th text-center">제목</th>
-                    <th class="shelf_th text-center">서재</th>
-                    <th class="shelf_th text-center">페이지</th>
-                    <th class="shelf_th text-center">인용구</th>
-                    <th class="shelf_th text-center">나의 메모</th>
-                    <th class="shelf_th text-center">메모 수</th>
+                    <th class="shelf_th text-center w-12">이미지</th>
+                    <th class="shelf_th text-center w-50">제목</th>
+                    <th class="shelf_th text-center w-28">서재</th>
+                    <th class="shelf_th text-center w-14">페이지</th>
+                    <th class="shelf_th text-center w-50">인용구</th>
+                    <th class="shelf_th text-center w-50">나의 메모</th>
+                    <th class="shelf_th text-center w-12">메모 수</th>
                 </tr>
                 </thead>
                 <tbody th:each="shelf, index : ${shelves}" th:with="count=${memoCount[__${index.index}__]}, memo=${memos[__${index.index}__]}">

@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
@@ -24,10 +26,12 @@ public class CommentEntity {
   private String comment;//댓글내용
 
   @ManyToOne(fetch = FetchType.LAZY)
+  @OnDelete(action = OnDeleteAction.CASCADE)
   @JoinColumn(name = "MEM_ID",foreignKey = @ForeignKey(name = "COMMENT_IBFK_1"))
   private MemberEntity member; // 리뷰 작성 회원
 
   @ManyToOne(fetch = FetchType.LAZY)
+  @OnDelete(action = OnDeleteAction.CASCADE)
   @JoinColumn(name = "REVIEW_ID",foreignKey = @ForeignKey(name="COMMENT_IBFK_2"))
   private ReviewEntity review;//좋아요가 있는 게시물
 

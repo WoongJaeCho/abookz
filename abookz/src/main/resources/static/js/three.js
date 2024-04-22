@@ -56,6 +56,7 @@ const leftPan = scene.getObjectByName('leftPan');
 const rightPan = scene.getObjectByName('rightPan');
 
 let leftWeight = parseFloat(document.getElementById('memberSum').value);
+let memberName = document.getElementById('memberName').value;
 let rightWeight = parseFloat(document.getElementById('sumAverage').value);
 
 let leftSprite, rightSprite;
@@ -125,7 +126,7 @@ function createTextTexture(text, fontSize = 32, textColor = '#FFF', bgColor = '#
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d');
 
-  canvas.width = 256;
+  canvas.width = 350;
   canvas.height = 128;
   context.fillStyle = bgColor;
   context.fillRect(0, 0, canvas.width, canvas.height);
@@ -151,8 +152,8 @@ function createTextSprite(text) {
 }
 
 function updateTextOnScale() {
-  const leftText = `Member: ${leftWeight.toFixed(2)}`;
-  const rightText = `Average: ${rightWeight.toFixed(2)}`;
+  const leftText = `${memberName}평균 : ${leftWeight.toFixed(2)}Kg`;
+  const rightText = `전체회원평균 : ${rightWeight.toFixed(2)}Kg`;
 
   if (!leftSprite) {
     leftSprite = createTextSprite(leftText);

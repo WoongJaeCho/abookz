@@ -52,6 +52,7 @@
                         </li>
                         <li><a href="/bestSeller/bestSeller">베스트셀러</a></li>
                         <li><a href="/bestSeller/ItemNewAll">신간</a></li>
+                        <li><a href="/board/paging">게시판</a></li>
                     </ul>
                 </li>
                 <li><a href="#">챌린지</a>
@@ -81,22 +82,39 @@
 
             </form>
         </div>
+
         <a class="login" sec:authorize="!isAuthenticated()" href="/member/loginForm">
             <p>로그인</p>
         </a>
         <a class="join" sec:authorize="!isAuthenticated()" href="/member/save">
             <p>회원가입</p>
         </a>
-        <div class="avatar placeholder" sec:authorize="isAuthenticated()">
-            <div class="bg-neutral text-neutral-content rounded-full w-24">
-                <span class="text-3xl">D</span>
+        <!-- 로그인 후-->
+<!--        <div class="avatar placeholder" sec:authorize="isAuthenticated()">-->
+<!--            <div class="bg-neutral text-neutral-content rounded-full w-24">-->
+<!--                <span class="text-l">D</span>-->
+<!--            </div>-->
+<!--        </div>-->
+        <a class="h_mem" sec:authorize="isAuthenticated()" href="/member/update">
+            <div class="avatar" sec:authorize="isAuthenticated()">
+                <div class="w-12 h-12 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
+                    <!-- 프로필 이미지가 있을 경우 해당 이미지를 표시 -->
+                    <img th:if="${session.profileImage}"
+                         th:src="${session.profileImage}"
+                         alt="Profile Image" />
+
+                    <!-- 프로필 이미지가 없을 경우 디폴트 이미지를 표시 -->
+                    <img th:unless="${session.profileImage}"
+                         th:src="@{/images/default_profile.png}"
+                         alt="Default Profile Image" />
+                </div>
+
             </div>
-        </div>
+            <p th:text="|${#authentication.principal.name}님|">사용자 이름</p>
+<!--            <p th:text="${#authentication.principal.name></p>-->
+        </a>
         <a class="login" sec:authorize="isAuthenticated()" href="javascript:void(0)" onclick="Logout();">
             <p>로그아웃</p>
-        </a>
-        <a class="join" sec:authorize="isAuthenticated()" href="/member/update">
-            <p th:text="${#authentication.principal.name}">사용자 이름</p>
         </a>
         <!-- <a class="join" sec:authorize="isAuthenticated()" href="/member/update"><p>정보수정</p></a> -->
         <!--        admin-->
@@ -111,9 +129,21 @@
             </ul>
         </div>
 
+
+        <div id="message-container" class="absolute x-[100px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 mt-[100px] z-50">
+            <!-- Message Container의 내용 -->
+        </div>
+
     </header>
-    <div id="message-container" class="mt-5 mx-auto">
-    </div>
+
+    <script>
+        window.addEventListener('scroll', function() {
+            var messageContainer = document.getElementById('message-container');
+            var yOffset = window.pageYOffset ; // 현재 스크롤 위치에서 200px 아래에 요소를 위치시킵니다.
+            messageContainer.style.top = yOffset + 'px';
+        });
+    </script>
+
     <div id="searchResults"></div>
 </body>
 

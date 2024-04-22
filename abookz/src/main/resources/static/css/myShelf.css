@@ -102,24 +102,22 @@ body {
 
 
 
-/* 모달창 */
+
 #myModal {
 
     display: none;
-    /* 초기에는 보이지 않도록 설정 */
+
     position: fixed;
-    /* 위치 설정 */
+
     z-index: 9999;
-    /* 다른 요소 위에 표시되도록 설정 */
+
     left: 0;
     top: 0;
     justify-content: center;
     width: 100%;
-    /* 화면 전체 너비로 설정 */
+
     height: 100%;
-    /* 화면 전체 높이로 설정 */
     background-color: rgba(0, 0, 0, 0.4);
-    /* 반투명한 배경 설정 */
 }
 
 #modal_content {
