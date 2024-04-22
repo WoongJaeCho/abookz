@@ -9,7 +9,7 @@
 
 
 
-<div id="bookWrap" th:style="'height: ' + (${booksHeight < 80 ? 80 : booksHeight}) + 'vh;'" >
+<div id="bookWrap" th:style="'height: ' + (${booksHeight < 83 ? 83 : booksHeight}) + 'vh;'" >
     <div th:each="shelf, index : ${shelves}"
          th:class="'book b' + (${index.index} % 4 + 1)"
          th:text="${shelf.getBookDTO().getTitle.length() > 40 ? shelf.getBookDTO().getTitle.substring(0, 40) + '...' : shelf.getBookDTO().getTitle}"
