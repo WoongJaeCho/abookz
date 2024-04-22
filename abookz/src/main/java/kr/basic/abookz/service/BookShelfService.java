@@ -38,6 +38,7 @@ public class BookShelfService {
   private final BookShelfRepository bookShelfRepository;
   private final ModelMapper mapper;
   private final BookRepository bookRepository;
+  private final MemberRepository memberRepository;
   @PersistenceContext
   private final EntityManager entityManager;
 
@@ -294,6 +295,8 @@ public class BookShelfService {
 
   public double averageWeightOfReadBooksExcludingCurrent(Long id) {
     Double averageWeight = bookShelfRepository.findAverageWeightExcludingMember(id, READ);
+    averageWeight = averageWeight/(memberRepository.count()-1);
+
     return averageWeight != null ? averageWeight : 0.0;
   }
 }
