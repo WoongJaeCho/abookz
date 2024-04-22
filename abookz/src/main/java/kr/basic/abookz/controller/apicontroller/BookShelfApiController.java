@@ -67,6 +67,8 @@ public class BookShelfApiController {
         Map<String, Object> response = new HashMap<>();
         if (getValue.equals("저장")) {
             response.put("message", aladinGetBook.getTitle() + " 내 서재에 등록이 완료되었습니다");
+            response.put("shelfId", shelfId);
+            response.put("bookId", bookId);
             return ResponseEntity.ok(response);
         }
         response.put("message", "이미 등록되어있습니다");

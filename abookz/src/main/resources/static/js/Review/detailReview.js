@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
   });
 });
 
+
 function loadReviews(pageNumber, query, sort) {
 
   const collapseDiv = document.querySelector('.collapse'); // 타겟이 되는 div 요소 선택
@@ -512,7 +513,7 @@ function findReview(shelfId, bookId) {
       })
       .then(data => {
         console.log('Success:', data);
-        window.location.href = '/review/' + data.bookShelfId + '/' + data.bookId;
+        window.location.href = '/review/' + shelfId + '/' + bookId;
 
       })
       .catch(error => {
@@ -560,7 +561,7 @@ function createCommentElement(comment) {
   // 코멘트 컨테이너 생성
   const commentContainer = document.createElement('div');
   commentContainer.className = 'flex w-full justify-between border rounded-md p-3';
-  commentContainer.id = `comment-update-${comment.reviewId}`;
+  commentContainer.id = `comment-update-${comment.reviewId}-${comment.id}`;
 
   // 사용자 이미지 및 정보 포함하는 섹션
   const userInfoSection = document.createElement('div');
@@ -618,7 +619,8 @@ function createCommentElement(comment) {
 
   // 이벤트 핸들러 설정 (예시)
   deleteButton.onclick = () => deleteComment(comment.id, comment.reviewId);
-  editButton.onclick = () => editComment(comment.id, "default", comment.reviewId);
+  editButton.onclick = () => showEditCommentForm(comment.id, commentText.textContent, comment.reviewId);
+
 
   // 섹션을 코멘트 컨테이너에 추가
   commentContainer.appendChild(userInfoSection);
@@ -628,7 +630,7 @@ function createCommentElement(comment) {
 }
 
 function updateCommentElement(reviewId,comment) {
-  const commentContainer = document.getElementById(`comment-update-${reviewId}`);
+  const commentContainer = document.getElementById(`comment-update-${comment.reviewId}-${comment.id}`);
   commentContainer.innerHTML = ``;
 
   // 사용자 이미지 및 정보 포함하는 섹션
@@ -687,7 +689,7 @@ function updateCommentElement(reviewId,comment) {
 
   // 이벤트 핸들러 설정 (예시)
   deleteButton.onclick = () => deleteComment(comment.id, comment.reviewId);
-  editButton.onclick = () => editComment(comment.id, "default", comment.reviewId);
+  editButton.onclick = () => showEditCommentForm(comment.id, commentText.textContent, comment.reviewId);
 
   // 섹션을 코멘트 컨테이너에 추가
   commentContainer.appendChild(userInfoSection);
@@ -696,8 +698,10 @@ function updateCommentElement(reviewId,comment) {
   return commentContainer;
 }
 
-function editComment(commentId, newText,reviewId) {
-  // 서버에 PUT 요청을 보내 수정된 댓글 내용을 저장
+function editComment(commentId, reviewId) {
+  const modal = document.getElementById('edit-comment-modal');
+  const newText = modal.querySelector('textarea').value;
+
   fetch(`/comment/update/${commentId}`, {
     method: 'PUT',
     headers: {
@@ -707,18 +711,21 @@ function editComment(commentId, newText,reviewId) {
   })
       .then(response => {
         if (!response.ok) {
-          throw new Error('Failed to update comment');
+          return response.json().then(data => {
+            throw new Error(data.message || "Failed to delete comment"); // 서버로부터 오류 메시지가 제공된 경우 출력
+          });
         }
         return response.json();
       })
       .then(data => {
-
-        updateCommentElement(reviewId,data.comment)
-
+        updateCommentElement(reviewId, data.comment); // 수정된 댓글 내용으로 업데이트
+        modal.remove(); // 성공적으로 수정 후 모달 창 닫기
       })
-      .catch(error => updateFeedback(error.message,false));
-}
+      .catch(error => {
 
+        updateFeedback(error.message,false); // 사용자에게 오류 메시지 표시
+      });
+}
 function deleteComment(commentId,reviewId) {
   fetch(`/comment/delete/${commentId}`, {
     method: 'DELETE', // 메서드 변경
@@ -728,7 +735,7 @@ function deleteComment(commentId,reviewId) {
   })
       .then(response => {
         if (response.ok) {
-          document.getElementById(`comment-update-${reviewId}`).remove(); // 성공적으로 삭제되면 해당 댓글 DOM 제거
+          document.getElementById(`comment-update-${reviewId}-${commentId}`).remove(); // 성공적으로 삭제되면 해당 댓글 DOM 제거
         } else {
           return response.json().then(data => {
             throw new Error(data.message || "Failed to delete comment"); // 서버로부터 오류 메시지가 제공된 경우 출력
@@ -739,4 +746,33 @@ function deleteComment(commentId,reviewId) {
         console.error(error); // 콘솔에 오류 메시지 출력
         updateFeedback(error.message, false); // 사용자에게 피드백 제공
       });
+}
+
+function showEditCommentForm(commentId, currentText, reviewId) {
+
+  if (document.getElementById('edit-comment-modal')) {
+    return;
+  }
+  // 모달 창을 생성
+  const modal = document.createElement('div');
+  modal.id = 'edit-comment-modal';
+  modal.className = 'modal modal-open';
+  modal.innerHTML = `
+    <div class="modal-box relative">
+      <label for="edit-comment-modal" class="btn btn-sm btn-circle absolute right-2 top-2">✕</label>
+      <h3 class="text-lg font-bold">댓글 수정</h3>
+      <textarea class="textarea textarea-bordered w-full mt-4" placeholder="댓글 수정...">${currentText}</textarea>
+      <div class="modal-action">
+        <button class="btn btn-primary" onclick="editComment(${commentId}, ${reviewId})">저장</button>
+      </div>
+    </div>
+  `;
+
+  // 모달 닫기 기능
+  modal.querySelector('.btn-circle').addEventListener('click', function() {
+    modal.remove();
+  });
+
+  // 페이지의 body 태그에 모달 추가
+  document.body.appendChild(modal);
 }

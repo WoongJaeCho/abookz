@@ -78,6 +78,8 @@ public class CommentController {
 
   @DeleteMapping("/delete/{id}")
   public ResponseEntity<?> deleteComment(@PathVariable Long id, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    Map<String, Object> response = new HashMap<>();
+
     try {
       // 현재 인증된 사용자의 권한을 확인합니다.
       boolean isAdmin = principalDetails.getMember().getRole().equals(ROLE_ADMIN);
@@ -95,20 +97,25 @@ public class CommentController {
       System.out.println("ownerId = " + ownerId);
 
       if (currentUserId != ownerId) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("본인의 댓글만 삭제할 수 있습니다.");
+        response.put("message", "본인의 댓글만 삭제할 수 있습니다.");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
       }
 
       commentService.deleteComment(id);
       return ResponseEntity.ok().build();
     } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("댓글 삭제 에러");
+      response.put("message", "댓글 삭제 에러");
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);
     }
   }
 
   @PutMapping("/update/{id}")
   public ResponseEntity<?> updateComment(@PathVariable("id") Long id,
                                          @AuthenticationPrincipal PrincipalDetails principalDetails,
-                                         @RequestBody String text) {
+                                         @RequestBody Map<String, String> request) {
+    Map<String, Object> response = new HashMap<>();
+    String text = request.get("text");  // 텍스트 추출
+
     try {
       // 댓글 소유자 확인
       Long ownerId = commentService.getOwnerIdById(id).getId();
@@ -118,7 +125,8 @@ public class CommentController {
       boolean isAdmin = principalDetails.getAuthorities().stream()
           .anyMatch(a -> a.getAuthority().equals("ROLE_ADMIN"));
       if (!isAdmin && !currentUserId.equals(ownerId)) {
-        return ResponseEntity.status(HttpStatus.FORBIDDEN).body("본인의 댓글만 수정할 수 있습니다.");
+        response.put("message", "본인의 댓글만 수정할 수 있습니다.");
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
       }
 
       // 댓글 업데이트 로직
@@ -129,8 +137,8 @@ public class CommentController {
       return ResponseEntity.ok(Map.of("success", true, "message", "댓글이 수정되었습니다.","comment",comment));
     } catch (Exception e) {
       log.error("Error updating comment: {}", e.getMessage());
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("댓글 수정 에러");
-    }
+      response.put("message", "댓글 수정 에러");
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);    }
   }
 
 }

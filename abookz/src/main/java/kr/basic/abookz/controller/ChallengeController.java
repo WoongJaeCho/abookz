@@ -87,7 +87,6 @@ public class ChallengeController {
         // 현재 사용자의 ID를 가져옵니다.
         Long id = principalDetails.getMember().getId();
 
-        // 현재 사용자의 정보를 조회합니다.
         MemberDTO findMember = memberService.findById(id);
 
         // 현재 사용자가 읽은 책들의 총 무게를 계산합니다. (단위: 킬로그램)
