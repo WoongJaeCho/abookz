@@ -559,7 +559,7 @@ function updateFeedback(message, isSuccess) {
 function createCommentElement(comment) {
   // 코멘트 컨테이너 생성
   const commentContainer = document.createElement('div');
-  // commentContainer.className = 'flex w-full justify-between border rounded-md p-3';
+  commentContainer.className = 'flex w-full justify-between border rounded-md p-3';
 
   // 사용자 이미지 및 정보 포함하는 섹션
   const userInfoSection = document.createElement('div');
