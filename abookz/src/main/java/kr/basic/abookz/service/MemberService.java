@@ -8,6 +8,10 @@ import kr.basic.abookz.entity.member.MemberEntity;
 import kr.basic.abookz.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -43,13 +47,15 @@ public class MemberService {
   public void save(MemberDTO memberDTO){
     // 1. dto -> entity 변환
     // 2. repository의 save메서드 호출
-
-    // 비밀번호 암호화처리
-    String initPassword = memberDTO.getPassword();
-    String enPassword = bCryptPasswordEncoder.encode(initPassword);
-    memberDTO.setPassword(enPassword);
-    MemberEntity memberEntity = MemberEntity.toMemberEntity(memberDTO);
-    memberRepository.save(memberEntity);
+    Optional<MemberEntity> byloginId = memberRepository.findByLoginId(memberDTO.getLoginId());
+    if(byloginId.isEmpty()){
+      // 비밀번호 암호화처리
+      String initPassword = memberDTO.getPassword();
+      String enPassword = bCryptPasswordEncoder.encode(initPassword);
+      memberDTO.setPassword(enPassword);
+      MemberEntity memberEntity = MemberEntity.toMemberEntity(memberDTO);
+      memberRepository.save(memberEntity);
+    }
   }
   public boolean validById(String id) {
     return memberRepository.existsByLoginId(id);
@@ -79,16 +85,15 @@ public class MemberService {
 //    }
 //  }
 
-  // 회원조회
-  public List<MemberDTO> findAll() {
-    List<MemberEntity> Entitylist = memberRepository.findAll();
-    List<MemberDTO> DTOList = new ArrayList<>();
-    for (MemberEntity e : Entitylist) {
-      DTOList.add(MemberDTO.AllMemberDTO(e));
-    }
-    return DTOList;
 
+  // 회원조회
+  public Page<MemberDTO> paging(Pageable pageable) {
+    int page = pageable.getPageNumber() - 1;
+    int pageLimit = 5; // 한 페이지에 보여줄 글 갯수
+    Page<MemberEntity> memberEntities = memberRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+    return memberEntities.map(member -> new MemberDTO(member.getId(), member.getLoginId(), member.getPassword(), member.getEmail(), member.getName(), member.getRole(), member.getRegDate(), member.getProfile(), member.getProvider(), member.getProviderId()));
   }
+
   public MemberDTO findById(Long id) {
     Optional<MemberEntity> entity = memberRepository.findById(id);
     if(entity.isPresent()){
@@ -98,8 +103,8 @@ public class MemberService {
       return null;
     }
   }
-
   // 회원수정
+
   public MemberDTO updateForm(Long getId) {
     Optional<MemberEntity> byId = memberRepository.findById(getId);
     if(byId.isPresent()){
@@ -111,42 +116,47 @@ public class MemberService {
   }
 
   public void update(MemberDTO memberDTO, MultipartFile file) {
-    try{
-      if(file != null && !file.isEmpty()){
-        String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
-        memberDTO.setProfile(fileName);
+    Optional<MemberEntity> byId = memberRepository.findById(memberDTO.getId());
+    if(byId.isPresent()){
+      try{
+        if(file != null && !file.isEmpty()){
+          String fileName = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
+          memberDTO.setProfile(fileName);
 
-        Path upload = Paths.get(uploadPath);
-        if(!Files.exists(upload)){
-          Files.createDirectories(upload);
+          Path upload = Paths.get(uploadPath);
+          if(!Files.exists(upload)){
+            Files.createDirectories(upload);
+          }
+          Path filePath = upload.resolve(fileName);
+          Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
         }
-        Path filePath = upload.resolve(fileName);
-        Files.copy(file.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
+        else {
+          memberDTO.setProfile(byId.get().getProfile());
+        }
+        // 비밀번호 수정 시 다시 암호화하여 변경
+        String encodePw = bCryptPasswordEncoder.encode(memberDTO.getPassword());
+        memberDTO.setPassword(encodePw);
+      }catch (Exception e){
+        e.printStackTrace();
       }
-      else {
-        memberDTO.setProfile(memberDTO.getProfile());
-      }
-      // 비밀번호 수정 시 다시 암호화하여 변경
-      String encodePw = bCryptPasswordEncoder.encode(memberDTO.getPassword());
-      memberDTO.setPassword(encodePw);
-    }catch (Exception e){
-      e.printStackTrace();
     }
-
-//    MemberEntity.toupdateMemberEntity(memberDTO);
     memberRepository.save(MemberEntity.toupdateMemberEntity(memberDTO));
   }
-
   public void updateRole(MemberDTO memberDTO) {
-    memberRepository.save(MemberEntity.toupdateMemberEntity(memberDTO));
+    Optional<MemberEntity> byId = memberRepository.findById(memberDTO.getId());
+    System.out.println("byId = " + byId);
+    if(byId.isPresent()){
+      MemberEntity entity = byId.get();
+      entity.setRole(memberDTO.getRole());
+      System.out.println("entity = " + entity);
+    }
   }
   // 회원삭제
-
   public void deleteById(Long id) {
     memberRepository.deleteById(id);
   }
-  // 아이디 찾기
 
+  // 아이디 찾기
   public String findByEmail(MemberDTO memberDTO) {
     Optional<MemberEntity> byEmail = memberRepository.findByEmail(memberDTO.getEmail());
     if(byEmail.isPresent()){
@@ -203,6 +213,7 @@ public class MemberService {
     }
     return str;
   }
+
   // 임시 비밀번호 이메일 발송
 
   public void mailSend(EmailDTO emailDTO){
@@ -216,5 +227,4 @@ public class MemberService {
     System.out.println("message"+message);
     javaMailSender.send(message);
   }
-
 }

@@ -9,6 +9,7 @@ import kr.basic.abookz.entity.member.MemberEntity;
 import kr.basic.abookz.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
@@ -22,6 +23,7 @@ public class CustomSuccessHandler  implements AuthenticationSuccessHandler {
     private final MemberRepository memberRepository;
     @Override
     public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
+
         OAuth2User oAuth2User = (OAuth2User)authentication.getPrincipal();
         PrincipalDetails principalDetails = (PrincipalDetails)oAuth2User;
         System.out.println("oAuth2User = " + oAuth2User);

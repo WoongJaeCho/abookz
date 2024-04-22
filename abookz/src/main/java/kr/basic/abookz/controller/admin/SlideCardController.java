@@ -7,6 +7,9 @@ import kr.basic.abookz.service.BookService;
 import kr.basic.abookz.service.admin.SlideCardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,7 +17,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.view.RedirectView;
 
+import java.net.URI;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -68,9 +73,8 @@ public class SlideCardController {
         slideCardService.deletebyId(id);
         return "redirect:/slide";
     }
-
     @PostMapping("/order")
-    public String slideOrder(Model model, @RequestBody Map<String, String[]> slideIds){
+    public ResponseEntity<Object> slideOrder(Model model, @RequestBody Map<String, String[]> slideIds){
         String[] slideIdsArray = slideIds.get("slideIds");
         List<SlideCardDTO> slideCardDTOs = slideCardService.findAll();
         System.out.println("slideIds = " + Arrays.toString(slideIdsArray));
@@ -86,7 +90,9 @@ public class SlideCardController {
         for(SlideCardDTO slideCardDTO : slideCardDTOs){
             slideCardService.update(slideCardDTO);
         }
-        return "redirect:/slide";
+        HttpHeaders headers = new HttpHeaders();
+        headers.setLocation(URI.create("/slide"));
+        return new ResponseEntity<>(headers, HttpStatus.FOUND);
     }
 
 }

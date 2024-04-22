@@ -3,7 +3,6 @@ package kr.basic.abookz.service;
 import jakarta.persistence.EntityManager;
 import kr.basic.abookz.dto.CommentDTO;
 import kr.basic.abookz.dto.MemberDTO;
-import kr.basic.abookz.dto.ReviewDTO;
 import kr.basic.abookz.entity.member.MemberEntity;
 import kr.basic.abookz.entity.review.CommentEntity;
 import kr.basic.abookz.entity.review.ReviewEntity;
@@ -17,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Service
@@ -30,8 +30,8 @@ public class CommentService {
   private final EntityManager em;
   private final CommentRepository commentRepository;
 
-  public List<CommentDTO> findAllByReview_IdAndMember_Id(Long reviewId, Long memberId){
-    List<CommentEntity> findLike = commentRepository.findAllByReview_IdAndMember_Id(reviewId,memberId);
+  public List<CommentDTO> findAllByReview_IdAndMember_Id(Long reviewId, Long memberId) {
+    List<CommentEntity> findLike = commentRepository.findAllByReview_IdAndMember_Id(reviewId, memberId);
 
     return findLike.stream()
         .map(this::mapEntityToDTO)
@@ -45,8 +45,9 @@ public class CommentService {
       MemberEntity memberEntity = mapper.map(commentDTO.getMember(), MemberEntity.class);
       commentEntity.setMember(memberEntity);
     }
-    if (commentDTO.getReview() != null) {
-      ReviewEntity reviewEntity = mapper.map(commentDTO.getReview(), ReviewEntity.class);
+    if (commentDTO.getReviewId() != null) {
+      ReviewEntity reviewEntity = reviewRepository.findById(commentDTO.getReviewId())
+          .orElseThrow(() -> new IllegalArgumentException("리뷰를 찾을 수 없습니다."));
       commentEntity.setReview(reviewEntity);
     }
     return commentEntity;
@@ -60,8 +61,7 @@ public class CommentService {
       commentDTO.setMember(memberDTO);
     }
     if (commentEntity.getReview() != null) {
-      ReviewDTO reviewDTO = mapper.map(commentEntity.getReview(), ReviewDTO.class);
-      commentDTO.setReview(reviewDTO);
+      commentDTO.setReviewId(commentEntity.getReview().getId());
     }
     return commentDTO;
   }
@@ -72,6 +72,22 @@ public class CommentService {
   }
 
   public CommentDTO save(CommentDTO comment) {
-     return mapEntityToDTO(commentRepository.save(mapDTOToEntity(comment)));
+    return mapEntityToDTO(commentRepository.save(mapDTOToEntity(comment)));
+  }
+
+  public List<CommentDTO> findByReview_Id(Long id) {
+    List<CommentEntity> findComment = commentRepository.findByReview_Id(id);
+    return findComment.stream().map(this::mapEntityToDTO).collect(Collectors.toList());
+  }
+
+  public void deleteComment(Long id) {
+    commentRepository.deleteById(id);
+  }
+
+  public Long getOwnerIdById(Long id) {
+    return commentRepository.findById(id)
+        .map(CommentEntity::getId)
+        .orElseThrow(() -> new NoSuchElementException("댓글을 찾을 수 없습니다."));
   }
 }
+
