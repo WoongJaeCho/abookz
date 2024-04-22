@@ -293,10 +293,12 @@ public class BookShelfService {
         .orElseThrow(() -> new RuntimeException("책꽂이나 ISBN에 해당하는 데이터가 없습니다."));
   }
 
-  public double averageWeightOfReadBooksExcludingCurrent(Long id) {
-    Double averageWeight = bookShelfRepository.findAverageWeightExcludingMember(id, READ);
-    averageWeight = averageWeight/(memberRepository.count()-1);
-
-    return averageWeight != null ? averageWeight : 0.0;
+  public double averageWeightOfReadBooksExcludingCurrent(Long currentUserId) {
+    return bookShelfRepository.findAll().stream()
+        .filter(shelf -> !shelf.getMember().getId().equals(currentUserId) && shelf.getTag().equals(READ))
+        .mapToDouble(shelf -> shelf.getBook().getWeight())
+        .average()
+        .orElse(0.0); // 만약 해당되는 데이터가 없을 경우 0.0 반환
   }
+
 }

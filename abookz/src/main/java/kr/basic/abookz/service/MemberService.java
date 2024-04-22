@@ -2,9 +2,12 @@ package kr.basic.abookz.service;
 
 
 
+import kr.basic.abookz.dto.BookShelfDTO;
 import kr.basic.abookz.dto.EmailDTO;
 import kr.basic.abookz.dto.MemberDTO;
+import kr.basic.abookz.entity.book.BookShelfEntity;
 import kr.basic.abookz.entity.member.MemberEntity;
+import kr.basic.abookz.repository.BookRepository;
 import kr.basic.abookz.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
@@ -14,6 +17,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
+import org.springframework.mail.javamail.JavaMailSenderImpl;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -26,13 +30,16 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.*;
 
+import static kr.basic.abookz.entity.book.TagEnum.READ;
+
 @Service
 @Transactional
 @RequiredArgsConstructor
 public class MemberService {
   // 생성자 주입
   private final MemberRepository memberRepository;
-  private final JavaMailSender javaMailSender;
+  private JavaMailSender javaMailSender = new JavaMailSenderImpl();
+  private BookShelfService bookShelfService;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
@@ -226,5 +233,31 @@ public class MemberService {
     message.setReplyTo(username);
     System.out.println("message"+message);
     javaMailSender.send(message);
+  }
+
+  public Map<String, Double> calculateAverageWeightOfReadBooksByMember() {
+    List<MemberEntity> members = memberRepository.findAll();
+    Map<String, Double> memberAverages = new HashMap<>();
+
+    for (MemberEntity member : members) {
+      List<BookShelfDTO> shelves = bookShelfService.findAllByMemberIdAndTag(member.getId(), READ);
+      double averageWeight = shelves.stream()
+          .mapToDouble(shelf -> shelf.getBookDTO().getWeight())
+          .average()
+          .orElse(0.0); // 읽은 책이 없는 경우 0.0 반환
+      memberAverages.put(member.getName(), averageWeight / 1000.0); // 책의 무게를 킬로그램으로 변환
+    }
+
+    return memberAverages;
+  }
+
+  public double calculateOverallAverageWeight() {
+    Map<String, Double> memberAverages = calculateAverageWeightOfReadBooksByMember();
+    double totalAverage = memberAverages.values().stream()
+        .mapToDouble(Double::doubleValue)
+        .average()
+        .orElse(0.0); // 회원이 없는 경우 0.0 반환
+
+    return totalAverage;
   }
 }

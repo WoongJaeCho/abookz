@@ -96,7 +96,7 @@ public class ChallengeController {
             .sum();
 
         // 모든 사용자의 읽은 책들의 평균 무게를 계산합니다. (현재 사용자 제외, 단위: 킬로그램)
-        double averageWeightOfReadBooks = bookShelfService.averageWeightOfReadBooksExcludingCurrent(id) / 1000.0;
+        Double averageWeightOfReadBooks = memberService.calculateOverallAverageWeight();
 
         // 결과 로그 출력
         System.out.println("currentMemberSum = " + currentMemberSum);
