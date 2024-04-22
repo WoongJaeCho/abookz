@@ -32,7 +32,7 @@ function displayComments(data) {
     list.innerHTML = '';  // Clear previous comments
     data.content.forEach(comment => {
         const commentCardElement = document.createElement('div');
-        commentCardElement.className='card w-140 bg-base-100 shadow-xl mx-2';
+        commentCardElement.className='card w-140 bg-base-100 shadow-xl mb-2 relative';
         const commentHeaderElement = document.createElement('div');
         commentHeaderElement.className='card-body item-center text-left';
         const commentTitle = document.createElement('span');
@@ -46,18 +46,19 @@ function displayComments(data) {
         commentCardElement.appendChild(commentHeaderElement);
         if (boardCommentId === comment.memberDTO.name || boardCommentRole === 'ROLE_ADMIN' || boardCommentRole === 'ROLE_MANAGER') {
             const flexDiv = document.createElement('div');
-            flexDiv.className = 'flex flex-col justify-end';
+            flexDiv.className = 'absolute top-0 right-0';
             const deleteButton = document.createElement('button');
             deleteButton.className='btn btn-square btn-outline';
             deleteButton.value=comment.id;
             const updateButton = document.createElement('button');
             updateButton.textContent='수정';
+            updateButton.className=' absolute top-0 right-20 btn btn-square btn-outline';
             updateButton.value=comment.id;
             const updateSubmit =document.createElement('button');
             updateButton.addEventListener('click', ()=>{
                 updateButton.style.display='none';
                 updateSubmit.textContent='수정하기';
-                updateSubmit.className='btn btn-square btn-outline';
+                updateSubmit.className='absolute top-0 right-20 w-24 btn btn-square btn-outline';
                 commentP.contentEditable = true;
                 commentP.className='bg-slate-200';
                 updateSubmit.addEventListener('click',()=>{
@@ -76,7 +77,7 @@ function displayComments(data) {
                 })
             });
             deleteButton.innerHTML=`  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        <path class="absolute top-0 right-0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>`;
             deleteButton.addEventListener('click', () => {
                 const commentId = deleteButton.value;

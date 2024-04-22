@@ -5,13 +5,12 @@ import kr.basic.abookz.config.auth.PrincipalDetails;
 import kr.basic.abookz.dto.BookDTO;
 import kr.basic.abookz.dto.BookShelfDTO;
 import kr.basic.abookz.dto.MemberDTO;
+import kr.basic.abookz.dto.MemoDTO;
 import kr.basic.abookz.entity.book.CategoryEnum;
 import kr.basic.abookz.entity.book.TagEnum;
-import kr.basic.abookz.service.AladinService;
-import kr.basic.abookz.service.BookService;
-import kr.basic.abookz.service.BookShelfService;
-import kr.basic.abookz.service.MemberService;
+import kr.basic.abookz.service.*;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.domain.Slice;
@@ -43,7 +42,7 @@ public class BookShelfApiController {
     private final MemberService memberService;
     private final BookService bookService;
     private final AladinService aladinService;
-
+    private  final MemoService memoService;
     @RequestMapping(value = "/want", method = RequestMethod.POST)
     public String wantToRead(@RequestParam("book") String book, Authentication authentication,
                              @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
@@ -139,6 +138,14 @@ public class BookShelfApiController {
             Slice<BookShelfDTO> bookShelfDTO = bookShelfService.SliceBookShelfDTOIdAndTag(memberId, tagEnum, page, size);
             return ResponseEntity.ok(bookShelfDTO);
     }
+    @RequestMapping(value = "/memo/bookShelf/update", method = RequestMethod.POST)
+    public String updateMemo(@RequestBody MemoDTO memoDTO){
+
+        String data= memoService.getOneMemoUpdate(memoDTO);
+
+        return data;
+    }
+
 }
 
 
