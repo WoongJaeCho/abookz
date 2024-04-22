@@ -98,7 +98,15 @@
         <a class="h_mem" sec:authorize="isAuthenticated()" href="/member/update">
             <div class="avatar" sec:authorize="isAuthenticated()">
                 <div class="w-12 h-12 rounded-full ring ring-primary ring-offset-base-100 ring-offset-2">
-                    <img th:if="${session.profileImage}" th:src="${session.profileImage}" alt="Profile Image" />
+                    <!-- 프로필 이미지가 있을 경우 해당 이미지를 표시 -->
+                    <img th:if="${session.profileImage}"
+                         th:src="${session.profileImage}"
+                         alt="Profile Image" />
+
+                    <!-- 프로필 이미지가 없을 경우 디폴트 이미지를 표시 -->
+                    <img th:unless="${session.profileImage}"
+                         th:src="@{/images/default_profile.png}"
+                         alt="Default Profile Image" />
                 </div>
 
             </div>
