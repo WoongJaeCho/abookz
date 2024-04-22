@@ -25,8 +25,11 @@ public class MemberDTO {
   private RoleEnum role; // 역할
   private String profile; // 프로필이미지
   private LocalDate regDate; // 가입일
+  //OAuth 를 위해 추가하는 필드
+  private String provider;
+  private String providerId;
 
-  public MemberDTO(Long id, String loginId, String password, String email, String name, RoleEnum role, LocalDate regDate, String profile) {
+  public MemberDTO(Long id, String loginId, String password, String email, String name, RoleEnum role, LocalDate regDate, String profile, String provider, String providerId) {
     this.id = id;
     this.loginId = loginId;
     this.password = password;
@@ -35,22 +38,8 @@ public class MemberDTO {
     this.role = role;
     this.regDate = regDate;
     this.profile = profile;
-  }
-
-
-  public static MemberDTO loginMemberDTO(MemberEntity memberEntity){
-    MemberDTO memberDTO = new MemberDTO();
-    memberDTO.setId(memberEntity.getId());
-    memberDTO.setLoginId(memberEntity.getLoginId());
-    memberDTO.setPassword(memberEntity.getPassword());
-    return memberDTO;
-  }
-
-  public static MemberDTO loginMember(String id, String pw){
-    MemberDTO memberDTO = new MemberDTO();
-    memberDTO.setLoginId(id);
-    memberDTO.setPassword(pw);
-    return memberDTO;
+    this.provider = provider;
+    this.providerId = providerId;
   }
 
   public static String findloginIdMember(MemberEntity memberEntity){
@@ -69,6 +58,8 @@ public class MemberDTO {
     memberDTO.setRole(memberEntity.getRole());
     memberDTO.setProfile(memberEntity.getProfile());
     memberDTO.setRegDate(memberEntity.getRegDate());
+    memberDTO.setProvider(memberEntity.getProvider());
+    memberDTO.setProviderId(memberEntity.getProviderId());
     return memberDTO;
   }
 

@@ -26,15 +26,15 @@
         <td colspan="9"><p class="text-center align-middle">조회된 회원이 없습니다.</p></td>
       </tr>
       <tr class="border-b dark:border-neutral-600 hover:bg-neutral-100 dark:hover:bg-neutral-600" th:each="member: ${memberList}">
-        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="number" th:text="${member.id}"></td>
-        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="loginId"><a th:href="@{|/member/${member.id}|}" th:text="${member.loginId}"></a></td>
-        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" style="display: none;" id="password" th:text="${member.password}"></td>
-        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="email" th:text="${member.email}"></td>
-        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="name" th:text="${member.name}"></td>
+        <td scope="row" class="number px-6 py-4 border-x dark:border-neutral-600" th:attr="id-value=${member.id}" th:text="${member.id}"></td>
+        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="logId"><a th:href="@{|/member/${member.id}|}" th:text="${member.loginId}"></a></td>
+        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="password"  style="display: none;" th:text="${member.password}"></td>
+        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="email"  th:text="${member.email}"></td>
+        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" id="name"  th:text="${member.name}"></td>
         <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600">
-          <select class="select select-bordered select-sm w-full max-w-xs" id="changeRole" name="role" onchange="changeRole()">
-            <option hidden th:text="${member.role}" selected></option>
-            <option value="ROLE_ADMIN">ADMIN</option>
+          <select class="changeRole select select-bordered select-sm w-full max-w-xs" name="role" onchange="changeRole()">
+            <option hidden  th:text="${member.role.getRole()}" selected></option>
+            <option value="ROLE_ADMIN" >ADMIN</option>
             <option value="ROLE_MANAGER">MANAGER</option>
             <option value="ROLE_USER">USER</option>
           </select>

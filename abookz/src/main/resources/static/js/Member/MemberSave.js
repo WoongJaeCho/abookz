@@ -1,4 +1,5 @@
 let check = 0;
+const joinSubmit = document.getElementById('join-submit');
 function validcheck(form){
     if(!form.loginId.value.trim()){
         alert("아이디를 입력해주세요");
@@ -37,6 +38,7 @@ function validcheck(form){
 
     if(check === 1) {
         form.submit();
+        joinSubmit.disabled = true;
     }
     else{
         return false;

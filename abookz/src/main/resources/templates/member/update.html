@@ -22,10 +22,18 @@
         </div>
 
         <div>
-          <label for="pw" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
+          <th:block th:if="${updateMember.provider == null}">
+          <label for="pw1" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
           <div class="mt-2">
-            <input id="pw" name="password" type="password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:indent-2">
+            <input id="pw1" name="password" type="password" autocomplete="current-password" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:indent-2">
           </div>
+          </th:block>
+          <th:block th:unless="${updateMember.provider == null}">
+            <label for="pw2" class="block text-sm font-medium leading-6 text-gray-900">Password</label>
+            <div class="mt-2">
+              <input id="pw2" name="password" type="password" autocomplete="current-password" disabled class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6 sm:indent-2">
+            </div>
+          </th:block>
         </div>
 
         <div>

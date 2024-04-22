@@ -85,16 +85,15 @@ public class MemberService {
 //    }
 //  }
 
-  // 회원조회
-  public List<MemberDTO> findAll() {
-    List<MemberEntity> Entitylist = memberRepository.findAll();
-    List<MemberDTO> DTOList = new ArrayList<>();
-    for (MemberEntity e : Entitylist) {
-      DTOList.add(MemberDTO.AllMemberDTO(e));
-    }
-    return DTOList;
 
+  // 회원조회
+  public Page<MemberDTO> paging(Pageable pageable) {
+    int page = pageable.getPageNumber() - 1;
+    int pageLimit = 5; // 한 페이지에 보여줄 글 갯수
+    Page<MemberEntity> memberEntities = memberRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
+    return memberEntities.map(member -> new MemberDTO(member.getId(), member.getLoginId(), member.getPassword(), member.getEmail(), member.getName(), member.getRole(), member.getRegDate(), member.getProfile(), member.getProvider(), member.getProviderId()));
   }
+
   public MemberDTO findById(Long id) {
     Optional<MemberEntity> entity = memberRepository.findById(id);
     if(entity.isPresent()){
@@ -104,8 +103,8 @@ public class MemberService {
       return null;
     }
   }
-
   // 회원수정
+
   public MemberDTO updateForm(Long getId) {
     Optional<MemberEntity> byId = memberRepository.findById(getId);
     if(byId.isPresent()){
@@ -143,20 +142,21 @@ public class MemberService {
     }
     memberRepository.save(MemberEntity.toupdateMemberEntity(memberDTO));
   }
-
-  public void updateRole(MemberDTO memberDTO, Long Id) {
-    Optional<MemberEntity> byId = memberRepository.findById(Id);
+  public void updateRole(MemberDTO memberDTO) {
+    Optional<MemberEntity> byId = memberRepository.findById(memberDTO.getId());
+    System.out.println("byId = " + byId);
     if(byId.isPresent()){
       MemberEntity entity = byId.get();
-      memberRepository.save(entity.toupdateMemberEntity(memberDTO));
+      entity.setRole(memberDTO.getRole());
+      System.out.println("entity = " + entity);
     }
   }
   // 회원삭제
   public void deleteById(Long id) {
     memberRepository.deleteById(id);
   }
-  // 아이디 찾기
 
+  // 아이디 찾기
   public String findByEmail(MemberDTO memberDTO) {
     Optional<MemberEntity> byEmail = memberRepository.findByEmail(memberDTO.getEmail());
     if(byEmail.isPresent()){
@@ -213,6 +213,7 @@ public class MemberService {
     }
     return str;
   }
+
   // 임시 비밀번호 이메일 발송
 
   public void mailSend(EmailDTO emailDTO){
@@ -225,12 +226,5 @@ public class MemberService {
     message.setReplyTo(username);
     System.out.println("message"+message);
     javaMailSender.send(message);
-  }
-
-  public Page<MemberDTO> paging(Pageable pageable) {
-    int page = pageable.getPageNumber() - 1;
-    int pageLimit = 5; // 한 페이지에 보여줄 글 갯수
-    Page<MemberEntity> memberEntities = memberRepository.findAll(PageRequest.of(page, pageLimit, Sort.by(Sort.Direction.DESC, "id")));
-    return memberEntities.map(member -> new MemberDTO(member.getId(), member.getLoginId(), member.getPassword(), member.getEmail(), member.getName(), member.getRole(), member.getRegDate(), member.getProfile()));
   }
 }

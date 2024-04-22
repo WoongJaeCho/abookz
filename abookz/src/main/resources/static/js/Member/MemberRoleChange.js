@@ -1,42 +1,45 @@
-function changeRole(){
-    let selectedRole = document.getElementById("changeRole");
-    let changedRole = selectedRole.options[selectedRole.selectedIndex].value.trim();
-    console.log(changedRole);
-    let id = document.getElementById("number").innerText;
-    let loginId = document.getElementById("loginId").innerText;
-    let password= document.getElementById("password").innerText;
-    let email = document.getElementById("email").innerText;
-    let name = document.getElementById("name").innerText;
-    let profile = document.getElementById("profile").innerText;
-    let regDate = document.getElementById("regDate").innerText;
+var selectedRole = document.getElementsByClassName('changeRole');
+var getId = document.getElementsByClassName('number');
 
-    let list = {
-        id: id,
-        loginId: loginId,
-        password: password,
-        email: email,
-        name: name,
-        role: changedRole,
-        profile: profile,
-        regDate: regDate
+function changeRole() {
+    console.log(selectedRole)
+    for (var i = 0; i < selectedRole.length; i++) {
+        selectedRole[i].addEventListener('change', createEventListener(i));
     }
-    console.log(list);
+}
 
+function createEventListener(index) {
+    return function () {
+        let selectedValue = this.value;
+        let id = getId[index].getAttribute('id-value');
+        console.log(id, selectedValue);
+        getOneChange(id, selectedValue);
+    };
+}
+
+changeRole();
+
+function getOneChange(id, role){
+    const data= {
+        id : id,
+        role : role
+    }
     fetch("/member/changeRole", {
         method: "POST",
         headers: {
             "Content-Type": "application/json",
         },
-        body: JSON.stringify(list)
+        body: JSON.stringify(data)
     })
         .then(response => response.text())
         .then(data=> {
             if(data === "confirm"){
-                location.href = "/member/list"
+                alert("성공!")
+                window.location.reload(true);
             }
             else{
-                location.href = "/member/list"
+                alert("오류발생!")
+                location.assign("/member/list");
             }
         })
 }
-

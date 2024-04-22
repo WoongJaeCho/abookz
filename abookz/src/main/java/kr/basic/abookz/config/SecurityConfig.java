@@ -39,7 +39,7 @@ public class SecurityConfig {
                 .requestMatchers("/member/save", "/member/validId", "/member/loginIdfind", "/member/loginPwfind", "/member/loginPWfind").permitAll()
                 .requestMatchers("/member/**").authenticated()
                 .requestMatchers("/myshelf").authenticated()
-                .requestMatchers("/challenge").authenticated()
+                .requestMatchers("/challenge/**").authenticated()
                 .requestMatchers("/manager/**").hasAnyRole("MANAGER","ADMIN")
                 .requestMatchers("/admin/**").hasAnyRole("ADMIN")
                 .requestMatchers("/slide").hasAnyRole("ADMIN")

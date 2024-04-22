@@ -26,13 +26,13 @@
         <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" th:text="${member.loginId}"></td>
         <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" th:text="${member.email}"></td>
         <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" th:text="${member.name}"></td>
-        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" th:text="${member.role}"></td>
+        <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" th:text="${member.role.getRole()}"></td>
         <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" th:text="${member.profile}"></td>
         <td scope="row" class="px-6 py-4 border-x dark:border-neutral-600" th:text="${member.regDate}"></td>
       </tr>
       </tbody>
     </table>
-    <div class="flex justify-start items-center flex-row-reverse overflow-x-auto">
+    <div class="text-center flex justify-end items-center overflow-x-auto space-x-3">
       <button class="btn btn-outline btn-info" th:onclick="|location.href='@{/}'|">메인</button>
       <button class="btn btn-outline btn-success" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? true : false}" th:onclick="|location.href='@{/member/list}'|">목록</button>
       <button class="btn btn-outline btn-warning" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? true : false}" th:onclick="|location.href='@{/member/update}'|">수정</button>

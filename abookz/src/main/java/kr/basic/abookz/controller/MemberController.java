@@ -128,8 +128,7 @@ public class MemberController {
   @ResponseBody
   public String changeRole(@RequestBody MemberDTO memberDTO){
     System.out.println("memberDto = " + memberDTO);
-    Long getId = memberDTO.getId();
-    memberService.updateRole(memberDTO, getId);
+    memberService.updateRole(memberDTO);
     return "confirm";
   }
 
@@ -139,8 +138,11 @@ public class MemberController {
     if(!logincheck(principalDetails)){
       return "member/loginForm";
     }
+    Long loggedInUserId = principalDetails.getMember().getId();
+    if(id.equals(loggedInUserId)){
+      session.invalidate();
+    }
     memberService.deleteById(id);
-    session.invalidate();
     return "redirect:/member/list";
   }
 
