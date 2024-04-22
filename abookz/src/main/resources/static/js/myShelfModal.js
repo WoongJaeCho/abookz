@@ -159,7 +159,7 @@ function openModal(modal, popup) {
                 } else if (progress < 50) {
                     return 'orange';
                 } else if (progress < 75) {
-                    return 'skyblue';
+                    return 'green';
                 } else {
                     return 'pink';
                 }
