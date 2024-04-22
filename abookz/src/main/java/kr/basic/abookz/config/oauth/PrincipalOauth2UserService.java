@@ -2,6 +2,7 @@
 package kr.basic.abookz.config.oauth;
 
 import com.nimbusds.openid.connect.sdk.claims.UserInfo;
+import jakarta.servlet.http.HttpSession;
 import kr.basic.abookz.config.auth.PrincipalDetails;
 import kr.basic.abookz.config.oauth.provider.GoogleUserInfo;
 import kr.basic.abookz.config.oauth.provider.KakaoUserInfo;
@@ -17,6 +18,8 @@ import org.springframework.security.oauth2.client.userinfo.OAuth2UserRequest;
 import org.springframework.security.oauth2.core.OAuth2AuthenticationException;
 import org.springframework.security.oauth2.core.user.OAuth2User;
 import org.springframework.stereotype.Service;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import java.util.Map;
 import java.util.Optional;
@@ -35,7 +38,7 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
         OAuth2User oAuth2User = super.loadUser(userRequest); // google 회원 프로필 조회
         System.out.println("oAuth2User = " + oAuth2User);
         System.out.println("get Attribute : " + oAuth2User.getAttributes());
-        // loadUser --> Authentication 객체 안에 들어간다
+
         return processOAuthUser(userRequest , oAuth2User);
     }
     private OAuth2User processOAuthUser(OAuth2UserRequest userRequest , OAuth2User oAuth2User){
@@ -67,11 +70,16 @@ public class PrincipalOauth2UserService extends DefaultOAuth2UserService {
                 .provider(oAuth2UserInfo.getProvider())
                 .providerId(oAuth2UserInfo.getProviderId())
                 .name(oAuth2UserInfo.getName())
+                .profile(oAuth2UserInfo.getProfile())
                 .build();
             memberRepository.save(member);
         }else{
             member = userOptional.get();
         }
+
+
+        HttpSession session = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest().getSession();
+        session.setAttribute("profileImage", member.getProfile());
 
         return new PrincipalDetails(member, oAuth2User.getAttributes());
     }

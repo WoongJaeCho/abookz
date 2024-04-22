@@ -40,6 +40,7 @@
 <div th:replace="~{fragments/header :: header}" /><br>
 
 <input type="hidden" id="memberSum" th:value="${memberSum}" />
+<input type="hidden" id="memberName" th:value="${member.name}" />
 <input type="hidden" id="sumAverage" th:value="${sumAverage}" />
 
 <canvas id="canvas" class="w-full max-w-[1000px] h-[700px] mx-auto"></canvas>

@@ -6,6 +6,8 @@ import kr.basic.abookz.entity.member.MemberEntity;
 import kr.basic.abookz.entity.book.BookEntity;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
@@ -33,6 +35,7 @@ public class ReviewEntity {
   private List<LikeEntity> likeList = new ArrayList<>();
 
   @ManyToOne(fetch = FetchType.LAZY)
+  @OnDelete(action = OnDeleteAction.CASCADE)
   @JoinColumn(name = "BOOKSHELF_ID",foreignKey = @ForeignKey(name = "REVIEW_IBFK_1"))
   private BookShelfEntity bookShelf;
 }

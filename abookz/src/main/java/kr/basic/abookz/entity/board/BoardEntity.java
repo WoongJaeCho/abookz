@@ -6,6 +6,8 @@ import kr.basic.abookz.entity.member.MemberEntity;
 import kr.basic.abookz.entity.review.MemoEntity;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDate;
@@ -38,6 +40,7 @@ public class BoardEntity extends BaseEntity {
   private LocalDate updateDate; // 수정날짜
 
   @ManyToOne(fetch = FetchType.LAZY)
+  @OnDelete(action = OnDeleteAction.CASCADE)
   @JoinColumn(name = "MEM_ID", foreignKey = @ForeignKey(name = "BOARD_IBFK_1"))
   private MemberEntity member; // 리뷰 작성 회원
 

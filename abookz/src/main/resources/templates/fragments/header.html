@@ -81,6 +81,7 @@
 
             </form>
         </div>
+
         <a class="login" sec:authorize="!isAuthenticated()" href="/member/loginForm">
             <p>로그인</p>
         </a>
@@ -89,6 +90,7 @@
         </a>
         <div class="avatar placeholder" sec:authorize="isAuthenticated()">
             <div class="bg-neutral text-neutral-content rounded-full w-24">
+                <img th:if="${session.profileImage}" th:src="${session.profileImage}" alt="Profile Image" />
                 <span class="text-3xl">D</span>
             </div>
         </div>
@@ -111,9 +113,19 @@
             </ul>
         </div>
 
+        <div id="message-container" class="absolute x-[100px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 mt-[100px] z-50">
+            <!-- Message Container의 내용 -->
+        </div>
+
     </header>
-    <div id="message-container" class="mt-5 mx-auto">
-    </div>
+
+    <script>
+        window.addEventListener('scroll', function() {
+            var messageContainer = document.getElementById('message-container');
+            var yOffset = window.pageYOffset ; // 현재 스크롤 위치에서 200px 아래에 요소를 위치시킵니다.
+            messageContainer.style.top = yOffset + 'px';
+        });
+    </script>
     <div id="searchResults"></div>
 </body>
 

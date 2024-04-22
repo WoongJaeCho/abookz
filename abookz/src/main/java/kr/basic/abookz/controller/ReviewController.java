@@ -36,11 +36,12 @@ public class ReviewController {
   private final BookService bookService;
   private final BookShelfService shelfService;
   private final LikeService likeService;
+  private final CommentService commentService;
 
   @GetMapping("{bookShelfId}/{bookId}")
   public String writeReview(Model model, @PathVariable("bookShelfId") Long bookShelfId,
-                             @PathVariable("bookId") Long bookId,
-                             @AuthenticationPrincipal PrincipalDetails principalDetails) {
+                            @PathVariable("bookId") Long bookId,
+                            @AuthenticationPrincipal PrincipalDetails principalDetails) {
     if (principalDetails == null) {
       return "member/loginForm";
     }
@@ -56,35 +57,80 @@ public class ReviewController {
     return "review/review";
   }
 
-  @PostMapping("{bookShelfId}/{bookId}")
-  public ResponseEntity<?> saveReview(ReviewDTO reviewDTO, @PathVariable("bookShelfId") Long bookShelfId,
-                                      @PathVariable("bookId") Long bookId,
-                                      @AuthenticationPrincipal PrincipalDetails principalDetails) {
+  @PostMapping("/find/{bookShelfId}/{bookId}")
+  public ResponseEntity<Map<String, Object>> findReview(ReviewDTO reviewDTO,
+                                                        @PathVariable("bookShelfId") Long bookShelfId,
+                                                        @PathVariable("bookId") Long bookId,
+                                                        @AuthenticationPrincipal PrincipalDetails principalDetails) {
     if (principalDetails == null) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Map.of("message", "로그인이 필요합니다."));
+      Map<String, Object> response = new HashMap<>();
+      response.put("message", "로그인이 필요합니다.");
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);  // 로그인 필요 상태 코드 변경
     }
-    try {
-      if (reviewService.findByBookShelfId(bookShelfId) == null) {
+    if (bookId == 0) {
+      Map<String, Object> response = new HashMap<>();
+      response.put("message", "먼저 책을 저장해주세요");
+      return ResponseEntity.badRequest().body(response);  // 적절한 상태 코드로 변경
+    }
 
-        reviewService.save(reviewDTO);
-      } else {
-        reviewService.update(reviewDTO);
-      }
-      Map<String, Object> response = Map.of(
-          "message", "리뷰가 성공적으로 저장되었습니다.",
-          "bookShelfId", bookShelfId,
-          "bookId", bookId
-      );
+    reviewDTO.setBookShelfDTO(shelfService.findByBookShelfId(bookShelfId));
+    try {
+      ReviewDTO existingReview = reviewService.findByBookShelfId(bookShelfId);
+      Map<String, Object> response = new HashMap<>();
+      response.put("message", "리뷰를 성공적으로 조회하였습니다.");
+      response.put("bookShelfId", bookShelfId);
+      response.put("bookId", bookId);
 
       return ResponseEntity.ok(response);
     } catch (Exception e) {
-      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(Map.of("message", "리뷰 저장 중 오류가 발생했습니다."));
+      Map<String, Object> response = new HashMap<>();
+      response.put("message", "리뷰를 찾는 중 에러가 발생했습니다.");
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);  // 에러 처리 상태 코드 변경
     }
   }
 
 
+  @PostMapping("/{bookShelfId}/{bookId}")
+  public ResponseEntity<?> saveReview(
+      @RequestBody ReviewDTO reviewDTO,
+      @PathVariable("bookShelfId") Long bookShelfId,
+      @PathVariable("bookId") Long bookId,
+      @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    if (principalDetails == null) {
+      Map<String, Object> response = new HashMap<>();
+      response.put("message", "로그인이 필요합니다.");
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);  // 로그인 필요 상태 코드 변경
+    }
+    if (bookId == 0) {
+      Map<String, Object> response = new HashMap<>();
+      response.put("message", "먼저 책을 저장해주세요");
+      return ResponseEntity.badRequest().body(response);  // 적절한 상태 코드로 변경
+    }
+
+    reviewDTO.setBookShelfDTO(shelfService.findByBookShelfId(bookShelfId));
+    System.out.println("reviewDTO = " + reviewDTO);
+    try {
+      ReviewDTO existingReview = reviewService.findByBookShelfId(bookShelfId);
+      System.out.println("existingReview = " + existingReview);
+      if (existingReview == null) {
+        reviewService.save(reviewDTO);
+      } else {
+        reviewService.update(reviewDTO,existingReview);
+      }
+      Map<String, Object> response = new HashMap<>();
+      response.put("message", "리뷰가 성공적으로 저장되었습니다.");
+      response.put("bookShelfId", bookShelfId);
+      response.put("bookId", bookId);
+
+      return ResponseEntity.ok(response);
+    } catch (Exception e) {
+      Map<String, Object> response = new HashMap<>();
+      response.put("message", "리뷰 저장 중 에러가 발생했습니다.");
+      return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(response);  // 에러 처리 상태 코드 변경
+    }
+  }
+
   @PostMapping("/rating")
-  @ResponseBody
   public ResponseEntity<?> submitRating(@RequestBody RatingDTO ratingDTO,
                                         @AuthenticationPrincipal PrincipalDetails principalDetails) {
     if (principalDetails == null) {
@@ -135,6 +181,7 @@ public class ReviewController {
     System.out.println("page = " + page);
     System.out.println("sort = " + sort);
 
+    PageRequest finalPageRequest = pageRequest;
     Page<ReviewDTO> dtoPage = page.map(r -> new ReviewDTO(
         r.getId(),
         r.getContent(),
@@ -142,6 +189,7 @@ public class ReviewController {
         r.getIsSpoilerActive(),
         principalDetails != null ? (likeService.checkIfUserLikedReview(r.getId(), principalDetails.getMember().getId()) ? true : false) : false,
         likeService.findAllByReview_Id(r.getId()).size(),
+        commentService.findByReview_Id(r.getId()).size(),
         shelfService.mapEntityToDTO(r.getBookShelf())
     ));
 
@@ -177,7 +225,9 @@ public class ReviewController {
                                                        @RequestParam(defaultValue = "5") int pageSize,
                                                        @RequestParam(defaultValue = "최신순") String sort) {
     if (principalDetails == null) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+      Map<String, Object> response = new HashMap<>();
+      response.put("message", "로그인이 필요합니다.");
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);  // 로그인 필요 상태 코드 변경
     }
 
     PageRequest pageRequest;
@@ -205,6 +255,7 @@ public class ReviewController {
         r.getIsSpoilerActive(),
         principalDetails != null ? likeService.checkIfUserLikedReview(r.getId(), principalDetails.getMember().getId()) : false,
         likeService.findAllByReview_Id(r.getId()).size(),
+        commentService.findByReview_Id(r.getId()).size(),
         shelfService.mapEntityToDTO(r.getBookShelf())
     ));
 
@@ -216,7 +267,6 @@ public class ReviewController {
 
     return ResponseEntity.ok(response);
   }
-
 
 
   @PostMapping("/delete")

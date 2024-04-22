@@ -1,17 +1,22 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
-  <title>My Reviews</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link href="https://cdn.jsdelivr.net/npm/daisyui@4.9.0/dist/full.min.css" rel="stylesheet" type="text/css"/>
+<head th:replace="~{fragments/head :: head}">
+  <meta charset="UTF-8">
+  <title>Title</title>
 </head>
 <body>
+<div th:replace="~{fragments/header :: header}" /><br>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<script defer src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script type="text/javascript" src="/lib/jquery-3.7.1.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
 
 <div class="container mx-auto px-4 py-12">
     <div role="tablist" class="tabs tabs-lifted">
       <!-- Sort Tabs -->
       <input type="radio" name="sort" value="최신순" role="tab" class="tab" aria-label="최신순" onchange="loadReviews('최신순')" checked/>
-      <div role="tabpanel" id="tab-최신순" class="tab-content bg-base-100 border-base-300 rounded-box p-6">
+      <div role="tabpanel" id="tab-최신순" class="tab-content  bg-base-100 border-base-300 rounded-box p-6">
 
         <div class="overflow-x-auto mt-4">
           <table class="table w-full text-gray-700">
