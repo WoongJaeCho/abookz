@@ -7,3 +7,10 @@
     text-decoration: underline;
     color: #2e9cdf;
 }
+
+#boardTable{
+    table-layout: fixed;
+    width: 100%;
+    height: auto;
+}
+

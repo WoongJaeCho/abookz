@@ -136,7 +136,6 @@ public class MemberController {
 
   // 삭제
   @GetMapping("/delete/{id}")
-
   public String deleteById(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long id, HttpSession session) {
     if(!logincheck(principalDetails)){
       return "member/loginForm";
