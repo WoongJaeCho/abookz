@@ -226,6 +226,7 @@ public class BookShelfService {
     MemberDTO memberDTO = mapper.map(entity.getMember(), MemberDTO.class);
     shelfDTO.setBookDTO(bookDTO);
     shelfDTO.setMemberDTO(memberDTO);
+    //ㅁㄴㅇㄴㅁㅇ
     return shelfDTO;
   }
 
