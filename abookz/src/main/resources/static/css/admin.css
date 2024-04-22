@@ -16,6 +16,7 @@
     justify-content: center;
     /*border: 1px solid black;*/
     margin: 10px auto;
+    border: 1px solid white;
 }
 #slideCard table th{
     background-color: #a17883;
