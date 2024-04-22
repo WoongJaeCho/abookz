@@ -20,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
-
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -42,15 +41,15 @@ public class BookShelfApiController {
     private final MemberService memberService;
     private final BookService bookService;
     private final AladinService aladinService;
-    private  final MemoService memoService;
+    private final MemoService memoService;
+
     @RequestMapping(value = "/want", method = RequestMethod.POST)
-    public String wantToRead(@RequestParam("book") String book, Authentication authentication,
-                             @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
-        String data = null;
-        if( principalDetails ==null){
-            data ="로그인 후 서재등록이 가능합니다";
-            return  data;
-        }
+
+    public ResponseEntity<Map<String, Object>> wantToRead(@RequestParam("book") String book,
+            Authentication authentication,
+            @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
+        System.out.println("book = " + book);
+
         Long id = principalDetails.getMember().getId();
         MemberDTO memberDTO = memberService.findById(id);
         BookDTO aladinGetBook = aladinService.getOneBookDTO(book);
@@ -59,25 +58,34 @@ public class BookShelfApiController {
                 .bookDTO(aladinGetBook)
                 .build();
         String getValue = bookShelfService.insertBookAndBookShelf(aladinGetBook, bookShelfDTO);
+        BookDTO findBook = bookService.findByDTOISBN13(Long.valueOf(aladinGetBook.getISBN13()));
+        Long bookId = findBook.getId();
+        BookShelfDTO findShelf = bookShelfService.findByMember_IdAndBook_ISBN13(id, aladinGetBook.getISBN13());
+        Long shelfId = findShelf.getId();
         System.out.println(getValue);
-        if (getValue.equals("저장")) {
-            data = aladinGetBook.getTitle() + "내 서재에 등록이 완료되었습니다";
-            return data;
-        }
-        data = "이미 등록되어있습니다";
-        return data;
 
+        Map<String, Object> response = new HashMap<>();
+        if (getValue.equals("저장")) {
+            response.put("message", aladinGetBook.getTitle() + " 내 서재에 등록이 완료되었습니다");
+            response.put("bookId", bookId);
+            response.put("shelfId", shelfId);
+            return ResponseEntity.ok(response);
+        }
+        response.put("message", "이미 등록되어있습니다");
+        response.put("bookId", bookId);
+        response.put("shelfId", shelfId);
+        return ResponseEntity.ok(response);
     }
 
     @PostMapping("/readingUpdate")
+
     public ResponseEntity<Object> readingUpdate(@RequestBody BookShelfDTO jsonData) {
         System.out.println("jsonData.toString() = " + jsonData.toString());
         if (jsonData.getTag() != null && jsonData.getTag().toString() != null) {
-            BookShelfDTO bookShelfDTO =
-                    BookShelfDTO.builder()
-                            .id(jsonData.getId())
-                            .tag(jsonData.getTag())
-                            .build();
+            BookShelfDTO bookShelfDTO = BookShelfDTO.builder()
+                    .id(jsonData.getId())
+                    .tag(jsonData.getTag())
+                    .build();
             bookShelfService.bookShelfUpdateTag(bookShelfDTO);
         } else {
             BookShelfDTO bookShelfDTO = BookShelfDTO
@@ -94,9 +102,10 @@ public class BookShelfApiController {
         return new ResponseEntity<>(headers, HttpStatus.FOUND);
     }
 
-    //나의 서재 삭제하기
+    // 나의 서재 삭제하기
     @PostMapping("/deleteMyShelf")
-    public ResponseEntity<Object> deleteMyShelf(@RequestBody BookShelfDTO jsonData, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public ResponseEntity<Object> deleteMyShelf(@RequestBody BookShelfDTO jsonData,
+            @AuthenticationPrincipal PrincipalDetails principalDetails) {
         Long memberId = principalDetails.getMember().getId();
         Long id = jsonData.getId();
         if (id == null) {
@@ -122,30 +131,28 @@ public class BookShelfApiController {
     }
 
     @GetMapping("/myshelfSlice")
-    public ResponseEntity<Slice<BookShelfDTO>> getMyShelf(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size
-            , @RequestParam String tag
-            , @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public ResponseEntity<Slice<BookShelfDTO>> getMyShelf(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size, @RequestParam String tag,
+            @AuthenticationPrincipal PrincipalDetails principalDetails) {
         Long memberId = principalDetails.getMember().getId();
         if (tag.equals("null")) {
             Slice<BookShelfDTO> bookShelfDTO = bookShelfService.SliceBookShelfDTO(memberId, page, size);
             return ResponseEntity.ok(bookShelfDTO);
-        }
-        else if(tag.equals("ALL")){
-            Slice<BookShelfDTO> bookShelfDTO = bookShelfService.SliceBookShelfDTO(memberId,page,size);
+        } else if (tag.equals("ALL")) {
+            Slice<BookShelfDTO> bookShelfDTO = bookShelfService.SliceBookShelfDTO(memberId, page, size);
             return ResponseEntity.ok(bookShelfDTO);
         }
-            TagEnum tagEnum = TagEnum.valueOf(tag.toUpperCase());
-            Slice<BookShelfDTO> bookShelfDTO = bookShelfService.SliceBookShelfDTOIdAndTag(memberId, tagEnum, page, size);
-            return ResponseEntity.ok(bookShelfDTO);
+        TagEnum tagEnum = TagEnum.valueOf(tag.toUpperCase());
+        Slice<BookShelfDTO> bookShelfDTO = bookShelfService.SliceBookShelfDTOIdAndTag(memberId, tagEnum, page, size);
+        return ResponseEntity.ok(bookShelfDTO);
     }
-    @RequestMapping(value = "/memo/bookShelf/update", method = RequestMethod.POST)
-    public String updateMemo(@RequestBody MemoDTO memoDTO){
 
-        String data= memoService.getOneMemoUpdate(memoDTO);
+    @RequestMapping(value = "/memo/bookShelf/update", method = RequestMethod.POST)
+    public String updateMemo(@RequestBody MemoDTO memoDTO) {
+
+        String data = memoService.getOneMemoUpdate(memoDTO);
 
         return data;
     }
 
 }
-
-

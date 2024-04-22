@@ -12,6 +12,7 @@ import kr.basic.abookz.entity.book.TagEnum;
 import kr.basic.abookz.entity.member.MemberEntity;
 import kr.basic.abookz.repository.BookRepository;
 import kr.basic.abookz.repository.BookShelfRepository;
+import kr.basic.abookz.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -25,6 +26,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static kr.basic.abookz.entity.book.TagEnum.READ;
 
 @Slf4j
 @Service
@@ -105,7 +108,7 @@ public class BookShelfService {
     TagEnum tagEnum = bookShelfDTO.getTag();
     System.out.println("tagEnum = " + tagEnum);
 
-    if (tagEnum == TagEnum.READ) {
+    if (tagEnum == READ) {
       if (bookShelf.getStartDate() == null) {
         bookShelf.setStartDate(now);
       }
@@ -145,7 +148,7 @@ public class BookShelfService {
       if (bookShelf.getStartDate() == null) {
         bookShelf.setStartDate(now);
       }
-      bookShelf.setTag(TagEnum.READ);
+      bookShelf.setTag(READ);
       bookShelf.setEndDate(now);
       return "성공";
     }
@@ -223,6 +226,7 @@ public class BookShelfService {
     MemberDTO memberDTO = mapper.map(entity.getMember(), MemberDTO.class);
     shelfDTO.setBookDTO(bookDTO);
     shelfDTO.setMemberDTO(memberDTO);
+    //ㅁㄴㅇㄴㅁㅇ
     return shelfDTO;
   }
 
@@ -237,6 +241,35 @@ public class BookShelfService {
       shelfEntity.setMember(memberEntity);
     }
     return shelfEntity;
+  }
+  public double averageBooksOfRead(){
+    List<Object[]> results = bookShelfRepository.findTotalBooksByMemberForReadBooks();
+//    int memberCnt = memberRepository.countbyId();
+    double totalBooks = 0;
+    for (Object[] result : results) {
+      Long memberId = (Long) result[0];
+      Long sum = (Long) result[1];  // DB에서 가져온 값은 Long일 수 있습니다.
+
+      double books = sum != null ? sum.doubleValue() : 0.0;
+      totalBooks += books;
+    }
+    System.out.println(totalBooks);
+    System.out.println(results.size());
+
+    return results.size() > 0 ? totalBooks / results.size() : 0.0;
+  }
+  public double averageHeightOfReadBooks(){
+    List<Object[]> results = bookShelfRepository.findTotalHeightByMemberForReadBooks();
+    double totalHeight = 0;
+    for (Object[] result : results) {
+      Long memberId = (Long) result[0];
+      Long sumHeight = (Long) result[1];  // DB에서 가져온 값은 Long일 수 있습니다.
+
+      double Height = sumHeight != null ? sumHeight.doubleValue() : 0.0;
+      totalHeight += Height;
+    }
+
+    return results.size() > 0 ? totalHeight / results.size() : 0.0;
   }
 
   public double averageWeightOfReadBooks() {
@@ -258,5 +291,10 @@ public class BookShelfService {
     return bookShelfRepository.findByMember_IdAndBook_ISBN13(id, Long.valueOf(isbn13))
         .map(this::mapEntityToDTO)
         .orElseThrow(() -> new RuntimeException("책꽂이나 ISBN에 해당하는 데이터가 없습니다."));
+  }
+
+  public double averageWeightOfReadBooksExcludingCurrent(Long id) {
+    Double averageWeight = bookShelfRepository.findAverageWeightExcludingMember(id, READ);
+    return averageWeight != null ? averageWeight : 0.0;
   }
 }

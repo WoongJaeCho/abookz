@@ -6,6 +6,8 @@ import kr.basic.abookz.entity.book.BookShelfEntity;
 import kr.basic.abookz.entity.member.MemberEntity;
 import kr.basic.abookz.entity.book.BookEntity;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.time.LocalDateTime;
 
@@ -26,6 +28,7 @@ public class MemoEntity {
   private String note;//느낀점
   private LocalDateTime createdDate;//작성날짜
   @ManyToOne(fetch = FetchType.LAZY)
+  @OnDelete(action = OnDeleteAction.CASCADE)
   @JoinColumn(name = "BOOKSHELF_ID",foreignKey = @ForeignKey(name = "MEMO_IBFK_1"))
   private BookShelfEntity bookShelf;
 
