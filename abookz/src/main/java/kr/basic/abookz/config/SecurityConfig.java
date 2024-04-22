@@ -29,7 +29,6 @@ public class SecurityConfig{
     private final PrincipalOauth2UserService principalOauth2UserService;
     private final PrincipalDetailsService principalDetailsService;
 
-
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
         return (web)->{
@@ -59,6 +58,7 @@ public class SecurityConfig{
                 .requestMatchers("/manager/**").hasAnyRole("MANAGER","ADMIN")
                 .requestMatchers("/admin/**").hasAnyRole("ADMIN")
                 .requestMatchers("/slide").hasAnyRole("ADMIN")
+                .requestMatchers("/member/list").hasAnyRole("ADMIN")
                 .anyRequest().permitAll()
         ).formLogin(
             form->{
