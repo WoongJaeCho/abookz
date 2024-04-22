@@ -88,10 +88,10 @@ public class MemberEntity {
       this.profile = "/images/default_profile.png"; // 기본 프로필 이미지 경로 설정
     }
   }
-  @PreUpdate
-  protected void onUpdate(){
-    if(this.profile == null || this.profile.trim().isEmpty()){
-      this.profile = "/images/default_profile.png"; // 기본 프로필 이미지 경로 설정
-    }
-  }
+//  @PreUpdate
+//  protected void onUpdate(){
+//    if(this.profile == null && this.profile.trim().isEmpty()){
+//      this.profile = "/images/default_profile.png"; // 기본 프로필 이미지 경로 설정
+//    }
+//  }
 }

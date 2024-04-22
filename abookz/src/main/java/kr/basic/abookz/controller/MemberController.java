@@ -9,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -38,10 +41,15 @@ public class MemberController {
 
   // 조회
   @GetMapping("/list")
-  public String findAll(Model model) {
-    List<MemberDTO> list = memberService.findAll();
+  public String findAll(@PageableDefault(page = 1) Pageable pageable, Model model) {
+    Page<MemberDTO> memberList = memberService.paging(pageable);
+    int blockLimit = 5;
+    int startPage = (((int)(Math.ceil((double)pageable.getPageNumber() / blockLimit))) - 1) * blockLimit + 1; // 1 4 7 10 ~~
+    int endPage = ((startPage + blockLimit - 1) < memberList.getTotalPages()) ? startPage + blockLimit - 1 : memberList.getTotalPages();
 
-    model.addAttribute("memberList", list);
+    model.addAttribute("memberList", memberList);
+    model.addAttribute("startPage", startPage);
+    model.addAttribute("endPage", endPage);
     return "member/list";
   }
 
@@ -68,7 +76,7 @@ public class MemberController {
   @PostMapping("/validId")
   @ResponseBody
   public String validId(@RequestParam("id") String id) {
-    System.out.println("id = " + id);
+    System.out.println("id체크 = " + id);
     return memberService.validById(id) ? "notValid" : "valid";
   }
 
@@ -119,7 +127,8 @@ public class MemberController {
   }
 
   @PostMapping("/changeRole")
-  public String changeRole(@ModelAttribute MemberDTO memberDTO){
+  @ResponseBody
+  public String changeRole(@RequestBody MemberDTO memberDTO){
     System.out.println("memberDto = " + memberDTO);
     memberService.updateRole(memberDTO);
     return "confirm";
@@ -127,9 +136,14 @@ public class MemberController {
 
   // 삭제
   @GetMapping("/delete/{id}")
-  public String deleteById(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long id) {
-    if (!logincheck(principalDetails)) {
+
+  public String deleteById(@AuthenticationPrincipal PrincipalDetails principalDetails, @PathVariable Long id, HttpSession session) {
+    if(!logincheck(principalDetails)){
       return "member/loginForm";
+    }
+    Long loggedInUserId = principalDetails.getMember().getId();
+    if(id.equals(loggedInUserId)){
+      session.invalidate();
     }
     memberService.deleteById(id);
     return "redirect:/member/list";

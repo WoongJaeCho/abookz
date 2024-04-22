@@ -7,7 +7,7 @@
     height: 100%;
 }
 
-#loginId:hover{
+#logId:hover{
     text-decoration: underline;
     color: #2e9cdf;
 }

@@ -31,7 +31,7 @@ public class BoardController {
 
   // 글쓰기(작성)
   @GetMapping("/save")
-  public String saveForm(@AuthenticationPrincipal PrincipalDetails principalDetails, RedirectAttributes redirectAttributes, Model model){
+  public String saveForm(@AuthenticationPrincipal PrincipalDetails principalDetails, Model model){
     if(!logincheck(principalDetails)){
         return "redirect:/member/loginForm";
     }
