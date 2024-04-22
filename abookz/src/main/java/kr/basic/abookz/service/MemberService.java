@@ -39,7 +39,7 @@ public class MemberService {
   // 생성자 주입
   private final MemberRepository memberRepository;
   private JavaMailSender javaMailSender = new JavaMailSenderImpl();
-  private BookShelfService bookShelfService;
+  private final BookShelfService bookShelfService;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
 
