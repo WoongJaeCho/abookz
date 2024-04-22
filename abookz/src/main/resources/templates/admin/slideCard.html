@@ -138,6 +138,9 @@
             body: JSON.stringify({ slideIds: slideIds })
         })
             .then(response => {
+                if (response.redirected) {
+                    window.location.href = response.url;
+                }
                 if (!response.ok) {
                     throw new Error('Failed to save slide order');
                 }

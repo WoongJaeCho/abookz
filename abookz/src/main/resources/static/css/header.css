@@ -28,7 +28,7 @@ li{
     height: 100%;
 }
 .nav{
-    width: 30%;
+    width: 27%;
     height: 100%;
     position: relative;
 }
@@ -115,6 +115,7 @@ li{
     position: absolute;
     bottom: 0;
     left: 0;
+    margin-right: 5px;
 }
 
 .search input{
@@ -130,6 +131,7 @@ li{
     right: 0;
 }
 .login{
+    margin-left: 20px;
     width: 10%;
     height: 100%;
     position: relative;
@@ -161,7 +163,26 @@ li{
 .join > p:hover ,.login > p:hover {
     background-color: rgb(19, 168, 226);
 }
+.h_mem{
+    margin-left: 20px;
+    width: 10%;
+    height: 100%;
+    position: relative;
+}
+.h_mem .avatar{
+    position: absolute;
+    bottom: 0;
+    left: 10px;
+}
+.h_mem p{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+.h_mem:hover{
 
+    text-decoration: underline;
+}
 .admin {
     position: relative;
 }
@@ -546,4 +567,164 @@ main{
 #footer .snsIcon .sns_logo .sns:hover img.hover {
     opacity: 1; /* hover 상태일 때 다른 이미지를 보여줍니다. */
     z-index: 2;
+}
+
+
+/*   슬라이드 메모 ! */
+.slide #slide_memo {
+    width: 1280px; /* Set the width to 1280px */
+    height: 400px; /* Set the height to 400px */
+    margin: 0 auto; /* Center horizontally */
+    background-color: #ccc; /* Light gray background */
+    padding: 20px; /* Add padding around */
+    box-sizing: border-box; /* Include padding in the width */
+}
+
+.slide #slide_memo #memoCard {
+    width: 100%;
+    height: 100%;
+    margin-right: 20px;
+    display: flex;
+    overflow: hidden;
+}
+
+.slide #slide_memo .readInfo {
+    display: flex;
+    width: 100%;
+    max-width: 1240px; /* Limit the width for better readability */
+    background-color: #f9f9f9; /* Light gray background */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+    padding: 20px; /* Add padding inside */
+    box-sizing: border-box; /* Include padding in the width */
+}
+
+.slide #slide_memo .inner {
+    width: 15%;
+    /* display: flex; */
+    align-items: center;
+}
+
+.slide #slide_memo .inner img {
+    width: auto;
+    height: 80%;
+    margin-right: 20px; /* Space between image and text */
+    border-radius: 5px;
+}
+
+.slide #slide_memo .memo_text {
+    flex-grow: 1; /* Allow text to take remaining space */
+}
+
+.slide #slide_memo .memo_title {
+    margin-top: 5px;
+    font-size: 1.3em;
+    font-weight: bold;
+    text-align: center;
+}
+
+.slide #slide_memo .memo_day {
+    font-size: 1em;
+    text-align: center;
+    color: #555; /* Dark gray text */
+    /* margin: 5px 0; */
+}
+
+.slide #slide_memo .read_bar {
+    margin: 0;
+}
+
+.slide #slide_memo .progress {
+    width: 100%;
+    height: 8px;
+    border-radius: 4px;
+}
+
+.slide #slide_memo .memo_page {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.9em;
+}
+.slide #slide_memo .memo_display{
+    width: 85%;
+    height: 100%;
+}
+.slide #slide_memo .memo_display .memo_read {
+    width: 100%;
+    height: 45%;
+    /* border: 1px solid black; */
+}
+.slide #slide_memo .memoInput {
+    height: 55%;
+    width: 100%;
+}
+.slide #slide_memo .memoInput .memo{
+    margin-left: 10px;
+    display: flex;
+}
+.slide #slide_memo .memoInput .text_memo {
+    width: 30%;
+}
+.slide #slide_memo .text_memo div {
+    margin-bottom: 10px; /* Space between form elements */
+}
+
+.slide #slide_memo .text_memo p,
+.slide #slide_memo .text_quotes p,
+.slide #slide_memo .text_note p {
+    margin: 5px 0;
+    font-weight: bold;
+}
+
+.slide #slide_memo .text_memo input,
+.slide #slide_memo .text_quotes textarea,
+.slide #slide_memo .text_note textarea {
+    width: 95%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+.slide #slide_memo .text_quotes textarea,
+.slide #slide_memo .text_note textarea {
+    height: 85px;
+    resize: none;
+}
+
+.slide #slide_memo .text_memo input[type="number"] {
+    width: calc(100% - 16px); /* Adjust for input padding */
+}
+.slide #slide_memo .memoInput .text_note,
+.slide #slide_memo .memoInput .text_quotes {
+    margin-left: 10px;
+    width: 35%;
+}
+.text_note{
+    position: relative;
+}
+.slide #slide_memo .memoInput .btns {
+    margin-top: 10px;
+    text-align: right;
+    position: absolute;
+    bottom: 0;
+    right: 16px;
+}
+
+.slide #slide_memo .memoInput .btns button {
+    padding: 8px 20px;
+    margin-left: 10px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #007bff; /* Blue button */
+    color: #fff; /* White text */
+}
+
+.slide #slide_memo .memoInput .btns button[type="reset"] {
+    background-color: #dc3545; /* Red button for reset */
+}
+
+.slide #slide_memo .memoInput .btns button:hover {
+    opacity: 0.8;
 }

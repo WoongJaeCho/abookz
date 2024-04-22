@@ -12,6 +12,7 @@ import kr.basic.abookz.entity.book.TagEnum;
 import kr.basic.abookz.entity.member.MemberEntity;
 import kr.basic.abookz.repository.BookRepository;
 import kr.basic.abookz.repository.BookShelfRepository;
+import kr.basic.abookz.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.modelmapper.ModelMapper;
@@ -239,6 +240,35 @@ public class BookShelfService {
       shelfEntity.setMember(memberEntity);
     }
     return shelfEntity;
+  }
+  public double averageBooksOfRead(){
+    List<Object[]> results = bookShelfRepository.findTotalBooksByMemberForReadBooks();
+//    int memberCnt = memberRepository.countbyId();
+    double totalBooks = 0;
+    for (Object[] result : results) {
+      Long memberId = (Long) result[0];
+      Long sum = (Long) result[1];  // DB에서 가져온 값은 Long일 수 있습니다.
+
+      double books = sum != null ? sum.doubleValue() : 0.0;
+      totalBooks += books;
+    }
+    System.out.println(totalBooks);
+    System.out.println(results.size());
+
+    return results.size() > 0 ? totalBooks / results.size() : 0.0;
+  }
+  public double averageHeightOfReadBooks(){
+    List<Object[]> results = bookShelfRepository.findTotalHeightByMemberForReadBooks();
+    double totalHeight = 0;
+    for (Object[] result : results) {
+      Long memberId = (Long) result[0];
+      Long sumHeight = (Long) result[1];  // DB에서 가져온 값은 Long일 수 있습니다.
+
+      double Height = sumHeight != null ? sumHeight.doubleValue() : 0.0;
+      totalHeight += Height;
+    }
+
+    return results.size() > 0 ? totalHeight / results.size() : 0.0;
   }
 
   public double averageWeightOfReadBooks() {
