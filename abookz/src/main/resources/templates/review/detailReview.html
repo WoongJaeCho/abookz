@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+<html lang="ko" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">>
 <head>
   <meta charset="UTF-8">
   <title>Title</title>
@@ -41,6 +41,6 @@
     </div>
   </div>
 </div>
-
+<input type="hidden" name="sessionId" th:value="${session.id}" />
 </body>
 </html>

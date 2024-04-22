@@ -559,7 +559,8 @@ function updateFeedback(message, isSuccess) {
 function createCommentElement(comment) {
   // 코멘트 컨테이너 생성
   const commentContainer = document.createElement('div');
-  // commentContainer.className = 'flex w-full justify-between border rounded-md p-3';
+  commentContainer.className = 'flex w-full justify-between border rounded-md p-3';
+  commentContainer.id = `comment-update-${comment.reviewId}`;
 
   // 사용자 이미지 및 정보 포함하는 섹션
   const userInfoSection = document.createElement('div');
@@ -567,41 +568,175 @@ function createCommentElement(comment) {
 
   const userAvatar = document.createElement('img');
   userAvatar.src = comment.member.profile;
-  userAvatar.className = 'object-cover w-10 h-10 rounded-full border-2 border-emerald-400 shadow-emerald-400';
+  userAvatar.className = 'object-cover w-10 h-10 rounded-full border-2 border-emerald-400 shadow-emerald-400 flex-none';
   userInfoSection.appendChild(userAvatar);
 
   const userName = document.createElement('h3');
-  userName.className = 'font-bold';
+  userName.className = 'font-bold flex-none';
   let roleDisplayName = '';  // 역할을 한국어로 표시할 변수 초기화
 
-// 역할에 따라 한국어 이름 할당
+  // 역할에 따라 한국어 이름 할당
   switch (comment.member.role) {
     case 'ROLE_USER':
       roleDisplayName = '유저';
       break;
-    case 'ROLE_MANAGER':  // 매니저의 경우 정확한 문자열 확인 필요
+    case 'ROLE_MANAGER':
       roleDisplayName = '매니저';
       break;
-    case 'ROLE_ADMIN':  // 어드민의 경우 정확한 문자열 확인 필요
+    case 'ROLE_ADMIN':
       roleDisplayName = '관리자';
       break;
     default:
       roleDisplayName = '알 수 없음';  // 정의되지 않은 역할 처리
   }
 
-// userName HTML 엘리먼트에 이름과 역할 표시
+  // userName HTML 엘리먼트에 이름과 역할 표시
   userName.innerHTML = `${comment.member.name}<br><span class="text-sm text-gray-400 font-normal">${roleDisplayName}</span>`;
   userInfoSection.appendChild(userName);
 
   // 코멘트 텍스트 섹션
   const commentText = document.createElement('p');
-  commentText.className = 'text-gray-600 mt-2';
+  commentText.className = 'text-gray-600 mt-2 flex-1';
   commentText.textContent = comment.comment;
+  userInfoSection.appendChild(commentText);
 
+  // 버튼 섹션 추가
+  const buttonSection = document.createElement('div');
+  buttonSection.className = 'flex gap-2 mt-2';
 
-  // 최종 구조 조립
+  const deleteButton = document.createElement('button');
+  deleteButton.textContent = '삭제';
+  deleteButton.className = 'bg-red-500 h-[50px] w-[60px] text-white px-3 py-1 justify-self-center self-center rounded hover:bg-red-600';
+  buttonSection.appendChild(deleteButton);
+
+  const editButton = document.createElement('button');
+  editButton.textContent = '수정';
+  editButton.className = 'bg-blue-500 h-[50px] w-[60px] text-white px-3 py-1 justify-self-center self-center rounded hover:bg-blue-600';
+  buttonSection.appendChild(editButton);
+
+  console.log(comment.id);
+
+  // 이벤트 핸들러 설정 (예시)
+  deleteButton.onclick = () => deleteComment(comment.id, comment.reviewId);
+  editButton.onclick = () => editComment(comment.id, "default", comment.reviewId);
+
+  // 섹션을 코멘트 컨테이너에 추가
   commentContainer.appendChild(userInfoSection);
-  commentContainer.appendChild(commentText);
+  commentContainer.appendChild(buttonSection);
 
   return commentContainer;
+}
+
+function updateCommentElement(reviewId,comment) {
+  const commentContainer = document.getElementById(`comment-update-${reviewId}`);
+  commentContainer.innerHTML = ``;
+
+  // 사용자 이미지 및 정보 포함하는 섹션
+  const userInfoSection = document.createElement('div');
+  userInfoSection.className = 'flex gap-3 items-center';
+
+  const userAvatar = document.createElement('img');
+  userAvatar.src = comment.member.profile;
+  userAvatar.className = 'object-cover w-10 h-10 rounded-full border-2 border-emerald-400 shadow-emerald-400 flex-none';
+  userInfoSection.appendChild(userAvatar);
+
+  const userName = document.createElement('h3');
+  userName.className = 'font-bold flex-none';
+  let roleDisplayName = '';  // 역할을 한국어로 표시할 변수 초기화
+
+  // 역할에 따라 한국어 이름 할당
+  switch (comment.member.role) {
+    case 'ROLE_USER':
+      roleDisplayName = '유저';
+      break;
+    case 'ROLE_MANAGER':
+      roleDisplayName = '매니저';
+      break;
+    case 'ROLE_ADMIN':
+      roleDisplayName = '관리자';
+      break;
+    default:
+      roleDisplayName = '알 수 없음';  // 정의되지 않은 역할 처리
+  }
+
+  // userName HTML 엘리먼트에 이름과 역할 표시
+  userName.innerHTML = `${comment.member.name}<br><span class="text-sm text-gray-400 font-normal">${roleDisplayName}</span>`;
+  userInfoSection.appendChild(userName);
+
+  // 코멘트 텍스트 섹션
+  const commentText = document.createElement('p');
+  commentText.className = 'text-gray-600 mt-2 flex-1';
+  commentText.textContent = comment.comment;
+  userInfoSection.appendChild(commentText);
+
+  // 버튼 섹션 추가
+  const buttonSection = document.createElement('div');
+  buttonSection.className = 'flex gap-2 mt-2';
+
+  const deleteButton = document.createElement('button');
+  deleteButton.textContent = '삭제';
+  deleteButton.className = 'bg-red-500 h-[50px] w-[60px] text-white px-3 py-1 justify-self-center self-center rounded hover:bg-red-600';
+  buttonSection.appendChild(deleteButton);
+
+  const editButton = document.createElement('button');
+  editButton.textContent = '수정';
+  editButton.className = 'bg-blue-500 h-[50px] w-[60px] text-white px-3 py-1 justify-self-center self-center rounded hover:bg-blue-600';
+  buttonSection.appendChild(editButton);
+
+  console.log(comment.id);
+
+  // 이벤트 핸들러 설정 (예시)
+  deleteButton.onclick = () => deleteComment(comment.id, comment.reviewId);
+  editButton.onclick = () => editComment(comment.id, "default", comment.reviewId);
+
+  // 섹션을 코멘트 컨테이너에 추가
+  commentContainer.appendChild(userInfoSection);
+  commentContainer.appendChild(buttonSection);
+
+  return commentContainer;
+}
+
+function editComment(commentId, newText,reviewId) {
+  // 서버에 PUT 요청을 보내 수정된 댓글 내용을 저장
+  fetch(`/comment/update/${commentId}`, {
+    method: 'PUT',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ text: newText })
+  })
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Failed to update comment');
+        }
+        return response.json();
+      })
+      .then(data => {
+
+        updateCommentElement(reviewId,data.comment)
+
+      })
+      .catch(error => updateFeedback(error.message,false));
+}
+
+function deleteComment(commentId,reviewId) {
+  fetch(`/comment/delete/${commentId}`, {
+    method: 'DELETE', // 메서드 변경
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+      .then(response => {
+        if (response.ok) {
+          document.getElementById(`comment-update-${reviewId}`).remove(); // 성공적으로 삭제되면 해당 댓글 DOM 제거
+        } else {
+          return response.json().then(data => {
+            throw new Error(data.message || "Failed to delete comment"); // 서버로부터 오류 메시지가 제공된 경우 출력
+          });
+        }
+      })
+      .catch(error => {
+        console.error(error); // 콘솔에 오류 메시지 출력
+        updateFeedback(error.message, false); // 사용자에게 피드백 제공
+      });
 }
