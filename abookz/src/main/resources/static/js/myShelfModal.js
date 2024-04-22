@@ -105,59 +105,73 @@ function openModal(modal, popup) {
             const handle = document.getElementById('modal-handle');
             const progress = document.getElementById('progress-bar');
             let isDragging = false;
-                let initialClickOffsetX = 0;
+            let initialClickOffsetX = 0;
+
+            function initializeProgressBar() {
                 const progressPercentage = (currentPage / maxPage) * 100;
                 const maxProgressWidth = progress.offsetWidth;
-                const xPosition = (progressPercentage / 100) * maxProgressWidth;
+                const handleWidth = handle.offsetWidth;
+                const xPosition = (progressPercentage / 100) * (maxProgressWidth - handleWidth) + (handleWidth / 2);
+
                 progressBar.style.width = `${progressPercentage}%`;
                 progressBar.style.backgroundColor = getColorBasedOnProgress(progressPercentage);
                 handle.style.left = `${xPosition}px`;
-                handle.addEventListener('mousedown', function(event) {
-                    isDragging = true;
-                    const handleCurrentLeft = parseInt(handle.style.left, 10) || 0;
-                    initialClickOffsetX = event.clientX - handleCurrentLeft;
-                    event.preventDefault();
-                    updateProgress(handleCurrentLeft);
-                    document.addEventListener('mousemove', mouseMoveHandler);
-                    document.addEventListener('mouseup', stopDragging);
-                });
+            }
 
-                function stopDragging() {
-                    isDragging = false;
-                    document.removeEventListener('mousemove', mouseMoveHandler);
-                    document.removeEventListener('mouseup', stopDragging);
-                }
-            function mouseMoveHandler(event) {
+
+            handle.addEventListener('mousedown', function(event) {
+                isDragging = true;
+                const handleCurrentLeft = parseInt(handle.style.left, 10) || 0;
+                initialClickOffsetX = event.clientX - handleCurrentLeft;
+                event.preventDefault();
+                updateProgress(handleCurrentLeft);
+                document.addEventListener('mousemove', mouseMoveHandler);
+                document.addEventListener('mouseup', stopDragging);
+            });
+
+            const stopDragging = () => {
+                isDragging = false;
+                document.removeEventListener('mousemove', mouseMoveHandler);
+                document.removeEventListener('mouseup', stopDragging);
+            };
+
+            const mouseMoveHandler = (event) => {
                 if (!isDragging) return;
                 const xPosition = event.clientX - initialClickOffsetX;
                 updateProgress(xPosition);
-            }
-            function updateProgress(xPosition) {
+            };
+
+            const updateProgress = (xPosition) => {
                 const maxProgressWidth = progress.offsetWidth;
-                const newLeft = Math.min(Math.max(xPosition, 0), maxProgressWidth);
-                const progressPercentage = (newLeft / maxProgressWidth) * 100;
+                const handleWidth = handle.offsetWidth;
+                const newLeft = Math.min(Math.max(xPosition - handleWidth / 2, 0), maxProgressWidth - handleWidth);
+                const progressPercentage = (newLeft / (maxProgressWidth - handleWidth)) * 100;
+
                 progressBar.style.width = `${progressPercentage}%`;
                 progressBar.style.backgroundColor = getColorBasedOnProgress(progressPercentage);
                 handle.style.left = `${newLeft}px`;
                 updateCurrentPage(progressPercentage);
-            }
-            function getColorBasedOnProgress(progress) {
+            };
+
+            const getColorBasedOnProgress = (progress) => {
                 if (progress < 25) {
                     return 'red';
                 } else if (progress < 50) {
                     return 'orange';
                 } else if (progress < 75) {
-                    return 'yellow';
+                    return 'green';
                 } else {
                     return 'pink';
                 }
-            }
+            };
 
-            function updateCurrentPage(progressPercentage) {
+            const updateCurrentPage = (progressPercentage) => {
                 const newPage = Math.round((progressPercentage / 100) * maxPage);
                 currentPageInput.value = newPage;
                 currentPage = newPage;
-            }
+            };
+
+            initializeProgressBar();
 
             modalPage.addEventListener('input', function(event) {
                 currentPage = parseInt(event.target.value, 10) || 0;
@@ -189,7 +203,7 @@ function createDataRow(id, label, value) {
         var inputAddDate = document.createElement('input');
         inputAddDate.type = 'text';
         inputAddDate.className = 'date-picker start-date';
-        inputAddDate.value = value ? moment(value).format('YYYY-MM-DD') : '설정하기';
+        inputAddDate.value = value ? value[0]+ "-"+ value[1] +"-"+value[2] : '설정하기';
 
         flatpickr(inputAddDate, {
             enableTime: false,
@@ -208,7 +222,7 @@ function createDataRow(id, label, value) {
         var inputStartDate = document.createElement('input');
         inputStartDate.type = 'text';
         inputStartDate.className = 'date-picker start-date';
-        inputStartDate.value = value ? moment(value).format('YYYY-MM-DD') : '설정하기';
+        inputStartDate.value = value ?  value[0]+ "-"+ value[1] +"-"+value[2] : '설정하기';
 
         flatpickr(inputStartDate, {
             enableTime: false,
@@ -225,7 +239,7 @@ function createDataRow(id, label, value) {
         var inputTargetDate = document.createElement('input');
         inputTargetDate.type = 'text';
         inputTargetDate.className = 'date-picker target-date';
-        inputTargetDate.value = value ? moment(value).format('YYYY-MM-DD') : '설정하기';
+        inputTargetDate.value = value ? value[0]+ "-"+ value[1] +"-"+value[2] : '설정하기';
 
         flatpickr(inputTargetDate, {
             enableTime: false,
@@ -243,7 +257,7 @@ function createDataRow(id, label, value) {
         var inputEndDate = document.createElement('input');
         inputEndDate.type = 'text';
         inputEndDate.className = 'date-picker end-date';
-        inputEndDate.value = value ? moment(value).format('YYYY-MM-DD') : '설정하기';
+        inputEndDate.value = value ? value[0]+ "-"+ value[1] +"-"+value[2] : '설정하기';
 
         flatpickr(inputEndDate, {
             enableTime: false,
@@ -264,14 +278,13 @@ function createDataRow(id, label, value) {
 }
 //다른 창 전부 막는용
 function disableClickOutside() {
-    // body 요소를 제외한 다른 부모 요소들의 클릭 이벤트를 막음
+
     document.querySelectorAll('body > *:not(#myModal)').forEach(function (element) {
         element.style.pointerEvents = "none";
     });
 }
 
 function enableClickOutside() {
-    // body 요소를 제외한 다른 부모 요소들의 클릭 이벤트를 활성화
     document.querySelectorAll('body > *:not(#myModal)').forEach(function (element) {
         element.style.pointerEvents = "auto";
     });

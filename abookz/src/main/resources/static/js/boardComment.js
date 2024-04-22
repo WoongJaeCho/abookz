@@ -2,12 +2,12 @@
 const boardCommentContainer = document.getElementById('boardCommentContainer');
 const boardCommentWrite = document.getElementById('boardCommentWrite');
 const boardId = document.getElementById('boardCommentList').getAttribute('data-value');
+const boardCommentRole = document.getElementById('boardCommentRole').getAttribute('role-value');
 let currentPage = 0;
 const pageSize = 10;
 
 fetchComments(boardId, currentPage,pageSize);
 function fetchComments(boardId, page,size) {
-    console.log("값체크")
     fetch(`/board/comment?boardId=${boardId}&page=${page}&size=${size}`, {
         method: "GET",
         headers: {
@@ -16,7 +16,6 @@ function fetchComments(boardId, page,size) {
     })
         .then(response => response.json())
         .then(data => {
-            console.log("데이터값체크" + JSON.stringify(data));
             if (data.content && data.content.length > 0) {
                 currentPage = page;
                 displayComments(data);
@@ -32,48 +31,53 @@ function displayComments(data) {
     const boardCommentId = document.getElementById('boardCommentId').getAttribute('id-value');
     list.innerHTML = '';  // Clear previous comments
     data.content.forEach(comment => {
-
-        const formattedDate = moment(comment.createdDate).format('YYYY-MM-DD HH:mm');
         const commentCardElement = document.createElement('div');
-        commentCardElement.className='card w-96 bg-base-100 shadow-xl';
+        commentCardElement.className='card w-140 bg-base-100 shadow-xl mb-2 relative';
         const commentHeaderElement = document.createElement('div');
         commentHeaderElement.className='card-body item-center text-left';
-        const commentTitle = document.createElement('h2');
-        commentTitle.className='card-title';
-        commentTitle.textContent = `작성자: ${comment.memberDTO.name}, 작성일: ${formattedDate}`;
+        const commentTitle = document.createElement('span');
+        commentTitle.className='text-sm';
+        commentTitle.textContent = `작성자 : ${comment.memberDTO.name}, 작성일 : ${comment.createdDate[0]}-${comment.createdDate[1]}-${comment.createdDate[2]} ${comment.createdDate[3]}:${comment.createdDate[4]} `;
         const commentP = document.createElement('p');
+        commentP.className= 'text-lg';
         commentP.textContent = comment.comment;
         commentHeaderElement.appendChild(commentTitle);
         commentHeaderElement.appendChild(commentP);
         commentCardElement.appendChild(commentHeaderElement);
-        if (boardCommentId === comment.memberDTO.name) {
+        if (boardCommentId === comment.memberDTO.name || boardCommentRole === 'ROLE_ADMIN' || boardCommentRole === 'ROLE_MANAGER') {
             const flexDiv = document.createElement('div');
-            flexDiv.className = 'flex flex-col justify-end';
+            flexDiv.className = 'absolute top-0 right-0';
             const deleteButton = document.createElement('button');
             deleteButton.className='btn btn-square btn-outline';
             deleteButton.value=comment.id;
             const updateButton = document.createElement('button');
             updateButton.textContent='수정';
+            updateButton.className=' absolute top-0 right-20 btn btn-square btn-outline';
             updateButton.value=comment.id;
             const updateSubmit =document.createElement('button');
             updateButton.addEventListener('click', ()=>{
                 updateButton.style.display='none';
                 updateSubmit.textContent='수정하기';
-                updateSubmit.className='btn btn-square btn-outline';
+                updateSubmit.className='absolute top-0 right-20 w-24 btn btn-square btn-outline';
                 commentP.contentEditable = true;
                 commentP.className='bg-slate-200';
                 updateSubmit.addEventListener('click',()=>{
+                    const commentChange= commentP.textContent;
+                    if(commentChange.trim()<1){
+                        alert('공백 댓글을 수정하실 수 없습니다');
+                        return false;
+                    }
                     updateSubmit.style.display='none';
                     updateButton.style.display='block';
                     commentP.contentEditable = false;
                     commentP.className='';
                     const updateValueId = updateButton.value;
-                    const commentChange= commentP.textContent;
+
                     updateComment(updateValueId,commentChange);
                 })
             });
             deleteButton.innerHTML=`  <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        <path class="absolute top-0 right-0" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                     </svg>`;
             deleteButton.addEventListener('click', () => {
                 const commentId = deleteButton.value;
@@ -106,10 +110,11 @@ function createPagingBoardComment(totalPages, currentPage, boardId) {
 }
 
 function insertComment() {
+
     const commentInput = document.getElementById('commentInput').value;
     if(commentInput.trim()< 1){
         alert("공백 댓글을 작성하실수 없습니다");
-        return;
+        return false;
     }
     const data = {
         boardDTO: {
@@ -171,10 +176,6 @@ function deleteComment(commentId) {
         .catch(error => console.error('Error:', error));
 }
 function updateComment(commentId, commentChange) {
-    if(commentChange.trim()< 1){
-        alert('공백 댓글을 수정하실 수 없습니다');
-        return;
-    }
     const data = {
         boardDTO: {
             id: boardId

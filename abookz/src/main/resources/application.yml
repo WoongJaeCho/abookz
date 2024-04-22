@@ -59,3 +59,4 @@ spring:
       hibernate:
         jdbc:
           time_zone: Asia/Seoul
+

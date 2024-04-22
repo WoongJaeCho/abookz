@@ -5,13 +5,12 @@ import kr.basic.abookz.config.auth.PrincipalDetails;
 import kr.basic.abookz.dto.BookDTO;
 import kr.basic.abookz.dto.BookShelfDTO;
 import kr.basic.abookz.dto.MemberDTO;
+import kr.basic.abookz.dto.MemoDTO;
 import kr.basic.abookz.entity.book.CategoryEnum;
 import kr.basic.abookz.entity.book.TagEnum;
-import kr.basic.abookz.service.AladinService;
-import kr.basic.abookz.service.BookService;
-import kr.basic.abookz.service.BookShelfService;
-import kr.basic.abookz.service.MemberService;
+import kr.basic.abookz.service.*;
 import lombok.RequiredArgsConstructor;
+import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.data.domain.Slice;
@@ -20,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -43,18 +41,22 @@ public class BookShelfApiController {
     private final MemberService memberService;
     private final BookService bookService;
     private final AladinService aladinService;
+    private final MemoService memoService;
 
     @RequestMapping(value = "/want", method = RequestMethod.POST)
-    public ResponseEntity<Map<String, Object>> wantToRead(@RequestParam("book") String book, Authentication authentication,
-                                                          @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
+
+    public ResponseEntity<Map<String, Object>> wantToRead(@RequestParam("book") String book,
+            Authentication authentication,
+            @AuthenticationPrincipal PrincipalDetails principalDetails) throws Exception {
         System.out.println("book = " + book);
+
         Long id = principalDetails.getMember().getId();
         MemberDTO memberDTO = memberService.findById(id);
         BookDTO aladinGetBook = aladinService.getOneBookDTO(book);
         BookShelfDTO bookShelfDTO = BookShelfDTO.builder()
-            .memberDTO(memberDTO)
-            .bookDTO(aladinGetBook)
-            .build();
+                .memberDTO(memberDTO)
+                .bookDTO(aladinGetBook)
+                .build();
         String getValue = bookShelfService.insertBookAndBookShelf(aladinGetBook, bookShelfDTO);
         BookDTO findBook = bookService.findByDTOISBN13(Long.valueOf(aladinGetBook.getISBN13()));
         Long bookId = findBook.getId();
@@ -66,7 +68,7 @@ public class BookShelfApiController {
         if (getValue.equals("저장")) {
             response.put("message", aladinGetBook.getTitle() + " 내 서재에 등록이 완료되었습니다");
             response.put("bookId", bookId);
-            response.put("shelfId",  shelfId);
+            response.put("shelfId", shelfId);
             return ResponseEntity.ok(response);
         }
         response.put("message", "이미 등록되어있습니다");
@@ -75,17 +77,15 @@ public class BookShelfApiController {
         return ResponseEntity.ok(response);
     }
 
-
     @PostMapping("/readingUpdate")
 
     public ResponseEntity<Object> readingUpdate(@RequestBody BookShelfDTO jsonData) {
         System.out.println("jsonData.toString() = " + jsonData.toString());
         if (jsonData.getTag() != null && jsonData.getTag().toString() != null) {
-            BookShelfDTO bookShelfDTO =
-                    BookShelfDTO.builder()
-                            .id(jsonData.getId())
-                            .tag(jsonData.getTag())
-                            .build();
+            BookShelfDTO bookShelfDTO = BookShelfDTO.builder()
+                    .id(jsonData.getId())
+                    .tag(jsonData.getTag())
+                    .build();
             bookShelfService.bookShelfUpdateTag(bookShelfDTO);
         } else {
             BookShelfDTO bookShelfDTO = BookShelfDTO
@@ -102,13 +102,12 @@ public class BookShelfApiController {
         return new ResponseEntity<>(headers, HttpStatus.FOUND);
     }
 
-    //나의 서재 삭제하기
+    // 나의 서재 삭제하기
     @PostMapping("/deleteMyShelf")
-    public ResponseEntity<Object> deleteMyShelf(@RequestBody BookShelfDTO jsonData, @AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public ResponseEntity<Object> deleteMyShelf(@RequestBody BookShelfDTO jsonData,
+            @AuthenticationPrincipal PrincipalDetails principalDetails) {
         Long memberId = principalDetails.getMember().getId();
-        System.out.println("memberId = " + memberId);
         Long id = jsonData.getId();
-        System.out.println("Checkid = " + id);
         if (id == null) {
             HttpHeaders headers = new HttpHeaders();
             headers.setLocation(URI.create("/myshelf"));
@@ -132,26 +131,28 @@ public class BookShelfApiController {
     }
 
     @GetMapping("/myshelfSlice")
-    public ResponseEntity<Slice<BookShelfDTO>> getMyShelf(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "5") int size
-            , @RequestParam String tag
-            , @AuthenticationPrincipal PrincipalDetails principalDetails) {
-        System.out.println("tag = " + tag);
+    public ResponseEntity<Slice<BookShelfDTO>> getMyShelf(@RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size, @RequestParam String tag,
+            @AuthenticationPrincipal PrincipalDetails principalDetails) {
         Long memberId = principalDetails.getMember().getId();
         if (tag.equals("null")) {
-
             Slice<BookShelfDTO> bookShelfDTO = bookShelfService.SliceBookShelfDTO(memberId, page, size);
-            System.out.println("bookShelfDTO = " + bookShelfDTO);
+            return ResponseEntity.ok(bookShelfDTO);
+        } else if (tag.equals("ALL")) {
+            Slice<BookShelfDTO> bookShelfDTO = bookShelfService.SliceBookShelfDTO(memberId, page, size);
             return ResponseEntity.ok(bookShelfDTO);
         }
-        else if(tag.equals("ALL")){
-
-            Slice<BookShelfDTO> bookShelfDTO = bookShelfService.SliceBookShelfDTO(memberId,page,size);
-            return ResponseEntity.ok(bookShelfDTO);
-        }
-            TagEnum tagEnum = TagEnum.valueOf(tag.toUpperCase());
-            Slice<BookShelfDTO> bookShelfDTO = bookShelfService.SliceBookShelfDTOIdAndTag(memberId, tagEnum, page, size);
-            return ResponseEntity.ok(bookShelfDTO);
+        TagEnum tagEnum = TagEnum.valueOf(tag.toUpperCase());
+        Slice<BookShelfDTO> bookShelfDTO = bookShelfService.SliceBookShelfDTOIdAndTag(memberId, tagEnum, page, size);
+        return ResponseEntity.ok(bookShelfDTO);
     }
+
+    @RequestMapping(value = "/memo/bookShelf/update", method = RequestMethod.POST)
+    public String updateMemo(@RequestBody MemoDTO memoDTO) {
+
+        String data = memoService.getOneMemoUpdate(memoDTO);
+
+        return data;
+    }
+
 }
-
-

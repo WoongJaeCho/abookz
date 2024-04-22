@@ -13,4 +13,5 @@ public interface MemoRepository extends JpaRepository<MemoEntity, Long> {
 
     public MemoEntity findTopByBookShelf_IdOrderByPageDesc(Long bookshelfId);
     public List<MemoEntity> findAllByBookShelf_id(Long bookshelfId);
+    MemoEntity findByIdAndBookShelfId(Long id, Long BookShelfId);
 }

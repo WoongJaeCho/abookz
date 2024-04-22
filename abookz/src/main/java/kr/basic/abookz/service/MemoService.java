@@ -1,17 +1,22 @@
 package kr.basic.abookz.service;
 
+import kr.basic.abookz.dto.BookDTO;
 import kr.basic.abookz.dto.BookShelfDTO;
 import kr.basic.abookz.dto.MemberDTO;
 import kr.basic.abookz.dto.MemoDTO;
+import kr.basic.abookz.entity.book.BookEntity;
 import kr.basic.abookz.entity.book.BookShelfEntity;
+import kr.basic.abookz.entity.member.MemberEntity;
 import kr.basic.abookz.entity.review.MemoEntity;
 import kr.basic.abookz.repository.BookShelfRepository;
 import kr.basic.abookz.repository.MemoRepository;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -19,7 +24,7 @@ public class MemoService {
 
     private final MemoRepository memoRepository;
     private final BookShelfRepository shelfRepository;
-
+    private final ModelMapper mapper;
     public void save(MemoDTO memoDTO) {
         MemoEntity memoEntity = MemoEntity.toMemoEntity(memoDTO);
         System.out.println("memoEntity = " + memoEntity);
@@ -71,5 +76,30 @@ public class MemoService {
         System.out.println("memos = " + memos);
         return memos;
     }
+    public String getOneMemoUpdate(MemoDTO memoDTO) {
 
+        Optional<MemoEntity> optionalMemoEntity = memoRepository.findById(memoDTO.getId());
+
+        if (!optionalMemoEntity.isPresent()) {
+            return "잘못된 접근입니다";
+        }
+
+
+        MemoEntity memoEntity = optionalMemoEntity.get();
+        MemoEntity updateEntity = mapDTOtoEntity(memoDTO);
+        memoEntity.setNote(updateEntity.getNote());
+        memoEntity.setQuotes(updateEntity.getQuotes());
+        memoRepository.save(memoEntity);
+        return "변경이 완료되었습니다";
+    }
+
+
+    public MemoDTO mapEntityToDTO(MemoEntity memoEntity){
+        MemoDTO memoDTO = mapper.map(memoEntity, MemoDTO.class);
+        return  memoDTO;
+    }
+    public MemoEntity mapDTOtoEntity(MemoDTO memoDTO){
+        MemoEntity memoEntity =mapper.map(memoDTO, MemoEntity.class);
+        return  memoEntity;
+    }
 }

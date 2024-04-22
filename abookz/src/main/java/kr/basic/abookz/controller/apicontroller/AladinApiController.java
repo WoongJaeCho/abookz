@@ -31,7 +31,6 @@ public class AladinApiController {
         try {
             session.setAttribute("q",bookPagingDTO.getQuery());
             Page<BookDTO>  books = aladinService.searchItems(bookPagingDTO.getQuery(), PageRequest.of(bookPagingDTO.getPage(), bookPagingDTO.getSize()));
-            System.out.println("books = " + books);
             return ResponseEntity.ok(books);
         } catch (Exception e) {
             e.printStackTrace();
