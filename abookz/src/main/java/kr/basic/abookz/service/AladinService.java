@@ -85,9 +85,9 @@ public class AladinService {
         Page<BookDTO> page = new PageImpl<>(books, pageable, vo.size());
         return  page;
     }
-    public List<BookDTO> getQueryTypeList(String type) throws  Exception{
+    public List<BookDTO> getQueryTypeList(String category) throws  Exception{
         List<BookDTO> vo = null;
-        String url = getUrlQueryTypeList(type);
+        String url = getUrlCategoryList(category);
         String query = restTemplate.getForObject(url,String.class);
         vo=parseItemsFromJson(query);
         return vo;

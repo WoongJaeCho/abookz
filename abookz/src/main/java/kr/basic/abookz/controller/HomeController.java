@@ -96,7 +96,7 @@ public class HomeController {
 
         // @@ recommend
             // DB데이터 없을 경우 알라딘 베스트 셀러 출력
-        List<BookDTO> queryTypeList = aladinService.getQueryTypeList("bestSeller");
+        List<BookDTO> queryTypeList = aladinService.getQueryTypeList("336");
         List<BookDTO> aladinBooks = queryTypeList.subList(0, 3);
         model.addAttribute("aladinBooks", aladinBooks);
 
@@ -119,8 +119,6 @@ public class HomeController {
             }
 
             if (shelves.size() != 0 && books.size() != 0) {
-//                int curIdx = 0;
-//                model.addAttribute("curIdx", curIdx);
                 model.addAttribute("books", books);
                 model.addAttribute("shelves", shelves);
             }
