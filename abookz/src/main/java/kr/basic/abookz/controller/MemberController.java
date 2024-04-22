@@ -200,7 +200,9 @@ public class MemberController {
 
   @GetMapping("/auth/login")
   public String login(@RequestParam(required = false) String error, @RequestParam(required = false) String exception, Model model) {
-      model.addAttribute("errorMessage", "로그인 중 문제가 발생했습니다: " + exception);
+      model.addAttribute("errorMessage", exception);
+//    model.addAttribute("errorMessage", "테스트 에러 메시지");
+
     return "member/loginForm";
   }
 

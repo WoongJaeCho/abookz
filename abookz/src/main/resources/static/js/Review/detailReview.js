@@ -18,11 +18,51 @@ function loadReviews(pageNumber, query, sort) {
       'Content-Type': 'application/json'
     }
   })
-      .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          // 오류가 있을 경우, 오류를 처리하는 코드 필요
+          return response.json().then(err => {
+            throw new Error(err.message);  // 서버 에러 메시지를 던짐
+          });
+        }
+        return response.json();
+      })
       .then(data => {
         if (data.reviews.length === 0) {
           const modal = document.getElementById('review-modal');
           modal.showModal();
+        } else {
+          collapseDiv.classList.add('collapse-open');
+          updateReviewSection(data.reviews);  // 리뷰 섹션 업데이트
+          updatePagination(data.currentPage, data.totalPages, query, sort);  // 페이징 정보 업데이트
+        }
+      })
+      .catch(error => updateFeedback(error.message, false));
+
+}
+function loadReviews2(pageNumber, query, sort) {
+
+  const collapseDiv = document.querySelector('.collapse'); // 타겟이 되는 div 요소 선택
+
+  const ISBN13 = document.getElementById('ISBN13').value;
+  fetch(`/review/reviews?pageNumber=${pageNumber}&ISBN13=${ISBN13}&query=${encodeURIComponent(query)}&sort=${encodeURIComponent(sort)}`, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json'
+    }
+  })
+      .then(response => {
+        if (!response.ok) {
+          // 오류가 있을 경우, 오류를 처리하는 코드 필요
+          return response.json().then(err => {
+            throw new Error(err.message);  // 서버 에러 메시지를 던짐
+          });
+        }
+        return response.json();
+      })
+      .then(data => {
+        if (data.reviews.length === 0) {
+          throw new Error('검색값이 없습니다.');
         } else {
           collapseDiv.classList.add('collapse-open');
           updateReviewSection(data.reviews);  // 리뷰 섹션 업데이트
@@ -193,7 +233,7 @@ function clickLike(button, reviewId) {
 function searchReviews() {
   const query = document.getElementById('searchQuery').value;
   const sort = document.getElementById('review_sort').value; // 정렬 값 추출
-  loadReviews(0, query, sort);  // 페이지 로딩 함수에 검색어 파라미터 추가
+  loadReviews2(0, query, sort);  // 페이지 로딩 함수에 검색어 파라미터 추가
 }
 
 function updateCommentSection(reviewId, newComment) {
