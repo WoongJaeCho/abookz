@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import kr.basic.abookz.dto.MemberDTO;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
+import org.springframework.context.annotation.Profile;
 
 import java.time.LocalDate;
 
@@ -29,8 +30,6 @@ public class MemberEntity {
   private String profile; //프로필 이미지
   @CreationTimestamp
   private LocalDate regDate;//가입일
-
-
 
   public MemberEntity(String loginId) {
     this.loginId = loginId;
@@ -72,10 +71,11 @@ public class MemberEntity {
   }
 
   @Builder
-  public MemberEntity(String loginId, String password, String email, String provider, String providerId, String name) {
+  public MemberEntity(String loginId, String password, String email,String profile ,String provider, String providerId, String name) {
     this.loginId = loginId;
     this.password = password;
     this.email = email;
+    this.profile = profile;
     this.provider = provider;
     this.providerId = providerId;
     this.role = ROLE_USER;

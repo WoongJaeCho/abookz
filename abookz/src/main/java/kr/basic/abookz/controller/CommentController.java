@@ -49,7 +49,9 @@ public class CommentController {
                                          @AuthenticationPrincipal PrincipalDetails principalDetails,
                                          @RequestBody CommentDTO commentDTO) {
     if (principalDetails == null) {
-      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("로그인이 필요합니다.");
+      Map<String, Object> response = new HashMap<>();
+      response.put("message", "로그인이 필요합니다.");
+      return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);  // 로그인 필요 상태 코드 변경
     }
 
     try {

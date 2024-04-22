@@ -126,7 +126,7 @@ function createTextTexture(text, fontSize = 32, textColor = '#FFF', bgColor = '#
   const canvas = document.createElement('canvas');
   const context = canvas.getContext('2d');
 
-  canvas.width = 300;
+  canvas.width = 350;
   canvas.height = 128;
   context.fillStyle = bgColor;
   context.fillRect(0, 0, canvas.width, canvas.height);

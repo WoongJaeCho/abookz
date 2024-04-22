@@ -3,6 +3,8 @@ package kr.basic.abookz.entity.board;
 import jakarta.persistence.*;
 import kr.basic.abookz.entity.member.MemberEntity;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 
@@ -27,10 +29,12 @@ public class BoardCommentEntity {
     private String comment;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "MEM_ID",foreignKey = @ForeignKey(name = "BOARD_COMMENT_IBFK_1"))
     private MemberEntity member;
 
     @ManyToOne(fetch = FetchType.LAZY)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     @JoinColumn(name = "BOARD_ID", foreignKey = @ForeignKey(name = "BOARD_COMMENT_IBFK_2"))
     private BoardEntity board;
 

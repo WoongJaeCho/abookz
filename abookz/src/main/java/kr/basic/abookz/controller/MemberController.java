@@ -176,16 +176,14 @@ public class MemberController {
     }
   }
 
-
   @GetMapping("/test")
   @ResponseBody
-  public PrincipalDetails test(@AuthenticationPrincipal PrincipalDetails principalDetails) {
-    if (principalDetails == null) {
+  public PrincipalDetails test(@AuthenticationPrincipal PrincipalDetails principalDetails){
+    if(principalDetails == null){
       return null;
     }
     return principalDetails;
   }
-
 
   @GetMapping("/auth/login")
   public String login(@RequestParam(required = false) String error, @RequestParam(required = false) String exception, Model model) {

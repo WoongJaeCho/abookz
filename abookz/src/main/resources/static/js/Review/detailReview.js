@@ -298,37 +298,72 @@ function createReviewElement(review) {
 function createCommentSection(reviewId) {
   const reviewElement = document.getElementById(`review-${reviewId}`);
   if (!reviewElement) {
-    updateFeedback(`${reviewId}번째 리뷰를 찾을 수 없습니다.`, false);
+    console.error('Review element not found for review:', reviewId);
     return;
   }
 
+  // 댓글 컨테이너 생성 및 설정
   const commentContainer = document.createElement('div');
   commentContainer.id = `comments-for-review-${reviewId}`;
-  commentContainer.className = "w-[720px] bg-white rounded-lg border p-1 md:p-3 m-10";
-  commentContainer.style.display = 'none';
+  commentContainer.className = "comments-container w-[720px] bg-white rounded-lg border p-1 md:p-3 m-10";
+  commentContainer.style.display = 'none'; // 초기에는 숨김
 
   const commentsList = document.createElement('div');
   commentsList.className = "flex flex-col gap-5 m-3";
   commentContainer.appendChild(commentsList);
 
+  // "더보기" 버튼 생성
+  const moreCommentsButton = document.createElement('button');
+  moreCommentsButton.innerText = '더보기';
+  moreCommentsButton.onclick = () => loadMoreComments(reviewId);
+  moreCommentsButton.className = ("btn btn-block hidden")
+
+  moreCommentsButton.id = `more-comments-button-${reviewId}`; // 클래스 추가
+
   const commentForm = document.createElement('div');
-  commentForm.className = "w-full px-3 mb-2 mt-6";
+  commentForm.className = "w-full px-3 mb-2 mt-6 hidden";
   commentForm.innerHTML = `
-    <textarea id="comment-input-${reviewId}" class="bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-400 focus:outline-none focus:bg-white" name="body" placeholder="Comment" required></textarea>
+    <textarea id="comment-input-${reviewId}" class="bg-gray-100 rounded border border-gray-400 leading-normal resize-none w-full h-20 py-2 px-3 font-medium placeholder-gray-400 focus:outline-none focus:bg-white" name="body" placeholder="댓글입력" required></textarea>
     <div class="w-full flex justify-end px-3 my-3">
       <button class="btn px-2.5 py-1.5 rounded-md text-white text-sm bg-indigo-500 text-lg" onclick="submitComment(${reviewId})">댓글등록</button>
     </div>`;
-  commentContainer.appendChild(commentForm);
+  // 댓글과 "더보기" 버튼을 DOM에 추가
 
-  // 댓글 폼이 아닌, 댓글 리스트의 맨 끝에 "더보기" 버튼 추가
-  const moreCommentsButton = document.createElement('div');
-  moreCommentsButton.id = "more-comments-button";
-  moreCommentsButton.className = "text-center hidden"; // 처음에는 숨겨진 상태
-  moreCommentsButton.innerHTML = `<button class="btn btn-block" onclick="loadMoreComments(${reviewId})">더보기</button>`;
   reviewElement.appendChild(commentContainer);
+  reviewElement.appendChild(moreCommentsButton);
+  reviewElement.appendChild(commentForm);
 
-  reviewElement.appendChild(moreCommentsButton); // 댓글 리스트에 버튼 추가
+
 }
+
+function loadComments(reviewId, pageNumber) {
+  const commentsContainer = document.getElementById(`comments-for-review-${reviewId}`);
+  const moreCommentsButton = document.getElementById(`more-comments-button-${reviewId}`);
+
+  fetch(`/comment/${reviewId}?page=${pageNumber}&size=5`)  // 페이지당 댓글 수를 5개로 제한
+      .then(response => response.json())
+      .then(data => {
+        if (data.comments.length > 0) {
+          data.comments.forEach(comment => {
+            const commentElement = createCommentElement(comment);
+            commentsContainer.appendChild(commentElement);
+          });
+          commentsContainer.setAttribute('data-current-page', pageNumber);  // 현재 페이지 저장
+        }
+
+        // "더 보기" 버튼 상태 업데이트
+        moreCommentsButton.style.display = data.hasNext ? 'block' : 'none';
+      })
+      .catch(error => updateFeedback(error.message, false));
+}
+
+function loadMoreComments(reviewId) {
+  const commentsContainer = document.getElementById(`comments-for-review-${reviewId}`);
+  let currentPage = parseInt(commentsContainer.getAttribute('data-current-page') || '0');
+  loadComments(reviewId, currentPage + 1);  // 다음 페이지 로드
+}
+
+
 function submitComment(reviewId) {
   const commentInput = document.getElementById('comment-input-' + reviewId);
   const comment = commentInput.value.trim(); // 공백 제거
@@ -354,37 +389,46 @@ function submitComment(reviewId) {
         commentInput.value = ''; // 입력 필드 초기화
       })
       .catch(error => {
-        console.error('Error posting comment:', error);
+        if (error.message === "로그인이 필요합니다.") {
+          updateFeedback(error.message, false);
+        }
       });
 }
 
 
 function toggleComments(button, reviewId) {
   const commentsContainer = document.getElementById(`comments-for-review-${reviewId}`);
-  const svg = button.querySelector('svg');
+  const moreButton = document.getElementById(`more-comments-button-${reviewId}`);
+  document.querySelector(`#comment-input-${reviewId}`).parentElement.classList.remove("hidden")
 
-  // 댓글 컨테이너의 표시 상태를 토글
+  // 댓글 컨테이너의 표시 상태 토글
   if (commentsContainer.style.display === 'none' || !commentsContainer.style.display) {
-    commentsContainer.style.display = 'block'; // 댓글 컨테이너 표시
-    svg.classList.add('fill-current');
-    svg.classList.remove('fill-none');
+    commentsContainer.style.display = 'block';  // 댓글 보이기
+    button.querySelector('svg').classList.add('fill-current');
+    button.querySelector('svg').classList.remove('fill-none');
 
-    fetchComments(reviewId, commentsContainer);
+    if (!commentsContainer.hasAttribute('data-loaded')) {
+      fetchComments(reviewId, commentsContainer);
+      commentsContainer.setAttribute('data-loaded', 'true'); // 데이터 로드됨 표시
+    }
+    moreButton.classList.remove('hidden');
   } else {
-    commentsContainer.style.display = 'none'; // 댓글 컨테이너 숨김
-    svg.classList.remove('fill-current');
-    svg.classList.add('fill-none');
+    commentsContainer.style.display = 'none';  // 댓글 숨기기
+    button.querySelector('svg').classList.add('fill-none');
+    button.querySelector('svg').classList.remove('fill-current');
+    moreButton.classList.add('hidden');
   }
 }
+
 
 let currentCommentPage = 0;
 
 function fetchComments(reviewId, container, nextPage = false) {
   if (nextPage) {
-    currentCommentPage++;
+    currentCommentPage++;  // 다음 페이지로 이동
   }
 
-  fetch(`/comment/${reviewId}?page=${currentCommentPage}&size=5`, {  // size는 예시로 5를 사용
+  fetch(`/comment/${reviewId}?page=${currentCommentPage}&size=5`, {
     method: 'GET',
     headers: {
       'Content-Type': 'application/json'
@@ -392,19 +436,14 @@ function fetchComments(reviewId, container, nextPage = false) {
   })
       .then(response => response.json())
       .then(data => {
-        appendComments(data.comments, container);
+        appendComments(data.comments, container);  // 댓글 추가
         if (data.hasNext) {
-          document.getElementById('more-comments-button').classList.remove('hidden');
+          document.getElementById(`more-comments-button-${reviewId}`).classList.remove('hidden');  // 다음 페이지가 있으면 버튼 표시
         } else {
-          document.getElementById('more-comments-button').classList.add('hidden');
+          document.getElementById(`more-comments-button-${reviewId}`).classList.add('hidden');  // 다음 페이지가 없으면 버튼 숨김
         }
       })
-      .catch(error => console.error('Failed to load comments:', error));
-}
-
-function loadMoreComments(reviewId) {
-  const commentsContainer = document.getElementById(`comments-for-review-${reviewId}`);
-  fetchComments(reviewId, commentsContainer, true);
+      .catch(error => updateFeedback(error.message, false));
 }
 
 
@@ -517,11 +556,10 @@ function updateFeedback(message, isSuccess) {
 }
 
 
-
 function createCommentElement(comment) {
   // 코멘트 컨테이너 생성
   const commentContainer = document.createElement('div');
-  commentContainer.className = 'flex w-full justify-between border rounded-md p-3';
+  // commentContainer.className = 'flex w-full justify-between border rounded-md p-3';
 
   // 사용자 이미지 및 정보 포함하는 섹션
   const userInfoSection = document.createElement('div');
@@ -541,10 +579,10 @@ function createCommentElement(comment) {
     case 'ROLE_USER':
       roleDisplayName = '유저';
       break;
-    case 'manager':  // 매니저의 경우 정확한 문자열 확인 필요
+    case 'ROLE_MANAGER':  // 매니저의 경우 정확한 문자열 확인 필요
       roleDisplayName = '매니저';
       break;
-    case 'admin':  // 어드민의 경우 정확한 문자열 확인 필요
+    case 'ROLE_ADMIN':  // 어드민의 경우 정확한 문자열 확인 필요
       roleDisplayName = '관리자';
       break;
     default:
@@ -560,14 +598,10 @@ function createCommentElement(comment) {
   commentText.className = 'text-gray-600 mt-2';
   commentText.textContent = comment.comment;
 
-  // 답글 버튼
-  const replyButton = document.createElement('button');
-  replyButton.className = 'text-right text-blue-500';
 
   // 최종 구조 조립
   commentContainer.appendChild(userInfoSection);
   commentContainer.appendChild(commentText);
-  commentContainer.appendChild(replyButton);
 
   return commentContainer;
 }

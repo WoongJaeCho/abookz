@@ -77,17 +77,20 @@
         </div>
         <a class="login"  sec:authorize="!isAuthenticated()" href="/member/loginForm"><p>로그인</p></a>
         <a class="join" sec:authorize="!isAuthenticated()" href="/member/save"><p>회원가입</p></a>
-        <div class="avatar placeholder" sec:authorize="isAuthenticated()">
-            <div class="bg-neutral text-neutral-content rounded-full w-24">
-                <span class="text-3xl">D</span>
-            </div>
-        </div>
+<!--        <div class="avatar placeholder" sec:authorize="isAuthenticated()">-->
+<!--            <div class="bg-neutral text-neutral-content rounded-full w-24">-->
+<!--                <span class="text-3xl">D</span>-->
+<!--            </div>-->
+<!--        </div>-->
         <a class="login" sec:authorize="isAuthenticated()" href="javascript:void(0)" onclick="Logout();"><p>로그아웃</p></a>
 
         <a class="join" sec:authorize="isAuthenticated()" href="/member/update"> <p th:text="${#authentication.principal.name}">사용자 이름</p></a>
+        <img th:if="${session.profileImage}" th:src="${session.profileImage}" alt="Profile Image" />
 
 
-<!--        <a class="join" sec:authorize="isAuthenticated()" href="/member/update"><p>정보수정</p></a>-->
+
+
+        <!--        <a class="join" sec:authorize="isAuthenticated()" href="/member/update"><p>정보수정</p></a>-->
 <!--        admin-->
         <div class="admin" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')') ? true : false}">
             <ul>
@@ -99,7 +102,7 @@
                 </li>
             </ul>
         </div>
-        <div id="message-container" class="absolute inset-x-0 mx-auto transform -translate-y-1/2 mt-[100px]">
+        <div id="message-container" class="absolute x-[100px] left-1/2 transform -translate-x-1/2 -translate-y-1/2 mt-[100px] z-50">
             <!-- Message Container의 내용 -->
         </div>
     </header>

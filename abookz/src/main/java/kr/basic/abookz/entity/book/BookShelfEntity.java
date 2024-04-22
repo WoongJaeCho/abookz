@@ -7,6 +7,8 @@ import kr.basic.abookz.entity.review.ReviewEntity;
 import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
@@ -49,9 +51,11 @@ public class BookShelfEntity {
   private TagEnum tag = TagEnum.WANT_TO_READ;  // READ,WANT_TO_READ,CURRENTLY_READING
 
   @ManyToOne(fetch = FetchType.LAZY)
+  @OnDelete(action = OnDeleteAction.CASCADE)
   @JoinColumn(name = "MEM_ID", foreignKey = @ForeignKey(name = "BOOKSHELF_IBFK_1"))
   private MemberEntity member; // 리뷰 작성 회원
   @ManyToOne(fetch = FetchType.LAZY)
+  @OnDelete(action = OnDeleteAction.CASCADE)
   @JoinColumn(name = "BOOK_ID", foreignKey = @ForeignKey(name = "BOOKSHELF_IBFK_2"))
   private BookEntity book;
 
