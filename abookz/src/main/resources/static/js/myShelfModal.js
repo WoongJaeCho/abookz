@@ -136,9 +136,11 @@ function openModal(modal, popup) {
                 const maxProgressWidth = progress.offsetWidth;
                 const newLeft = Math.min(Math.max(xPosition, 0), maxProgressWidth);
                 const progressPercentage = (newLeft / maxProgressWidth) * 100;
+
+                const handleWidth = parseFloat(window.getComputedStyle(handle).width);
                 progressBar.style.width = `${progressPercentage}%`;
                 progressBar.style.backgroundColor = getColorBasedOnProgress(progressPercentage);
-                handle.style.left = `${newLeft}px`;
+                handle.style.left = `${newLeft-handleWidth}px`;
                 updateCurrentPage(progressPercentage);
             }
             function getColorBasedOnProgress(progress) {
@@ -189,7 +191,7 @@ function createDataRow(id, label, value) {
         var inputAddDate = document.createElement('input');
         inputAddDate.type = 'text';
         inputAddDate.className = 'date-picker start-date';
-        inputAddDate.value = value ? moment(value).format('YYYY-MM-DD') : '설정하기';
+        inputAddDate.value = value ? value[0]+ "-"+ value[1] +"-"+value[2] : '설정하기';
 
         flatpickr(inputAddDate, {
             enableTime: false,
@@ -208,7 +210,7 @@ function createDataRow(id, label, value) {
         var inputStartDate = document.createElement('input');
         inputStartDate.type = 'text';
         inputStartDate.className = 'date-picker start-date';
-        inputStartDate.value = value ? moment(value).format('YYYY-MM-DD') : '설정하기';
+        inputStartDate.value = value ?  value[0]+ "-"+ value[1] +"-"+value[2] : '설정하기';
 
         flatpickr(inputStartDate, {
             enableTime: false,
@@ -225,7 +227,7 @@ function createDataRow(id, label, value) {
         var inputTargetDate = document.createElement('input');
         inputTargetDate.type = 'text';
         inputTargetDate.className = 'date-picker target-date';
-        inputTargetDate.value = value ? moment(value).format('YYYY-MM-DD') : '설정하기';
+        inputTargetDate.value = value ? value[0]+ "-"+ value[1] +"-"+value[2] : '설정하기';
 
         flatpickr(inputTargetDate, {
             enableTime: false,
@@ -243,7 +245,7 @@ function createDataRow(id, label, value) {
         var inputEndDate = document.createElement('input');
         inputEndDate.type = 'text';
         inputEndDate.className = 'date-picker end-date';
-        inputEndDate.value = value ? moment(value).format('YYYY-MM-DD') : '설정하기';
+        inputEndDate.value = value ? value[0]+ "-"+ value[1] +"-"+value[2] : '설정하기';
 
         flatpickr(inputEndDate, {
             enableTime: false,
@@ -264,14 +266,13 @@ function createDataRow(id, label, value) {
 }
 //다른 창 전부 막는용
 function disableClickOutside() {
-    // body 요소를 제외한 다른 부모 요소들의 클릭 이벤트를 막음
+
     document.querySelectorAll('body > *:not(#myModal)').forEach(function (element) {
         element.style.pointerEvents = "none";
     });
 }
 
 function enableClickOutside() {
-    // body 요소를 제외한 다른 부모 요소들의 클릭 이벤트를 활성화
     document.querySelectorAll('body > *:not(#myModal)').forEach(function (element) {
         element.style.pointerEvents = "auto";
     });

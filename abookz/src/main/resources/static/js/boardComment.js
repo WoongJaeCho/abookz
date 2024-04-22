@@ -6,7 +6,6 @@ const boardCommentRole = document.getElementById('boardCommentRole').getAttribut
 let currentPage = 0;
 const pageSize = 10;
 
-console.log(boardCommentRole);
 fetchComments(boardId, currentPage,pageSize);
 function fetchComments(boardId, page,size) {
     fetch(`/board/comment?boardId=${boardId}&page=${page}&size=${size}`, {
@@ -32,16 +31,15 @@ function displayComments(data) {
     const boardCommentId = document.getElementById('boardCommentId').getAttribute('id-value');
     list.innerHTML = '';  // Clear previous comments
     data.content.forEach(comment => {
-
-        const formattedDate = moment(comment.createdDate).format('YYYY-MM-DD HH:mm');
         const commentCardElement = document.createElement('div');
-        commentCardElement.className='card w-96 bg-base-100 shadow-xl';
+        commentCardElement.className='card w-140 bg-base-100 shadow-xl mx-2';
         const commentHeaderElement = document.createElement('div');
         commentHeaderElement.className='card-body item-center text-left';
-        const commentTitle = document.createElement('h2');
-        commentTitle.className='card-title';
-        commentTitle.textContent = `작성자: ${comment.memberDTO.name}, 작성일: ${formattedDate}`;
+        const commentTitle = document.createElement('span');
+        commentTitle.className='text-sm';
+        commentTitle.textContent = `작성자 : ${comment.memberDTO.name}, 작성일 : ${comment.createdDate[0]}-${comment.createdDate[1]}-${comment.createdDate[2]} ${comment.createdDate[3]}:${comment.createdDate[4]} `;
         const commentP = document.createElement('p');
+        commentP.className= 'text-lg';
         commentP.textContent = comment.comment;
         commentHeaderElement.appendChild(commentTitle);
         commentHeaderElement.appendChild(commentP);

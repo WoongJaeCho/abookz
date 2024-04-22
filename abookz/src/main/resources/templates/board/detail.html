@@ -11,6 +11,7 @@
 
 <body>
   <div th:replace="~{fragments/header :: header}" /><br>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
   <div class="container" id="boardContainer">
     <div class="overflow-x-auto bg-white dark:bg-neutral-700">
       <table class="min-w-full text-left text-sm whitespace-nowrap" id="boardTable">
@@ -53,12 +54,13 @@
 
 
     <div id="boardCommentContainer" class="mx-auto">
+      <div id="boardCommentWrite">
+        <textarea id="commentInput" class="commentInput" rows="4" placeholder="댓글을 입력하세요.."></textarea>
+        <button id="submitComment" onclick="insertComment()">댓글 작성</button>
+        <input type="hidden" id="boardCommentRole" th:attr="role-value=${role}">
+        <input type="hidden" id="boardCommentId" th:attr="id-value=${writer}">
+      </div>
       <div id="boardCommentList" th:attr="data-value=${board.id}"></div>
-    </div>
-    <div id="boardCommentWrite">
-      <input type="hidden" id="boardCommentId" th:attr="id-value=${writer}">
-      <textarea id="commentInput" class="commentInput" rows="4" placeholder="댓글을 입력하세요.."></textarea>
-      <button id="submitComment" onclick="insertComment()">댓글 작성</button>
     </div>
 
     <div id="pagingComment" class="pagingQueryDiv flex justify-center">
