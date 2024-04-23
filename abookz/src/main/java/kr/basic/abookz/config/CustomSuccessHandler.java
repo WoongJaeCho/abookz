@@ -40,11 +40,11 @@ public class CustomSuccessHandler  implements AuthenticationSuccessHandler {
         System.out.println("u = " + member);
         System.out.println("principalId = " + member.getProvider());
         System.out.println("principalId = " + member.getProviderId());
-        requestCache = new HttpSessionRequestCache();
-        SavedRequest savedRequest = requestCache.getRequest(request, response);
-        String targetUrl = savedRequest == null ? "/" : savedRequest.getRedirectUrl();
-        redirectStrategy.sendRedirect(request, response, targetUrl);
-//        response.sendRedirect("/");
+//        requestCache = new HttpSessionRequestCache();
+//        SavedRequest savedRequest = requestCache.getRequest(request, response);
+//        String targetUrl = savedRequest == null ? "/" : savedRequest.getRedirectUrl();
+//        redirectStrategy.sendRedirect(request, response, targetUrl);
+        response.sendRedirect("/");
     }
 
 }

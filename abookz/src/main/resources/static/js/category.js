@@ -22,7 +22,7 @@ for(var i=0; i<getButtons.length; i++){
         })
             .then(response => {
                 if (!response.ok) {
-                    throw new Error('Network response was not ok');
+                    throw new Error('서버에러');
                 }
                 return response.text();
             })

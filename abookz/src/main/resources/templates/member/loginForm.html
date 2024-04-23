@@ -6,6 +6,7 @@
 </head>
 <body>
 <div th:replace="~{fragments/header :: header}"/>
+
 <br>
 <div class="container flex justify-center items-center" id="LoginContainer">
   <div class="flex min-h-full flex-col justify-center px-6 py-12 lg:px-8">
@@ -62,5 +63,17 @@
 
     </div>
   </div>
+<script th:inline="javascript">
+  /*<![CDATA[*/
+  window.onload = function() {
+    var errorMessage = /*[[${errorMessage}]]*/ null;
+    if (errorMessage !== null) {
+      alert(errorMessage);
+    }
+  };
+  /*]]>*/
+</script>
+
+
 </body>
 </html>
