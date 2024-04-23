@@ -15,7 +15,7 @@
             <div class="text_memo">
                 <div>
                     <p> 페이지 </p>
-                    <input type="number" class="page" id="page" name="page" min="1" th:max="${book.itemPage}" placeholder="페이지를 입력하세요." required/> <br>
+                    <input type="number" class="page" id="page" name="page" min="1" th:max="${book.itemPage}" th:value="${shelf.currentPage != 0 ? shelf.currentPage : null}" placeholder="페이지를 입력하세요."  required/> <br>
                 </div>
                 <div>
                     <p> 작성 시간 </p>

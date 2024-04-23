@@ -111,7 +111,7 @@ function openModal(modal, popup) {
                 const progressPercentage = (currentPage / maxPage) * 100;
                 const maxProgressWidth = progress.offsetWidth;
                 const handleWidth = handle.offsetWidth;
-                const xPosition = (progressPercentage / 100) * (maxProgressWidth - handleWidth) + (handleWidth / 2);
+                const xPosition = (progressPercentage / 100) * (maxProgressWidth - handleWidth);
 
                 progressBar.style.width = `${progressPercentage}%`;
                 progressBar.style.backgroundColor = getColorBasedOnProgress(progressPercentage);

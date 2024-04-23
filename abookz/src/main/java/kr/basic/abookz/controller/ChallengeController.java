@@ -49,12 +49,14 @@ public class ChallengeController {
             double sizeDepth = (double) shelf.getBookDTO().getSizeDepth();
             booksHeight += sizeDepth;
         }
-        double averageHeightOfReadBooks = bookShelfService.averageHeightOfReadBooks();
+        double averageHeightOfReadBooks = bookShelfService.averageHeightOfReadBooks() / 10;
+        String averageHeight = String.format("%.1f", averageHeightOfReadBooks);
         double averageBooksOfRead = bookShelfService.averageBooksOfRead();
+        String averageBooks = String.format("%.1f", averageBooksOfRead);
         System.out.println("averageBooksOfRead = " + averageBooksOfRead);
 
-        model.addAttribute("averageHeight", averageHeightOfReadBooks);
-        model.addAttribute("averageBooks", averageBooksOfRead);
+        model.addAttribute("averageHeight", averageHeight);
+        model.addAttribute("averageBooks", averageBooks);
         model.addAttribute("booksHeight", booksHeight);
         model.addAttribute("books", books);
         model.addAttribute("shelves", shelves);

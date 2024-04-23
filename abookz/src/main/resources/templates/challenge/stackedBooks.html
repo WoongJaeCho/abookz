@@ -18,7 +18,7 @@
     <div class="ruler" th:style="'height: ' + (${booksHeight * 3}) + 'px;'" th:with="idx=${#numbers.sequence(0, booksHeight / 3)}">
         <div th:each="index : ${idx}" th:class="'milli' + (${(index + 1) * 5 % 10 == 5 ? 5 : ((index + 1) * 5 % 10 == 0 ? 10 : null)})"></div>
     </div>
-    <div id="avgBooks" th:text="|에이북즈 회원은 평균 ${averageBooks}권을 읽고, ${averageHeight / 10}cm 만큼 쌓였어요!|"></div>
+    <div id="avgBooks" th:text="|에이북즈 회원은 평균 ${averageBooks}권을 읽고, ${averageHeight}cm 만큼 쌓였어요!|"></div>
 </div>
 <div id="searchResults"></div>
 <script defer src="/js/index.js"></script>
