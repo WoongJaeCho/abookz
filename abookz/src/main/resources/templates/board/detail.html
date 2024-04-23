@@ -22,7 +22,7 @@
         <button class="btn btn-outline btn-error" th:if="${writer == board.writer}"
                 th:onclick="|location.href='@{|/board/delete/${board.id}|}'|">삭제</button>
       </div>
-      <table class="min-w-full text-left text-sm whitespace-nowrap" id="boardTable">
+      <table class="min-w-full text-left text-sm break-words" id="boardTable">
         <thead class="border-b-2 dark:border-neutral-600 border-t">
           <tr class="border-b dark:border-neutral-600">
             <th width="20%" scope="col" class="px-6 py-4 border-x dark:border-neutral-600">번호</th>
