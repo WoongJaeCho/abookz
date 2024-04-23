@@ -4,12 +4,14 @@ import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
 import printBalanceScale from "../mesh/scale.js";
 
 const $canvas = document.getElementById('canvas');
+
 const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x7ccad5);
 
-const camera = new THREE.PerspectiveCamera(50, $canvas.clientWidth / $canvas.clientHeight, 0.1, 1000);
+const camera = new THREE.PerspectiveCamera(50,
+    $canvas.clientWidth / $canvas.clientHeight, 0.1, 1000);
 camera.position.set(0, 0, 20);
-// camera.lookAt(0, 20, 0);
+// camera.lookAt(0, 0, 0);
 
 const renderer = new THREE.WebGLRenderer({ canvas: $canvas });
 renderer.setSize($canvas.clientWidth, $canvas.clientHeight);
