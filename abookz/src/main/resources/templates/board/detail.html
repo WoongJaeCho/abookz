@@ -14,7 +14,15 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
   <div class="container" id="boardContainer">
     <div class="overflow-x-auto bg-white dark:bg-neutral-700">
-      <table class="min-w-full text-left text-sm whitespace-nowrap" id="boardTable">
+      <div class="text-center flex justify-end items-center space-x-3">
+        <button class="btn btn-outline btn-info"
+                th:onclick="|location.href='@{/board/paging(page=${page})}'|">목록</button>
+        <button class="btn btn-outline btn-success" th:if="${writer == board.writer}"
+                th:onclick="|location.href='@{|/board/update/${board.id}|}'|">수정</button>
+        <button class="btn btn-outline btn-error" th:if="${writer == board.writer}"
+                th:onclick="|location.href='@{|/board/delete/${board.id}|}'|">삭제</button>
+      </div>
+      <table class="min-w-full text-left text-sm break-words" id="boardTable">
         <thead class="border-b-2 dark:border-neutral-600 border-t">
           <tr class="border-b dark:border-neutral-600">
             <th width="20%" scope="col" class="px-6 py-4 border-x dark:border-neutral-600">번호</th>
@@ -42,17 +50,7 @@
           </tr>
         </tbody>
       </table>
-      <div class="text-center flex justify-end items-center space-x-3">
-        <button class="btn btn-outline btn-info"
-          th:onclick="|location.href='@{/board/paging(page=${page})}'|">목록</button>
-        <button class="btn btn-outline btn-success" th:if="${writer == board.writer}"
-          th:onclick="|location.href='@{|/board/update/${board.id}|}'|">수정</button>
-        <button class="btn btn-outline btn-error" th:if="${writer == board.writer}"
-          th:onclick="|location.href='@{|/board/delete/${board.id}|}'|">삭제</button>
-      </div>
     </div>
-
-
     <div id="boardCommentContainer" class="mx-auto">
       <div id="boardCommentWrite">
         <textarea id="commentInput" class="commentInput" rows="4" placeholder="댓글을 입력하세요.."></textarea>
