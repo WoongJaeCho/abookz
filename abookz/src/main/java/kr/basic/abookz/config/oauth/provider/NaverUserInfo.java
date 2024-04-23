@@ -30,6 +30,10 @@ public class NaverUserInfo implements OAuth2UserInfo{
     @Override
     public String getProfile() {
         Map<String, Object> response = (Map<String, Object>) attributes.get("response");
-        return (String) response.get("profile");
+        if (response == null) {
+            System.out.println("No profile image available in attributes.");
+            return null;
+        }
+        return (String) response.get("profile_image");
     }
 }
