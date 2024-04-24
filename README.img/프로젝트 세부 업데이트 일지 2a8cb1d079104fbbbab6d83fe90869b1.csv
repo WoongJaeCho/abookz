@@ -1,0 +1,41 @@
+﻿작업일,작성자,오늘 작성한 내용,특이사항,한일
+,조웅재,기능구현 (Member CRUD),,
+04/01/2024,조웅재,기획서 작성,,기획
+04/06/2023,박연미,기획서 작성,,기획
+04/06/2023,박연미,화면구현(Header),,html/css
+04/06/2023,박연미,기능구현(회원가입),,"controller, repository, service"
+04/06/2023,박연미,기능구현(3종게시판정규화 및 자유게시판),,"controller, database, domain, repository, service"
+04/06/2023,박연미,기능구현(로그인 로그아웃),,"controller, repository, service"
+04/06/2023,박연미,"메일 ,프로젝트, 드라이브 구현",,"controller, html/css, javascript"
+04/07/2023,박연미,기능구현(업무 게시판 CRD),,"controller, database, domain, html/css, javascript, repository, service"
+04/07/2023,박연미,템플릿 변경/사이드바 수정,,html/css
+04/10/2023,박연미,"기능구현(드라이브,이메일인증)",,"controller, javascript, repository, service"
+04/10/2023,박연미,"로그인, 회원 가입 (수정)",,"controller, html/css, javascript"
+04/11/2023,박연미,기능구현(결재기능 로직 개발중),,"controller, database, domain, html/css, javascript"
+04/11/2023,박연미,"드라이브, 메일, 주소록",,"controller, html/css, javascript, repository, service"
+04/11/2023,박연미,화면(사이드(active)/topGNB),,"controller, html/css"
+04/12/2023,박연미,"기능구현(캘린더공휴일,더미데이터이미지추가)",,"controller, domain, repository, service"
+04/12/2023,박연미,화면(로그인/사원목록/드라이브),,"controller, html/css"
+04/12/2023,박연미,주소록,,"controller, html/css, javascript"
+04/12/2023,박연미,"기능구현(결재기능 디테일, 업무기능 수정중)",,"controller, database, domain, html/css, javascript, repository, service"
+04/13/2023,박연미,화면(드라이브/사원등록/공지사항),,"controller, html/css"
+04/13/2023,박연미,"드라이브,파일 다운로드 , 삭제 구현",,"controller, repository"
+04/13/2023,박연미,메일,,"controller, database, domain, html/css, javascript, repository, service"
+04/14/2023,박연미,메뉴버튼/결재페이지/기획,,"controller, html/css, 기획"
+04/14/2023,박연미,"회원가입 수정, 멤버 Join 수정",,"database, domain, repository, service"
+04/14/2023,박연미,채팅방 구현시작,,"api, controller, database, domain, html/css, javascript, repository, service"
+04/14/2023,박연미,기획서,,기획
+04/17/2023,박연미,"캘린더에서 일정 삭제,수정기능 구현",,"controller, database, domain, repository, service"
+04/17/2023,박연미,"공지목록, 아이콘 정리",,"controller, domain, html/css, javascript, repository, service"
+04/17/2023,박연미,"메일, 마이페이지",,"controller, html/css, javascript"
+04/18/2023,박연미,"캘린더 종류별 보기 기능 추가,jar파일 변환시 파일경로 문제 해결중",,
+04/18/2023,박연미,"공지사항 페이지, 등록기능",,"controller, domain, html/css, javascript"
+04/18/2023,박연미,비밀번호 찾기,,"controller, html/css, javascript, repository, service"
+04/19/2023,박연미,"공지 삭제/수정, 프로젝트 페이지",,"controller, database, html/css, javascript"
+04/19/2023,박연미,"메일, 대시 보드",,"controller, domain, html/css, javascript, repository, service"
+04/20/2023,박연미,대시보드/기획서마무리,,"controller, html/css, javascript, 기획"
+04/20/2023,박연미,"멤버별 깃링크 추가,DTO 수정",,"controller, repository, service"
+04/20/2023,박연미,"대시보드, 멤버",,"html/css, javascript"
+04/22/2023,박연미,"세션내용수정,권한테이블추가",,"controller, domain, repository"
+04/24/2023,박연미,메일,,"controller, html/css, javascript, service"
+04/25/2023,박연미,"메일, 에러메세지",,"controller, html/css, javascript, service"

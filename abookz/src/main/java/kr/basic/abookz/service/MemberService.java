@@ -38,7 +38,7 @@ import static kr.basic.abookz.entity.book.TagEnum.READ;
 public class MemberService {
   // 생성자 주입
   private final MemberRepository memberRepository;
-  private JavaMailSender javaMailSender = new JavaMailSenderImpl();
+  private final JavaMailSender javaMailSender;
   private final BookShelfService bookShelfService;
   private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
